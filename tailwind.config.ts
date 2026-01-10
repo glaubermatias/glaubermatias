@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Playfair Display", "serif"],
+        display: ["Oferta do Dia", "Inter", "sans-serif"],
         sans: ["Inter", "sans-serif"],
       },
       colors: {
@@ -51,17 +51,12 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        terracotta: {
-          DEFAULT: "hsl(var(--terracotta))",
-          light: "hsl(var(--terracotta-light))",
-        },
-        golden: {
-          DEFAULT: "hsl(var(--golden))",
-          muted: "hsl(var(--golden-muted))",
-        },
-        mustard: "hsl(var(--mustard))",
-        "warm-cream": "hsl(var(--warm-cream))",
-        "warm-brown": "hsl(var(--warm-brown))",
+        "forest-green": "hsl(var(--forest-green))",
+        vermillion: "hsl(var(--vermillion))",
+        "golden-orange": "hsl(var(--golden-orange))",
+        sage: "hsl(var(--sage))",
+        cream: "hsl(var(--cream))",
+        "deep-navy": "hsl(var(--deep-navy))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

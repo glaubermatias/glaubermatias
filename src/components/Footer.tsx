@@ -10,7 +10,7 @@ const Footer = () => {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo */}
-          <a href="#" className="font-display text-2xl font-semibold text-gradient">
+          <a href="#" className="font-display text-2xl font-semibold text-primary">
             GM
           </a>
 
@@ -20,7 +20,7 @@ const Footer = () => {
               href="https://linkedin.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center hover:bg-terracotta hover:text-primary-foreground transition-colors duration-300"
+              className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
               aria-label="LinkedIn"
             >
               <Linkedin className="w-5 h-5" />
@@ -29,7 +29,7 @@ const Footer = () => {
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center hover:bg-terracotta hover:text-primary-foreground transition-colors duration-300"
+              className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
               aria-label="Instagram"
             >
               <Instagram className="w-5 h-5" />
@@ -38,7 +38,7 @@ const Footer = () => {
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center hover:bg-terracotta hover:text-primary-foreground transition-colors duration-300"
+              className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
               aria-label="Twitter"
             >
               <Twitter className="w-5 h-5" />

@@ -87,11 +87,11 @@ const ServicesSection = () => {
               className="group p-8 rounded-3xl bg-card border border-border card-hover"
             >
               <div className="flex items-start gap-5">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-warm flex items-center justify-center shrink-0 group-hover:bg-gradient-warm-solid transition-all duration-500">
-                  <service.icon className="w-6 h-6 text-terracotta group-hover:text-primary-foreground transition-colors duration-500" />
+                <div className="w-14 h-14 rounded-2xl bg-secondary flex items-center justify-center shrink-0 group-hover:bg-primary transition-all duration-500">
+                  <service.icon className="w-6 h-6 text-primary group-hover:text-primary-foreground transition-colors duration-500" />
                 </div>
                 <div>
-                  <h3 className="font-display text-xl font-semibold mb-2 group-hover:text-gradient transition-all duration-300">
+                  <h3 className="font-display text-xl font-semibold mb-2 group-hover:text-primary transition-all duration-300">
                     {getTitle(service)}
                   </h3>
                   <p className="text-muted-foreground">

@@ -1,4 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@font-face {
+  font-family: 'Oferta do Dia';
+  src: url('/fonts/Oferta-do-Dia.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
@@ -6,106 +14,104 @@
 
 @layer base {
   :root {
-    /* Brazilian warmth palette - neutral base with warm accents */
-    --background: 40 30% 97%;
-    --foreground: 25 20% 15%;
+    /* New palette: #faf8f4, #d8d9c7, #014029, #d12f12, #faa23e, #0d0b1e */
+    --background: 45 38% 97%; /* #faf8f4 */
+    --foreground: 248 38% 9%; /* #0d0b1e */
 
-    --card: 40 25% 95%;
-    --card-foreground: 25 20% 15%;
+    --card: 68 15% 81%; /* #d8d9c7 */
+    --card-foreground: 248 38% 9%;
 
-    --popover: 40 30% 97%;
-    --popover-foreground: 25 20% 15%;
+    --popover: 45 38% 97%;
+    --popover-foreground: 248 38% 9%;
 
-    /* Terracotta - main accent */
-    --primary: 16 65% 50%;
-    --primary-foreground: 40 30% 97%;
+    /* Forest Green - main accent */
+    --primary: 157 97% 8%; /* #014029 */
+    --primary-foreground: 45 38% 97%;
 
-    /* Warm sand */
-    --secondary: 35 30% 90%;
-    --secondary-foreground: 25 20% 20%;
+    /* Sage/Olive */
+    --secondary: 68 15% 81%; /* #d8d9c7 */
+    --secondary-foreground: 248 38% 9%;
 
-    /* Muted warm gray */
-    --muted: 35 15% 88%;
-    --muted-foreground: 25 10% 45%;
+    /* Muted sage */
+    --muted: 68 12% 88%;
+    --muted-foreground: 248 20% 40%;
 
-    /* Golden orange accent */
-    --accent: 32 85% 55%;
-    --accent-foreground: 25 20% 10%;
+    /* Orange accent */
+    --accent: 32 95% 61%; /* #faa23e */
+    --accent-foreground: 248 38% 9%;
 
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 8 85% 45%; /* #d12f12 */
+    --destructive-foreground: 45 38% 97%;
 
-    --border: 35 20% 85%;
-    --input: 35 20% 85%;
-    --ring: 16 65% 50%;
+    --border: 68 15% 75%;
+    --input: 68 15% 75%;
+    --ring: 157 97% 8%;
 
     --radius: 0.75rem;
 
     /* Brazilian colors */
-    --terracotta: 16 65% 50%;
-    --terracotta-light: 16 55% 65%;
-    --golden: 38 90% 55%;
-    --golden-muted: 38 60% 70%;
-    --mustard: 45 80% 50%;
-    --warm-cream: 40 40% 94%;
-    --warm-brown: 25 35% 25%;
+    --forest-green: 157 97% 8%; /* #014029 */
+    --vermillion: 8 85% 45%; /* #d12f12 */
+    --golden-orange: 32 95% 61%; /* #faa23e */
+    --sage: 68 15% 81%; /* #d8d9c7 */
+    --cream: 45 38% 97%; /* #faf8f4 */
+    --deep-navy: 248 38% 9%; /* #0d0b1e */
 
     /* Sidebar */
-    --sidebar-background: 40 25% 95%;
-    --sidebar-foreground: 25 20% 20%;
-    --sidebar-primary: 16 65% 50%;
-    --sidebar-primary-foreground: 40 30% 97%;
-    --sidebar-accent: 35 30% 90%;
-    --sidebar-accent-foreground: 25 20% 20%;
-    --sidebar-border: 35 20% 85%;
-    --sidebar-ring: 16 65% 50%;
+    --sidebar-background: 45 38% 97%;
+    --sidebar-foreground: 248 38% 9%;
+    --sidebar-primary: 157 97% 8%;
+    --sidebar-primary-foreground: 45 38% 97%;
+    --sidebar-accent: 68 15% 81%;
+    --sidebar-accent-foreground: 248 38% 9%;
+    --sidebar-border: 68 15% 75%;
+    --sidebar-ring: 157 97% 8%;
   }
 
   .dark {
-    --background: 25 25% 8%;
-    --foreground: 40 20% 92%;
+    --background: 248 38% 9%; /* #0d0b1e */
+    --foreground: 45 38% 97%; /* #faf8f4 */
 
-    --card: 25 20% 12%;
-    --card-foreground: 40 20% 92%;
+    --card: 248 30% 14%;
+    --card-foreground: 45 38% 97%;
 
-    --popover: 25 20% 10%;
-    --popover-foreground: 40 20% 92%;
+    --popover: 248 30% 12%;
+    --popover-foreground: 45 38% 97%;
 
-    --primary: 16 70% 55%;
-    --primary-foreground: 25 25% 8%;
+    --primary: 157 70% 35%;
+    --primary-foreground: 45 38% 97%;
 
-    --secondary: 25 15% 18%;
-    --secondary-foreground: 40 20% 92%;
+    --secondary: 248 20% 20%;
+    --secondary-foreground: 45 38% 97%;
 
-    --muted: 25 15% 20%;
-    --muted-foreground: 35 15% 60%;
+    --muted: 248 20% 25%;
+    --muted-foreground: 68 10% 60%;
 
-    --accent: 32 85% 55%;
-    --accent-foreground: 25 25% 8%;
+    --accent: 32 95% 61%;
+    --accent-foreground: 248 38% 9%;
 
-    --destructive: 0 62% 45%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 8 75% 50%;
+    --destructive-foreground: 45 38% 97%;
 
-    --border: 25 15% 20%;
-    --input: 25 15% 20%;
-    --ring: 16 70% 55%;
+    --border: 248 20% 20%;
+    --input: 248 20% 20%;
+    --ring: 157 70% 35%;
 
-    --terracotta: 16 70% 55%;
-    --terracotta-light: 16 60% 70%;
-    --golden: 38 90% 60%;
-    --golden-muted: 38 50% 45%;
-    --mustard: 45 80% 55%;
-    --warm-cream: 40 15% 20%;
-    --warm-brown: 30 20% 75%;
+    --forest-green: 157 70% 35%;
+    --vermillion: 8 75% 50%;
+    --golden-orange: 32 95% 65%;
+    --sage: 68 10% 30%;
+    --cream: 45 20% 15%;
+    --deep-navy: 45 38% 97%;
 
-    --sidebar-background: 25 20% 10%;
-    --sidebar-foreground: 40 20% 92%;
-    --sidebar-primary: 16 70% 55%;
-    --sidebar-primary-foreground: 25 25% 8%;
-    --sidebar-accent: 25 15% 18%;
-    --sidebar-accent-foreground: 40 20% 92%;
-    --sidebar-border: 25 15% 20%;
-    --sidebar-ring: 16 70% 55%;
+    --sidebar-background: 248 30% 12%;
+    --sidebar-foreground: 45 38% 97%;
+    --sidebar-primary: 157 70% 35%;
+    --sidebar-primary-foreground: 45 38% 97%;
+    --sidebar-accent: 248 20% 20%;
+    --sidebar-accent-foreground: 45 38% 97%;
+    --sidebar-border: 248 20% 20%;
+    --sidebar-ring: 157 70% 35%;
   }
 }
 
@@ -120,60 +126,17 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Oferta do Dia', 'Inter', sans-serif;
   }
 }
 
 @layer components {
-  .text-gradient {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(
-      135deg,
-      hsl(var(--terracotta)) 0%,
-      hsl(var(--golden)) 50%,
-      hsl(var(--mustard)) 100%
-    );
+  .text-accent-color {
+    color: hsl(var(--vermillion));
   }
 
-  .text-gradient-hover {
-    @apply bg-clip-text text-transparent transition-all duration-500;
-    background-image: linear-gradient(
-      135deg,
-      hsl(var(--foreground)) 0%,
-      hsl(var(--foreground)) 100%
-    );
-  }
-
-  .text-gradient-hover:hover {
-    background-image: linear-gradient(
-      135deg,
-      hsl(var(--terracotta)) 0%,
-      hsl(var(--golden)) 50%,
-      hsl(var(--mustard)) 100%
-    );
-  }
-
-  .bg-gradient-warm {
-    background: linear-gradient(
-      135deg,
-      hsl(var(--terracotta) / 0.1) 0%,
-      hsl(var(--golden) / 0.08) 50%,
-      hsl(var(--mustard) / 0.05) 100%
-    );
-  }
-
-  .bg-gradient-warm-solid {
-    background: linear-gradient(
-      135deg,
-      hsl(var(--terracotta)) 0%,
-      hsl(var(--golden)) 100%
-    );
-  }
-
-  .border-gradient {
-    border: 2px solid transparent;
-    background: linear-gradient(hsl(var(--background)), hsl(var(--background))) padding-box,
-                linear-gradient(135deg, hsl(var(--terracotta)), hsl(var(--golden))) border-box;
+  .text-accent-orange {
+    color: hsl(var(--golden-orange));
   }
 
   .card-hover {
@@ -182,7 +145,7 @@
 
   .card-hover:hover {
     @apply -translate-y-2;
-    box-shadow: 0 25px 50px -12px hsl(var(--terracotta) / 0.15);
+    box-shadow: 0 25px 50px -12px hsl(var(--forest-green) / 0.15);
   }
 
   .link-underline {
@@ -192,11 +155,19 @@
   .link-underline::after {
     content: '';
     @apply absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300;
-    background: linear-gradient(90deg, hsl(var(--terracotta)), hsl(var(--golden)));
+    background: hsl(var(--vermillion));
   }
 
   .link-underline:hover::after {
     @apply w-full;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground;
+  }
+
+  .btn-accent {
+    @apply bg-vermillion text-cream;
   }
 }
 
@@ -252,10 +223,6 @@
 
   .hover-lift:hover {
     @apply -translate-y-1;
-  }
-
-  .hover-glow:hover {
-    box-shadow: 0 0 30px hsl(var(--terracotta) / 0.3);
   }
 }
 
@@ -327,10 +294,10 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--terracotta) / 0.5);
+  background: hsl(var(--forest-green) / 0.5);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--terracotta));
+  background: hsl(var(--forest-green));
 }

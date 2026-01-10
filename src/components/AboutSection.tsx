@@ -5,7 +5,7 @@ const AboutSection = () => {
   const { t } = useLanguage();
 
   return (
-    <section id="about" className="py-24 lg:py-32 bg-gradient-warm">
+    <section id="about" className="py-24 lg:py-32 bg-secondary">
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Text Content */}
@@ -15,7 +15,7 @@ const AboutSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <span className="text-terracotta font-medium text-sm uppercase tracking-wider mb-4 block">
+            <span className="text-vermillion font-medium text-sm uppercase tracking-wider mb-4 block">
               {t.about.experience}
             </span>
             <h2 className="font-display text-4xl md:text-5xl font-semibold mb-6">
@@ -28,7 +28,7 @@ const AboutSection = () => {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6">
               <div>
-                <div className="text-3xl md:text-4xl font-display font-bold text-gradient">
+                <div className="text-3xl md:text-4xl font-display font-bold text-primary">
                   7+
                 </div>
                 <div className="text-sm text-muted-foreground mt-1">
@@ -36,7 +36,7 @@ const AboutSection = () => {
                 </div>
               </div>
               <div>
-                <div className="text-3xl md:text-4xl font-display font-bold text-gradient">
+                <div className="text-3xl md:text-4xl font-display font-bold text-primary">
                   200+
                 </div>
                 <div className="text-sm text-muted-foreground mt-1">
@@ -44,7 +44,7 @@ const AboutSection = () => {
                 </div>
               </div>
               <div>
-                <div className="text-3xl md:text-4xl font-display font-bold text-gradient">
+                <div className="text-3xl md:text-4xl font-display font-bold text-primary">
                   50+
                 </div>
                 <div className="text-sm text-muted-foreground mt-1">
@@ -62,10 +62,10 @@ const AboutSection = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative"
           >
-            <div className="aspect-[4/5] rounded-3xl overflow-hidden bg-secondary border-gradient">
-              <div className="w-full h-full bg-gradient-to-br from-terracotta/20 via-golden/10 to-transparent flex items-center justify-center">
+            <div className="aspect-[4/5] rounded-3xl overflow-hidden bg-cream border-2 border-border">
+              <div className="w-full h-full flex items-center justify-center">
                 <div className="text-center p-8">
-                  <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-warm-solid flex items-center justify-center">
+                  <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-primary flex items-center justify-center">
                     <span className="font-display text-5xl font-bold text-primary-foreground">GM</span>
                   </div>
                   <p className="text-muted-foreground">Your photo here</p>
@@ -75,7 +75,7 @@ const AboutSection = () => {
             
             {/* Floating accent */}
             <motion.div
-              className="absolute -bottom-6 -left-6 w-24 h-24 rounded-2xl bg-gradient-warm-solid opacity-80"
+              className="absolute -bottom-6 -left-6 w-24 h-24 rounded-2xl bg-vermillion opacity-80"
               animate={{ rotate: [0, 5, 0, -5, 0] }}
               transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
             />

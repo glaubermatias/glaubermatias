@@ -30,7 +30,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           />
           
           {/* Overlay on hover */}
-          <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="absolute inset-0 bg-foreground/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           
           {/* View Project Button */}
           <motion.div
@@ -53,7 +53,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
             <span>{project.year}</span>
           </div>
           
-          <h3 className="font-display text-xl font-semibold group-hover:text-gradient-hover transition-colors duration-300">
+          <h3 className="font-display text-xl font-semibold group-hover:text-primary transition-colors duration-300">
             {project.title}
           </h3>
           
