@@ -38,7 +38,7 @@ const Navigation = () => {
         <div className="flex items-center justify-between">
           <a
             href="#"
-            className="font-display text-2xl font-semibold text-gradient-hover"
+            className="font-display text-2xl font-semibold text-primary"
           >
             GM
           </a>

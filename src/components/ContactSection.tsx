@@ -7,20 +7,6 @@ const ContactSection = () => {
 
   return (
     <section id="contact" className="py-24 lg:py-32 relative overflow-hidden">
-      {/* Background accents */}
-      <div className="absolute inset-0 pointer-events-none">
-        <motion.div
-          className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-terracotta/5 blur-3xl"
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <motion.div
-          className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-golden/5 blur-3xl"
-          animate={{ scale: [1.1, 1, 1.1] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      </div>
-
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
           className="max-w-3xl mx-auto text-center"
@@ -38,7 +24,7 @@ const ContactSection = () => {
 
           <motion.a
             href="mailto:hello@glaubermatias.com"
-            className="group inline-flex items-center gap-4 px-10 py-5 bg-gradient-warm-solid text-primary-foreground font-semibold text-lg rounded-full hover:shadow-xl hover:shadow-terracotta/25 transition-all duration-500 hover:-translate-y-1"
+            className="group inline-flex items-center gap-4 px-10 py-5 bg-primary text-primary-foreground font-semibold text-lg rounded-full hover:bg-vermillion transition-all duration-500 hover:-translate-y-1"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >

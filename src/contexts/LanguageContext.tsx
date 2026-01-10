@@ -61,8 +61,8 @@ const translations: Record<Language, Translations> = {
       contact: 'Contact',
     },
     hero: {
-      greeting: "Hi, I'm Glauber Matias",
-      tagline: 'Strategic Design for Presentations',
+      greeting: "Hi, I'm Glauber!",
+      tagline: 'I simplify complex ideas into visual stories that amplify executive messages and engage global audiences.',
       cta: 'View My Work',
     },
     work: {
@@ -109,8 +109,8 @@ const translations: Record<Language, Translations> = {
       contact: 'Contato',
     },
     hero: {
-      greeting: 'Olá, sou Glauber Matias',
-      tagline: 'Design Estratégico para Apresentações',
+      greeting: 'Oi, eu sou o Glauber!',
+      tagline: 'Eu simplifico ideias complexas em histórias visuais que amplificam mensagens executivas e engajam audiências globais.',
       cta: 'Ver Meus Trabalhos',
     },
     work: {
@@ -157,8 +157,8 @@ const translations: Record<Language, Translations> = {
       contact: 'Contacto',
     },
     hero: {
-      greeting: 'Hola, soy Glauber Matias',
-      tagline: 'Diseño Estratégico para Presentaciones',
+      greeting: '¡Hola, soy Glauber!',
+      tagline: 'Simplifico ideas complejas en historias visuales que amplifican mensajes ejecutivos y enganchan audiencias globales.',
       cta: 'Ver Mi Trabajo',
     },
     work: {

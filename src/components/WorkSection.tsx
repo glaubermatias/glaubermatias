@@ -128,7 +128,7 @@ const WorkSection = () => {
               {activeCategory === cat.key && (
                 <motion.div
                   layoutId="activeCategory"
-                  className="absolute inset-0 bg-gradient-warm-solid rounded-full"
+                  className="absolute inset-0 bg-primary rounded-full"
                   transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                 />
               )}

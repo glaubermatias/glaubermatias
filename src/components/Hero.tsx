@@ -5,9 +5,6 @@ import { ArrowDown } from 'lucide-react';
 const Hero = () => {
   const { t } = useLanguage();
 
-  const nameWords = t.hero.greeting.split(' ');
-  const taglineWords = t.hero.tagline.split(' ');
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -43,7 +40,7 @@ const Hero = () => {
       opacity: 1,
       y: 0,
       transition: {
-        delay: 1.2,
+        delay: 0.8,
         duration: 0.8,
         ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
       },
@@ -56,7 +53,7 @@ const Hero = () => {
       opacity: 1,
       y: 0,
       transition: {
-        delay: 1.6,
+        delay: 1.4,
         duration: 0.6,
       },
     },
@@ -66,58 +63,31 @@ const Hero = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { delay: 2, duration: 0.8 },
+      transition: { delay: 1.8, duration: 0.8 },
     },
   };
 
-  return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Subtle background gradient */}
-      <div className="absolute inset-0 bg-gradient-warm opacity-50" />
-      
-      {/* Floating accent shapes */}
-      <motion.div
-        className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-terracotta/5 blur-3xl"
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.3, 0.5, 0.3],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      />
-      <motion.div
-        className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-golden/5 blur-3xl"
-        animate={{
-          scale: [1.2, 1, 1.2],
-          opacity: [0.3, 0.5, 0.3],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      />
+  // Split greeting into "Hi, I'm" and "Glauber!"
+  const greetingParts = t.hero.greeting.split(' ');
+  const nameIndex = greetingParts.findIndex(word => word.toLowerCase().includes('glauber'));
 
+  return (
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-primary">
       <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Animated Name */}
+        <div className="max-w-5xl mx-auto">
+          {/* Animated Greeting */}
           <motion.h1
-            className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight mb-6"
+            className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight mb-8 text-primary-foreground"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
-            {nameWords.map((word, index) => (
+            {greetingParts.map((word, index) => (
               <motion.span
                 key={index}
                 variants={wordVariants}
                 className={`inline-block mr-[0.25em] ${
-                  index === nameWords.length - 1 || index === nameWords.length - 2
-                    ? 'text-gradient'
-                    : ''
+                  index >= nameIndex ? 'text-golden-orange' : ''
                 }`}
                 style={{ perspective: '500px' }}
               >
@@ -128,36 +98,24 @@ const Hero = () => {
 
           {/* Tagline */}
           <motion.p
-            className="text-xl sm:text-2xl md:text-3xl text-muted-foreground font-light mb-12"
+            className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-primary-foreground/90 font-light leading-relaxed max-w-4xl"
             variants={taglineVariants}
             initial="hidden"
             animate="visible"
           >
-            {taglineWords.map((word, index) => (
-              <span
-                key={index}
-                className={`inline-block mr-[0.3em] ${
-                  word.toLowerCase() === 'strategic' ||
-                  word.toLowerCase() === 'estratégico' ||
-                  word.toLowerCase() === 'estratégico'
-                    ? 'text-foreground font-medium'
-                    : ''
-                }`}
-              >
-                {word}
-              </span>
-            ))}
+            {t.hero.tagline}
           </motion.p>
 
           {/* CTA Button */}
           <motion.div
+            className="mt-12"
             variants={ctaVariants}
             initial="hidden"
             animate="visible"
           >
             <a
               href="#work"
-              className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-warm-solid text-primary-foreground font-medium rounded-full hover:shadow-lg hover:shadow-terracotta/20 transition-all duration-300 hover:-translate-y-1"
+              className="group inline-flex items-center gap-3 px-8 py-4 bg-cream text-primary font-medium rounded-full hover:bg-golden-orange hover:text-primary transition-all duration-300 hover:-translate-y-1"
             >
               {t.hero.cta}
               <motion.span
@@ -181,7 +139,7 @@ const Hero = () => {
             animate={{ y: [0, 8, 0] }}
             transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
           >
-            <ArrowDown className="w-6 h-6 text-muted-foreground" />
+            <ArrowDown className="w-6 h-6 text-primary-foreground/60" />
           </motion.div>
         </motion.div>
       </div>
