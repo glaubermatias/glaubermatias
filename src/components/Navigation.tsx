@@ -20,38 +20,39 @@ const Navigation = () => {
 
   const navLinks = [
     { href: '#work', label: t.nav.work },
-    { href: '#about', label: t.nav.about },
     { href: '#services', label: t.nav.services },
-    { href: '#testimonials', label: t.nav.testimonials },
-    { href: '#contact', label: t.nav.contact },
+    { href: '#cv', label: 'CV' },
+    { href: '#about', label: t.nav.about },
+    { href: '#contact', label: 'Get in touch' },
   ];
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled
-          ? 'bg-background/80 backdrop-blur-lg shadow-sm'
-          : 'bg-transparent'
-      }`}
-    >
-      <nav className="container mx-auto px-6 py-4">
+    <header className="fixed top-0 left-0 right-0 z-50 px-4 py-4">
+      <nav
+        className={`max-w-4xl mx-auto transition-all duration-500 rounded-full px-6 py-3 ${
+          isScrolled
+            ? 'glass-nav shadow-lg'
+            : 'glass-nav'
+        }`}
+      >
         <div className="flex items-center justify-between">
           <a
             href="#"
-            className="font-display text-2xl font-semibold text-primary"
+            className="font-display text-xl font-medium text-primary"
           >
             GM
           </a>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="link-underline text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors relative group"
               >
                 {link.label}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
             <LanguageToggle />
@@ -59,7 +60,7 @@ const Navigation = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2"
+            className="md:hidden p-2 text-foreground"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -83,7 +84,7 @@ const Navigation = () => {
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
                   >
                     {link.label}
                   </a>

@@ -11,8 +11,9 @@ interface Translations {
     contact: string;
   };
   hero: {
-    greeting: string;
-    tagline: string;
+    welcome: string;
+    headline: string;
+    description: string;
     cta: string;
   };
   work: {
@@ -61,8 +62,9 @@ const translations: Record<Language, Translations> = {
       contact: 'Contact',
     },
     hero: {
-      greeting: "Hi, I'm Glauber!",
-      tagline: 'I simplify complex ideas into visual stories that amplify executive messages and engage global audiences.',
+      welcome: 'Welcome!',
+      headline: 'Amplifying the impact of your message with world-class presentations',
+      description: 'From C-suite pitch decks to global keynotes, I craft visual stories that make complex ideas simple and memorable. My work combines data-driven visuals, scalable templates, and on-site delivery, so leaders deliver their message with confidence.',
       cta: 'View My Work',
     },
     work: {
@@ -109,8 +111,9 @@ const translations: Record<Language, Translations> = {
       contact: 'Contato',
     },
     hero: {
-      greeting: 'Oi, eu sou o Glauber!',
-      tagline: 'Eu simplifico ideias complexas em histórias visuais que amplificam mensagens executivas e engajam audiências globais.',
+      welcome: 'Bem-vindo!',
+      headline: 'Amplificando o impacto da sua mensagem com apresentações de classe mundial',
+      description: 'De pitch decks para C-level a keynotes globais, eu crio histórias visuais que tornam ideias complexas simples e memoráveis. Meu trabalho combina visuais orientados por dados, templates escaláveis e entrega presencial, para que líderes transmitam sua mensagem com confiança.',
       cta: 'Ver Meus Trabalhos',
     },
     work: {
@@ -157,8 +160,9 @@ const translations: Record<Language, Translations> = {
       contact: 'Contacto',
     },
     hero: {
-      greeting: '¡Hola, soy Glauber!',
-      tagline: 'Simplifico ideas complejas en historias visuales que amplifican mensajes ejecutivos y enganchan audiencias globales.',
+      welcome: '¡Bienvenido!',
+      headline: 'Amplificando el impacto de tu mensaje con presentaciones de clase mundial',
+      description: 'Desde pitch decks para C-suite hasta keynotes globales, creo historias visuales que hacen que las ideas complejas sean simples y memorables. Mi trabajo combina visuales basados en datos, plantillas escalables y entrega en sitio, para que los líderes transmitan su mensaje con confianza.',
       cta: 'Ver Mi Trabajo',
     },
     work: {

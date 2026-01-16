@@ -5,42 +5,39 @@ import { ArrowDown } from 'lucide-react';
 const Hero = () => {
   const { t } = useLanguage();
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
+  const badgeVariants = {
+    hidden: { opacity: 0, y: -20 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const wordVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 50,
-      rotateX: -90,
-    },
-    visible: { 
-      opacity: 1, 
       y: 0,
-      rotateX: 0,
       transition: {
-        type: 'spring' as const,
-        damping: 12,
-        stiffness: 100,
+        delay: 0.2,
+        duration: 0.6,
+        ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
       },
     },
   };
 
-  const taglineVariants = {
+  const headlineVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: 0.4,
+        duration: 0.8,
+        ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
+      },
+    },
+  };
+
+  const descriptionVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        delay: 0.8,
+        delay: 0.7,
         duration: 0.8,
         ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
       },
@@ -53,7 +50,7 @@ const Hero = () => {
       opacity: 1,
       y: 0,
       transition: {
-        delay: 1.4,
+        delay: 1.0,
         duration: 0.6,
       },
     },
@@ -63,59 +60,56 @@ const Hero = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { delay: 1.8, duration: 0.8 },
+      transition: { delay: 1.4, duration: 0.8 },
     },
   };
 
-  // Split greeting into words
-  const greetingParts = t.hero.greeting.split(' ');
-  const nameIndex = greetingParts.findIndex(word => word.toLowerCase().includes('glauber'));
-
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-primary">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background pt-24">
       <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-5xl mx-auto text-center">
-          {/* Animated Greeting */}
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Welcome Badge */}
+          <motion.div
+            variants={badgeVariants}
+            initial="hidden"
+            animate="visible"
+            className="inline-block mb-8"
+          >
+            <span className="inline-flex items-center px-6 py-2 rounded-full bg-secondary text-foreground text-sm font-medium">
+              {t.hero.welcome}
+            </span>
+          </motion.div>
+
+          {/* Main Headline */}
           <motion.h1
-            className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold leading-tight mb-8 text-primary-foreground"
-            variants={containerVariants}
+            className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium leading-tight mb-8 text-foreground"
+            variants={headlineVariants}
             initial="hidden"
             animate="visible"
           >
-            {greetingParts.map((word, index) => (
-              <motion.span
-                key={index}
-                variants={wordVariants}
-                className={`inline-block mr-[0.25em] ${
-                  index >= nameIndex ? 'text-golden-orange' : ''
-                }`}
-                style={{ perspective: '500px' }}
-              >
-                {word}
-              </motion.span>
-            ))}
+            {t.hero.headline}
           </motion.h1>
 
-          {/* Tagline */}
+          {/* Description */}
           <motion.p
-            className="text-xl sm:text-2xl md:text-3xl text-primary-foreground/90 font-light leading-relaxed max-w-4xl mx-auto"
-            variants={taglineVariants}
+            className="text-lg sm:text-xl text-muted-foreground font-light leading-relaxed max-w-3xl mx-auto mb-12"
+            variants={descriptionVariants}
             initial="hidden"
             animate="visible"
           >
-            {t.hero.tagline}
+            {t.hero.description}
           </motion.p>
 
           {/* CTA Buttons */}
           <motion.div
-            className="mt-12 flex flex-col sm:flex-row gap-4 justify-center"
+            className="flex flex-col sm:flex-row gap-4 justify-center"
             variants={ctaVariants}
             initial="hidden"
             animate="visible"
           >
             <a
               href="#work"
-              className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-cream text-primary font-medium rounded-full hover:bg-golden-orange hover:text-primary transition-all duration-300 hover:-translate-y-1"
+              className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-primary text-primary-foreground font-medium rounded-full hover:bg-accent transition-all duration-300 hover:-translate-y-1"
             >
               {t.hero.cta}
               <motion.span
@@ -127,7 +121,7 @@ const Hero = () => {
             </a>
             <a
               href="#contact"
-              className="inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-primary-foreground/30 text-primary-foreground font-medium rounded-full hover:border-primary-foreground hover:bg-primary-foreground/10 transition-all duration-300"
+              className="inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-foreground/20 text-foreground font-medium rounded-full hover:border-foreground hover:bg-foreground/5 transition-all duration-300"
             >
               Get in touch
             </a>
@@ -145,7 +139,7 @@ const Hero = () => {
             animate={{ y: [0, 8, 0] }}
             transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
           >
-            <ArrowDown className="w-6 h-6 text-primary-foreground/60" />
+            <ArrowDown className="w-6 h-6 text-foreground/40" />
           </motion.div>
         </motion.div>
       </div>
