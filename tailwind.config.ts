@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Oferta do Dia", "Inter", "sans-serif"],
+        display: ["Eighties Comeback", "Inter", "sans-serif"],
         sans: ["Inter", "sans-serif"],
       },
       colors: {
@@ -51,12 +51,10 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        "forest-green": "hsl(var(--forest-green))",
-        vermillion: "hsl(var(--vermillion))",
-        "golden-orange": "hsl(var(--golden-orange))",
-        sage: "hsl(var(--sage))",
+        "teal-dark": "hsl(var(--teal-dark))",
+        "sage-light": "hsl(var(--sage-light))",
         cream: "hsl(var(--cream))",
-        "deep-navy": "hsl(var(--deep-navy))",
+        "red-accent": "hsl(var(--red-accent))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
