@@ -22,10 +22,11 @@ interface Translations {
     viewProject: string;
     categories: {
       all: string;
-      pitchDecks: string;
-      internalComms: string;
-      events: string;
-      personal: string;
+      executiveDecks: string;
+      externalEvents: string;
+      templates: string;
+      freelance: string;
+      personalProjects: string;
     };
   };
   about: {
@@ -64,19 +65,20 @@ const translations: Record<Language, Translations> = {
     hero: {
       welcome: 'Welcome!',
       headline: 'Amplifying the impact of your message with world-class presentations',
-      description: 'From C-suite pitch decks to global keynotes, I craft visual stories that make complex ideas simple and memorable. My work combines data-driven visuals, scalable templates, and on-site delivery, so leaders deliver their message with confidence.',
-      cta: 'View My Work',
+      description: 'From C-suite pitch decks to global keynotes, I craft visual stories that make complex ideas simple and memorable.',
+      cta: 'View my work',
     },
     work: {
-      title: 'Selected Work',
+      title: 'Selected work',
       subtitle: 'A collection of projects that showcase strategic thinking and visual excellence',
-      viewProject: 'View Project',
+      viewProject: 'View project',
       categories: {
         all: 'All',
-        pitchDecks: 'Pitch Decks',
-        internalComms: 'Internal Comms',
-        events: 'Events & Keynotes',
-        personal: 'Personal Projects',
+        executiveDecks: 'Executive decks',
+        externalEvents: 'External events',
+        templates: 'Templates',
+        freelance: 'Freelance',
+        personalProjects: 'Personal projects',
       },
     },
     about: {
@@ -113,19 +115,20 @@ const translations: Record<Language, Translations> = {
     hero: {
       welcome: 'Bem-vindo!',
       headline: 'Amplificando o impacto da sua mensagem com apresentações de classe mundial',
-      description: 'De pitch decks para C-level a keynotes globais, eu crio histórias visuais que tornam ideias complexas simples e memoráveis. Meu trabalho combina visuais orientados por dados, templates escaláveis e entrega presencial, para que líderes transmitam sua mensagem com confiança.',
-      cta: 'Ver Meus Trabalhos',
+      description: 'De pitch decks para C-level a keynotes globais, eu crio histórias visuais que tornam ideias complexas simples e memoráveis.',
+      cta: 'Ver meus trabalhos',
     },
     work: {
-      title: 'Trabalhos Selecionados',
+      title: 'Trabalhos selecionados',
       subtitle: 'Uma coleção de projetos que demonstram pensamento estratégico e excelência visual',
-      viewProject: 'Ver Projeto',
+      viewProject: 'Ver projeto',
       categories: {
         all: 'Todos',
-        pitchDecks: 'Pitch Decks',
-        internalComms: 'Comunicação Interna',
-        events: 'Eventos & Keynotes',
-        personal: 'Projetos Pessoais',
+        executiveDecks: 'Decks executivos',
+        externalEvents: 'Eventos externos',
+        templates: 'Templates',
+        freelance: 'Freelance',
+        personalProjects: 'Projetos pessoais',
       },
     },
     about: {
@@ -162,19 +165,20 @@ const translations: Record<Language, Translations> = {
     hero: {
       welcome: '¡Bienvenido!',
       headline: 'Amplificando el impacto de tu mensaje con presentaciones de clase mundial',
-      description: 'Desde pitch decks para C-suite hasta keynotes globales, creo historias visuales que hacen que las ideas complejas sean simples y memorables. Mi trabajo combina visuales basados en datos, plantillas escalables y entrega en sitio, para que los líderes transmitan su mensaje con confianza.',
-      cta: 'Ver Mi Trabajo',
+      description: 'Desde pitch decks para C-suite hasta keynotes globales, creo historias visuales que hacen que las ideas complejas sean simples y memorables.',
+      cta: 'Ver mi trabajo',
     },
     work: {
-      title: 'Trabajos Seleccionados',
+      title: 'Trabajos seleccionados',
       subtitle: 'Una colección de proyectos que demuestran pensamiento estratégico y excelencia visual',
-      viewProject: 'Ver Proyecto',
+      viewProject: 'Ver proyecto',
       categories: {
         all: 'Todos',
-        pitchDecks: 'Pitch Decks',
-        internalComms: 'Comunicación Interna',
-        events: 'Eventos & Keynotes',
-        personal: 'Proyectos Personales',
+        executiveDecks: 'Decks ejecutivos',
+        externalEvents: 'Eventos externos',
+        templates: 'Plantillas',
+        freelance: 'Freelance',
+        personalProjects: 'Proyectos personales',
       },
     },
     about: {

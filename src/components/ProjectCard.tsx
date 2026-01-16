@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 import { Project } from './WorkSection';
 
 interface ProjectCardProps {
@@ -10,6 +11,31 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ project, index }: ProjectCardProps) => {
   const { t } = useLanguage();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const nextImage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev + 1) % project.images.length);
+  };
+
+  const prevImage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev - 1 + project.images.length) % project.images.length);
+  };
+
+  // Map category key to label
+  const getCategoryLabel = (category: string) => {
+    const categoryMap: Record<string, string> = {
+      'executive-decks': t.work.categories.executiveDecks,
+      'external-events': t.work.categories.externalEvents,
+      'templates': t.work.categories.templates,
+      'freelance': t.work.categories.freelance,
+      'personal-projects': t.work.categories.personalProjects,
+    };
+    return categoryMap[category] || category;
+  };
 
   return (
     <motion.article
@@ -18,48 +44,81 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="group cursor-pointer"
+      className="group"
     >
       <a href={`/project/${project.id}`} className="block">
-        {/* Image Container */}
-        <div className="relative overflow-hidden rounded-2xl mb-5 aspect-[4/3] bg-secondary">
-          <motion.img
-            src={project.thumbnail}
-            alt={project.title}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          />
-          
-          {/* Overlay on hover */}
-          <div className="absolute inset-0 bg-foreground/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          
-          {/* View Project Button */}
-          <motion.div
-            className="absolute bottom-4 left-4 right-4 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0"
-          >
-            <span className="text-primary-foreground font-medium">
-              {t.work.viewProject}
-            </span>
-            <div className="w-10 h-10 rounded-full bg-primary-foreground/20 backdrop-blur-sm flex items-center justify-center">
-              <ArrowUpRight className="w-5 h-5 text-primary-foreground" />
-            </div>
-          </motion.div>
-        </div>
+        {/* Card Container */}
+        <div className="project-card-bg rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
+          {/* Image Carousel */}
+          <div className="relative aspect-[4/3] overflow-hidden">
+            <motion.img
+              key={currentImageIndex}
+              src={project.images[currentImageIndex]}
+              alt={`${project.title} - Image ${currentImageIndex + 1}`}
+              className="w-full h-full object-cover"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            />
+            
+            {/* Carousel Navigation */}
+            {project.images.length > 1 && (
+              <>
+                <button
+                  onClick={prevImage}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-background"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft className="w-5 h-5 text-foreground" />
+                </button>
+                <button
+                  onClick={nextImage}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-background"
+                  aria-label="Next image"
+                >
+                  <ChevronRight className="w-5 h-5 text-foreground" />
+                </button>
 
-        {/* Content */}
-        <div className="space-y-2">
-          <div className="flex items-center gap-3 text-sm text-muted-foreground">
-            <span>{project.client}</span>
-            <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
-            <span>{project.year}</span>
+                {/* Dots Indicator */}
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                  {project.images.map((_, idx) => (
+                    <div
+                      key={idx}
+                      className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                        idx === currentImageIndex 
+                          ? 'bg-background w-4' 
+                          : 'bg-background/50'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
-          
-          <h3 className="font-display text-xl font-semibold group-hover:text-primary transition-colors duration-300">
-            {project.title}
-          </h3>
-          
-          <p className="text-muted-foreground text-sm line-clamp-2">
-            {project.description}
-          </p>
+
+          {/* Content */}
+          <div className="p-5 space-y-3">
+            <h3 className="font-display text-xl font-semibold text-foreground group-hover:text-accent transition-colors duration-300">
+              {project.title}
+            </h3>
+            
+            <p className="text-muted-foreground text-sm line-clamp-2">
+              {project.description}
+            </p>
+
+            {/* Category Tag */}
+            <div className="pt-2">
+              <span className="inline-flex items-center px-3 py-1 rounded-full bg-secondary text-foreground text-xs font-medium">
+                {getCategoryLabel(project.category)}
+              </span>
+            </div>
+
+            {/* View Project */}
+            <div className="flex items-center gap-2 pt-2 text-accent font-medium text-sm group-hover:gap-3 transition-all duration-300">
+              <span>{t.work.viewProject}</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </div>
+          </div>
         </div>
       </a>
     </motion.article>
