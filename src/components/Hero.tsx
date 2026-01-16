@@ -1,6 +1,5 @@
 import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
-import { ArrowDown } from 'lucide-react';
 
 const Hero = () => {
   const { t } = useLanguage();
@@ -56,14 +55,6 @@ const Hero = () => {
     },
   };
 
-  const scrollIndicatorVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { delay: 1.4, duration: 0.8 },
-    },
-  };
-
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background pt-24">
       <div className="container mx-auto px-6 relative z-10">
@@ -80,9 +71,9 @@ const Hero = () => {
             </span>
           </motion.div>
 
-          {/* Main Headline */}
+          {/* Main Headline - Adjusted for 2 lines max */}
           <motion.h1
-            className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium leading-tight mb-8 text-foreground"
+            className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-medium leading-tight mb-8 text-foreground"
             variants={headlineVariants}
             initial="hidden"
             animate="visible"
@@ -127,21 +118,6 @@ const Hero = () => {
             </a>
           </motion.div>
         </div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          className="absolute bottom-12 left-1/2 -translate-x-1/2"
-          variants={scrollIndicatorVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-          >
-            <ArrowDown className="w-6 h-6 text-foreground/40" />
-          </motion.div>
-        </motion.div>
       </div>
     </section>
   );

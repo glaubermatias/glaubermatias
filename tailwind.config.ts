@@ -9,13 +9,13 @@ export default {
       center: true,
       padding: "2rem",
       screens: {
-        "2xl": "1400px",
+        "2xl": "1200px",
       },
     },
     extend: {
       fontFamily: {
         display: ["Eighties Comeback", "Inter", "sans-serif"],
-        sans: ["Inter", "sans-serif"],
+        sans: ["Fira Sans", "Inter", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -51,10 +51,11 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        "teal-dark": "hsl(var(--teal-dark))",
-        "sage-light": "hsl(var(--sage-light))",
+        "navy-dark": "hsl(var(--navy-dark))",
+        "gray-light": "hsl(var(--gray-light))",
         cream: "hsl(var(--cream))",
         "red-accent": "hsl(var(--red-accent))",
+        "project-card": "hsl(var(--project-card))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

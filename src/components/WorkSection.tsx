@@ -3,14 +3,14 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
 import ProjectCard from './ProjectCard';
 
-export type ProjectCategory = 'all' | 'pitch-decks' | 'internal-comms' | 'events' | 'personal';
+export type ProjectCategory = 'all' | 'executive-decks' | 'external-events' | 'templates' | 'freelance' | 'personal-projects';
 
 export interface Project {
   id: string;
   title: string;
   description: string;
   category: ProjectCategory;
-  thumbnail: string;
+  images: string[];
   year: string;
   client: string;
 }
@@ -20,8 +20,12 @@ const projects: Project[] = [
     id: 'project-1',
     title: 'TechVenture Series A Pitch',
     description: 'Strategic pitch deck that helped secure $12M in funding. Focused on clear data visualization and compelling storytelling.',
-    category: 'pitch-decks',
-    thumbnail: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop',
+    category: 'executive-decks',
+    images: [
+      'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop',
+    ],
     year: '2024',
     client: 'TechVenture Inc.',
   },
@@ -29,44 +33,64 @@ const projects: Project[] = [
     id: 'project-2',
     title: 'Global Summit Keynote',
     description: 'Opening keynote presentation for a 5,000+ attendee conference. Cinematic visuals with powerful narrative flow.',
-    category: 'events',
-    thumbnail: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&auto=format&fit=crop',
+    category: 'external-events',
+    images: [
+      'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&auto=format&fit=crop',
+    ],
     year: '2024',
     client: 'Innovation Summit',
   },
   {
     id: 'project-3',
-    title: 'Culture Transformation Report',
-    description: 'Annual internal communication deck showcasing company culture evolution and employee engagement initiatives.',
-    category: 'internal-comms',
-    thumbnail: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop',
+    title: 'Corporate Template System',
+    description: 'Scalable presentation template system for a Fortune 500 company. Consistent branding across all departments.',
+    category: 'templates',
+    images: [
+      'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1531498860502-7c67cf02f657?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop',
+    ],
     year: '2023',
     client: 'Fortune 500 Company',
   },
   {
     id: 'project-4',
-    title: 'The Art of Visual Thinking',
-    description: 'Personal exploration of design principles through a self-initiated presentation series.',
-    category: 'personal',
-    thumbnail: 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&auto=format&fit=crop',
-    year: '2023',
-    client: 'Personal Project',
-  },
-  {
-    id: 'project-5',
-    title: 'FinTech Disruption Deck',
+    title: 'Startup Pitch Deck',
     description: 'Investor presentation for a fintech startup disrupting traditional banking. Clean, data-forward design.',
-    category: 'pitch-decks',
-    thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop',
+    category: 'freelance',
+    images: [
+      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop',
+    ],
     year: '2023',
     client: 'FinanceFlow',
   },
   {
+    id: 'project-5',
+    title: 'The Art of Visual Thinking',
+    description: 'Personal exploration of design principles through a self-initiated presentation series.',
+    category: 'personal-projects',
+    images: [
+      'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop',
+    ],
+    year: '2023',
+    client: 'Personal Project',
+  },
+  {
     id: 'project-6',
-    title: 'Leadership Workshop Materials',
+    title: 'Annual Conference Deck',
     description: 'Comprehensive training deck for executive leadership program. Interactive and engaging format.',
-    category: 'internal-comms',
-    thumbnail: 'https://images.unsplash.com/photo-1531498860502-7c67cf02f657?w=800&auto=format&fit=crop',
+    category: 'external-events',
+    images: [
+      'https://images.unsplash.com/photo-1531498860502-7c67cf02f657?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&auto=format&fit=crop',
+    ],
     year: '2024',
     client: 'Corporate Training Co.',
   },
@@ -78,10 +102,11 @@ const WorkSection = () => {
 
   const categories: { key: ProjectCategory; label: string }[] = [
     { key: 'all', label: t.work.categories.all },
-    { key: 'pitch-decks', label: t.work.categories.pitchDecks },
-    { key: 'internal-comms', label: t.work.categories.internalComms },
-    { key: 'events', label: t.work.categories.events },
-    { key: 'personal', label: t.work.categories.personal },
+    { key: 'executive-decks', label: t.work.categories.executiveDecks },
+    { key: 'external-events', label: t.work.categories.externalEvents },
+    { key: 'templates', label: t.work.categories.templates },
+    { key: 'freelance', label: t.work.categories.freelance },
+    { key: 'personal-projects', label: t.work.categories.personalProjects },
   ];
 
   const filteredProjects = activeCategory === 'all'

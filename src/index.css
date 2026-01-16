@@ -8,106 +8,118 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Fira Sans';
+  src: url('/fonts/FiraSans-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    /* New palette: #0e3744, #c8d7d2, #f3f2f0, #ae0009 */
-    --background: 40 14% 95%; /* #f3f2f0 */
-    --foreground: 193 65% 16%; /* #0e3744 */
+    /* New palette: #003049, #c8d0d7, #f0f1f3, #ae0009 */
+    --background: 210 13% 95%; /* #f0f1f3 */
+    --foreground: 201 100% 14%; /* #003049 */
 
-    --card: 156 18% 81%; /* #c8d7d2 */
-    --card-foreground: 193 65% 16%;
+    --card: 210 13% 95%; /* #f0f1f3 */
+    --card-foreground: 201 100% 14%;
 
-    --popover: 40 14% 95%;
-    --popover-foreground: 193 65% 16%;
+    --popover: 210 13% 95%;
+    --popover-foreground: 201 100% 14%;
 
-    /* Teal/Dark Cyan - main accent */
-    --primary: 193 65% 16%; /* #0e3744 */
-    --primary-foreground: 40 14% 95%;
+    /* Deep Navy - main accent */
+    --primary: 201 100% 14%; /* #003049 */
+    --primary-foreground: 210 13% 95%;
 
-    /* Sage green */
-    --secondary: 156 18% 81%; /* #c8d7d2 */
-    --secondary-foreground: 193 65% 16%;
+    /* Light gray-blue */
+    --secondary: 210 13% 82%; /* #c8d0d7 */
+    --secondary-foreground: 201 100% 14%;
 
-    /* Muted sage */
-    --muted: 156 12% 88%;
-    --muted-foreground: 193 40% 35%;
+    /* Muted gray */
+    --muted: 210 10% 88%;
+    --muted-foreground: 201 50% 35%;
 
     /* Red accent */
     --accent: 357 100% 34%; /* #ae0009 */
-    --accent-foreground: 40 14% 95%;
+    --accent-foreground: 210 13% 95%;
 
     --destructive: 357 100% 34%; /* #ae0009 */
-    --destructive-foreground: 40 14% 95%;
+    --destructive-foreground: 210 13% 95%;
 
-    --border: 156 18% 75%;
-    --input: 156 18% 75%;
-    --ring: 193 65% 16%;
+    --border: 210 13% 75%;
+    --input: 210 13% 75%;
+    --ring: 201 100% 14%;
 
     --radius: 0.75rem;
 
     /* Brand colors */
-    --teal-dark: 193 65% 16%; /* #0e3744 */
-    --sage-light: 156 18% 81%; /* #c8d7d2 */
-    --cream: 40 14% 95%; /* #f3f2f0 */
+    --navy-dark: 201 100% 14%; /* #003049 */
+    --gray-light: 210 13% 82%; /* #c8d0d7 */
+    --cream: 210 13% 95%; /* #f0f1f3 */
     --red-accent: 357 100% 34%; /* #ae0009 */
 
+    /* Project card white */
+    --project-card: 0 0% 100%; /* #FFFFFF */
+
     /* Sidebar */
-    --sidebar-background: 40 14% 95%;
-    --sidebar-foreground: 193 65% 16%;
-    --sidebar-primary: 193 65% 16%;
-    --sidebar-primary-foreground: 40 14% 95%;
-    --sidebar-accent: 156 18% 81%;
-    --sidebar-accent-foreground: 193 65% 16%;
-    --sidebar-border: 156 18% 75%;
-    --sidebar-ring: 193 65% 16%;
+    --sidebar-background: 210 13% 95%;
+    --sidebar-foreground: 201 100% 14%;
+    --sidebar-primary: 201 100% 14%;
+    --sidebar-primary-foreground: 210 13% 95%;
+    --sidebar-accent: 210 13% 82%;
+    --sidebar-accent-foreground: 201 100% 14%;
+    --sidebar-border: 210 13% 75%;
+    --sidebar-ring: 201 100% 14%;
   }
 
   .dark {
-    --background: 193 65% 10%;
-    --foreground: 40 14% 95%;
+    --background: 201 100% 8%;
+    --foreground: 210 13% 95%;
 
-    --card: 193 50% 15%;
-    --card-foreground: 40 14% 95%;
+    --card: 201 80% 12%;
+    --card-foreground: 210 13% 95%;
 
-    --popover: 193 50% 12%;
-    --popover-foreground: 40 14% 95%;
+    --popover: 201 80% 10%;
+    --popover-foreground: 210 13% 95%;
 
-    --primary: 156 18% 81%;
-    --primary-foreground: 193 65% 16%;
+    --primary: 210 13% 82%;
+    --primary-foreground: 201 100% 14%;
 
-    --secondary: 193 40% 20%;
-    --secondary-foreground: 40 14% 95%;
+    --secondary: 201 60% 18%;
+    --secondary-foreground: 210 13% 95%;
 
-    --muted: 193 30% 25%;
-    --muted-foreground: 156 15% 65%;
+    --muted: 201 50% 22%;
+    --muted-foreground: 210 10% 65%;
 
     --accent: 357 100% 45%;
-    --accent-foreground: 40 14% 95%;
+    --accent-foreground: 210 13% 95%;
 
     --destructive: 357 100% 45%;
-    --destructive-foreground: 40 14% 95%;
+    --destructive-foreground: 210 13% 95%;
 
-    --border: 193 30% 25%;
-    --input: 193 30% 25%;
-    --ring: 156 18% 81%;
+    --border: 201 50% 22%;
+    --input: 201 50% 22%;
+    --ring: 210 13% 82%;
 
-    --teal-dark: 156 18% 81%;
-    --sage-light: 193 40% 25%;
-    --cream: 193 50% 12%;
+    --navy-dark: 210 13% 82%;
+    --gray-light: 201 60% 22%;
+    --cream: 201 80% 10%;
     --red-accent: 357 100% 50%;
+    --project-card: 201 60% 15%;
 
-    --sidebar-background: 193 50% 12%;
-    --sidebar-foreground: 40 14% 95%;
-    --sidebar-primary: 156 18% 81%;
-    --sidebar-primary-foreground: 193 65% 16%;
-    --sidebar-accent: 193 40% 20%;
-    --sidebar-accent-foreground: 40 14% 95%;
-    --sidebar-border: 193 30% 25%;
-    --sidebar-ring: 156 18% 81%;
+    --sidebar-background: 201 80% 10%;
+    --sidebar-foreground: 210 13% 95%;
+    --sidebar-primary: 210 13% 82%;
+    --sidebar-primary-foreground: 201 100% 14%;
+    --sidebar-accent: 201 60% 18%;
+    --sidebar-accent-foreground: 210 13% 95%;
+    --sidebar-border: 201 50% 22%;
+    --sidebar-ring: 210 13% 82%;
   }
 }
 
@@ -118,7 +130,7 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Fira Sans', 'Inter', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -126,12 +138,12 @@
   }
 }
 
-/* Glass effect */
+/* Glass effect for navigation */
 .glass-nav {
-  background: rgba(243, 242, 240, 0.7);
+  background: rgba(240, 241, 243, 0.75);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(200, 215, 210, 0.3);
+  border: 1px solid rgba(200, 208, 215, 0.4);
 }
 
 @layer components {
@@ -149,7 +161,7 @@
 
   .card-hover:hover {
     @apply -translate-y-2;
-    box-shadow: 0 25px 50px -12px hsl(var(--teal-dark) / 0.15);
+    box-shadow: 0 25px 50px -12px hsl(var(--navy-dark) / 0.15);
   }
 
   .link-underline {
@@ -172,6 +184,10 @@
 
   .btn-accent {
     @apply bg-accent text-accent-foreground;
+  }
+
+  .project-card-bg {
+    background: hsl(var(--project-card));
   }
 }
 
@@ -298,10 +314,10 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--teal-dark) / 0.5);
+  background: hsl(var(--navy-dark) / 0.5);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--teal-dark));
+  background: hsl(var(--navy-dark));
 }
