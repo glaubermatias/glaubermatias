@@ -50,7 +50,7 @@ const ServicesAccordion = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <span className="text-vermillion font-medium text-sm uppercase tracking-wider mb-4 block">
+          <span className="text-accent font-medium text-sm uppercase tracking-wider mb-4 block">
             Our services
           </span>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">
@@ -76,7 +76,7 @@ const ServicesAccordion = () => {
                 onClick={() => toggleService(service.id)}
                 className="w-full py-8 flex items-center justify-between text-left group"
               >
-                <h3 className="font-display text-2xl md:text-3xl font-semibold group-hover:text-vermillion transition-colors duration-300">
+                <h3 className="font-display text-2xl md:text-3xl font-semibold group-hover:text-accent transition-colors duration-300">
                   {service.title}
                 </h3>
                 <motion.div
@@ -103,7 +103,7 @@ const ServicesAccordion = () => {
                         </p>
                         <a
                           href="#contact"
-                          className="inline-flex items-center gap-2 text-vermillion font-medium hover:gap-4 transition-all duration-300"
+                          className="inline-flex items-center gap-2 text-accent font-medium hover:gap-4 transition-all duration-300"
                         >
                           Learn more <ArrowRight className="w-4 h-4" />
                         </a>
