@@ -136,11 +136,11 @@
 
 @layer components {
   .text-accent-color {
-    color: hsl(var(--vermillion));
+    color: hsl(var(--red-accent));
   }
 
-  .text-accent-orange {
-    color: hsl(var(--golden-orange));
+  .text-accent-highlight {
+    color: hsl(var(--accent));
   }
 
   .card-hover {
@@ -149,7 +149,7 @@
 
   .card-hover:hover {
     @apply -translate-y-2;
-    box-shadow: 0 25px 50px -12px hsl(var(--forest-green) / 0.15);
+    box-shadow: 0 25px 50px -12px hsl(var(--teal-dark) / 0.15);
   }
 
   .link-underline {
@@ -159,7 +159,7 @@
   .link-underline::after {
     content: '';
     @apply absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300;
-    background: hsl(var(--vermillion));
+    background: hsl(var(--red-accent));
   }
 
   .link-underline:hover::after {
@@ -171,7 +171,7 @@
   }
 
   .btn-accent {
-    @apply bg-vermillion text-cream;
+    @apply bg-accent text-accent-foreground;
   }
 }
 
@@ -298,10 +298,10 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--forest-green) / 0.5);
+  background: hsl(var(--teal-dark) / 0.5);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--forest-green));
+  background: hsl(var(--teal-dark));
 }
