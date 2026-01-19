@@ -1,106 +1,119 @@
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { motion } from 'framer-motion';
-import { Presentation, Users, Lightbulb, TrendingUp } from 'lucide-react';
+import { ChevronDown, ArrowRight } from 'lucide-react';
 
-const services = [
+interface Service {
+  id: string;
+  title: string;
+  description: string;
+}
+
+const services: Service[] = [
   {
-    icon: Presentation,
-    titleEn: 'Pitch Deck Design',
-    titlePt: 'Design de Pitch Decks',
-    titleEs: 'Diseño de Pitch Decks',
-    descEn: 'Compelling investor presentations that tell your story and secure funding.',
-    descPt: 'Apresentações para investidores que contam sua história e garantem financiamento.',
-    descEs: 'Presentaciones para inversores que cuentan tu historia y aseguran financiamiento.',
+    id: 'pitch-decks',
+    title: 'Pitch Deck Design',
+    description: 'Transform your business ideas into compelling visual narratives that captivate investors and stakeholders. We craft pitch decks that tell your story with clarity, impact, and strategic precision.',
   },
   {
-    icon: Users,
-    titleEn: 'Corporate Communications',
-    titlePt: 'Comunicação Corporativa',
-    titleEs: 'Comunicación Corporativa',
-    descEn: 'Internal presentations that align teams and drive organizational change.',
-    descPt: 'Apresentações internas que alinham equipes e impulsionam mudanças organizacionais.',
-    descEs: 'Presentaciones internas que alinean equipos e impulsan cambios organizacionales.',
+    id: 'keynotes',
+    title: 'Keynote Presentations',
+    description: 'Create unforgettable conference moments with presentations designed for maximum stage impact. From bold visuals to seamless animations, we make your message resonate with audiences of any size.',
   },
   {
-    icon: Lightbulb,
-    titleEn: 'Keynote & Conference',
-    titlePt: 'Keynotes & Conferências',
-    titleEs: 'Keynotes & Conferencias',
-    descEn: 'Stage-ready presentations that captivate large audiences.',
-    descPt: 'Apresentações para palco que cativam grandes audiências.',
-    descEs: 'Presentaciones para escenario que cautivan grandes audiencias.',
+    id: 'internal-comms',
+    title: 'Internal Communications',
+    description: 'Elevate your internal presentations to engage and inspire your team. From training materials to company updates, we design content that keeps everyone aligned and motivated.',
   },
   {
-    icon: TrendingUp,
-    titleEn: 'Sales Enablement',
-    titlePt: 'Habilitação de Vendas',
-    titleEs: 'Habilitación de Ventas',
-    descEn: 'Sales decks and proposals that convert prospects into clients.',
-    descPt: 'Decks de vendas e propostas que convertem prospects em clientes.',
-    descEs: 'Decks de ventas y propuestas que convierten prospectos en clientes.',
+    id: 'templates',
+    title: 'Template Systems',
+    description: 'Build scalable presentation systems that maintain brand consistency across your organization. Custom templates that empower your team to create professional slides independently.',
   },
 ];
 
 const ServicesSection = () => {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
+  const [activeService, setActiveService] = useState<string | null>(null);
 
-  const getTitle = (service: typeof services[0]) => {
-    if (language === 'pt') return service.titlePt;
-    if (language === 'es') return service.titleEs;
-    return service.titleEn;
-  };
-
-  const getDesc = (service: typeof services[0]) => {
-    if (language === 'pt') return service.descPt;
-    if (language === 'es') return service.descEs;
-    return service.descEn;
+  const toggleService = (id: string) => {
+    setActiveService(activeService === id ? null : id);
   };
 
   return (
-    <section id="services" className="py-24 lg:py-32">
+    <section id="services" className="py-16 lg:py-20">
       <div className="container mx-auto px-6">
-        {/* Header */}
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">
-            {t.services.title}
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            {t.services.subtitle}
-          </p>
-        </motion.div>
+        {/* Services Container with background */}
+        <div className="services-bg rounded-3xl p-8 md:p-12">
+          {/* Header */}
+          <motion.div
+            className="mb-10"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">
+              {t.services.title}
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl">
+              {t.services.subtitle}
+            </p>
+          </motion.div>
 
-        {/* Services Grid */}
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
-          {services.map((service, index) => (
-            <motion.div
-              key={service.titleEn}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group p-8 rounded-3xl bg-card border border-border card-hover"
-            >
-              <div className="flex items-start gap-5">
-                <div className="w-14 h-14 rounded-2xl bg-secondary flex items-center justify-center shrink-0 group-hover:bg-primary transition-all duration-500">
-                  <service.icon className="w-6 h-6 text-primary group-hover:text-primary-foreground transition-colors duration-500" />
-                </div>
-                <div>
-                  <h3 className="font-display text-xl font-semibold mb-2 group-hover:text-primary transition-all duration-300">
-                    {getTitle(service)}
+          {/* Services List */}
+          <div className="space-y-4">
+            {services.map((service, index) => (
+              <motion.div
+                key={service.id}
+                className="bg-background rounded-2xl border border-border overflow-hidden"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <button
+                  onClick={() => toggleService(service.id)}
+                  className="w-full p-6 flex items-center justify-between text-left group"
+                >
+                  <h3 className="font-display text-xl md:text-2xl font-semibold group-hover:text-primary transition-colors duration-300">
+                    {service.title}
                   </h3>
-                  <p className="text-muted-foreground">
-                    {getDesc(service)}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+                  <motion.div
+                    animate={{ rotate: activeService === service.id ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="shrink-0 ml-4"
+                  >
+                    <ChevronDown className="w-6 h-6 text-muted-foreground" />
+                  </motion.div>
+                </button>
+
+                <AnimatePresence>
+                  {activeService === service.id && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.4, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-6 pb-6">
+                        <p className="text-muted-foreground leading-relaxed mb-4">
+                          {service.description}
+                        </p>
+                        <a
+                          href="#contact"
+                          className="inline-flex items-center gap-2 text-primary font-medium hover:gap-4 transition-all duration-300"
+                        >
+                          Learn more <ArrowRight className="w-4 h-4" />
+                        </a>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

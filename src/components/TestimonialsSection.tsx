@@ -11,7 +11,6 @@ const testimonials = [
     },
     author: "Sarah Chen",
     role: "CEO, TechVenture",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop",
   },
   {
     quote: {
@@ -21,7 +20,6 @@ const testimonials = [
     },
     author: "Marcus Rodriguez",
     role: "VP Marketing, GlobalCorp",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format&fit=crop",
   },
   {
     quote: {
@@ -31,7 +29,6 @@ const testimonials = [
     },
     author: "Elena Vasquez",
     role: "Event Director, Innovation Summit",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&auto=format&fit=crop",
   },
 ];
 
@@ -39,11 +36,11 @@ const TestimonialsSection = () => {
   const { t, language } = useLanguage();
 
   return (
-    <section id="testimonials" className="py-24 lg:py-32 bg-gradient-warm">
+    <section id="testimonials" className="py-16 lg:py-20">
       <div className="container mx-auto px-6">
         {/* Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-12"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -66,22 +63,15 @@ const TestimonialsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.15 }}
-              className="p-8 rounded-3xl bg-background border border-border card-hover"
+              className="p-8 rounded-3xl bg-cream border border-border card-hover"
             >
-              <Quote className="w-10 h-10 text-terracotta/30 mb-6" />
+              <Quote className="w-10 h-10 text-accent/30 mb-6" />
               <p className="text-foreground mb-8 leading-relaxed">
                 "{testimonial.quote[language as keyof typeof testimonial.quote]}"
               </p>
-              <div className="flex items-center gap-4">
-                <img
-                  src={testimonial.image}
-                  alt={testimonial.author}
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-                <div>
-                  <div className="font-semibold">{testimonial.author}</div>
-                  <div className="text-sm text-muted-foreground">{testimonial.role}</div>
-                </div>
+              <div>
+                <div className="font-semibold text-foreground">{testimonial.author}</div>
+                <div className="text-sm text-muted-foreground">{testimonial.role}</div>
               </div>
             </motion.div>
           ))}

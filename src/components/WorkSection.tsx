@@ -3,7 +3,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
 import ProjectCard from './ProjectCard';
 
-export type ProjectCategory = 'all' | 'executive-decks' | 'external-events' | 'templates' | 'freelance' | 'personal-projects';
+export type ProjectCategory = 'all' | 'executive-decks' | 'employer-branding' | 'templates' | 'freelance-projects' | 'personal-projects';
 
 export interface Project {
   id: string;
@@ -33,7 +33,7 @@ const projects: Project[] = [
     id: 'project-2',
     title: 'Global Summit Keynote',
     description: 'Opening keynote presentation for a 5,000+ attendee conference. Cinematic visuals with powerful narrative flow.',
-    category: 'external-events',
+    category: 'employer-branding',
     images: [
       'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop',
@@ -59,7 +59,7 @@ const projects: Project[] = [
     id: 'project-4',
     title: 'Startup Pitch Deck',
     description: 'Investor presentation for a fintech startup disrupting traditional banking. Clean, data-forward design.',
-    category: 'freelance',
+    category: 'freelance-projects',
     images: [
       'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop',
@@ -85,7 +85,7 @@ const projects: Project[] = [
     id: 'project-6',
     title: 'Annual Conference Deck',
     description: 'Comprehensive training deck for executive leadership program. Interactive and engaging format.',
-    category: 'external-events',
+    category: 'employer-branding',
     images: [
       'https://images.unsplash.com/photo-1531498860502-7c67cf02f657?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop',
@@ -103,9 +103,9 @@ const WorkSection = () => {
   const categories: { key: ProjectCategory; label: string }[] = [
     { key: 'all', label: t.work.categories.all },
     { key: 'executive-decks', label: t.work.categories.executiveDecks },
-    { key: 'external-events', label: t.work.categories.externalEvents },
+    { key: 'employer-branding', label: t.work.categories.employerBranding },
     { key: 'templates', label: t.work.categories.templates },
-    { key: 'freelance', label: t.work.categories.freelance },
+    { key: 'freelance-projects', label: t.work.categories.freelanceProjects },
     { key: 'personal-projects', label: t.work.categories.personalProjects },
   ];
 
@@ -114,17 +114,17 @@ const WorkSection = () => {
     : projects.filter((p) => p.category === activeCategory);
 
   return (
-    <section id="work" className="py-24 lg:py-32">
+    <section id="work" className="py-16 lg:py-20">
       <div className="container mx-auto px-6">
         {/* Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-8"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-3">
             {t.work.title}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -134,7 +134,7 @@ const WorkSection = () => {
 
         {/* Category Filter */}
         <motion.div
-          className="flex flex-wrap justify-center gap-3 mb-12"
+          className="flex flex-wrap justify-center gap-3 mb-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
