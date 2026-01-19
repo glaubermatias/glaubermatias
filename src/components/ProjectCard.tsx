@@ -29,10 +29,10 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
   const getCategoryLabel = (category: string) => {
     const categoryMap: Record<string, string> = {
       'executive-decks': t.work.categories.executiveDecks,
-      'employer-branding': t.work.categories.employerBranding,
       'templates': t.work.categories.templates,
-      'freelance-projects': t.work.categories.freelanceProjects,
-      'personal-projects': t.work.categories.personalProjects,
+      'tech-events': t.work.categories.techEvents,
+      'hr-initiatives': t.work.categories.hrInitiatives,
+      'side-projects': t.work.categories.sideProjects,
     };
     return categoryMap[category] || category;
   };
@@ -44,14 +44,14 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="group"
+      className="group h-full"
     >
-      <a href={`/project/${project.id}`} className="block">
-        {/* Card Container */}
-        <div className="project-card-bg rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
+      <a href={`/project/${project.id}`} className="block h-full">
+        {/* Card Container - No shadow, using #f0f1f3 background */}
+        <div className="bg-muted rounded-[2rem] overflow-hidden transition-all duration-300 h-full flex flex-col">
           {/* Image Carousel with padding */}
-          <div className="p-4 pb-0">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
+          <div className="p-5 pb-0">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
               <motion.img
                 key={currentImageIndex}
                 src={project.images[currentImageIndex]}
@@ -98,26 +98,26 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
             </div>
           </div>
 
-          {/* Content */}
-          <div className="p-5 space-y-3">
+          {/* Content - Increased lateral padding */}
+          <div className="p-6 space-y-3 flex-1 flex flex-col">
             <h3 className="font-display text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
               {project.title}
             </h3>
             
             {/* Full description without truncation */}
-            <p className="text-muted-foreground text-sm">
+            <p className="text-muted-foreground text-sm flex-1">
               {project.description}
             </p>
 
-            {/* Category Tag */}
-            <div className="pt-2">
-              <span className="inline-flex items-center px-3 py-1 rounded-full bg-secondary text-foreground text-xs font-medium">
+            {/* Category Tag and View Project - Fixed at bottom */}
+            <div className="pt-2 mt-auto">
+              <span className="inline-flex items-center px-3 py-1 rounded-full bg-secondary text-foreground text-xs font-normal">
                 {getCategoryLabel(project.category)}
               </span>
             </div>
 
             {/* View Project */}
-            <div className="flex items-center gap-2 pt-2 text-primary font-medium text-sm group-hover:gap-3 transition-all duration-300">
+            <div className="flex items-center gap-2 text-primary font-normal text-sm group-hover:gap-3 transition-all duration-300">
               <span>{t.work.viewProject}</span>
               <ArrowUpRight className="w-4 h-4" />
             </div>

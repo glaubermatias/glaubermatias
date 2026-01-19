@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { ChevronDown, ArrowRight } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 interface Service {
   id: string;
@@ -41,13 +41,13 @@ const ServicesSection = () => {
   };
 
   return (
-    <section id="services" className="py-16 lg:py-20">
+    <section id="skillset" className="py-10 lg:py-14">
       <div className="container mx-auto px-6">
         {/* Services Container with background */}
-        <div className="services-bg rounded-[2rem] p-8 md:p-12">
-          {/* Header */}
+        <div className="services-bg rounded-[2.5rem] p-8 md:p-12">
+          {/* Header - Left aligned */}
           <motion.div
-            className="mb-10"
+            className="text-left mb-10"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -66,7 +66,7 @@ const ServicesSection = () => {
             {services.map((service, index) => (
               <motion.div
                 key={service.id}
-                className="bg-background rounded-3xl border border-border overflow-hidden"
+                className="bg-background rounded-[2rem] border border-border overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -98,15 +98,9 @@ const ServicesSection = () => {
                       className="overflow-hidden"
                     >
                       <div className="px-6 pb-6">
-                        <p className="text-muted-foreground leading-relaxed mb-4">
+                        <p className="text-muted-foreground leading-relaxed">
                           {service.description}
                         </p>
-                        <a
-                          href="#contact"
-                          className="inline-flex items-center gap-2 text-primary font-medium hover:gap-4 transition-all duration-300"
-                        >
-                          Learn more <ArrowRight className="w-4 h-4" />
-                        </a>
                       </div>
                     </motion.div>
                   )}
