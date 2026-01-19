@@ -23,9 +23,9 @@ interface Translations {
     categories: {
       all: string;
       executiveDecks: string;
-      externalEvents: string;
+      employerBranding: string;
       templates: string;
-      freelance: string;
+      freelanceProjects: string;
       personalProjects: string;
     };
   };
@@ -75,9 +75,9 @@ const translations: Record<Language, Translations> = {
       categories: {
         all: 'All',
         executiveDecks: 'Executive decks',
-        externalEvents: 'External events',
+        employerBranding: 'Employer branding',
         templates: 'Templates',
-        freelance: 'Freelance',
+        freelanceProjects: 'Freelance projects',
         personalProjects: 'Personal projects',
       },
     },
@@ -92,7 +92,7 @@ const translations: Record<Language, Translations> = {
       subtitle: 'How I can help bring your ideas to life',
     },
     testimonials: {
-      title: 'What Clients Say',
+      title: 'What people have to say about me',
       subtitle: 'Words from those who trusted me with their stories',
     },
     contact: {
@@ -125,9 +125,9 @@ const translations: Record<Language, Translations> = {
       categories: {
         all: 'Todos',
         executiveDecks: 'Decks executivos',
-        externalEvents: 'Eventos externos',
+        employerBranding: 'Employer branding',
         templates: 'Templates',
-        freelance: 'Freelance',
+        freelanceProjects: 'Projetos freelance',
         personalProjects: 'Projetos pessoais',
       },
     },
@@ -142,7 +142,7 @@ const translations: Record<Language, Translations> = {
       subtitle: 'Como posso ajudar a dar vida às suas ideias',
     },
     testimonials: {
-      title: 'O Que Dizem os Clientes',
+      title: 'O que as pessoas dizem sobre mim',
       subtitle: 'Palavras de quem confiou em mim para contar suas histórias',
     },
     contact: {
@@ -175,9 +175,9 @@ const translations: Record<Language, Translations> = {
       categories: {
         all: 'Todos',
         executiveDecks: 'Decks ejecutivos',
-        externalEvents: 'Eventos externos',
+        employerBranding: 'Employer branding',
         templates: 'Plantillas',
-        freelance: 'Freelance',
+        freelanceProjects: 'Proyectos freelance',
         personalProjects: 'Proyectos personales',
       },
     },
@@ -192,7 +192,7 @@ const translations: Record<Language, Translations> = {
       subtitle: 'Cómo puedo ayudar a dar vida a tus ideas',
     },
     testimonials: {
-      title: 'Lo Que Dicen los Clientes',
+      title: 'Lo que la gente dice de mí',
       subtitle: 'Palabras de quienes confiaron en mí para contar sus historias',
     },
     contact: {

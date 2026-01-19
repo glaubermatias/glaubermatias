@@ -21,13 +21,13 @@ const LanguageToggle = () => {
           {language === lang.code && (
             <motion.div
               layoutId="activeLanguage"
-              className="absolute inset-0 rounded-full bg-gradient-warm-solid"
+              className="absolute inset-0 rounded-full bg-primary"
               transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
             />
           )}
           <span
             className={`relative z-10 ${
-              language === lang.code ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
+              language === lang.code ? 'text-primary-foreground' : 'text-foreground hover:text-primary'
             }`}
           >
             {lang.label}

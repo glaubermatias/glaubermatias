@@ -19,11 +19,10 @@ const Navigation = () => {
   }, []);
 
   const navLinks = [
-    { href: '#work', label: t.nav.work },
-    { href: '#services', label: t.nav.services },
-    { href: '#cv', label: 'CV' },
-    { href: '#about', label: t.nav.about },
-    { href: '#contact', label: 'Get in touch' },
+    { href: '#work', label: t.nav.work, isContact: false },
+    { href: '#services', label: t.nav.services, isContact: false },
+    { href: '#cv', label: 'CV', isContact: false },
+    { href: '#about', label: t.nav.about, isContact: false },
   ];
 
   return (
@@ -56,6 +55,15 @@ const Navigation = () => {
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
                 </a>
               ))}
+              
+              {/* Get in touch - highlighted button */}
+              <a
+                href="#contact"
+                className="text-sm font-medium px-5 py-2 rounded-full bg-primary text-primary-foreground hover:bg-dark-accent transition-colors"
+              >
+                Get in touch
+              </a>
+              
               <LanguageToggle />
             </div>
 
@@ -90,6 +98,13 @@ const Navigation = () => {
                       {link.label}
                     </a>
                   ))}
+                  <a
+                    href="#contact"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-lg font-medium px-5 py-2 rounded-full bg-primary text-primary-foreground w-fit"
+                  >
+                    Get in touch
+                  </a>
                   <div className="pt-4">
                     <LanguageToggle />
                   </div>

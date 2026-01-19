@@ -54,7 +54,8 @@ export default {
         "navy-dark": "hsl(var(--navy-dark))",
         "gray-light": "hsl(var(--gray-light))",
         cream: "hsl(var(--cream))",
-        "red-accent": "hsl(var(--red-accent))",
+        "green-accent": "hsl(var(--green-accent))",
+        "dark-accent": "hsl(var(--dark-accent))",
         "project-card": "hsl(var(--project-card))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

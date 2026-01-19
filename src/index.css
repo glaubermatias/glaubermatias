@@ -16,43 +16,59 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Fira Sans';
+  src: url('/fonts/FiraSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fira Sans';
+  src: url('/fonts/FiraSans-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    /* New palette: #003049, #c8d0d7, #f0f1f3, #ae0009 */
-    --background: 210 13% 95%; /* #f0f1f3 */
-    --foreground: 201 100% 14%; /* #003049 */
+    /* New palette: #003049, #c8d0d7, #f0f1f3, #a2d729, #121d25 */
+    --background: 0 0% 100%; /* Pure white */
+    --foreground: 198 50% 11%; /* #121d25 */
 
-    --card: 210 13% 95%; /* #f0f1f3 */
-    --card-foreground: 201 100% 14%;
+    --card: 0 0% 100%; /* White */
+    --card-foreground: 198 50% 11%;
 
-    --popover: 210 13% 95%;
-    --popover-foreground: 201 100% 14%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 198 50% 11%;
 
     /* Deep Navy - main accent */
     --primary: 201 100% 14%; /* #003049 */
-    --primary-foreground: 210 13% 95%;
+    --primary-foreground: 0 0% 100%;
 
     /* Light gray-blue */
     --secondary: 210 13% 82%; /* #c8d0d7 */
-    --secondary-foreground: 201 100% 14%;
+    --secondary-foreground: 198 50% 11%;
 
     /* Muted gray */
-    --muted: 210 10% 88%;
+    --muted: 210 8% 95%; /* #f0f1f3 */
     --muted-foreground: 201 50% 35%;
 
-    /* Red accent */
-    --accent: 357 100% 34%; /* #ae0009 */
-    --accent-foreground: 210 13% 95%;
+    /* Green accent */
+    --accent: 76 70% 50%; /* #a2d729 */
+    --accent-foreground: 198 50% 11%;
 
-    --destructive: 357 100% 34%; /* #ae0009 */
-    --destructive-foreground: 210 13% 95%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 210 13% 75%;
-    --input: 210 13% 75%;
+    --border: 210 13% 85%;
+    --input: 210 13% 85%;
     --ring: 201 100% 14%;
 
     --radius: 0.75rem;
@@ -60,65 +76,67 @@
     /* Brand colors */
     --navy-dark: 201 100% 14%; /* #003049 */
     --gray-light: 210 13% 82%; /* #c8d0d7 */
-    --cream: 210 13% 95%; /* #f0f1f3 */
-    --red-accent: 357 100% 34%; /* #ae0009 */
+    --cream: 210 8% 95%; /* #f0f1f3 */
+    --green-accent: 76 70% 50%; /* #a2d729 */
+    --dark-accent: 198 50% 11%; /* #121d25 */
 
     /* Project card white */
     --project-card: 0 0% 100%; /* #FFFFFF */
 
     /* Sidebar */
-    --sidebar-background: 210 13% 95%;
-    --sidebar-foreground: 201 100% 14%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 198 50% 11%;
     --sidebar-primary: 201 100% 14%;
-    --sidebar-primary-foreground: 210 13% 95%;
+    --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 210 13% 82%;
-    --sidebar-accent-foreground: 201 100% 14%;
-    --sidebar-border: 210 13% 75%;
+    --sidebar-accent-foreground: 198 50% 11%;
+    --sidebar-border: 210 13% 85%;
     --sidebar-ring: 201 100% 14%;
   }
 
   .dark {
-    --background: 201 100% 8%;
-    --foreground: 210 13% 95%;
+    --background: 198 50% 8%;
+    --foreground: 210 8% 95%;
 
-    --card: 201 80% 12%;
-    --card-foreground: 210 13% 95%;
+    --card: 198 50% 12%;
+    --card-foreground: 210 8% 95%;
 
-    --popover: 201 80% 10%;
-    --popover-foreground: 210 13% 95%;
+    --popover: 198 50% 10%;
+    --popover-foreground: 210 8% 95%;
 
     --primary: 210 13% 82%;
-    --primary-foreground: 201 100% 14%;
+    --primary-foreground: 198 50% 11%;
 
-    --secondary: 201 60% 18%;
-    --secondary-foreground: 210 13% 95%;
+    --secondary: 198 40% 18%;
+    --secondary-foreground: 210 8% 95%;
 
-    --muted: 201 50% 22%;
+    --muted: 198 40% 22%;
     --muted-foreground: 210 10% 65%;
 
-    --accent: 357 100% 45%;
-    --accent-foreground: 210 13% 95%;
+    --accent: 76 70% 50%;
+    --accent-foreground: 198 50% 11%;
 
-    --destructive: 357 100% 45%;
-    --destructive-foreground: 210 13% 95%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 8% 95%;
 
-    --border: 201 50% 22%;
-    --input: 201 50% 22%;
+    --border: 198 40% 22%;
+    --input: 198 40% 22%;
     --ring: 210 13% 82%;
 
     --navy-dark: 210 13% 82%;
-    --gray-light: 201 60% 22%;
-    --cream: 201 80% 10%;
-    --red-accent: 357 100% 50%;
-    --project-card: 201 60% 15%;
+    --gray-light: 198 40% 22%;
+    --cream: 198 50% 10%;
+    --green-accent: 76 70% 55%;
+    --dark-accent: 210 8% 95%;
+    --project-card: 198 40% 15%;
 
-    --sidebar-background: 201 80% 10%;
-    --sidebar-foreground: 210 13% 95%;
+    --sidebar-background: 198 50% 10%;
+    --sidebar-foreground: 210 8% 95%;
     --sidebar-primary: 210 13% 82%;
-    --sidebar-primary-foreground: 201 100% 14%;
-    --sidebar-accent: 201 60% 18%;
-    --sidebar-accent-foreground: 210 13% 95%;
-    --sidebar-border: 201 50% 22%;
+    --sidebar-primary-foreground: 198 50% 11%;
+    --sidebar-accent: 198 40% 18%;
+    --sidebar-accent-foreground: 210 8% 95%;
+    --sidebar-border: 198 40% 22%;
     --sidebar-ring: 210 13% 82%;
   }
 }
@@ -131,6 +149,7 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Fira Sans', 'Inter', sans-serif;
+    font-weight: 400;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -140,7 +159,7 @@
 
 /* Glass effect for navigation */
 .glass-nav {
-  background: rgba(240, 241, 243, 0.75);
+  background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(200, 208, 215, 0.4);
@@ -148,7 +167,7 @@
 
 @layer components {
   .text-accent-color {
-    color: hsl(var(--red-accent));
+    color: hsl(var(--green-accent));
   }
 
   .text-accent-highlight {
@@ -171,7 +190,7 @@
   .link-underline::after {
     content: '';
     @apply absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300;
-    background: hsl(var(--red-accent));
+    background: hsl(var(--green-accent));
   }
 
   .link-underline:hover::after {
@@ -188,6 +207,14 @@
 
   .project-card-bg {
     background: hsl(var(--project-card));
+  }
+
+  .services-bg {
+    background: hsl(var(--cream));
+  }
+
+  .font-medium-weight {
+    font-weight: 500;
   }
 }
 
