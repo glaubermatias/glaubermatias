@@ -48,7 +48,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
     >
       <a href={`/project/${project.id}`} className="block">
         {/* Card Container */}
-        <div className="project-card-bg rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
+        <div className="project-card-bg rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
           {/* Image Carousel with padding */}
           <div className="p-4 pb-0">
             <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
