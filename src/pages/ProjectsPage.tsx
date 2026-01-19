@@ -1,23 +1,12 @@
 import { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
-import ProjectCard from './ProjectCard';
-import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
+import ProjectCard from '@/components/ProjectCard';
+import { ProjectCategory, Project } from '@/components/WorkSection';
 
-export type ProjectCategory = 'all' | 'executive-decks' | 'templates' | 'tech-events' | 'hr-initiatives' | 'side-projects';
-
-export interface Project {
-  id: string;
-  title: string;
-  description: string;
-  category: ProjectCategory;
-  images: string[];
-  year: string;
-  client: string;
-  featured?: boolean;
-}
-
+// All projects data
 const projects: Project[] = [
   // Executive decks (5)
   {
@@ -32,7 +21,6 @@ const projects: Project[] = [
     ],
     year: '2024',
     client: 'TechVenture Inc.',
-    featured: true,
   },
   {
     id: 'project-2',
@@ -46,7 +34,6 @@ const projects: Project[] = [
     ],
     year: '2024',
     client: 'FinanceFlow',
-    featured: true,
   },
   {
     id: 'project-3',
@@ -98,7 +85,6 @@ const projects: Project[] = [
     ],
     year: '2024',
     client: 'Fortune 500 Company',
-    featured: true,
   },
   {
     id: 'project-7',
@@ -161,7 +147,6 @@ const projects: Project[] = [
     ],
     year: '2024',
     client: 'Innovation Summit',
-    featured: true,
   },
   {
     id: 'project-12',
@@ -200,7 +185,6 @@ const projects: Project[] = [
     ],
     year: '2024',
     client: 'Global Corp HR',
-    featured: true,
   },
   {
     id: 'project-15',
@@ -251,7 +235,6 @@ const projects: Project[] = [
     ],
     year: '2024',
     client: 'Personal Project',
-    featured: true,
   },
   {
     id: 'project-19',
@@ -291,7 +274,7 @@ const projects: Project[] = [
   },
 ];
 
-const WorkSection = () => {
+const ProjectsPage = () => {
   const { t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>('all');
 
@@ -304,96 +287,75 @@ const WorkSection = () => {
     { key: 'side-projects', label: t.work.categories.sideProjects },
   ];
 
-  const getFilteredProjects = () => {
-    if (activeCategory === 'all') {
-      // Show only 6 featured projects for "All"
-      return projects.filter((p) => p.featured).slice(0, 6);
-    }
-    return projects.filter((p) => p.category === activeCategory);
-  };
-
-  const filteredProjects = getFilteredProjects();
+  const filteredProjects = activeCategory === 'all'
+    ? projects
+    : projects.filter((p) => p.category === activeCategory);
 
   return (
-    <section id="projects" className="py-8 lg:py-10">
-      <div className="container mx-auto px-6">
-        {/* Header - Left aligned */}
-        <motion.div
-          className="text-left mb-4"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-2">
-            {t.work.title}
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl">
-            {t.work.subtitle}
-          </p>
-        </motion.div>
-
-        {/* Category Filter */}
-        <motion.div
-          className="flex flex-wrap gap-3 mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          {categories.map((cat) => (
-            <button
-              key={cat.key}
-              onClick={() => setActiveCategory(cat.key)}
-              className={`relative px-5 py-2.5 rounded-full text-sm font-normal transition-all duration-300 ${
-                activeCategory === cat.key
-                  ? 'text-primary-foreground'
-                  : 'text-muted-foreground hover:text-foreground bg-secondary/50 hover:bg-secondary'
-              }`}
-            >
-              {activeCategory === cat.key && (
-                <motion.div
-                  layoutId="activeCategory"
-                  className="absolute inset-0 bg-primary rounded-full"
-                  transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-                />
-              )}
-              <span className="relative z-10">{cat.label}</span>
-            </button>
-          ))}
-        </motion.div>
-
-        {/* Projects Grid */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          layout
-        >
-          {filteredProjects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
-        </motion.div>
-
-        {/* View All Projects Link - Only show on "All" category */}
-        {activeCategory === 'all' && (
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      
+      <main className="pt-28 pb-16">
+        <div className="container mx-auto px-6">
+          {/* Header */}
           <motion.div
-            className="text-center mt-10"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-left mb-8"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
           >
-            <Link
-              to="/projects"
-              className="inline-flex items-center gap-2 text-primary font-normal hover:gap-4 transition-all duration-300 text-lg"
-            >
-              {t.work.viewAll}
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">
+              {t.work.title}
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl">
+              {t.work.subtitle}
+            </p>
           </motion.div>
-        )}
-      </div>
-    </section>
+
+          {/* Category Filter */}
+          <motion.div
+            className="flex flex-wrap gap-3 mb-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            {categories.map((cat) => (
+              <button
+                key={cat.key}
+                onClick={() => setActiveCategory(cat.key)}
+                className={`relative px-5 py-2.5 rounded-full text-sm font-normal transition-all duration-300 ${
+                  activeCategory === cat.key
+                    ? 'text-primary-foreground'
+                    : 'text-muted-foreground hover:text-foreground bg-secondary/50 hover:bg-secondary'
+                }`}
+              >
+                {activeCategory === cat.key && (
+                  <motion.div
+                    layoutId="activeCategoryProjects"
+                    className="absolute inset-0 bg-primary rounded-full"
+                    transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+                <span className="relative z-10">{cat.label}</span>
+              </button>
+            ))}
+          </motion.div>
+
+          {/* Projects Grid */}
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            layout
+          >
+            {filteredProjects.map((project, index) => (
+              <ProjectCard key={project.id} project={project} index={index} />
+            ))}
+          </motion.div>
+        </div>
+      </main>
+
+      <Footer />
+    </div>
   );
 };
 
-export default WorkSection;
+export default ProjectsPage;

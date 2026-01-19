@@ -36,11 +36,11 @@ const TestimonialsSection = () => {
   const { t, language } = useLanguage();
 
   return (
-    <section id="testimonials" className="py-16 lg:py-20">
+    <section id="testimonials" className="py-10 lg:py-14">
       <div className="container mx-auto px-6">
-        {/* Header */}
+        {/* Header - Left aligned */}
         <motion.div
-          className="text-center mb-12"
+          className="text-left mb-10"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -49,12 +49,12 @@ const TestimonialsSection = () => {
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">
             {t.testimonials.title}
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl">
             {t.testimonials.subtitle}
           </p>
         </motion.div>
 
-        {/* Testimonials Grid */}
+        {/* Testimonials Grid - Equal height cards */}
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
           {testimonials.map((testimonial, index) => (
             <motion.div
@@ -63,13 +63,18 @@ const TestimonialsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.15 }}
-              className="p-8 rounded-3xl bg-cream border border-border card-hover"
+              className="p-8 rounded-[2rem] bg-muted border border-border h-full flex flex-col"
             >
-              <Quote className="w-10 h-10 text-accent/30 mb-6" />
-              <p className="text-foreground mb-8 leading-relaxed">
+              {/* Quote icon in dark blue */}
+              <Quote className="w-10 h-10 text-primary mb-6 shrink-0" />
+              
+              {/* Quote text - Takes remaining space */}
+              <p className="text-foreground mb-8 leading-relaxed flex-1">
                 "{testimonial.quote[language as keyof typeof testimonial.quote]}"
               </p>
-              <div>
+              
+              {/* Author info - Fixed at bottom */}
+              <div className="mt-auto pt-4 border-t border-border">
                 <div className="font-semibold text-foreground">{testimonial.author}</div>
                 <div className="text-sm text-muted-foreground">{testimonial.role}</div>
               </div>

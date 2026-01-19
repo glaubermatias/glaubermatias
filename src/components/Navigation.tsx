@@ -19,17 +19,18 @@ const Navigation = () => {
   }, []);
 
   const navLinks = [
-    { href: '#work', label: t.nav.work, isContact: false },
-    { href: '#services', label: t.nav.services, isContact: false },
-    { href: '#cv', label: 'CV', isContact: false },
-    { href: '#about', label: t.nav.about, isContact: false },
+    { href: '#projects', label: t.nav.projects },
+    { href: '#skillset', label: t.nav.skillset },
+    { href: '#experience', label: t.nav.experience },
+    { href: '#about', label: t.nav.about },
+    { href: '#contact', label: t.nav.contact },
   ];
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 py-4">
       <div className="container mx-auto px-6">
         <nav
-          className={`w-full transition-all duration-500 rounded-3xl px-6 py-3 ${
+          className={`w-full transition-all duration-500 rounded-[2rem] px-6 py-3 ${
             isScrolled
               ? 'glass-nav shadow-lg'
               : 'glass-nav'
@@ -49,20 +50,12 @@ const Navigation = () => {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors relative group"
+                  className="text-sm font-normal text-foreground/80 hover:text-foreground transition-colors relative group"
                 >
                   {link.label}
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
                 </a>
               ))}
-              
-              {/* Get in touch - highlighted button */}
-              <a
-                href="#contact"
-                className="text-sm btn-filled-dark px-5 py-2 rounded-full bg-primary text-primary-foreground hover:bg-dark-accent transition-colors"
-              >
-                Get in touch
-              </a>
               
               <LanguageToggle />
             </div>
@@ -93,18 +86,11 @@ const Navigation = () => {
                       key={link.href}
                       href={link.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
+                      className="text-lg font-normal text-foreground/80 hover:text-foreground transition-colors"
                     >
                       {link.label}
                     </a>
                   ))}
-                  <a
-                    href="#contact"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-lg font-medium px-5 py-2 rounded-full bg-primary text-primary-foreground w-fit"
-                  >
-                    Get in touch
-                  </a>
                   <div className="pt-4">
                     <LanguageToggle />
                   </div>

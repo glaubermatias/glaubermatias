@@ -4,15 +4,17 @@ type Language = 'en' | 'pt' | 'es';
 
 interface Translations {
   nav: {
-    work: string;
+    projects: string;
     about: string;
-    services: string;
+    skillset: string;
+    experience: string;
     testimonials: string;
     contact: string;
   };
   hero: {
     welcome: string;
-    headline: string;
+    headlineFirstLine: string;
+    headlineSecondLine: string;
     description: string;
     cta: string;
   };
@@ -20,13 +22,14 @@ interface Translations {
     title: string;
     subtitle: string;
     viewProject: string;
+    viewAll: string;
     categories: {
       all: string;
       executiveDecks: string;
-      employerBranding: string;
       templates: string;
-      freelanceProjects: string;
-      personalProjects: string;
+      techEvents: string;
+      hrInitiatives: string;
+      sideProjects: string;
     };
   };
   about: {
@@ -36,6 +39,10 @@ interface Translations {
     description: string;
   };
   services: {
+    title: string;
+    subtitle: string;
+  };
+  experience: {
     title: string;
     subtitle: string;
   };
@@ -56,29 +63,32 @@ interface Translations {
 const translations: Record<Language, Translations> = {
   en: {
     nav: {
-      work: 'Work',
+      projects: 'Projects',
       about: 'About',
-      services: 'Services',
+      skillset: 'Skillset',
+      experience: 'Experience',
       testimonials: 'Testimonials',
       contact: 'Contact',
     },
     hero: {
       welcome: 'Hi there!',
-      headline: 'Amplifying the impact of your message with world-class presentations',
+      headlineFirstLine: "I'm Glauber Matias,",
+      headlineSecondLine: 'I amplify the impact of your message with world-class presentations',
       description: 'From C-suite pitch decks to global keynotes, I craft visual stories that make complex ideas simple and memorable.',
       cta: 'View my work',
     },
     work: {
-      title: 'Selected work',
+      title: 'My projects',
       subtitle: 'A collection of projects that showcase strategic thinking and visual excellence',
       viewProject: 'View project',
+      viewAll: 'View all my projects',
       categories: {
         all: 'All',
         executiveDecks: 'Executive decks',
-        employerBranding: 'Employer branding',
         templates: 'Templates',
-        freelanceProjects: 'Freelance projects',
-        personalProjects: 'Personal projects',
+        techEvents: 'Tech events',
+        hrInitiatives: 'HR initiatives',
+        sideProjects: 'Side projects',
       },
     },
     about: {
@@ -88,8 +98,12 @@ const translations: Record<Language, Translations> = {
       description: 'I believe presentations are more than slides — they are strategic communication tools that can transform ideas into action. My approach combines visual storytelling with business strategy to create presentations that captivate and convert.',
     },
     services: {
-      title: 'Services',
+      title: 'Skillset',
       subtitle: 'How I can help bring your ideas to life',
+    },
+    experience: {
+      title: 'Work experience',
+      subtitle: 'A journey through my professional career',
     },
     testimonials: {
       title: 'What people have to say about me',
@@ -106,29 +120,32 @@ const translations: Record<Language, Translations> = {
   },
   pt: {
     nav: {
-      work: 'Trabalhos',
+      projects: 'Projetos',
       about: 'Sobre',
-      services: 'Serviços',
+      skillset: 'Habilidades',
+      experience: 'Experiência',
       testimonials: 'Depoimentos',
       contact: 'Contato',
     },
     hero: {
       welcome: 'Olá!',
-      headline: 'Amplificando o impacto da sua mensagem com apresentações de classe mundial',
+      headlineFirstLine: 'Eu sou Glauber Matias,',
+      headlineSecondLine: 'Amplifico o impacto da sua mensagem com apresentações de classe mundial',
       description: 'De pitch decks para C-level a keynotes globais, eu crio histórias visuais que tornam ideias complexas simples e memoráveis.',
       cta: 'Ver meus trabalhos',
     },
     work: {
-      title: 'Trabalhos selecionados',
+      title: 'Meus projetos',
       subtitle: 'Uma coleção de projetos que demonstram pensamento estratégico e excelência visual',
       viewProject: 'Ver projeto',
+      viewAll: 'Ver todos os projetos',
       categories: {
         all: 'Todos',
         executiveDecks: 'Decks executivos',
-        employerBranding: 'Employer branding',
         templates: 'Templates',
-        freelanceProjects: 'Projetos freelance',
-        personalProjects: 'Projetos pessoais',
+        techEvents: 'Eventos tech',
+        hrInitiatives: 'Iniciativas de RH',
+        sideProjects: 'Projetos pessoais',
       },
     },
     about: {
@@ -138,8 +155,12 @@ const translations: Record<Language, Translations> = {
       description: 'Acredito que apresentações são mais do que slides — são ferramentas estratégicas de comunicação que podem transformar ideias em ação. Minha abordagem combina storytelling visual com estratégia de negócios para criar apresentações que cativam e convertem.',
     },
     services: {
-      title: 'Serviços',
+      title: 'Habilidades',
       subtitle: 'Como posso ajudar a dar vida às suas ideias',
+    },
+    experience: {
+      title: 'Experiência profissional',
+      subtitle: 'Uma jornada pela minha carreira profissional',
     },
     testimonials: {
       title: 'O que as pessoas dizem sobre mim',
@@ -156,29 +177,32 @@ const translations: Record<Language, Translations> = {
   },
   es: {
     nav: {
-      work: 'Trabajos',
+      projects: 'Proyectos',
       about: 'Sobre Mí',
-      services: 'Servicios',
+      skillset: 'Habilidades',
+      experience: 'Experiencia',
       testimonials: 'Testimonios',
       contact: 'Contacto',
     },
     hero: {
       welcome: '¡Hola!',
-      headline: 'Amplificando el impacto de tu mensaje con presentaciones de clase mundial',
+      headlineFirstLine: 'Soy Glauber Matias,',
+      headlineSecondLine: 'Amplifico el impacto de tu mensaje con presentaciones de clase mundial',
       description: 'Desde pitch decks para C-suite hasta keynotes globales, creo historias visuales que hacen que las ideas complejas sean simples y memorables.',
       cta: 'Ver mi trabajo',
     },
     work: {
-      title: 'Trabajos seleccionados',
+      title: 'Mis proyectos',
       subtitle: 'Una colección de proyectos que demuestran pensamiento estratégico y excelencia visual',
       viewProject: 'Ver proyecto',
+      viewAll: 'Ver todos los proyectos',
       categories: {
         all: 'Todos',
         executiveDecks: 'Decks ejecutivos',
-        employerBranding: 'Employer branding',
         templates: 'Plantillas',
-        freelanceProjects: 'Proyectos freelance',
-        personalProjects: 'Proyectos personales',
+        techEvents: 'Eventos tech',
+        hrInitiatives: 'Iniciativas de RH',
+        sideProjects: 'Proyectos personales',
       },
     },
     about: {
@@ -188,8 +212,12 @@ const translations: Record<Language, Translations> = {
       description: 'Creo que las presentaciones son más que diapositivas — son herramientas estratégicas de comunicación que pueden transformar ideas en acción. Mi enfoque combina storytelling visual con estrategia de negocios para crear presentaciones que cautivan y convierten.',
     },
     services: {
-      title: 'Servicios',
+      title: 'Habilidades',
       subtitle: 'Cómo puedo ayudar a dar vida a tus ideas',
+    },
+    experience: {
+      title: 'Experiencia laboral',
+      subtitle: 'Un viaje por mi carrera profesional',
     },
     testimonials: {
       title: 'Lo que la gente dice de mí',
