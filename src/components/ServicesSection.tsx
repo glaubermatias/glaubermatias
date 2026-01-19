@@ -44,7 +44,7 @@ const ServicesSection = () => {
     <section id="services" className="py-16 lg:py-20">
       <div className="container mx-auto px-6">
         {/* Services Container with background */}
-        <div className="services-bg rounded-3xl p-8 md:p-12">
+        <div className="services-bg rounded-[2rem] p-8 md:p-12">
           {/* Header */}
           <motion.div
             className="mb-10"
@@ -66,7 +66,7 @@ const ServicesSection = () => {
             {services.map((service, index) => (
               <motion.div
                 key={service.id}
-                className="bg-background rounded-2xl border border-border overflow-hidden"
+                className="bg-background rounded-3xl border border-border overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

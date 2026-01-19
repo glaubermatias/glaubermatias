@@ -26,10 +26,10 @@ const Navigation = () => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4">
-      <div className="container mx-auto">
+    <header className="fixed top-0 left-0 right-0 z-50 py-4">
+      <div className="container mx-auto px-6">
         <nav
-          className={`w-full transition-all duration-500 rounded-full px-6 py-3 ${
+          className={`w-full transition-all duration-500 rounded-3xl px-6 py-3 ${
             isScrolled
               ? 'glass-nav shadow-lg'
               : 'glass-nav'
@@ -59,7 +59,7 @@ const Navigation = () => {
               {/* Get in touch - highlighted button */}
               <a
                 href="#contact"
-                className="text-sm font-medium px-5 py-2 rounded-full bg-primary text-primary-foreground hover:bg-dark-accent transition-colors"
+                className="text-sm btn-filled-dark px-5 py-2 rounded-full bg-primary text-primary-foreground hover:bg-dark-accent transition-colors"
               >
                 Get in touch
               </a>

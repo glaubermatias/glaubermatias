@@ -63,7 +63,7 @@ const translations: Record<Language, Translations> = {
       contact: 'Contact',
     },
     hero: {
-      welcome: 'Welcome!',
+      welcome: 'Hi there!',
       headline: 'Amplifying the impact of your message with world-class presentations',
       description: 'From C-suite pitch decks to global keynotes, I craft visual stories that make complex ideas simple and memorable.',
       cta: 'View my work',
@@ -113,7 +113,7 @@ const translations: Record<Language, Translations> = {
       contact: 'Contato',
     },
     hero: {
-      welcome: 'Bem-vindo!',
+      welcome: 'Olá!',
       headline: 'Amplificando o impacto da sua mensagem com apresentações de classe mundial',
       description: 'De pitch decks para C-level a keynotes globais, eu crio histórias visuais que tornam ideias complexas simples e memoráveis.',
       cta: 'Ver meus trabalhos',
@@ -163,7 +163,7 @@ const translations: Record<Language, Translations> = {
       contact: 'Contacto',
     },
     hero: {
-      welcome: '¡Bienvenido!',
+      welcome: '¡Hola!',
       headline: 'Amplificando el impacto de tu mensaje con presentaciones de clase mundial',
       description: 'Desde pitch decks para C-suite hasta keynotes globales, creo historias visuales que hacen que las ideas complejas sean simples y memorables.',
       cta: 'Ver mi trabajo',

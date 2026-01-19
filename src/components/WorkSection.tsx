@@ -114,7 +114,7 @@ const WorkSection = () => {
     : projects.filter((p) => p.category === activeCategory);
 
   return (
-    <section id="work" className="py-16 lg:py-20">
+    <section id="work" className="py-10 lg:py-14">
       <div className="container mx-auto px-6">
         {/* Header */}
         <motion.div
