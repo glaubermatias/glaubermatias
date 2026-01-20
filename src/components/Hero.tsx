@@ -57,7 +57,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative flex items-center justify-center overflow-hidden bg-background pt-24 pb-6">
+    <section className="relative flex items-center justify-center overflow-hidden bg-background pt-28 pb-4">
       <div className="container mx-auto px-6 relative z-10">
         {/* Hero Card Container */}
         <motion.div 
@@ -79,20 +79,19 @@ const Hero = () => {
               </span>
             </motion.div>
 
-            {/* Main Headline - Split into 2 parts for line break control */}
+            {/* Main Headline - Natural flow */}
             <motion.h1
-              className="font-display text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-medium leading-[1.2] mb-5 text-foreground max-w-4xl"
+              className="font-display text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-medium leading-[1.35] mb-5 text-foreground max-w-4xl"
               variants={headlineVariants}
               initial="hidden"
               animate="visible"
             >
-              <span className="block">{t.hero.headlineFirstLine}</span>
-              <span className="block">{t.hero.headlineSecondLine}</span>
+              {t.hero.headline}
             </motion.h1>
 
             {/* Description */}
             <motion.p
-              className="text-base sm:text-lg md:text-xl text-muted-foreground font-normal leading-relaxed max-w-2xl mb-8"
+              className="text-base sm:text-lg md:text-xl text-dark-accent font-normal leading-relaxed max-w-2xl mb-8"
               variants={descriptionVariants}
               initial="hidden"
               animate="visible"
@@ -108,7 +107,7 @@ const Hero = () => {
               animate="visible"
             >
               <a
-                href="#projects"
+                href="#work"
                 className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-primary text-primary-foreground btn-filled-dark rounded-full hover:bg-dark-accent transition-all duration-300 hover:-translate-y-1"
               >
                 {t.hero.cta}

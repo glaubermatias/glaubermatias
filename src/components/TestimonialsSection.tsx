@@ -36,20 +36,20 @@ const TestimonialsSection = () => {
   const { t, language } = useLanguage();
 
   return (
-    <section id="testimonials" className="py-10 lg:py-14">
+    <section id="testimonials" className="py-8 lg:py-10">
       <div className="container mx-auto px-6">
         {/* Header - Left aligned */}
         <motion.div
-          className="text-left mb-10"
+          className="text-left mb-8"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">
+          <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold mb-3">
             {t.testimonials.title}
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl">
+          <p className="text-base md:text-lg text-dark-accent max-w-2xl">
             {t.testimonials.subtitle}
           </p>
         </motion.div>

@@ -215,7 +215,11 @@
   }
 
   .services-bg {
-    background: hsl(var(--cream));
+    background: hsl(var(--navy-dark));
+  }
+
+  .text-dark-accent {
+    color: hsl(var(--dark-accent));
   }
 
   .font-medium-weight {

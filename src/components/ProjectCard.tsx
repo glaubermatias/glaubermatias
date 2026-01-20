@@ -109,15 +109,15 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
               {project.description}
             </p>
 
-            {/* Category Tag and View Project - Fixed at bottom */}
+            {/* Category Tag - Green background */}
             <div className="pt-2 mt-auto">
-              <span className="inline-flex items-center px-3 py-1 rounded-full bg-secondary text-foreground text-xs font-normal">
+              <span className="inline-flex items-center px-3 py-1 rounded-full bg-accent text-accent-foreground text-xs font-normal">
                 {getCategoryLabel(project.category)}
               </span>
             </div>
 
-            {/* View Project */}
-            <div className="flex items-center gap-2 text-primary font-normal text-sm group-hover:gap-3 transition-all duration-300">
+            {/* View Project - More space from bottom */}
+            <div className="flex items-center gap-2 text-primary font-normal text-sm group-hover:gap-3 transition-all duration-300 pb-2">
               <span>{t.work.viewProject}</span>
               <ArrowUpRight className="w-4 h-4" />
             </div>
