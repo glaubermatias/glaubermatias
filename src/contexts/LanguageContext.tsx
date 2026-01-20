@@ -4,7 +4,7 @@ type Language = 'en' | 'pt' | 'es';
 
 interface Translations {
   nav: {
-    projects: string;
+    work: string;
     about: string;
     skillset: string;
     experience: string;
@@ -13,8 +13,7 @@ interface Translations {
   };
   hero: {
     welcome: string;
-    headlineFirstLine: string;
-    headlineSecondLine: string;
+    headline: string;
     description: string;
     cta: string;
   };
@@ -63,7 +62,7 @@ interface Translations {
 const translations: Record<Language, Translations> = {
   en: {
     nav: {
-      projects: 'Projects',
+      work: 'Work',
       about: 'About',
       skillset: 'Skillset',
       experience: 'Experience',
@@ -72,8 +71,7 @@ const translations: Record<Language, Translations> = {
     },
     hero: {
       welcome: 'Hi there!',
-      headlineFirstLine: "I'm Glauber Matias,",
-      headlineSecondLine: 'I amplify the impact of your message with world-class presentations',
+      headline: "I'm Glauber. I amplify the impact of your message with world-class presentations",
       description: 'From C-suite pitch decks to global keynotes, I craft visual stories that make complex ideas simple and memorable.',
       cta: 'View my work',
     },
@@ -120,7 +118,7 @@ const translations: Record<Language, Translations> = {
   },
   pt: {
     nav: {
-      projects: 'Projetos',
+      work: 'Trabalhos',
       about: 'Sobre',
       skillset: 'Habilidades',
       experience: 'Experiência',
@@ -129,8 +127,7 @@ const translations: Record<Language, Translations> = {
     },
     hero: {
       welcome: 'Olá!',
-      headlineFirstLine: 'Eu sou Glauber Matias,',
-      headlineSecondLine: 'Amplifico o impacto da sua mensagem com apresentações de classe mundial',
+      headline: 'Eu sou Glauber. Amplifico o impacto da sua mensagem com apresentações de classe mundial',
       description: 'De pitch decks para C-level a keynotes globais, eu crio histórias visuais que tornam ideias complexas simples e memoráveis.',
       cta: 'Ver meus trabalhos',
     },
@@ -177,7 +174,7 @@ const translations: Record<Language, Translations> = {
   },
   es: {
     nav: {
-      projects: 'Proyectos',
+      work: 'Trabajos',
       about: 'Sobre Mí',
       skillset: 'Habilidades',
       experience: 'Experiencia',
@@ -186,8 +183,7 @@ const translations: Record<Language, Translations> = {
     },
     hero: {
       welcome: '¡Hola!',
-      headlineFirstLine: 'Soy Glauber Matias,',
-      headlineSecondLine: 'Amplifico el impacto de tu mensaje con presentaciones de clase mundial',
+      headline: 'Soy Glauber. Amplifico el impacto de tu mensaje con presentaciones de clase mundial',
       description: 'Desde pitch decks para C-suite hasta keynotes globales, creo historias visuales que hacen que las ideas complejas sean simples y memorables.',
       cta: 'Ver mi trabajo',
     },

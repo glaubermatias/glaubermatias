@@ -7,7 +7,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const quickLinks = [
-    { href: '#projects', label: t.nav.projects },
+    { href: '#work', label: t.nav.work },
     { href: '#skillset', label: t.nav.skillset },
     { href: '#experience', label: t.nav.experience },
     { href: '#about', label: t.nav.about },
@@ -20,7 +20,7 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 gap-12 mb-12">
           {/* Left Side - Contact */}
           <div>
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-8">
+            <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold mb-8">
               {t.nav.contact}
             </h2>
             
@@ -36,11 +36,12 @@ const Footer = () => {
               
               {/* Email - Aligned with bottom of photo */}
               <div className="pb-2">
+                <p className="text-sm text-muted-foreground mb-1">Get in touch:</p>
                 <a
-                  href="mailto:hello@glaubermatias.com"
+                  href="mailto:glauber.matias.ismart@gmail.com"
                   className="text-lg md:text-xl font-medium text-foreground hover:text-primary transition-colors"
                 >
-                  hello@glaubermatias.com
+                  glauber.matias.ismart@gmail.com
                 </a>
               </div>
             </div>

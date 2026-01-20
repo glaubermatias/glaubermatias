@@ -41,10 +41,10 @@ const ServicesSection = () => {
   };
 
   return (
-    <section id="skillset" className="py-10 lg:py-14">
+    <section id="skillset" className="py-8 lg:py-10">
       <div className="container mx-auto px-6">
-        {/* Services Container with background */}
-        <div className="services-bg rounded-[2.5rem] p-8 md:p-12">
+        {/* Services Container with dark background */}
+        <div className="bg-primary rounded-[2.5rem] p-8 md:p-12">
           {/* Header - Left aligned */}
           <motion.div
             className="text-left mb-10"
@@ -53,10 +53,10 @@ const ServicesSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">
+            <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold mb-3 text-primary-foreground">
               {t.services.title}
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl">
+            <p className="text-base md:text-lg text-primary-foreground/80 max-w-2xl">
               {t.services.subtitle}
             </p>
           </motion.div>
@@ -76,7 +76,7 @@ const ServicesSection = () => {
                   onClick={() => toggleService(service.id)}
                   className="w-full p-6 flex items-center justify-between text-left group"
                 >
-                  <h3 className="font-display text-xl md:text-2xl font-semibold group-hover:text-primary transition-colors duration-300">
+                  <h3 className="font-display text-lg md:text-xl font-semibold group-hover:text-primary transition-colors duration-300">
                     {service.title}
                   </h3>
                   <motion.div

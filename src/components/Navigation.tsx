@@ -19,7 +19,7 @@ const Navigation = () => {
   }, []);
 
   const navLinks = [
-    { href: '#projects', label: t.nav.projects },
+    { href: '#work', label: t.nav.work },
     { href: '#skillset', label: t.nav.skillset },
     { href: '#experience', label: t.nav.experience },
     { href: '#about', label: t.nav.about },
