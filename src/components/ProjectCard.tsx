@@ -51,15 +51,16 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
         <div className="bg-muted rounded-[2rem] overflow-hidden transition-all duration-300 h-full flex flex-col">
           {/* Image Carousel with padding */}
           <div className="p-5 pb-0">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl select-none">
               <motion.img
                 key={currentImageIndex}
                 src={project.images[currentImageIndex]}
                 alt={`${project.title} - Image ${currentImageIndex + 1}`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover pointer-events-none"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
+                draggable={false}
               />
               
               {/* Carousel Navigation */}
@@ -67,14 +68,14 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
                 <>
                   <button
                     onClick={prevImage}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-background"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-background select-none"
                     aria-label="Previous image"
                   >
                     <ChevronLeft className="w-5 h-5 text-foreground" />
                   </button>
                   <button
                     onClick={nextImage}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-background"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-background select-none"
                     aria-label="Next image"
                   >
                     <ChevronRight className="w-5 h-5 text-foreground" />
@@ -117,7 +118,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
             </div>
 
             {/* View Project - More space from bottom */}
-            <div className="flex items-center gap-2 text-primary font-normal text-sm group-hover:gap-3 transition-all duration-300 pb-2">
+            <div className="flex items-center gap-2 text-primary font-normal text-sm group-hover:gap-3 transition-all duration-300 pb-3">
               <span>{t.work.viewProject}</span>
               <ArrowUpRight className="w-4 h-4" />
             </div>

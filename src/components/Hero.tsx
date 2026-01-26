@@ -1,9 +1,13 @@
+import { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import glauberPhoto from '@/assets/glauber-photo.jpg';
 
 const Hero = () => {
   const { t } = useLanguage();
+  const [isPhotoHovered, setIsPhotoHovered] = useState(false);
 
   const badgeVariants = {
     hidden: { opacity: 0, y: -20 },
@@ -79,19 +83,76 @@ const Hero = () => {
               </span>
             </motion.div>
 
-            {/* Main Headline - Natural flow */}
-            <motion.h1
-              className="font-display text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-medium leading-[1.35] mb-5 text-foreground max-w-4xl"
+            {/* Main Headline with Photo Button */}
+            <motion.div
+              className="mb-5"
               variants={headlineVariants}
               initial="hidden"
               animate="visible"
             >
-              {t.hero.headline}
-            </motion.h1>
+              {/* First line: I'm + Photo + Glauber */}
+              <div className="flex items-center gap-3 flex-wrap mb-2">
+                <h1 className="font-display text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-medium text-foreground">
+                  I'm
+                </h1>
+                
+                {/* Photo Button */}
+                <div 
+                  className="relative inline-block"
+                  onMouseEnter={() => setIsPhotoHovered(true)}
+                  onMouseLeave={() => setIsPhotoHovered(false)}
+                >
+                  <motion.div
+                    className="relative overflow-hidden cursor-pointer"
+                    animate={{
+                      width: isPhotoHovered ? 180 : 48,
+                      height: isPhotoHovered ? 64 : 48,
+                      borderRadius: isPhotoHovered ? '1.5rem' : '9999px',
+                    }}
+                    transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                  >
+                    <Link to="/about" className="block w-full h-full">
+                      <img
+                        src={glauberPhoto}
+                        alt="Glauber Matias"
+                        className="w-full h-full object-cover object-top"
+                      />
+                      
+                      {/* Hover overlay with "Get to know me" */}
+                      <AnimatePresence>
+                        {isPhotoHovered && (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute inset-0 bg-primary/80 flex items-center justify-center gap-2 px-4"
+                          >
+                            <span className="text-primary-foreground text-sm font-normal whitespace-nowrap">
+                              Get to know me
+                            </span>
+                            <ArrowRight className="w-4 h-4 text-primary-foreground" />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </Link>
+                  </motion.div>
+                </div>
 
-            {/* Description */}
+                <h1 className="font-display text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-medium text-foreground">
+                  Glauber
+                </h1>
+              </div>
+
+              {/* Second line */}
+              <h1 className="font-display text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-medium leading-[1.4] text-foreground max-w-4xl">
+                Designer of visual stories that turn your message into impact
+              </h1>
+            </motion.div>
+
+            {/* Description - muted gray tone */}
             <motion.p
-              className="text-base sm:text-lg md:text-xl text-dark-accent font-normal leading-relaxed max-w-2xl mb-8"
+              className="text-base sm:text-lg md:text-xl text-muted-foreground font-normal leading-relaxed max-w-2xl mb-8"
               variants={descriptionVariants}
               initial="hidden"
               animate="visible"

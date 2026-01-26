@@ -49,12 +49,12 @@ const TestimonialsSection = () => {
           <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold mb-3">
             {t.testimonials.title}
           </h2>
-          <p className="text-base md:text-lg text-dark-accent max-w-2xl">
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl">
             {t.testimonials.subtitle}
           </p>
         </motion.div>
 
-        {/* Testimonials Grid - Equal height cards */}
+        {/* Testimonials Grid - Equal height cards without borders */}
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
           {testimonials.map((testimonial, index) => (
             <motion.div
@@ -63,7 +63,7 @@ const TestimonialsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.15 }}
-              className="p-8 rounded-[2rem] bg-muted border border-border h-full flex flex-col"
+              className="p-8 rounded-[2rem] bg-muted h-full flex flex-col"
             >
               {/* Quote icon in dark blue */}
               <Quote className="w-10 h-10 text-primary mb-6 shrink-0" />
