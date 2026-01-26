@@ -1,6 +1,5 @@
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Linkedin } from 'lucide-react';
-import glauberPhoto from '@/assets/glauber-photo.jpg';
+import { Linkedin, Mail } from 'lucide-react';
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -15,49 +14,51 @@ const Footer = () => {
   ];
 
   return (
-    <footer id="contact" className="py-16 bg-background">
-      <div className="container mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-12 mb-12">
-          {/* Left Side - Contact */}
-          <div>
-            <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold mb-8">
-              {t.nav.contact}
-            </h2>
-            
-            <div className="flex items-end gap-6">
-              {/* Photo - Square with very rounded corners */}
-              <div className="shrink-0">
-                <img
-                  src={glauberPhoto}
-                  alt="Glauber Matias"
-                  className="w-32 h-32 md:w-40 md:h-40 object-cover rounded-[2rem]"
-                />
-              </div>
+    <footer id="contact" className="relative">
+      {/* Dark blue background with rounded top corners */}
+      <div className="bg-primary rounded-t-[2.5rem] pt-16 pb-8">
+        <div className="container mx-auto px-6">
+          <div className="grid md:grid-cols-2 gap-12 mb-12">
+            {/* Left Side - Contact */}
+            <div>
+              <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold mb-8 text-primary-foreground">
+                Let's connect!
+              </h2>
               
-              {/* Email - Aligned with bottom of photo */}
-              <div className="pb-2">
-                <p className="text-sm text-muted-foreground mb-1">Get in touch:</p>
+              <div className="space-y-4">
+                <p className="text-lg text-primary-foreground/80">Get in touch:</p>
+                
+                {/* Email */}
                 <a
                   href="mailto:glauber.matias.ismart@gmail.com"
-                  className="text-lg md:text-xl font-medium text-foreground hover:text-primary transition-colors"
+                  className="flex items-center gap-3 text-primary-foreground hover:text-accent transition-colors group"
                 >
-                  glauber.matias.ismart@gmail.com
+                  <Mail className="w-5 h-5" />
+                  <span className="text-lg">glauber.matias.ismart@gmail.com</span>
+                </a>
+                
+                {/* LinkedIn */}
+                <a
+                  href="https://linkedin.com/in/glauber-matias"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-primary-foreground hover:text-accent transition-colors group"
+                >
+                  <Linkedin className="w-5 h-5" />
+                  <span className="text-lg">LinkedIn</span>
                 </a>
               </div>
             </div>
-          </div>
 
-          {/* Right Side - Quick Links and Connect */}
-          <div className="flex gap-16 md:justify-end">
-            {/* Quick Links */}
-            <div>
-              <h4 className="font-semibold mb-4 text-foreground">Quick links</h4>
+            {/* Right Side - Quick Links */}
+            <div className="md:text-right">
+              <h4 className="font-semibold mb-4 text-primary-foreground">Quick links</h4>
               <ul className="space-y-2">
                 {quickLinks.map((link) => (
                   <li key={link.href}>
                     <a
                       href={link.href}
-                      className="text-muted-foreground hover:text-foreground transition-colors"
+                      className="text-primary-foreground/70 hover:text-primary-foreground transition-colors"
                     >
                       {link.label}
                     </a>
@@ -65,32 +66,18 @@ const Footer = () => {
                 ))}
               </ul>
             </div>
-
-            {/* Connect */}
-            <div>
-              <h4 className="font-semibold mb-4 text-foreground">Connect</h4>
-              <a
-                href="https://linkedin.com/in/glaubermatias"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <Linkedin className="w-5 h-5" />
-                LinkedIn
-              </a>
-            </div>
           </div>
-        </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t border-border">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-muted-foreground">
-              © {currentYear} Glauber Matias. {t.footer.rights}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Made in Brazil
-            </p>
+          {/* Bottom Bar */}
+          <div className="pt-8 border-t border-primary-foreground/20">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <p className="text-sm text-primary-foreground/70">
+                © {currentYear} Glauber Matias. {t.footer.rights}
+              </p>
+              <p className="text-sm text-primary-foreground/70">
+                Made in Brazil
+              </p>
+            </div>
           </div>
         </div>
       </div>

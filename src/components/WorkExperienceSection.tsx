@@ -16,44 +16,62 @@ interface Experience {
 const experiences: Experience[] = [
   {
     id: 'exp-1',
-    company: 'Global Tech Corp',
-    role: 'Senior Presentation Designer',
-    period: '2022 — Present',
-    description: 'Leading presentation design strategy for C-suite communications and investor relations.',
-    highlights: ['50+ executive decks', '$200M+ in funding raised', 'Global team collaboration'],
+    company: 'Ismart',
+    role: 'Presentation Design Specialist',
+    period: 'Jan 2022 — Present',
+    description: 'Leading end-to-end presentation design for executive communications, investor relations, and strategic initiatives.',
+    highlights: ['C-Suite Presentations', 'Investor Relations', 'Brand Strategy'],
     expandedDetails: [
-      'Led the complete redesign of investor relations materials resulting in improved stakeholder engagement',
-      'Developed and implemented presentation design guidelines adopted across 15+ departments',
-      'Collaborated with C-suite executives to craft narratives for board meetings and shareholder presentations',
-      'Mentored junior designers on strategic storytelling and visual communication best practices',
+      'Design high-stakes pitch decks and board presentations for C-suite executives',
+      'Develop visual narratives that align complex data with strategic storytelling',
+      'Create and maintain template systems ensuring brand consistency across the organization',
+      'Collaborate with leadership to craft compelling visual stories for key stakeholders',
+      'Lead presentation design workshops and training sessions for internal teams',
     ],
   },
   {
     id: 'exp-2',
-    company: 'Creative Agency XYZ',
-    role: 'Presentation Specialist',
-    period: '2019 — 2022',
-    description: 'Designed high-impact presentations for Fortune 500 clients across multiple industries.',
-    highlights: ['100+ client projects', 'Brand template systems', 'Award-winning designs'],
+    company: 'Stone',
+    role: 'Senior Presentation Designer',
+    period: 'Mar 2020 — Dec 2021',
+    description: 'Designed investor presentations and internal communications for one of Brazil\'s leading fintech companies.',
+    highlights: ['IPO Materials', 'Fintech', 'Data Visualization'],
     expandedDetails: [
-      'Created pitch decks that helped clients raise over $50M in venture funding',
-      'Developed scalable template systems for enterprise clients reducing design time by 60%',
-      'Received industry recognition for innovative data visualization techniques',
-      'Managed client relationships and led discovery sessions to understand business objectives',
+      'Designed investor materials for major funding rounds and IPO preparation',
+      'Created data visualization standards for financial reporting and analytics',
+      'Developed presentation guidelines adopted across multiple business units',
+      'Collaborated with IR and marketing teams on shareholder communications',
+      'Produced keynote presentations for industry conferences and events',
     ],
   },
   {
     id: 'exp-3',
-    company: 'StartupHub',
-    role: 'Visual Communication Designer',
-    period: '2017 — 2019',
-    description: 'Created pitch decks and investor materials for early-stage startups.',
-    highlights: ['30+ startups helped', 'Seed to Series B', 'Workshop facilitation'],
+    company: 'Nubank',
+    role: 'Presentation Designer',
+    period: 'Jun 2018 — Feb 2020',
+    description: 'Crafted visual storytelling for Latin America\'s largest digital bank during rapid growth phase.',
+    highlights: ['Startup Scale-up', 'Visual Identity', 'Global Expansion'],
     expandedDetails: [
-      'Partnered with founders to develop compelling narratives for investor presentations',
-      'Conducted pitch deck workshops helping founders improve their storytelling skills',
-      'Designed demo day presentations for accelerator cohorts',
-      'Built a library of reusable components and templates for the startup community',
+      'Created pitch decks that supported multiple successful funding rounds',
+      'Designed presentations for international expansion initiatives',
+      'Developed visual systems that scaled with company growth',
+      'Collaborated with product and engineering teams on technical presentations',
+      'Built presentation templates that maintained brand consistency at scale',
+    ],
+  },
+  {
+    id: 'exp-4',
+    company: 'Freelance',
+    role: 'Presentation Design Consultant',
+    period: 'Jan 2017 — May 2018',
+    description: 'Provided presentation design services for startups, agencies, and corporate clients across industries.',
+    highlights: ['Client Management', 'Diverse Industries', 'Remote Work'],
+    expandedDetails: [
+      'Delivered 50+ presentation projects for clients in tech, finance, and healthcare',
+      'Specialized in pitch deck design for early-stage startups',
+      'Developed long-term client relationships through consistent quality and communication',
+      'Managed end-to-end project lifecycle from discovery to final delivery',
+      'Built a reputation for transforming complex information into clear visual narratives',
     ],
   },
 ];
@@ -80,7 +98,7 @@ const WorkExperienceSection = () => {
           <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold mb-3">
             {t.experience.title}
           </h2>
-          <p className="text-base md:text-lg text-dark-accent max-w-2xl">
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl">
             {t.experience.subtitle}
           </p>
         </motion.div>
@@ -119,7 +137,7 @@ const WorkExperienceSection = () => {
                     </span>
                   </div>
 
-                  <p className="text-dark-accent mb-4">
+                  <p className="text-muted-foreground mb-4">
                     {exp.description}
                   </p>
 

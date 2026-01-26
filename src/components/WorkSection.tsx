@@ -328,7 +328,7 @@ const WorkSection = () => {
           <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold mb-2">
             {t.work.title}
           </h2>
-          <p className="text-base md:text-lg text-dark-accent max-w-2xl">
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl">
             {t.work.subtitle}
           </p>
         </motion.div>

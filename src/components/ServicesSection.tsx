@@ -12,23 +12,43 @@ interface Service {
 const services: Service[] = [
   {
     id: 'pitch-decks',
-    title: 'Pitch Deck Design',
-    description: 'Transform your business ideas into compelling visual narratives that captivate investors and stakeholders. We craft pitch decks that tell your story with clarity, impact, and strategic precision.',
+    title: 'Pitch Decks',
+    description: 'High-impact pitch decks for C-suite, investors and boards, aligning strategy, data and storytelling to secure buy-in and support key decisions.',
   },
   {
     id: 'keynotes',
-    title: 'Keynote Presentations',
-    description: 'Create unforgettable conference moments with presentations designed for maximum stage impact. From bold visuals to seamless animations, we make your message resonate with audiences of any size.',
+    title: 'Keynotes & Events',
+    description: 'End-to-end keynote and event presentations with on-site support for global stages and large internal gatherings.',
   },
   {
-    id: 'internal-comms',
-    title: 'Internal Communications',
-    description: 'Elevate your internal presentations to engage and inspire your team. From training materials to company updates, we design content that keeps everyone aligned and motivated.',
+    id: 'data-viz',
+    title: 'Data Visualization',
+    description: 'Transform complex datasets into clear, executive-ready charts, dashboards and infographics that reveal insights and drive decisions.',
+  },
+  {
+    id: 'visual-storytelling',
+    title: 'Visual Storytelling',
+    description: 'Narrative structure, slide sequencing and visual metaphors that turn complex ideas into persuasive, memorable stories.',
   },
   {
     id: 'templates',
-    title: 'Template Systems',
-    description: 'Build scalable presentation systems that maintain brand consistency across your organization. Custom templates that empower your team to create professional slides independently.',
+    title: 'Template Libraries',
+    description: 'Design and deployment of reusable slide systems and asset libraries to scale quality, speed and brand consistency across teams.',
+  },
+  {
+    id: 'internal-comms',
+    title: 'Internal Communication',
+    description: 'On-brand newsletters, onboarding decks and internal campaigns that improve clarity, engagement and information retention.',
+  },
+  {
+    id: 'employer-branding',
+    title: 'Employer Branding',
+    description: 'Presentation and visual assets for talent initiatives, tech talks and conferences that strengthen employer brand and candidate experience.',
+  },
+  {
+    id: 'graphic-design',
+    title: 'Graphic Design',
+    description: 'Icons, illustrations, layouts and motion elements to elevate presentations and digital communication (PowerPoint, Google slides, Figma, Adobe CC).',
   },
 ];
 
@@ -39,6 +59,55 @@ const ServicesSection = () => {
   const toggleService = (id: string) => {
     setActiveService(activeService === id ? null : id);
   };
+
+  // Split services into two columns
+  const leftColumn = services.slice(0, 4);
+  const rightColumn = services.slice(4, 8);
+
+  const renderServiceItem = (service: Service, index: number) => (
+    <motion.div
+      key={service.id}
+      className="bg-background rounded-[2rem] border border-border overflow-hidden"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+    >
+      <button
+        onClick={() => toggleService(service.id)}
+        className="w-full p-6 flex items-center justify-between text-left group"
+      >
+        <h3 className="font-display text-lg md:text-xl font-semibold group-hover:text-accent transition-colors duration-300">
+          {service.title}
+        </h3>
+        <motion.div
+          animate={{ rotate: activeService === service.id ? 180 : 0 }}
+          transition={{ duration: 0.3 }}
+          className="shrink-0 ml-4"
+        >
+          <ChevronDown className="w-6 h-6 text-muted-foreground" />
+        </motion.div>
+      </button>
+
+      <AnimatePresence>
+        {activeService === service.id && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.4, ease: 'easeInOut' }}
+            className="overflow-hidden"
+          >
+            <div className="px-6 pb-6">
+              <p className="text-muted-foreground leading-relaxed">
+                {service.description}
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
 
   return (
     <section id="skillset" className="py-8 lg:py-10">
@@ -56,57 +125,22 @@ const ServicesSection = () => {
             <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold mb-3 text-primary-foreground">
               {t.services.title}
             </h2>
-            <p className="text-base md:text-lg text-primary-foreground/80 max-w-2xl">
+            <p className="text-base md:text-lg text-primary-foreground/70 max-w-2xl">
               {t.services.subtitle}
             </p>
           </motion.div>
 
-          {/* Services List */}
-          <div className="space-y-4">
-            {services.map((service, index) => (
-              <motion.div
-                key={service.id}
-                className="bg-background rounded-[2rem] border border-border overflow-hidden"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <button
-                  onClick={() => toggleService(service.id)}
-                  className="w-full p-6 flex items-center justify-between text-left group"
-                >
-                  <h3 className="font-display text-lg md:text-xl font-semibold group-hover:text-primary transition-colors duration-300">
-                    {service.title}
-                  </h3>
-                  <motion.div
-                    animate={{ rotate: activeService === service.id ? 180 : 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="shrink-0 ml-4"
-                  >
-                    <ChevronDown className="w-6 h-6 text-muted-foreground" />
-                  </motion.div>
-                </button>
+          {/* Two Column Grid */}
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Left Column */}
+            <div className="space-y-4">
+              {leftColumn.map((service, index) => renderServiceItem(service, index))}
+            </div>
 
-                <AnimatePresence>
-                  {activeService === service.id && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.4, ease: 'easeInOut' }}
-                      className="overflow-hidden"
-                    >
-                      <div className="px-6 pb-6">
-                        <p className="text-muted-foreground leading-relaxed">
-                          {service.description}
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            ))}
+            {/* Right Column */}
+            <div className="space-y-4">
+              {rightColumn.map((service, index) => renderServiceItem(service, index + 4))}
+            </div>
           </div>
         </div>
       </div>
