@@ -26,8 +26,6 @@ const Footer = () => {
               </h2>
               
               <div className="space-y-4">
-                <p className="text-lg text-primary-foreground/80">Get in touch:</p>
-                
                 {/* Email */}
                 <a
                   href="mailto:glauber.matias.ismart@gmail.com"
@@ -52,7 +50,6 @@ const Footer = () => {
 
             {/* Right Side - Quick Links */}
             <div className="md:text-right">
-              <h4 className="font-semibold mb-4 text-primary-foreground">Quick links</h4>
               <ul className="space-y-2">
                 {quickLinks.map((link) => (
                   <li key={link.href}>

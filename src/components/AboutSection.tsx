@@ -9,9 +9,9 @@ const AboutSection = () => {
 
   const stats = [
     { number: '7+', label: 'Years of experience' },
-    { number: '200+', label: 'Projects delivered' },
-    { number: '50+', label: 'Happy clients' },
-    { number: '$300M+', label: 'Funding raised by clients' },
+    { number: '500+', label: 'Presentations designed' },
+    { number: '50+', label: 'Global clients' },
+    { number: '10M+', label: 'Audience reached' },
   ];
 
   return (
@@ -33,47 +33,61 @@ const AboutSection = () => {
           </p>
         </motion.div>
 
-        {/* Content - Horizontal layout */}
-        <div className="flex flex-col md:flex-row gap-8 items-start">
-          {/* Photo - Smaller size */}
+        {/* Content */}
+        <div className="grid md:grid-cols-12 gap-8 items-start">
+          {/* Photo */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            className="md:col-span-3"
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="shrink-0"
+            transition={{ duration: 0.6 }}
           >
-            <img
-              src={glauberPhoto}
-              alt="Glauber Matias"
-              className="w-48 md:w-56 rounded-[2rem] object-cover aspect-[3/4]"
-            />
+            <div className="w-32 h-32 md:w-40 md:h-40 rounded-[2rem] overflow-hidden">
+              <img
+                src={glauberPhoto}
+                alt="Glauber Matias"
+                className="w-full h-full object-cover"
+                style={{ objectPosition: 'center 20%' }}
+              />
+            </div>
           </motion.div>
 
           {/* Text Content */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            className="md:col-span-9"
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="flex-1 space-y-6"
+            transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              {t.about.description}
+            <p className="text-muted-foreground leading-relaxed mb-6 max-w-3xl">
+              I'm a presentation design specialist with over 7 years of experience crafting visual stories for executives, 
+              investors, and global audiences. From C-suite pitch decks to keynote presentations at major conferences, 
+              I transform complex ideas into clear, compelling narratives that drive decisions and inspire action.
             </p>
 
+            {/* Who I am beyond the slides Link */}
+            <Link 
+              to="/about" 
+              className="inline-flex items-center gap-2 text-primary font-normal hover:gap-3 transition-all duration-300 mb-8"
+            >
+              <span>Who I am beyond the slides</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+
             {/* Stats Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {stats.map((stat, index) => (
                 <motion.div
                   key={stat.label}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                  className="text-center md:text-left"
+                  transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+                  className="text-left"
                 >
-                  <div className="font-display text-2xl md:text-3xl font-semibold text-primary">
+                  <div className="font-display text-3xl md:text-4xl font-semibold text-primary mb-1">
                     {stat.number}
                   </div>
                   <div className="text-sm text-muted-foreground">
@@ -82,23 +96,6 @@ const AboutSection = () => {
                 </motion.div>
               ))}
             </div>
-
-            {/* Link to About Page */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              className="pt-4"
-            >
-              <Link
-                to="/about"
-                className="inline-flex items-center gap-2 text-primary font-normal hover:gap-3 transition-all duration-300"
-              >
-                <span>Get to know me even better</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </motion.div>
           </motion.div>
         </div>
       </div>
