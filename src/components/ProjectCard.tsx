@@ -3,26 +3,27 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 import { Project } from './WorkSection';
-
 interface ProjectCardProps {
   project: Project;
   index: number;
 }
-
-const ProjectCard = ({ project, index }: ProjectCardProps) => {
-  const { t } = useLanguage();
+const ProjectCard = ({
+  project,
+  index
+}: ProjectCardProps) => {
+  const {
+    t
+  } = useLanguage();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
   const nextImage = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setCurrentImageIndex((prev) => (prev + 1) % project.images.length);
+    setCurrentImageIndex(prev => (prev + 1) % project.images.length);
   };
-
   const prevImage = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setCurrentImageIndex((prev) => (prev - 1 + project.images.length) % project.images.length);
+    setCurrentImageIndex(prev => (prev - 1 + project.images.length) % project.images.length);
   };
 
   // Map category key to label
@@ -32,70 +33,50 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
       'templates': t.work.categories.templates,
       'tech-events': t.work.categories.techEvents,
       'hr-initiatives': t.work.categories.hrInitiatives,
-      'side-projects': t.work.categories.sideProjects,
+      'side-projects': t.work.categories.sideProjects
     };
     return categoryMap[category] || category;
   };
-
-  return (
-    <motion.article
-      layout
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="group h-full"
-    >
+  return <motion.article layout initial={{
+    opacity: 0,
+    y: 30
+  }} whileInView={{
+    opacity: 1,
+    y: 0
+  }} viewport={{
+    once: true
+  }} transition={{
+    duration: 0.6,
+    delay: index * 0.1
+  }} className="group h-full">
       <a href={`/project/${project.id}`} className="block h-full">
         {/* Card Container - No shadow, using #f0f1f3 background */}
         <div className="bg-muted rounded-[2rem] overflow-hidden transition-all duration-300 h-full flex flex-col">
           {/* Image Carousel with padding */}
           <div className="p-5 pb-0">
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl select-none">
-              <motion.img
-                key={currentImageIndex}
-                src={project.images[currentImageIndex]}
-                alt={`${project.title} - Image ${currentImageIndex + 1}`}
-                className="w-full h-full object-cover pointer-events-none"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-                draggable={false}
-              />
+              <motion.img key={currentImageIndex} src={project.images[currentImageIndex]} alt={`${project.title} - Image ${currentImageIndex + 1}`} className="w-full h-full object-cover pointer-events-none" initial={{
+              opacity: 0
+            }} animate={{
+              opacity: 1
+            }} transition={{
+              duration: 0.3
+            }} draggable={false} />
               
               {/* Carousel Navigation */}
-              {project.images.length > 1 && (
-                <>
-                  <button
-                    onClick={prevImage}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-background select-none"
-                    aria-label="Previous image"
-                  >
+              {project.images.length > 1 && <>
+                  <button onClick={prevImage} className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-background select-none" aria-label="Previous image">
                     <ChevronLeft className="w-5 h-5 text-foreground" />
                   </button>
-                  <button
-                    onClick={nextImage}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-background select-none"
-                    aria-label="Next image"
-                  >
+                  <button onClick={nextImage} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-background select-none" aria-label="Next image">
                     <ChevronRight className="w-5 h-5 text-foreground" />
                   </button>
 
                   {/* Dots Indicator */}
                   <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-                    {project.images.map((_, idx) => (
-                      <div
-                        key={idx}
-                        className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                          idx === currentImageIndex 
-                            ? 'bg-background w-4' 
-                            : 'bg-background/50'
-                        }`}
-                      />
-                    ))}
+                    {project.images.map((_, idx) => <div key={idx} className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${idx === currentImageIndex ? 'bg-background w-4' : 'bg-background/50'}`} />)}
                   </div>
-                </>
-              )}
+                </>}
             </div>
           </div>
 
@@ -106,7 +87,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
             </h3>
             
             {/* Full description without truncation */}
-            <p className="text-muted-foreground text-sm flex-1">
+            <p className="text-sm flex-1 text-[#676f79]">
               {project.description}
             </p>
 
@@ -125,8 +106,6 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           </div>
         </div>
       </a>
-    </motion.article>
-  );
+    </motion.article>;
 };
-
 export default ProjectCard;
