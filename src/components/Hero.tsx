@@ -132,7 +132,7 @@ const Hero = () => {
                   </motion.div>
                 </div>
 
-                <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-[#919cb1]">Glauber.</h1>
+                <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-[#919cb1]">Glauber</h1>
               </div>
 
               {/* Second line */}

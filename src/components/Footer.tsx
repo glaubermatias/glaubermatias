@@ -1,20 +1,26 @@
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Linkedin, Mail } from 'lucide-react';
-
 const Footer = () => {
-  const { t } = useLanguage();
+  const {
+    t
+  } = useLanguage();
   const currentYear = new Date().getFullYear();
-
-  const quickLinks = [
-    { href: '#work', label: t.nav.work },
-    { href: '#skillset', label: t.nav.skillset },
-    { href: '#experience', label: t.nav.experience },
-    { href: '#about', label: t.nav.about },
-    { href: '#testimonials', label: t.nav.testimonials },
-  ];
-
-  return (
-    <footer id="contact" className="relative">
+  const quickLinks = [{
+    href: '#work',
+    label: t.nav.work
+  }, {
+    href: '#skillset',
+    label: t.nav.skillset
+  }, {
+    href: '#experience',
+    label: t.nav.experience
+  }, {
+    href: '#about',
+    label: t.nav.about
+  }, {
+    href: '#testimonials',
+    label: t.nav.testimonials
+  }];
+  return <footer id="contact" className="relative">
       {/* Dark blue background with rounded top corners */}
       <div className="bg-primary rounded-t-[2.5rem] pt-16 pb-8">
         <div className="container mx-auto px-6">
@@ -27,22 +33,14 @@ const Footer = () => {
               
               <div className="space-y-4">
                 {/* Email */}
-                <a
-                  href="mailto:glauber.matias.ismart@gmail.com"
-                  className="flex items-center gap-3 text-primary-foreground hover:text-accent transition-colors group"
-                >
-                  <Mail className="w-5 h-5" />
+                <a href="mailto:glauber.matias.ismart@gmail.com" className="flex items-center gap-3 text-primary-foreground hover:text-accent transition-colors group">
+                  
                   <span className="text-lg">glauber.matias.ismart@gmail.com</span>
                 </a>
                 
                 {/* LinkedIn */}
-                <a
-                  href="https://linkedin.com/in/glauber-matias"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-primary-foreground hover:text-accent transition-colors group"
-                >
-                  <Linkedin className="w-5 h-5" />
+                <a href="https://linkedin.com/in/glauber-matias" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-primary-foreground hover:text-accent transition-colors group">
+                  
                   <span className="text-lg">LinkedIn</span>
                 </a>
               </div>
@@ -51,16 +49,11 @@ const Footer = () => {
             {/* Right Side - Quick Links */}
             <div className="md:text-right">
               <ul className="space-y-2">
-                {quickLinks.map((link) => (
-                  <li key={link.href}>
-                    <a
-                      href={link.href}
-                      className="text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                    >
+                {quickLinks.map(link => <li key={link.href}>
+                    <a href={link.href} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
                       {link.label}
                     </a>
-                  </li>
-                ))}
+                  </li>)}
               </ul>
             </div>
           </div>
@@ -78,8 +71,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;

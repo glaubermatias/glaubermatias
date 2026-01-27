@@ -111,7 +111,7 @@ const WorkExperienceSection = () => {
                     </span>
                   </div>
 
-                  <p className="mb-4 text-[#78726d]">
+                  <p className="mb-4 text-secondary-foreground">
                     {exp.description}
                   </p>
 

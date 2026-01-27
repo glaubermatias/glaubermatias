@@ -20,7 +20,7 @@ const AboutSection = () => {
     number: '10M+',
     label: 'Audience reached'
   }];
-  return <section id="about" className="py-8 lg:py-10">
+  return <section id="about" className="py-8 lg:py-[50px] pb-[50px]">
       <div className="container mx-auto px-6">
         {/* Header - Left aligned */}
         <motion.div className="text-left mb-8" initial={{
