@@ -62,7 +62,7 @@ const Footer = () => {
           <div className="pt-8 border-t border-primary-foreground/20">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <p className="text-sm text-primary-foreground/70">
-                © {currentYear} Glauber Matias. {t.footer.rights}
+                © Glauber Matias {currentYear}. {t.footer.rights}
               </p>
               <p className="text-sm text-primary-foreground/70">
                 Made in Brazil

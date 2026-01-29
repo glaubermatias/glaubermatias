@@ -100,16 +100,19 @@ const Hero = () => {
                 {/* Photo Button - Pill shaped like reference */}
                 <div className="relative inline-block" onMouseEnter={() => setIsPhotoHovered(true)} onMouseLeave={() => setIsPhotoHovered(false)}>
                   <motion.div className="relative overflow-hidden cursor-pointer rounded-full" animate={{
-                  width: isPhotoHovered ? 180 : 100,
-                  height: isPhotoHovered ? 64 : 48
+                  width: isPhotoHovered ? 200 : 120,
+                  height: isPhotoHovered ? 80 : 56
                 }} transition={{
                   duration: 0.4,
                   ease: [0.4, 0, 0.2, 1]
-                }}>
+                }} style={{ marginTop: '0.25rem' }}>
                     <Link to="/about" className="block w-full h-full">
-                      <img src={glauberPhoto} alt="Glauber Matias" className="w-full h-full object-cover" style={{
-                      objectPosition: 'center 20%'
-                    }} />
+                      <img 
+                        src={glauberPhoto} 
+                        alt="Glauber Matias" 
+                        className="w-full h-full object-cover scale-[2.5]" 
+                        style={{ objectPosition: 'center 35%' }} 
+                      />
                       
                       {/* Hover overlay with "Get to know me" */}
                       <AnimatePresence>
@@ -161,7 +164,7 @@ const Hero = () => {
                 </motion.span>
               </a>
               <a href="#contact" className="inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-foreground/20 text-foreground font-normal rounded-full hover:border-foreground hover:bg-foreground/5 transition-all duration-300">
-                Get in touch
+                Let's connect
               </a>
             </motion.div>
           </div>
