@@ -235,7 +235,7 @@ const WorkSection = () => {
     return projects.filter(p => p.category === activeCategory);
   };
   const filteredProjects = getFilteredProjects();
-  return <section id="work" className="py-6 lg:py-8">
+  return <section id="work" className="pt-12 pb-6 lg:pt-16 lg:pb-8">
       <div className="container mx-auto px-6">
         {/* Header - Left aligned */}
         <motion.div className="text-left mb-4" initial={{

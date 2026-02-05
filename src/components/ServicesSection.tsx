@@ -110,7 +110,7 @@ const ServicesSection = () => {
   );
 
   return (
-    <section id="skillset" className="py-8 lg:py-10">
+    <section id="skillset" className="py-8 lg:py-10 mb-4">
       <div className="container mx-auto px-6">
         {/* Services Container with dark background */}
         <div className="bg-dark-accent rounded-[2.5rem] p-8 md:p-12">

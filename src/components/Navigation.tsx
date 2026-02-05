@@ -15,13 +15,34 @@ const Navigation = () => {
       setIsScrolled(window.scrollY > 50);
       
       // Check if nav is over dark or light background
-      const heroSection = document.querySelector('section');
-      if (heroSection) {
-        const heroRect = heroSection.getBoundingClientRect();
-        const navHeight = 80;
-        // If we're still within the hero section
-        setIsOnDarkBg(heroRect.bottom > navHeight);
-      }
+      const navElement = document.querySelector('header nav');
+      if (!navElement) return;
+      
+      const navRect = navElement.getBoundingClientRect();
+      const navMiddleY = navRect.top + navRect.height / 2;
+      
+      // Get all sections and check which one the nav is over
+      const sections = document.querySelectorAll('section');
+      let isOverDark = false;
+      
+      sections.forEach((section) => {
+        const sectionRect = section.getBoundingClientRect();
+        // Check if nav middle is within this section
+        if (navMiddleY >= sectionRect.top && navMiddleY <= sectionRect.bottom) {
+          // Check if section has dark background (primary/black or dark classes)
+          const computedStyle = window.getComputedStyle(section);
+          const bgColor = computedStyle.backgroundColor;
+          
+          // Parse RGB values
+          const rgb = bgColor.match(/\d+/g);
+          if (rgb) {
+            const brightness = (parseInt(rgb[0]) * 299 + parseInt(rgb[1]) * 587 + parseInt(rgb[2]) * 114) / 1000;
+            isOverDark = brightness < 128;
+          }
+        }
+      });
+      
+      setIsOnDarkBg(isOverDark);
     };
 
     window.addEventListener('scroll', handleScroll);
