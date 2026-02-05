@@ -2,12 +2,10 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import glauberHero from '@/assets/glauber-hero.jpg';
-
 const Hero = () => {
   const {
     t
   } = useLanguage();
-
   const headlineVariants = {
     hidden: {
       opacity: 0,
@@ -23,7 +21,6 @@ const Hero = () => {
       }
     }
   };
-
   const descriptionVariants = {
     hidden: {
       opacity: 0,
@@ -39,7 +36,6 @@ const Hero = () => {
       }
     }
   };
-
   const ctaVariants = {
     hidden: {
       opacity: 0,
@@ -54,22 +50,20 @@ const Hero = () => {
       }
     }
   };
-
-  return (
-    <section className="px-2 pt-2 pb-10 lg:pb-8">
+  return <section className="px-2 pt-2 pb-10 lg:pb-8">
       <div className="relative min-h-[calc(100vh-1rem)] w-full overflow-hidden bg-primary rounded-[2.5rem]">
         {/* Background Photo - Right Side, full height */}
-        <motion.div 
-          className="absolute right-0 top-0 bottom-0 w-full md:w-2/3 lg:w-[60%] h-full flex justify-end"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.3 }}
-        >
-          <img 
-            src={glauberHero} 
-            alt="Glauber Matias" 
-            className="h-full object-contain object-right"
-          />
+        <motion.div className="absolute right-0 top-0 bottom-0 w-full md:w-2/3 lg:w-[60%] h-full flex justify-end" initial={{
+        opacity: 0,
+        x: 50
+      }} animate={{
+        opacity: 1,
+        x: 0
+      }} transition={{
+        duration: 1,
+        delay: 0.3
+      }}>
+          <img src={glauberHero} alt="Glauber Matias" className="h-full object-contain object-right" />
         </motion.div>
 
         {/* Content - aligned with container, vertically centered */}
@@ -78,44 +72,38 @@ const Hero = () => {
             {/* Main Headline */}
             <motion.div className="mb-8" variants={headlineVariants} initial="hidden" animate="visible">
               {/* First line */}
-              <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium leading-[1.1] mb-4" style={{ color: '#666769' }}>
+              <h1 className="font-display text-2xl sm:text-3xl md:text-4xl font-medium leading-[1.1] mb-4 text-[#68686a] lg:text-6xl" style={{
+              color: '#666769'
+            }}>
                 Hi! I'm Glauber.
               </h1>
 
               {/* Second line */}
-              <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium leading-[1.1] text-primary-foreground">
+              <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-medium leading-[1.1] text-primary-foreground lg:text-6xl">
                 Designer of visual stories that turn your message into impact
               </h2>
             </motion.div>
 
             {/* Description */}
-            <motion.p 
-              className="text-base sm:text-lg leading-relaxed max-w-lg mb-10 font-normal text-primary-foreground/60" 
-              variants={descriptionVariants} 
-              initial="hidden" 
-              animate="visible"
-            >
+            <motion.p className="text-base sm:text-lg leading-relaxed max-w-lg mb-10 font-normal text-primary-foreground/60" variants={descriptionVariants} initial="hidden" animate="visible">
               {t.hero.description}
             </motion.p>
 
             {/* CTA Buttons */}
             <motion.div className="flex flex-col sm:flex-row gap-4" variants={ctaVariants} initial="hidden" animate="visible">
-              <a 
-                href="#work" 
-                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#8C1414] text-white btn-filled-dark rounded-full hover:bg-[#8C1414]/90 transition-all duration-300 hover:-translate-y-1"
-              >
+              <a href="#work" className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#8C1414] text-white btn-filled-dark rounded-full hover:bg-[#8C1414]/90 transition-all duration-300 hover:-translate-y-1">
                 View my work
-                <motion.span 
-                  animate={{ y: [0, 4, 0] }} 
-                  transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
-                >
+                <motion.span animate={{
+                y: [0, 4, 0]
+              }} transition={{
+                repeat: Infinity,
+                duration: 1.5,
+                ease: 'easeInOut'
+              }}>
                   <ChevronDown className="w-5 h-5" />
                 </motion.span>
               </a>
-              <a 
-                href="#contact" 
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-primary-foreground/30 text-primary-foreground font-normal rounded-full hover:border-primary-foreground hover:bg-primary-foreground/10 transition-all duration-300"
-              >
+              <a href="#contact" className="inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-primary-foreground/30 text-primary-foreground font-normal rounded-full hover:border-primary-foreground hover:bg-primary-foreground/10 transition-all duration-300">
                 Let's connect
               </a>
             </motion.div>
@@ -132,8 +120,6 @@ const Hero = () => {
           }
         `}</style>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Hero;

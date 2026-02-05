@@ -52,7 +52,7 @@ const WorkExperienceSection = () => {
   const toggleExpanded = (id: string) => {
     setExpandedId(expandedId === id ? null : id);
   };
-  return <section id="experience" className="py-8 lg:py-10">
+  return <section id="experience" className="py-8 lg:py-[20px]">
       <div className="container mx-auto px-6">
         {/* Header - Left aligned */}
         <motion.div className="text-left mb-8" initial={{

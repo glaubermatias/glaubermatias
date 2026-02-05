@@ -27,7 +27,9 @@ const Footer = () => {
           <div className="grid md:grid-cols-2 gap-12 mb-12">
             {/* Left Side - Contact */}
             <div>
-              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-semibold mb-8" style={{ color: '#8C1414' }}>
+              <h2 className="font-display text-3xl md:text-4xl font-semibold mb-8 lg:text-6xl text-[#b8b8b8]" style={{
+              color: '#8C1414'
+            }}>
                 Let's connect!
               </h2>
               
