@@ -7,7 +7,8 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import Index from "./pages/Index";
 import CaseStudiesPage from "./pages/CaseStudiesPage";
 import CaseStudyDetail from "./pages/CaseStudyDetail";
-import ProjectsPage from "./pages/ProjectsPage";
+import WorkPage from "./pages/WorkPage";
+import ProjectDetailPage from "./pages/ProjectDetailPage";
 import AboutPage from "./pages/AboutPage";
 import NotFound from "./pages/NotFound";
 
@@ -22,10 +23,11 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/work" element={<WorkPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/case-studies" element={<CaseStudiesPage />} />
             <Route path="/case-studies/:id" element={<CaseStudyDetail />} />
+            <Route path="/:projectId" element={<ProjectDetailPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
