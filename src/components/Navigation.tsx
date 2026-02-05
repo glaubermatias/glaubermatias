@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageToggle from './LanguageToggle';
 import { Menu, X } from 'lucide-react';
@@ -9,58 +9,62 @@ const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isOnDarkBg, setIsOnDarkBg] = useState(true);
+  const navRef = useRef<HTMLElement>(null!);
 
   useEffect(() => {
-    const checkBackground = () => {
-      setIsScrolled(window.scrollY > 50);
-      
-      // Get the header element
-      const headerElement = document.querySelector('header');
-      if (!headerElement) return;
-      
-      const headerRect = headerElement.getBoundingClientRect();
-      const checkY = headerRect.top + headerRect.height / 2;
-      
-      // Find all sections that could have dark backgrounds
-      const darkSections = document.querySelectorAll('[class*="bg-primary"], [class*="services-bg"], .bg-primary, footer');
-      
-      let isOverDark = false;
-      
-      darkSections.forEach((section) => {
-        const rect = section.getBoundingClientRect();
-        // Check if the nav overlaps with this dark section
-        if (checkY >= rect.top && checkY <= rect.bottom) {
-          // Verify the section actually has a dark background
-          const bgColor = window.getComputedStyle(section).backgroundColor;
-          if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
-            const rgb = bgColor.match(/\d+/g);
-            if (rgb && rgb.length >= 3) {
-              const brightness = (parseInt(rgb[0]) * 299 + parseInt(rgb[1]) * 587 + parseInt(rgb[2]) * 114) / 1000;
-              if (brightness < 128) {
-                isOverDark = true;
-              }
-            }
-          }
-        }
-      });
-      
-      setIsOnDarkBg(isOverDark);
+    let rafId = 0;
+
+    const getIsOverDarkTheme = () => {
+      const navEl = navRef.current;
+      if (!navEl) return true;
+
+      const rect = navEl.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+
+      const elements = document.elementsFromPoint(x, y) as HTMLElement[];
+
+      for (const el of elements) {
+        if (!el) continue;
+        if (el === navEl || navEl.contains(el)) continue;
+
+        // We explicitly mark dark sections to avoid false-positives from utility classes.
+        if (el.closest('[data-nav-theme="dark"]')) return true;
+      }
+
+      return false;
     };
 
-    // Run on scroll and resize
-    window.addEventListener('scroll', checkBackground, { passive: true });
-    window.addEventListener('resize', checkBackground);
-    
-    // Initial check with a small delay to ensure DOM is ready
-    checkBackground();
-    const timeoutId = setTimeout(checkBackground, 100);
-    const timeoutId2 = setTimeout(checkBackground, 500);
-    
+    const update = () => {
+      const nextScrolled = window.scrollY > 50;
+      setIsScrolled((prev) => (prev !== nextScrolled ? nextScrolled : prev));
+
+      const nextIsDark = getIsOverDarkTheme();
+      setIsOnDarkBg((prev) => (prev !== nextIsDark ? nextIsDark : prev));
+    };
+
+    const onChange = () => {
+      if (rafId) return;
+      rafId = window.requestAnimationFrame(() => {
+        rafId = 0;
+        update();
+      });
+    };
+
+    window.addEventListener('scroll', onChange, { passive: true });
+    window.addEventListener('resize', onChange);
+
+    // Initial checks (after layout)
+    onChange();
+    const t1 = window.setTimeout(onChange, 80);
+    const t2 = window.setTimeout(onChange, 350);
+
     return () => {
-      window.removeEventListener('scroll', checkBackground);
-      window.removeEventListener('resize', checkBackground);
-      clearTimeout(timeoutId);
-      clearTimeout(timeoutId2);
+      window.removeEventListener('scroll', onChange);
+      window.removeEventListener('resize', onChange);
+      if (rafId) window.cancelAnimationFrame(rafId);
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
     };
   }, []);
 
@@ -76,6 +80,7 @@ const Navigation = () => {
     <header className="fixed top-0 left-0 right-0 z-50 py-4">
       <div className="container mx-auto px-6">
         <nav
+          ref={navRef}
           className={`w-full transition-all duration-500 rounded-[2rem] px-6 py-3 ${
             isOnDarkBg
               ? 'glass-nav-dark shadow-lg'

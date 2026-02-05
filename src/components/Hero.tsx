@@ -52,7 +52,7 @@ const Hero = () => {
   };
   return (
     <section className="px-2 pt-2 pb-10 lg:pb-8">
-      <div className="relative min-h-[calc(100vh-1rem)] w-full overflow-hidden bg-primary rounded-[2.5rem]">
+      <div data-nav-theme="dark" className="relative min-h-[calc(100vh-1rem)] w-full overflow-hidden bg-primary rounded-[2.5rem]">
         {/* Background Photo - Right Side, full height of container */}
         <motion.div 
           className="absolute right-0 top-0 h-full w-full md:w-2/3 lg:w-[60%]"
@@ -63,7 +63,7 @@ const Hero = () => {
           <img 
             src={glauberHero} 
             alt="Glauber Matias" 
-            className="h-full w-full object-cover object-[75%_top]" 
+            className="h-full w-full object-contain object-right" 
           />
         </motion.div>
 
