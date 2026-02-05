@@ -113,7 +113,7 @@ const ServicesSection = () => {
     <section id="skillset" className="py-8 lg:py-10">
       <div className="container mx-auto px-6">
         {/* Services Container with dark background */}
-        <div className="bg-primary rounded-[2.5rem] p-8 md:p-12">
+        <div className="bg-dark-accent rounded-[2.5rem] p-8 md:p-12">
           {/* Header - Left aligned */}
           <motion.div
             className="text-left mb-10"

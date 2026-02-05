@@ -171,6 +171,13 @@
   border: 1px solid rgba(200, 208, 215, 0.4);
 }
 
+.glass-nav-dark {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 @layer components {
   .text-accent-color {
     color: hsl(var(--green-accent));
