@@ -31,7 +31,7 @@ const TestimonialsSection = () => {
     t,
     language
   } = useLanguage();
-  return <section id="testimonials" className="py-8 mb-10 lg:py-[32px]">
+  return <section id="testimonials" className="mb-10 lg:py-[32px] py-0">
       <div className="container mx-auto px-6">
         {/* Header - Left aligned */}
         <motion.div className="text-left mb-8" initial={{
@@ -45,7 +45,7 @@ const TestimonialsSection = () => {
       }} transition={{
         duration: 0.8
       }}>
-          <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold mb-3">
+          <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold mb-3 py-0 pt-[32px]">
             {t.testimonials.title}
           </h2>
           <p className="text-base md:text-lg max-w-2xl text-[#78726d]">
