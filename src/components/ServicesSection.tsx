@@ -67,7 +67,7 @@ const ServicesSection = () => {
   const renderServiceItem = (service: Service, index: number) => (
     <motion.div
       key={service.id}
-      className="bg-background rounded-[2rem] border border-border overflow-hidden"
+      className="bg-background rounded-[2rem] overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
