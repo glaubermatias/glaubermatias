@@ -56,10 +56,10 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-primary">
+    <section className="relative min-h-screen w-full overflow-hidden bg-primary rounded-b-[2.5rem]">
       {/* Background Photo - Right Side, full height */}
       <motion.div 
-        className="absolute right-0 top-0 bottom-0 w-full md:w-2/3 lg:w-[60%] h-full"
+        className="absolute right-0 top-0 bottom-0 w-full md:w-2/3 lg:w-[65%] h-full flex justify-end"
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 1, delay: 0.3 }}
@@ -67,7 +67,7 @@ const Hero = () => {
         <img 
           src={glauberHero} 
           alt="Glauber Matias" 
-          className="w-full h-full object-cover object-[85%_top]"
+          className="h-full object-contain object-right"
         />
       </motion.div>
 
@@ -101,7 +101,7 @@ const Hero = () => {
           <motion.div className="flex flex-col sm:flex-row gap-4" variants={ctaVariants} initial="hidden" animate="visible">
             <a 
               href="#work" 
-              className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-accent text-accent-foreground btn-filled-dark rounded-full hover:bg-accent/90 transition-all duration-300 hover:-translate-y-1"
+              className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#8C1414] text-white btn-filled-dark rounded-full hover:bg-[#8C1414]/90 transition-all duration-300 hover:-translate-y-1"
             >
               View my work
               <motion.span 
