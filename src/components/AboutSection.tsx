@@ -25,12 +25,9 @@ const AboutSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold mb-3">
+          <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold">
             {t.about.title}
           </h2>
-          <p className="text-base md:text-lg max-w-2xl text-stone-500">
-            {t.about.subtitle}
-          </p>
         </motion.div>
 
         {/* Content - Two column layout */}

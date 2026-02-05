@@ -11,7 +11,7 @@ const Navigation = () => {
   const [isOnDarkBg, setIsOnDarkBg] = useState(true);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const checkBackground = () => {
       setIsScrolled(window.scrollY > 50);
       
       // Check if nav is over dark or light background
@@ -19,35 +19,57 @@ const Navigation = () => {
       if (!navElement) return;
       
       const navRect = navElement.getBoundingClientRect();
-      const navMiddleY = navRect.top + navRect.height / 2;
+      const navCenterX = navRect.left + navRect.width / 2;
+      const navCenterY = navRect.top + navRect.height / 2;
       
-      // Get all sections and check which one the nav is over
-      const sections = document.querySelectorAll('section');
-      let isOverDark = false;
+      // Get the element at the center point behind the nav
+      // Temporarily hide the nav to get the element behind it
+      const nav = navElement as HTMLElement;
+      const originalPointerEvents = nav.style.pointerEvents;
+      nav.style.pointerEvents = 'none';
       
-      sections.forEach((section) => {
-        const sectionRect = section.getBoundingClientRect();
-        // Check if nav middle is within this section
-        if (navMiddleY >= sectionRect.top && navMiddleY <= sectionRect.bottom) {
-          // Check if section has dark background (primary/black or dark classes)
-          const computedStyle = window.getComputedStyle(section);
+      const elementBehind = document.elementFromPoint(navCenterX, navCenterY);
+      
+      nav.style.pointerEvents = originalPointerEvents;
+      
+      if (elementBehind) {
+        // Walk up the DOM tree to find an element with a background color
+        let element: Element | null = elementBehind;
+        let isOverDark = false;
+        
+        while (element && element !== document.body) {
+          const computedStyle = window.getComputedStyle(element);
           const bgColor = computedStyle.backgroundColor;
           
-          // Parse RGB values
-          const rgb = bgColor.match(/\d+/g);
-          if (rgb) {
-            const brightness = (parseInt(rgb[0]) * 299 + parseInt(rgb[1]) * 587 + parseInt(rgb[2]) * 114) / 1000;
-            isOverDark = brightness < 128;
+          // Check if this element has a non-transparent background
+          if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
+            const rgb = bgColor.match(/\d+/g);
+            if (rgb && rgb.length >= 3) {
+              const brightness = (parseInt(rgb[0]) * 299 + parseInt(rgb[1]) * 587 + parseInt(rgb[2]) * 114) / 1000;
+              isOverDark = brightness < 128;
+              break;
+            }
           }
+          element = element.parentElement;
         }
-      });
-      
-      setIsOnDarkBg(isOverDark);
+        
+        setIsOnDarkBg(isOverDark);
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Run on scroll and resize
+    window.addEventListener('scroll', checkBackground);
+    window.addEventListener('resize', checkBackground);
+    
+    // Initial check with a small delay to ensure DOM is ready
+    checkBackground();
+    const timeoutId = setTimeout(checkBackground, 100);
+    
+    return () => {
+      window.removeEventListener('scroll', checkBackground);
+      window.removeEventListener('resize', checkBackground);
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   const navLinks = [

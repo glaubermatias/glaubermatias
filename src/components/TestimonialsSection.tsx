@@ -31,7 +31,7 @@ const TestimonialsSection = () => {
     t,
     language
   } = useLanguage();
-  return <section id="testimonials" className="py-8 mb-6 lg:py-[20px]">
+  return <section id="testimonials" className="py-8 mb-10 lg:py-[20px]">
       <div className="container mx-auto px-6">
         {/* Header - Left aligned */}
         <motion.div className="text-left mb-8" initial={{
