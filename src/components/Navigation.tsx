@@ -14,61 +14,53 @@ const Navigation = () => {
     const checkBackground = () => {
       setIsScrolled(window.scrollY > 50);
       
-      // Check if nav is over dark or light background
-      const navElement = document.querySelector('header nav');
-      if (!navElement) return;
+      // Get the header element
+      const headerElement = document.querySelector('header');
+      if (!headerElement) return;
       
-      const navRect = navElement.getBoundingClientRect();
-      const navCenterX = navRect.left + navRect.width / 2;
-      const navCenterY = navRect.top + navRect.height / 2;
+      const headerRect = headerElement.getBoundingClientRect();
+      const checkY = headerRect.top + headerRect.height / 2;
       
-      // Get the element at the center point behind the nav
-      // Temporarily hide the nav to get the element behind it
-      const nav = navElement as HTMLElement;
-      const originalPointerEvents = nav.style.pointerEvents;
-      nav.style.pointerEvents = 'none';
+      // Find all sections that could have dark backgrounds
+      const darkSections = document.querySelectorAll('[class*="bg-primary"], [class*="services-bg"], .bg-primary, footer');
       
-      const elementBehind = document.elementFromPoint(navCenterX, navCenterY);
+      let isOverDark = false;
       
-      nav.style.pointerEvents = originalPointerEvents;
-      
-      if (elementBehind) {
-        // Walk up the DOM tree to find an element with a background color
-        let element: Element | null = elementBehind;
-        let isOverDark = false;
-        
-        while (element && element !== document.body) {
-          const computedStyle = window.getComputedStyle(element);
-          const bgColor = computedStyle.backgroundColor;
-          
-          // Check if this element has a non-transparent background
+      darkSections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        // Check if the nav overlaps with this dark section
+        if (checkY >= rect.top && checkY <= rect.bottom) {
+          // Verify the section actually has a dark background
+          const bgColor = window.getComputedStyle(section).backgroundColor;
           if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
             const rgb = bgColor.match(/\d+/g);
             if (rgb && rgb.length >= 3) {
               const brightness = (parseInt(rgb[0]) * 299 + parseInt(rgb[1]) * 587 + parseInt(rgb[2]) * 114) / 1000;
-              isOverDark = brightness < 128;
-              break;
+              if (brightness < 128) {
+                isOverDark = true;
+              }
             }
           }
-          element = element.parentElement;
         }
-        
-        setIsOnDarkBg(isOverDark);
-      }
+      });
+      
+      setIsOnDarkBg(isOverDark);
     };
 
     // Run on scroll and resize
-    window.addEventListener('scroll', checkBackground);
+    window.addEventListener('scroll', checkBackground, { passive: true });
     window.addEventListener('resize', checkBackground);
     
     // Initial check with a small delay to ensure DOM is ready
     checkBackground();
     const timeoutId = setTimeout(checkBackground, 100);
+    const timeoutId2 = setTimeout(checkBackground, 500);
     
     return () => {
       window.removeEventListener('scroll', checkBackground);
       window.removeEventListener('resize', checkBackground);
       clearTimeout(timeoutId);
+      clearTimeout(timeoutId2);
     };
   }, []);
 
