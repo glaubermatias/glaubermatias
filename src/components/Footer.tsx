@@ -27,7 +27,7 @@ const Footer = () => {
           <div className="grid md:grid-cols-2 gap-12 mb-12">
             {/* Left Side - Contact */}
             <div>
-              <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold mb-8 text-primary-foreground">
+              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-semibold mb-8 text-accent">
                 Let's connect!
               </h2>
               

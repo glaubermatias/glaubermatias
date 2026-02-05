@@ -8,13 +8,24 @@ const Navigation = () => {
   const { t } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isOnDarkBg, setIsOnDarkBg] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+      
+      // Check if nav is over dark or light background
+      const heroSection = document.querySelector('section');
+      if (heroSection) {
+        const heroRect = heroSection.getBoundingClientRect();
+        const navHeight = 80;
+        // If we're still within the hero section
+        setIsOnDarkBg(heroRect.bottom > navHeight);
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -31,15 +42,17 @@ const Navigation = () => {
       <div className="container mx-auto px-6">
         <nav
           className={`w-full transition-all duration-500 rounded-[2rem] px-6 py-3 ${
-            isScrolled
-              ? 'glass-nav shadow-lg'
-              : 'glass-nav'
+            isOnDarkBg
+              ? 'glass-nav-dark shadow-lg'
+              : 'glass-nav shadow-lg'
           }`}
         >
           <div className="flex items-center justify-between">
             <a
               href="#"
-              className="font-display text-xl font-medium text-primary"
+              className={`font-display text-xl font-medium transition-colors duration-300 ${
+                isOnDarkBg ? 'text-primary-foreground' : 'text-primary'
+              }`}
             >
               GM
             </a>
@@ -50,19 +63,25 @@ const Navigation = () => {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="text-sm font-normal text-foreground/80 hover:text-foreground transition-colors relative group"
+                  className={`text-sm font-normal transition-colors relative group ${
+                    isOnDarkBg 
+                      ? 'text-primary-foreground/80 hover:text-primary-foreground' 
+                      : 'text-foreground/80 hover:text-foreground'
+                  }`}
                 >
                   {link.label}
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
                 </a>
               ))}
               
-              <LanguageToggle />
+              <LanguageToggle isOnDarkBg={isOnDarkBg} />
             </div>
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden p-2 text-foreground"
+              className={`md:hidden p-2 transition-colors duration-300 ${
+                isOnDarkBg ? 'text-primary-foreground' : 'text-foreground'
+              }`}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
             >
@@ -86,13 +105,17 @@ const Navigation = () => {
                       key={link.href}
                       href={link.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-lg font-normal text-foreground/80 hover:text-foreground transition-colors"
+                      className={`text-lg font-normal transition-colors ${
+                        isOnDarkBg 
+                          ? 'text-primary-foreground/80 hover:text-primary-foreground' 
+                          : 'text-foreground/80 hover:text-foreground'
+                      }`}
                     >
                       {link.label}
                     </a>
                   ))}
                   <div className="pt-4">
-                    <LanguageToggle />
+                    <LanguageToggle isOnDarkBg={isOnDarkBg} />
                   </div>
                 </div>
               </motion.div>
