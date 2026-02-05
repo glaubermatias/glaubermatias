@@ -1,15 +1,13 @@
 import { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
-import { Project } from './WorkSection';
+import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
+import { projects, ProjectCategory, ProjectData } from '@/data/projects';
 
-interface ProjectCardProps {
-  project: Project;
-  index: number;
-}
-
-const ProjectCard = ({ project, index }: ProjectCardProps) => {
+const WorkProjectCard = ({ project, index }: { project: ProjectData; index: number }) => {
   const { t } = useLanguage();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -45,7 +43,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
       transition={{ duration: 0.6, delay: index * 0.1 }}
       className="group h-full"
     >
-      <a href={`/${project.id}`} className="block h-full">
+      <Link to={`/${project.id}`} className="block h-full">
         <div className="bg-muted rounded-[2rem] overflow-hidden transition-all duration-300 h-full flex flex-col">
           <div className="p-5 pb-0">
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl select-none">
@@ -111,9 +109,94 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
             </div>
           </div>
         </div>
-      </a>
+      </Link>
     </motion.article>
   );
 };
 
-export default ProjectCard;
+const WorkPage = () => {
+  const { t } = useLanguage();
+  const [activeCategory, setActiveCategory] = useState<ProjectCategory>('all');
+
+  const categories: { key: ProjectCategory; label: string }[] = [
+    { key: 'all', label: t.work.categories.all },
+    { key: 'executive-decks', label: t.work.categories.executiveDecks },
+    { key: 'templates', label: t.work.categories.templates },
+    { key: 'tech-events', label: t.work.categories.techEvents },
+    { key: 'hr-initiatives', label: t.work.categories.hrInitiatives },
+    { key: 'side-projects', label: t.work.categories.sideProjects },
+  ];
+
+  const filteredProjects =
+    activeCategory === 'all'
+      ? projects
+      : projects.filter((p) => p.category === activeCategory);
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navigation />
+
+      <main className="pt-28 pb-16">
+        <div className="container mx-auto px-6">
+          {/* Header */}
+          <motion.div
+            className="text-left mb-8"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">
+              {t.work.title}
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl">
+              {t.work.subtitle}
+            </p>
+          </motion.div>
+
+          {/* Category Filter */}
+          <motion.div
+            className="flex flex-wrap gap-3 mb-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            {categories.map((cat) => (
+              <button
+                key={cat.key}
+                onClick={() => setActiveCategory(cat.key)}
+                className={`relative px-5 py-2.5 rounded-full text-sm font-normal transition-all duration-300 ${
+                  activeCategory === cat.key
+                    ? 'text-primary-foreground'
+                    : 'text-muted-foreground hover:text-foreground bg-secondary/50 hover:bg-secondary'
+                }`}
+              >
+                {activeCategory === cat.key && (
+                  <motion.div
+                    layoutId="activeCategoryWork"
+                    className="absolute inset-0 bg-primary rounded-full"
+                    transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+                <span className="relative z-10">{cat.label}</span>
+              </button>
+            ))}
+          </motion.div>
+
+          {/* Projects Grid */}
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            layout
+          >
+            {filteredProjects.map((project, index) => (
+              <WorkProjectCard key={project.id} project={project} index={index} />
+            ))}
+          </motion.div>
+        </div>
+      </main>
+
+      <Footer />
+    </div>
+  );
+};
+
+export default WorkPage;

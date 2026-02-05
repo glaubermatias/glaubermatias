@@ -298,7 +298,7 @@ const WorkSection = () => {
         duration: 0.6,
         delay: 0.4
       }}>
-          <Link to="/projects" className="inline-flex items-center gap-2 text-primary font-normal hover:gap-4 transition-all duration-300 text-lg">
+          <Link to="/work" className="inline-flex items-center gap-2 text-primary font-normal hover:gap-4 transition-all duration-300 text-lg">
             {t.work.viewAll}
             <ArrowRight className="w-5 h-5" />
           </Link>
