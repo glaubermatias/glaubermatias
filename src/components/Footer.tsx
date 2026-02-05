@@ -22,16 +22,14 @@ const Footer = () => {
   }];
   return <footer id="contact" className="relative">
       {/* Dark blue background with rounded top corners */}
-      <div className="bg-primary rounded-t-[2.5rem] pt-16 pb-8">
+      <div data-nav-theme="dark" className="bg-primary rounded-t-[2.5rem] pt-16 pb-8">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12 mb-12">
             {/* Left Side - Contact */}
             <div>
-              <h2 className="font-display text-3xl md:text-4xl font-semibold mb-8 lg:text-6xl text-[#b8b8b8]" style={{
-              color: '#8C1414'
-            }}>
-                Let's connect!
-              </h2>
+            <h2 className="font-display text-3xl md:text-4xl font-semibold mb-8 lg:text-6xl text-primary-foreground">
+              Let's connect!
+            </h2>
               
               <div className="space-y-4">
                 {/* Email */}
