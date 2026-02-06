@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
-import { Project } from './WorkSection';
+import { Link } from 'react-router-dom';
+import { ProjectData } from '@/data/projects';
 
 interface ProjectCardProps {
-  project: Project;
+  project: ProjectData;
   index: number;
 }
 
@@ -45,7 +46,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
       transition={{ duration: 0.6, delay: index * 0.1 }}
       className="group h-full"
     >
-      <a href={`/${project.id}`} className="block h-full">
+      <Link to={`/${project.id}`} className="block h-full">
         <div className="bg-muted rounded-[2rem] overflow-hidden transition-all duration-300 h-full flex flex-col">
           <div className="p-5 pb-0">
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl select-none">
@@ -111,7 +112,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
             </div>
           </div>
         </div>
-      </a>
+      </Link>
     </motion.article>
   );
 };

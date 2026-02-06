@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageToggle from './LanguageToggle';
 import { Menu, X } from 'lucide-react';
@@ -6,10 +7,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const Navigation = () => {
   const { t } = useLanguage();
-  const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isOnDarkBg, setIsOnDarkBg] = useState(true);
   const navRef = useRef<HTMLElement>(null!);
+
+  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     let rafId = 0;
@@ -17,28 +21,19 @@ const Navigation = () => {
     const getIsOverDarkTheme = () => {
       const navEl = navRef.current;
       if (!navEl) return true;
-
       const rect = navEl.getBoundingClientRect();
       const x = rect.left + rect.width / 2;
       const y = rect.top + rect.height / 2;
-
       const elements = document.elementsFromPoint(x, y) as HTMLElement[];
-
       for (const el of elements) {
         if (!el) continue;
         if (el === navEl || navEl.contains(el)) continue;
-
-        // We explicitly mark dark sections to avoid false-positives from utility classes.
         if (el.closest('[data-nav-theme="dark"]')) return true;
       }
-
       return false;
     };
 
     const update = () => {
-      const nextScrolled = window.scrollY > 50;
-      setIsScrolled((prev) => (prev !== nextScrolled ? nextScrolled : prev));
-
       const nextIsDark = getIsOverDarkTheme();
       setIsOnDarkBg((prev) => (prev !== nextIsDark ? nextIsDark : prev));
     };
@@ -53,8 +48,6 @@ const Navigation = () => {
 
     window.addEventListener('scroll', onChange, { passive: true });
     window.addEventListener('resize', onChange);
-
-    // Initial checks (after layout)
     onChange();
     const t1 = window.setTimeout(onChange, 80);
     const t2 = window.setTimeout(onChange, 350);
@@ -68,13 +61,61 @@ const Navigation = () => {
     };
   }, []);
 
-  const navLinks = [
-    { href: '#work', label: t.nav.work },
-    { href: '#skillset', label: t.nav.skillset },
-    { href: '#experience', label: t.nav.experience },
-    { href: '#about', label: t.nav.about },
-    { href: '#contact', label: t.nav.contact },
-  ];
+  // Build nav links based on current page
+  const navLinks = isHomePage
+    ? [
+        { href: '#work', label: t.nav.work },
+        { href: '#skillset', label: t.nav.skillset },
+        { href: '#experience', label: t.nav.experience },
+        { href: '/about-me', label: t.nav.about },
+        { href: '#contact', label: t.nav.contact },
+      ]
+    : [
+        { href: '/work', label: t.nav.work },
+        { href: '/#skillset', label: t.nav.skillset },
+        { href: '/#experience', label: t.nav.experience },
+        { href: '/about-me', label: t.nav.about },
+        { href: '/#contact', label: t.nav.contact },
+      ];
+
+  const handleLinkClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      e.preventDefault();
+      setIsMobileMenuOpen(false);
+
+      // Same-page anchor (#section)
+      if (href.startsWith('#')) {
+        const id = href.slice(1);
+        if (!id) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+        }
+        return;
+      }
+
+      // Cross-page anchor (/#section) – navigate home then scroll
+      if (href.startsWith('/#')) {
+        const sectionId = href.slice(2);
+        if (isHomePage) {
+          document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          navigate('/');
+          // Wait for navigation + render, then scroll
+          setTimeout(() => {
+            document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+          }, 350);
+        }
+        return;
+      }
+
+      // Regular page navigation
+      navigate(href);
+    },
+    [isHomePage, navigate],
+  );
+
+  const logoHref = isHomePage ? '#' : '/';
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 py-4">
@@ -82,14 +123,13 @@ const Navigation = () => {
         <nav
           ref={navRef}
           className={`w-full transition-all duration-500 rounded-[2rem] px-6 py-3 ${
-            isOnDarkBg
-              ? 'glass-nav-dark shadow-lg'
-              : 'glass-nav shadow-lg'
+            isOnDarkBg ? 'glass-nav-dark shadow-lg' : 'glass-nav shadow-lg'
           }`}
         >
           <div className="flex items-center justify-between">
             <a
-              href="#"
+              href={logoHref}
+              onClick={(e) => handleLinkClick(e, logoHref)}
               className={`font-display text-xl font-medium transition-colors duration-300 ${
                 isOnDarkBg ? 'text-primary-foreground' : 'text-primary'
               }`}
@@ -103,9 +143,10 @@ const Navigation = () => {
                 <a
                   key={link.href}
                   href={link.href}
+                  onClick={(e) => handleLinkClick(e, link.href)}
                   className={`text-sm font-normal transition-colors relative group ${
-                    isOnDarkBg 
-                      ? 'text-primary-foreground/80 hover:text-primary-foreground' 
+                    isOnDarkBg
+                      ? 'text-primary-foreground/80 hover:text-primary-foreground'
                       : 'text-foreground/80 hover:text-foreground'
                   }`}
                 >
@@ -113,7 +154,6 @@ const Navigation = () => {
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
                 </a>
               ))}
-              
               <LanguageToggle isOnDarkBg={isOnDarkBg} />
             </div>
 
@@ -144,10 +184,10 @@ const Navigation = () => {
                     <a
                       key={link.href}
                       href={link.href}
-                      onClick={() => setIsMobileMenuOpen(false)}
+                      onClick={(e) => handleLinkClick(e, link.href)}
                       className={`text-lg font-normal transition-colors ${
-                        isOnDarkBg 
-                          ? 'text-primary-foreground/80 hover:text-primary-foreground' 
+                        isOnDarkBg
+                          ? 'text-primary-foreground/80 hover:text-primary-foreground'
                           : 'text-foreground/80 hover:text-foreground'
                       }`}
                     >

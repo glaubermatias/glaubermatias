@@ -82,7 +82,7 @@ const AboutSection = () => {
               </p>
 
               {/* Who I am beyond the slides Link - More visible */}
-              <Link to="/about" className="inline-flex items-center gap-2 px-5 py-2.5 border-2 border-primary text-primary font-normal rounded-full hover:bg-primary hover:text-primary-foreground transition-all duration-300 group">
+              <Link to="/about-me" className="inline-flex items-center gap-2 px-5 py-2.5 border-2 border-primary text-primary font-normal rounded-full hover:bg-primary hover:text-primary-foreground transition-all duration-300 group">
                 <span>Who I am beyond the slides</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
