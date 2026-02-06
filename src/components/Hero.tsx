@@ -53,7 +53,8 @@ const Hero = () => {
           - Desktop (md+): absolutely positioned, h-full w-auto, anchored top & bottom & right
         */}
         <motion.div
-          className="md:absolute md:right-0 md:top-0 md:bottom-0 flex justify-end"
+          className="md:absolute md:bottom-0 flex justify-end"
+          style={{ top: '70px', right: '-10%' }}
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, delay: 0.3 }}
