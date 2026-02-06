@@ -3,21 +3,26 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import glauberPhoto from '@/assets/glauber-photo.jpg';
+import AnimatedCounter from '@/components/AnimatedCounter';
 const AboutSection = () => {
   const {
     t
   } = useLanguage();
   const stats = [{
-    number: '7+',
+    number: 7,
+    suffix: '+',
     label: 'Years of experience'
   }, {
-    number: '500+',
+    number: 500,
+    suffix: '+',
     label: 'Presentations designed'
   }, {
-    number: '50+',
+    number: 50,
+    suffix: '+',
     label: 'Global clients'
   }, {
-    number: '10M+',
+    number: 10,
+    suffix: 'M+',
     label: 'Audience reached'
   }];
   return <section id="about" className="py-8 pb-[50px] lg:py-[27px]">
@@ -102,10 +107,10 @@ const AboutSection = () => {
               duration: 0.5,
               delay: 0.2 + index * 0.1
             }} className="text-left">
-                  <div className="font-display text-3xl md:text-4xl font-semibold text-primary mb-1">
-                    {stat.number}
-                  </div>
-                  <div className="text-sm text-stone-500">{stat.label}</div>
+                   <div className="font-display text-3xl md:text-4xl font-semibold text-primary mb-1">
+                     <AnimatedCounter target={stat.number} suffix={stat.suffix} />
+                   </div>
+                   <div className="text-sm text-stone-500">{stat.label}</div>
                 </motion.div>)}
             </div>
           </motion.div>
