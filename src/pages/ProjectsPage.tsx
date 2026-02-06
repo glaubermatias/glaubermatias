@@ -4,7 +4,18 @@ import { motion } from 'framer-motion';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import ProjectCard from '@/components/ProjectCard';
-import { ProjectCategory, Project } from '@/components/WorkSection';
+import { ProjectCategory } from '@/data/projects';
+
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  category: ProjectCategory;
+  images: string[];
+  year: string;
+  client: string;
+  featured?: boolean;
+}
 
 // All projects data
 const projects: Project[] = [
