@@ -66,14 +66,14 @@ const Navigation = () => {
     ? [
         { href: '#work', label: t.nav.work },
         { href: '#skillset', label: t.nav.skillset },
-        { href: '#experience', label: t.nav.experience },
+        { href: '/experience', label: t.nav.experience },
         { href: '/about-me', label: t.nav.about },
         { href: '#contact', label: t.nav.contact },
       ]
     : [
         { href: '/work', label: t.nav.work },
         { href: '/#skillset', label: t.nav.skillset },
-        { href: '/#experience', label: t.nav.experience },
+        { href: '/experience', label: t.nav.experience },
         { href: '/about-me', label: t.nav.about },
         { href: '/#contact', label: t.nav.contact },
       ];

@@ -1,5 +1,10 @@
 export type ProjectCategory = 'all' | 'executive-decks' | 'templates' | 'tech-events' | 'hr-initiatives' | 'side-projects';
 
+export interface BigNumber {
+  value: string;
+  label: string;
+}
+
 export interface ProjectData {
   id: string;
   title: string;
@@ -9,7 +14,7 @@ export interface ProjectData {
   year: string;
   client: string;
   featured?: boolean;
-  // Detail page fields
+  bigNumbers?: BigNumber[];
   overview?: string;
   challenge?: string;
   solution?: string;
@@ -17,7 +22,6 @@ export interface ProjectData {
 }
 
 export const projects: ProjectData[] = [
-  // Executive decks (4)
   {
     id: 'leadership-academy',
     title: 'Leadership Academy',
@@ -31,14 +35,15 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Corporate Client',
     featured: true,
+    bigNumbers: [
+      { value: '5', label: 'Leadership cohorts' },
+      { value: '+40%', label: 'Engagement increase' },
+      { value: '100+', label: 'Slide layouts' },
+    ],
     overview: 'A comprehensive presentation system designed to support leadership development programs across multiple organizational levels.',
     challenge: 'Creating engaging and impactful materials that could effectively communicate complex leadership concepts while maintaining consistency across various training modules.',
     solution: 'Developed a modular presentation system with clear visual hierarchies, interactive elements, and a cohesive design language that adapts to different leadership topics.',
-    results: [
-      'Successfully deployed across 5 leadership cohorts',
-      'Increased participant engagement by 40%',
-      'Became the standard template for all leadership programs',
-    ],
+    results: ['Successfully deployed across 5 leadership cohorts', 'Increased participant engagement by 40%', 'Became the standard template for all leadership programs'],
   },
   {
     id: 'pitch-decks',
@@ -53,14 +58,15 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Various Startups',
     featured: true,
+    bigNumbers: [
+      { value: '$20M+', label: 'Combined funding secured' },
+      { value: '90%', label: 'Positive investor feedback' },
+      { value: '15+', label: 'Startups served' },
+    ],
     overview: 'Collection of investor-ready pitch decks crafted to tell compelling stories and present data in visually impactful ways.',
     challenge: 'Each startup had unique value propositions that needed to be communicated clearly to sophisticated investors in a short time frame.',
-    solution: 'Created narrative-driven decks with progressive disclosure, custom infographics, and clear data visualization that made complex information instantly understandable.',
-    results: [
-      'Helped secure over $20M in combined funding',
-      '90% positive investor feedback on presentation clarity',
-      'Established reusable pitch frameworks for future rounds',
-    ],
+    solution: 'Created narrative-driven decks with progressive disclosure, custom infographics, and clear data visualization.',
+    results: ['Helped secure over $20M in combined funding', '90% positive investor feedback on presentation clarity', 'Established reusable pitch frameworks'],
   },
   {
     id: 'all-hands-and-leadership-meetings',
@@ -74,14 +80,15 @@ export const projects: ProjectData[] = [
     ],
     year: '2024',
     client: 'Enterprise Company',
-    overview: 'Presentation materials for quarterly all-hands meetings and monthly leadership sync sessions.',
-    challenge: 'Maintaining engagement across diverse audiences while effectively communicating company updates, metrics, and strategic initiatives.',
-    solution: 'Developed a consistent visual framework with dynamic data visualizations, celebration moments, and clear action items that kept audiences engaged.',
-    results: [
-      'Improved meeting satisfaction scores by 35%',
-      'Reduced presentation preparation time by 50%',
-      'Created reusable templates for future meetings',
+    bigNumbers: [
+      { value: '+35%', label: 'Satisfaction scores' },
+      { value: '-50%', label: 'Preparation time' },
+      { value: '20+', label: 'Meetings designed' },
     ],
+    overview: 'Presentation materials for quarterly all-hands meetings and monthly leadership sync sessions.',
+    challenge: 'Maintaining engagement across diverse audiences while effectively communicating company updates.',
+    solution: 'Developed a consistent visual framework with dynamic data visualizations and clear action items.',
+    results: ['Improved meeting satisfaction scores by 35%', 'Reduced presentation preparation time by 50%', 'Created reusable templates'],
   },
   {
     id: 'summit',
@@ -96,17 +103,16 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Global Corporation',
     featured: true,
-    overview: 'Complete presentation package for annual corporate summit including keynotes, breakout sessions, and workshop materials.',
-    challenge: 'Creating presentations that would be impactful in large venue settings while maintaining brand consistency across multiple speakers.',
-    solution: 'Designed bold, high-contrast visuals optimized for large screens with carefully timed animations that supported speaker delivery.',
-    results: [
-      'Highest-rated summit in company history',
-      '4.9/5 average session rating',
-      'Presentation style adopted for all future events',
+    bigNumbers: [
+      { value: '4.9/5', label: 'Average session rating' },
+      { value: '2K+', label: 'Attendees' },
+      { value: '12', label: 'Sessions designed' },
     ],
+    overview: 'Complete presentation package for annual corporate summit.',
+    challenge: 'Creating presentations impactful in large venue settings while maintaining brand consistency.',
+    solution: 'Designed bold, high-contrast visuals optimized for large screens with carefully timed animations.',
+    results: ['Highest-rated summit in company history', '4.9/5 average session rating', 'Style adopted for all future events'],
   },
-
-  // Templates (3)
   {
     id: 'templates-library',
     title: 'Templates Library',
@@ -120,14 +126,15 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Enterprise Client',
     featured: true,
-    overview: 'A scalable template system with 100+ slide layouts covering every business communication need.',
-    challenge: 'Multiple departments were creating presentations with inconsistent branding, leading to a fragmented company image.',
-    solution: 'Built a comprehensive template library with intuitive categorization, easy customization options, and built-in brand guidelines.',
-    results: [
-      'Adopted by 95% of the organization',
-      'Reduced presentation creation time by 60%',
-      'Achieved consistent brand representation across all departments',
+    bigNumbers: [
+      { value: '95%', label: 'Adoption rate' },
+      { value: '-60%', label: 'Creation time' },
+      { value: '100+', label: 'Slide layouts' },
     ],
+    overview: 'A scalable template system with 100+ slide layouts.',
+    challenge: 'Multiple departments creating presentations with inconsistent branding.',
+    solution: 'Built a comprehensive template library with intuitive categorization and built-in brand guidelines.',
+    results: ['Adopted by 95% of the organization', 'Reduced creation time by 60%', 'Consistent brand representation'],
   },
   {
     id: 'presentation-templates',
@@ -141,14 +148,15 @@ export const projects: ProjectData[] = [
     ],
     year: '2024',
     client: 'Various Clients',
-    overview: 'Specialized templates designed for specific business functions and communication objectives.',
-    challenge: 'Generic templates were not meeting the specific needs of different business functions, leading to excessive customization time.',
-    solution: 'Created purpose-built templates with pre-configured layouts, color schemes, and content structures for each use case.',
-    results: [
-      'Reduced customization time by 70%',
-      'Improved presentation quality consistency',
-      'Enabled non-designers to create professional materials',
+    bigNumbers: [
+      { value: '-70%', label: 'Customization time' },
+      { value: '30+', label: 'Templates created' },
+      { value: '8', label: 'Business functions' },
     ],
+    overview: 'Specialized templates designed for specific business functions.',
+    challenge: 'Generic templates not meeting the needs of different business functions.',
+    solution: 'Created purpose-built templates with pre-configured layouts for each use case.',
+    results: ['Reduced customization time by 70%', 'Improved quality consistency', 'Enabled non-designers to create professional materials'],
   },
   {
     id: 'presentation-masterclasses',
@@ -162,17 +170,16 @@ export const projects: ProjectData[] = [
     ],
     year: '2023',
     client: 'Corporate Training',
-    overview: 'Comprehensive training program materials teaching the art and science of effective presentations.',
-    challenge: 'Many professionals struggle with creating and delivering impactful presentations despite having access to tools.',
-    solution: 'Developed an interactive masterclass series with hands-on exercises, before/after examples, and practical frameworks.',
-    results: [
-      'Trained over 500 professionals',
-      '92% reported improved presentation skills',
-      'Created a self-service learning library',
+    bigNumbers: [
+      { value: '500+', label: 'Professionals trained' },
+      { value: '92%', label: 'Reported improvement' },
+      { value: '12', label: 'Workshop modules' },
     ],
+    overview: 'Comprehensive training program materials.',
+    challenge: 'Many professionals struggle with creating impactful presentations.',
+    solution: 'Developed an interactive masterclass series with hands-on exercises.',
+    results: ['Trained over 500 professionals', '92% reported improved skills', 'Created a self-service learning library'],
   },
-
-  // Tech events (2)
   {
     id: 'tech-meetups',
     title: 'Tech Meetups',
@@ -186,14 +193,15 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Tech Community',
     featured: true,
-    overview: 'Presentation designs for regular technology meetups featuring code-forward layouts and technical diagrams.',
-    challenge: 'Technical content often becomes dry and hard to follow when presented in traditional slide formats.',
-    solution: 'Created dynamic layouts with syntax-highlighted code blocks, animated diagrams, and progressive disclosure of complex concepts.',
-    results: [
-      'Increased meetup attendance by 50%',
-      'Improved audience engagement scores',
-      'Established a recognizable visual brand for the meetup series',
+    bigNumbers: [
+      { value: '+50%', label: 'Attendance increase' },
+      { value: '24', label: 'Events designed' },
+      { value: '4.8/5', label: 'Speaker satisfaction' },
     ],
+    overview: 'Presentation designs for regular technology meetups.',
+    challenge: 'Technical content often becomes dry in traditional slide formats.',
+    solution: 'Created dynamic layouts with syntax-highlighted code blocks and animated diagrams.',
+    results: ['Increased meetup attendance by 50%', 'Improved audience engagement', 'Established a recognizable visual brand'],
   },
   {
     id: 'tech-conference',
@@ -207,17 +215,16 @@ export const projects: ProjectData[] = [
     ],
     year: '2024',
     client: 'Major Tech Conference',
-    overview: 'Keynote and session presentations designed for large-scale technology conferences.',
-    challenge: 'Conference presentations need to stand out among hundreds of sessions while effectively communicating complex technical concepts.',
-    solution: 'Designed bold, memorable visuals with strong narrative arcs and audience engagement moments.',
-    results: [
-      'Sessions consistently rated in top 10%',
-      'Received invitations to speak at additional conferences',
-      'Presentations shared widely on social media',
+    bigNumbers: [
+      { value: 'Top 10%', label: 'Session ratings' },
+      { value: '5', label: 'Conference invites' },
+      { value: '10K+', label: 'Social shares' },
     ],
+    overview: 'Keynote and session presentations for large-scale technology conferences.',
+    challenge: 'Presentations need to stand out among hundreds of sessions.',
+    solution: 'Designed bold, memorable visuals with strong narrative arcs.',
+    results: ['Sessions consistently rated in top 10%', 'Received additional conference invitations', 'Widely shared on social media'],
   },
-
-  // HR initiatives (2)
   {
     id: 'tech-interns-onboarding',
     title: 'Brilliant Youth',
@@ -231,14 +238,15 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Tech Company HR',
     featured: true,
-    overview: 'Complete onboarding experience for technology interns including orientation materials, training modules, and mentorship resources.',
-    challenge: 'Creating an onboarding experience that would engage young professionals and quickly integrate them into the company culture.',
-    solution: 'Developed a visually engaging, interactive onboarding journey with gamification elements and clear milestones.',
-    results: [
-      'Reduced time-to-productivity by 40%',
-      'Achieved 98% intern satisfaction rating',
-      'Increased intern-to-full-time conversion rate',
+    bigNumbers: [
+      { value: '-40%', label: 'Time-to-productivity' },
+      { value: '98%', label: 'Intern satisfaction' },
+      { value: '60+', label: 'Interns onboarded' },
     ],
+    overview: 'Complete onboarding experience for technology interns.',
+    challenge: 'Creating an onboarding experience that engages young professionals.',
+    solution: 'Developed a visually engaging, interactive onboarding journey with gamification elements.',
+    results: ['Reduced time-to-productivity by 40%', '98% intern satisfaction', 'Increased intern-to-full-time conversion'],
   },
   {
     id: 'tech-newsletter',
@@ -252,17 +260,16 @@ export const projects: ProjectData[] = [
     ],
     year: '2024',
     client: 'People & Technology Team',
-    overview: 'External-facing newsletter design showcasing company culture, technology innovations, and career opportunities.',
-    challenge: 'Creating a newsletter format that would effectively communicate to external audiences while maintaining employer brand standards.',
-    solution: 'Designed a modular newsletter template with engaging visuals, clear hierarchy, and compelling storytelling formats.',
-    results: [
-      'Increased newsletter open rates by 45%',
-      'Grew subscriber base by 200%',
-      'Enhanced employer brand perception',
+    bigNumbers: [
+      { value: '+45%', label: 'Open rate increase' },
+      { value: '+200%', label: 'Subscriber growth' },
+      { value: '24', label: 'Editions designed' },
     ],
+    overview: 'External-facing newsletter design.',
+    challenge: 'Creating a newsletter that effectively communicates to external audiences.',
+    solution: 'Designed a modular newsletter template with engaging visuals.',
+    results: ['Increased open rates by 45%', 'Grew subscriber base by 200%', 'Enhanced employer brand perception'],
   },
-
-  // Side projects (4)
   {
     id: 'ALDI-case-study',
     title: 'ALDI Case Study',
@@ -276,14 +283,15 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Personal Project',
     featured: true,
-    overview: 'In-depth case study analyzing retail strategies and presenting recommendations for market expansion.',
-    challenge: 'Transforming complex business analysis into a visually compelling and easily digestible presentation format.',
-    solution: 'Created a narrative-driven case study with clear data visualizations, competitive analysis frameworks, and actionable recommendations.',
-    results: [
-      'Featured in design portfolio showcases',
-      'Used as teaching material in business courses',
-      'Demonstrated strategic thinking capabilities',
+    bigNumbers: [
+      { value: '3', label: 'Markets analyzed' },
+      { value: '40+', label: 'Data points' },
+      { value: '15', label: 'Recommendations' },
     ],
+    overview: 'In-depth case study analyzing retail strategies.',
+    challenge: 'Transforming complex business analysis into visually compelling format.',
+    solution: 'Created a narrative-driven case study with clear data visualizations.',
+    results: ['Featured in portfolio showcases', 'Used as teaching material', 'Demonstrated strategic thinking'],
   },
   {
     id: 'Uberall-dashboard',
@@ -297,14 +305,15 @@ export const projects: ProjectData[] = [
     ],
     year: '2023',
     client: 'Personal Project',
-    overview: 'Conceptual dashboard design exploring data visualization approaches for location-based marketing analytics.',
-    challenge: 'Presenting complex multi-location data in a way that enables quick insights and decision-making.',
-    solution: 'Designed an intuitive dashboard with hierarchical data views, interactive filtering, and clear visual indicators.',
-    results: [
-      'Explored innovative data visualization techniques',
-      'Refined dashboard design skills',
-      'Created reusable component library',
+    bigNumbers: [
+      { value: '50+', label: 'Data visualizations' },
+      { value: '8', label: 'Dashboard views' },
+      { value: '3', label: 'User personas' },
     ],
+    overview: 'Conceptual dashboard design exploring data visualization.',
+    challenge: 'Presenting complex multi-location data for quick insights.',
+    solution: 'Designed an intuitive dashboard with hierarchical data views.',
+    results: ['Explored innovative visualization techniques', 'Refined dashboard design skills', 'Created reusable component library'],
   },
   {
     id: 'booklet',
@@ -318,13 +327,10 @@ export const projects: ProjectData[] = [
     ],
     year: '2023',
     client: 'Personal Project',
-    overview: 'Creative exploration of editorial design through a multi-page booklet format.',
-    challenge: 'Pushing creative boundaries while maintaining readability and visual coherence across multiple pages.',
-    solution: 'Experimented with unconventional layouts, typography treatments, and visual storytelling techniques.',
-    results: [
-      'Expanded design skill set beyond digital',
-      'Explored print production techniques',
-      'Created portfolio-worthy creative work',
+    bigNumbers: [
+      { value: '32', label: 'Pages designed' },
+      { value: '4', label: 'Typography styles' },
+      { value: '2', label: 'Print editions' },
     ],
   },
   {
@@ -339,33 +345,26 @@ export const projects: ProjectData[] = [
     ],
     year: '2023',
     client: 'Personal Project',
-    overview: 'A personal project transforming a travel itinerary into an engaging visual presentation.',
-    challenge: 'Organizing complex travel information in a way that is both beautiful and practically useful.',
-    solution: 'Created a visually rich itinerary with maps, timelines, and curated recommendations in an easy-to-follow format.',
-    results: [
-      'Demonstrated versatility in design applications',
-      'Created shareable travel resource',
-      'Explored infographic and timeline design',
+    bigNumbers: [
+      { value: '7', label: 'Days planned' },
+      { value: '25+', label: 'Curated spots' },
+      { value: '5', label: 'Infographic maps' },
     ],
   },
 ];
 
-// Helper function to get project by ID
 export const getProjectById = (id: string): ProjectData | undefined => {
   return projects.find(project => project.id === id);
 };
 
-// Helper function to get related projects (same category, excluding current)
 export const getRelatedProjects = (projectId: string, limit: number = 3): ProjectData[] => {
   const currentProject = getProjectById(projectId);
   if (!currentProject) return [];
-  
   return projects
     .filter(p => p.category === currentProject.category && p.id !== projectId)
     .slice(0, limit);
 };
 
-// Helper function to get featured projects
 export const getFeaturedProjects = (limit: number = 6): ProjectData[] => {
   return projects.filter(p => p.featured).slice(0, limit);
 };

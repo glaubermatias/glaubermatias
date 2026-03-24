@@ -1,152 +1,70 @@
 import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
-import glauberHero from '@/assets/glauber-hero.jpg';
+import glauberPortrait from '@/assets/glauber-portrait.png';
 
 const Hero = () => {
   const { t } = useLanguage();
 
-  const headlineVariants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: 0.2,
-        duration: 0.8,
-        ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
-      },
-    },
-  };
-
-  const descriptionVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: 0.5,
-        duration: 0.8,
-        ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
-      },
-    },
-  };
-
-  const ctaVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { delay: 0.8, duration: 0.6 },
-    },
-  };
-
   return (
-    <section className="px-2 pt-2 pb-10 lg:pb-8">
-      {/* Black box fills the viewport minus the top padding */}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Grainy gradient background */}
       <div
-        data-nav-theme="dark"
-        className="relative w-full overflow-hidden bg-primary rounded-[2.5rem]"
-        style={{ minHeight: 'calc(100vh - 0.5rem)' }}
-      >
-        {/*
-          Photo layout:
-          - Always absolutely positioned, anchored to bottom of black box
-          - Top anchored below floating nav (~70px)
-          - On narrow screens the photo is cropped on the sides (object-cover, centered on subject)
-          - On wide screens the photo keeps its natural aspect (object-contain) shifted right
-        */}
+        className="absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(ellipse at 20% 50%, #e85102 0%, transparent 50%), ' +
+            'radial-gradient(ellipse at 80% 20%, #f16001 0%, transparent 50%), ' +
+            'radial-gradient(ellipse at 50% 80%, #d9c3ab 0%, transparent 60%), ' +
+            'radial-gradient(ellipse at 60% 40%, #e85102 0%, transparent 40%), ' +
+            'linear-gradient(135deg, #d9c3ab 0%, #f16001 40%, #e85102 70%, #d9c3ab 100%)',
+        }}
+      />
+      {/* Grain texture overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.35] pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          backgroundRepeat: 'repeat',
+          backgroundSize: '128px 128px',
+        }}
+      />
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-3xl mx-auto">
+        {/* Photo */}
         <motion.div
-          className="absolute inset-x-0 bottom-0"
-          style={{ top: '70px' }}
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.3 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.1 }}
+          className="mb-8"
         >
           <img
-            src={glauberHero}
+            src={glauberPortrait}
             alt="Glauber Matias"
-            className="h-full w-full object-cover object-[center_top] md:object-contain md:object-[right_bottom]"
-            style={{ marginRight: '-5%' }}
+            className="w-28 h-28 md:w-36 md:h-36 object-cover"
+            style={{ borderRadius: '33%' }}
           />
         </motion.div>
 
-        {/* Gradient overlay – transparent at top, 70% black at bottom */}
-        <div
-          className="absolute inset-0 z-[5] pointer-events-none"
-          style={{
-            background:
-              'linear-gradient(to bottom, rgba(0,0,0,0) 30%, rgba(0,0,0,0.70) 100%)',
-          }}
-        />
+        {/* Impact phrase */}
+        <motion.h1
+          className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.1] mb-6 text-white"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
+          Designer of visual stories that turn your message into impact.
+        </motion.h1>
 
-        {/* Content – always overlays the photo */}
-        <div className="relative z-10 flex items-end min-h-[calc(100vh-0.5rem)]">
-          <div className="container mx-auto px-6">
-            {/* On mobile, extra top padding so face stays visible */}
-            <div className="max-w-xl pb-10 pt-[60%] sm:pt-[50%] md:pt-0 md:pb-16 lg:pb-20">
-              {/* Main Headline */}
-              <motion.div
-                className="mb-8"
-                variants={headlineVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                <h1
-                  className="font-display text-2xl sm:text-3xl md:text-4xl font-medium leading-[1.1] mb-4 lg:text-6xl"
-                  style={{ color: '#666769' }}
-                >
-                  Hi! I'm Glauber.
-                </h1>
-                <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-medium leading-[1.1] text-primary-foreground lg:text-6xl">
-                  Designer of visual stories that turn your message into impact
-                </h2>
-              </motion.div>
-
-              {/* Description */}
-              <motion.p
-                className="text-base sm:text-lg leading-relaxed max-w-lg mb-10 font-normal text-primary-foreground/60"
-                variants={descriptionVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                {t.hero.description}
-              </motion.p>
-
-              {/* CTA Buttons */}
-              <motion.div
-                className="flex flex-col sm:flex-row gap-4"
-                variants={ctaVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                <a
-                  href="#work"
-                  className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#8C1414] text-white btn-filled-dark rounded-full hover:bg-[#8C1414]/90 transition-all duration-300 hover:-translate-y-1"
-                >
-                  View my work
-                  <motion.span
-                    animate={{ y: [0, 4, 0] }}
-                    transition={{
-                      repeat: Infinity,
-                      duration: 1.5,
-                      ease: 'easeInOut',
-                    }}
-                  >
-                    <ChevronDown className="w-5 h-5" />
-                  </motion.span>
-                </a>
-                <a
-                  href="#contact"
-                  className="inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-primary-foreground/30 text-primary-foreground font-normal rounded-full hover:border-primary-foreground hover:bg-primary-foreground/10 transition-all duration-300"
-                >
-                  Let's connect
-                </a>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-
+        {/* Subtitle */}
+        <motion.p
+          className="text-base sm:text-lg md:text-xl leading-relaxed text-white/70 max-w-xl"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+        >
+          {t.hero.description}
+        </motion.p>
       </div>
     </section>
   );
