@@ -1,4 +1,3 @@
-import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
@@ -6,16 +5,14 @@ import { projects } from '@/data/projects';
 import WorkCard from './WorkCard';
 
 const WorkSection = () => {
-  const { t } = useLanguage();
-
   const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
 
   return (
     <section id="work" className="py-16 lg:py-24">
       <div className="container mx-auto px-6">
-        {/* Header */}
+        {/* Header — centered */}
         <motion.div
-          className="text-left mb-12"
+          className="text-center mb-12"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -26,8 +23,8 @@ const WorkSection = () => {
           </h2>
         </motion.div>
 
-        {/* Projects List - Stacked */}
-        <div className="space-y-8">
+        {/* Projects List - Stacked with more spacing */}
+        <div className="space-y-12">
           {featuredProjects.map((project, index) => (
             <WorkCard key={project.id} project={project} index={index} />
           ))}
@@ -35,7 +32,7 @@ const WorkSection = () => {
 
         {/* View All Projects Link */}
         <motion.div
-          className="text-center mt-16"
+          className="text-center mt-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -45,7 +42,7 @@ const WorkSection = () => {
             to="/work"
             className="inline-flex items-center gap-2 text-foreground font-normal hover:gap-4 transition-all duration-300 text-lg"
           >
-            {t.work.viewAll}
+            View all my projects
             <ArrowRight className="w-5 h-5" />
           </Link>
         </motion.div>

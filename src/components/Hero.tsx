@@ -1,40 +1,42 @@
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import glauberPortrait from '@/assets/glauber-portrait.png';
 
 const Hero = () => {
-  const { t } = useLanguage();
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <section data-nav-theme="dark" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Grainy gradient background — stronger orange */}
+      {/* Grainy gradient background — high saturation orange */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(ellipse at 20% 50%, #e85102 0%, transparent 50%), ' +
-            'radial-gradient(ellipse at 80% 20%, #f16001 0%, transparent 50%), ' +
-            'radial-gradient(ellipse at 50% 80%, #d9c3ab 0%, transparent 60%), ' +
-            'radial-gradient(ellipse at 60% 40%, #e85102 0%, transparent 40%), ' +
-            'radial-gradient(ellipse at 30% 30%, #e85102 0%, transparent 35%), ' +
-            'radial-gradient(ellipse at 70% 70%, #f16001 0%, transparent 45%), ' +
-            'linear-gradient(135deg, #d9c3ab 0%, #e85102 30%, #f16001 50%, #e85102 70%, #d9c3ab 100%)',
+            'radial-gradient(ellipse at 15% 45%, #e85102 0%, transparent 45%), ' +
+            'radial-gradient(ellipse at 85% 15%, #f16001 0%, transparent 45%), ' +
+            'radial-gradient(ellipse at 50% 85%, #d9c3ab 0%, transparent 55%), ' +
+            'radial-gradient(ellipse at 65% 35%, #e85102 0%, transparent 35%), ' +
+            'radial-gradient(ellipse at 25% 25%, #f16001 0%, transparent 30%), ' +
+            'radial-gradient(ellipse at 75% 75%, #e85102 0%, transparent 40%), ' +
+            'radial-gradient(ellipse at 45% 55%, #f16001 0%, transparent 30%), ' +
+            'linear-gradient(135deg, #d9c3ab 0%, #e85102 25%, #f16001 45%, #e85102 65%, #f16001 80%, #d9c3ab 100%)',
         }}
       />
-      {/* Grain texture overlay */}
+      {/* Fine grain texture overlay — subtle like reference */}
       <div
-        className="absolute inset-0 opacity-[0.35] pointer-events-none"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          opacity: 0.18,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
           backgroundRepeat: 'repeat',
-          backgroundSize: '128px 128px',
+          backgroundSize: '256px 256px',
         }}
       />
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-3xl mx-auto">
-        {/* Photo — links to About, with elegant hover */}
+        {/* Photo — links to About, with orange overlay filter */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -44,12 +46,34 @@ const Hero = () => {
           <Link
             to="/about-me"
             className="block relative group"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
           >
             <img
               src={glauberPortrait}
               alt="Glauber Matias"
-              className="w-28 h-28 md:w-36 md:h-36 object-cover transition-all duration-500 ease-out group-hover:scale-105 group-hover:brightness-110"
+              className="w-28 h-28 md:w-36 md:h-36 object-cover transition-all duration-700 ease-out group-hover:scale-105 group-hover:brightness-110"
               style={{ borderRadius: '33%' }}
+            />
+            {/* Orange grainy overlay — hides on hover */}
+            <div
+              className="absolute inset-0 transition-opacity duration-700 ease-out pointer-events-none"
+              style={{
+                borderRadius: '33%',
+                background: 'linear-gradient(135deg, rgba(232, 81, 2, 0.55), rgba(241, 96, 1, 0.45))',
+                opacity: isHovered ? 0 : 1,
+              }}
+            />
+            {/* Grain on photo overlay */}
+            <div
+              className="absolute inset-0 pointer-events-none transition-opacity duration-700"
+              style={{
+                borderRadius: '33%',
+                opacity: isHovered ? 0 : 0.2,
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+                backgroundRepeat: 'repeat',
+                backgroundSize: '128px 128px',
+              }}
             />
             {/* Orange neon glow on hover */}
             <div
@@ -62,7 +86,7 @@ const Hero = () => {
           </Link>
         </motion.div>
 
-        {/* "I'm Glauber" — small intro like reference */}
+        {/* "I'm Glauber" */}
         <motion.p
           className="font-display text-xl md:text-2xl text-white/90 mb-4"
           initial={{ opacity: 0, y: 20 }}
@@ -72,9 +96,9 @@ const Hero = () => {
           I'm Glauber
         </motion.p>
 
-        {/* Impact phrase — large display font like reference */}
+        {/* Impact phrase — matched to reference size (~3rem) */}
         <motion.h1
-          className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-[1.08] mb-6 text-white"
+          className="font-display text-3xl sm:text-4xl md:text-[2.75rem] lg:text-[3.25rem] font-semibold leading-[1.12] mb-6 text-white"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
@@ -82,7 +106,7 @@ const Hero = () => {
           Designing impactful presentations for global leaders
         </motion.h1>
 
-        {/* Subtitle — smaller body text */}
+        {/* Subtitle */}
         <motion.p
           className="text-base sm:text-lg md:text-xl leading-relaxed text-white/70 max-w-xl"
           initial={{ opacity: 0, y: 20 }}
