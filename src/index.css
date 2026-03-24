@@ -84,6 +84,9 @@
     /* Project card white */
     --project-card: 0 0% 100%; /* #FFFFFF */
 
+    /* Warm card background #f8f6f5 */
+    --card-warm: 24 14% 96%;
+
     /* Sidebar */
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 0 0% 10%;
