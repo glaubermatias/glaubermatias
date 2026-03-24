@@ -8,7 +8,7 @@ import WorkCard from './WorkCard';
 const WorkSection = () => {
   const { t } = useLanguage();
 
-  const featuredProjects = projects.filter((p) => p.featured).slice(0, 6);
+  const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
 
   return (
     <section id="work" className="py-16 lg:py-24">

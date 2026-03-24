@@ -37,9 +37,22 @@ const WorkCard = ({ project, index }: WorkCardProps) => {
       className="group"
     >
       <Link to={`/${project.id}`} className="block">
-        <div className="bg-muted rounded-[2rem] overflow-hidden p-5 md:p-8 flex flex-col md:flex-row gap-6 md:gap-10 transition-all duration-300 hover:shadow-lg">
+        <div
+          className="bg-card-warm rounded-[2rem] overflow-hidden p-3 md:p-5 flex flex-col md:flex-row gap-6 md:gap-10 transition-all duration-500 ease-out"
+          style={{
+            boxShadow: '0 0 0 0 rgba(232, 81, 2, 0)',
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLElement).style.boxShadow =
+              '0 0 30px 6px rgba(232, 81, 2, 0.25), 0 0 80px 20px rgba(241, 96, 1, 0.1)';
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLElement).style.boxShadow =
+              '0 0 0 0 rgba(232, 81, 2, 0)';
+          }}
+        >
           {/* Image Carousel - Left */}
-          <div className="relative w-full md:w-[45%] shrink-0 aspect-[4/3] md:aspect-auto md:min-h-[280px] overflow-hidden rounded-2xl select-none">
+          <div className="relative w-full md:w-[45%] shrink-0 aspect-[4/3] md:aspect-auto md:min-h-[280px] overflow-hidden rounded-xl select-none">
             <motion.img
               key={currentImageIndex}
               src={project.images[currentImageIndex]}
@@ -85,7 +98,7 @@ const WorkCard = ({ project, index }: WorkCardProps) => {
           </div>
 
           {/* Content - Right */}
-          <div className="flex-1 flex flex-col justify-between py-2">
+          <div className="flex-1 flex flex-col justify-between py-2 px-1 md:px-3">
             <div>
               <h3 className="font-display text-xl md:text-2xl lg:text-3xl font-semibold text-foreground mb-3 group-hover:text-accent transition-colors duration-300">
                 {project.title}

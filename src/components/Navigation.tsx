@@ -61,7 +61,6 @@ const Navigation = () => {
     };
   }, []);
 
-  // Build nav links based on current page
   const navLinks = isHomePage
     ? [
         { href: '#work', label: t.nav.work },
@@ -83,7 +82,6 @@ const Navigation = () => {
       e.preventDefault();
       setIsMobileMenuOpen(false);
 
-      // Same-page anchor (#section)
       if (href.startsWith('#')) {
         const id = href.slice(1);
         if (!id) {
@@ -94,14 +92,12 @@ const Navigation = () => {
         return;
       }
 
-      // Cross-page anchor (/#section) – navigate home then scroll
       if (href.startsWith('/#')) {
         const sectionId = href.slice(2);
         if (isHomePage) {
           document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
         } else {
           navigate('/');
-          // Wait for navigation + render, then scroll
           setTimeout(() => {
             document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
           }, 350);
@@ -109,7 +105,6 @@ const Navigation = () => {
         return;
       }
 
-      // Regular page navigation
       navigate(href);
     },
     [isHomePage, navigate],
@@ -117,14 +112,17 @@ const Navigation = () => {
 
   const logoHref = isHomePage ? '#' : '/';
 
+  // When nav is over the gradient (dark bg), make it fully transparent
+  const navClasses = isOnDarkBg
+    ? 'bg-transparent border-transparent'
+    : 'glass-nav shadow-lg';
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 py-4">
       <div className="container mx-auto px-6">
         <nav
           ref={navRef}
-          className={`w-full transition-all duration-500 rounded-[2rem] px-6 py-3 ${
-            isOnDarkBg ? 'glass-nav-dark shadow-lg' : 'glass-nav shadow-lg'
-          }`}
+          className={`w-full transition-all duration-500 rounded-[2rem] px-6 py-3 ${navClasses}`}
         >
           <div className="flex items-center justify-between">
             <a

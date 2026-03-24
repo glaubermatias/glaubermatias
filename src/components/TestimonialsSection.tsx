@@ -35,11 +35,11 @@ const TestimonialsSection = () => {
   const { t, language } = useLanguage();
 
   return (
-    <section id="testimonials" className="py-16 lg:py-24">
+    <section id="testimonials" className="py-20 lg:py-32">
       <div className="container mx-auto px-6">
         {/* Header */}
         <motion.div
-          className="text-left mb-16"
+          className="mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -50,33 +50,33 @@ const TestimonialsSection = () => {
           </h2>
         </motion.div>
 
-        {/* Testimonials - Elegant stacked layout */}
-        <div className="space-y-0 divide-y divide-border">
+        {/* Testimonials — editorial stacked */}
+        <div className="space-y-16 md:space-y-20">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={testimonial.author}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="py-10 md:py-14 first:pt-0"
+              transition={{ duration: 0.7, delay: index * 0.12 }}
             >
-              <div className="grid md:grid-cols-12 gap-6 md:gap-12 items-start">
-                {/* Quote */}
-                <div className="md:col-span-9">
-                  <p className="text-xl md:text-2xl lg:text-3xl font-display font-medium leading-snug text-foreground">
-                    "{testimonial.quote[language as keyof typeof testimonial.quote]}"
-                  </p>
-                </div>
+              {/* Large quote */}
+              <blockquote className="max-w-3xl">
+                <p className="font-display text-2xl md:text-3xl lg:text-[2.5rem] leading-snug text-foreground mb-8">
+                  "{testimonial.quote[language as keyof typeof testimonial.quote]}"
+                </p>
+              </blockquote>
 
-                {/* Author */}
-                <div className="md:col-span-3 md:text-right">
-                  <div className="font-semibold text-foreground">
+              {/* Attribution — clean horizontal line + info */}
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-px bg-accent" />
+                <div>
+                  <span className="text-foreground font-medium text-sm tracking-wide uppercase">
                     {testimonial.author}
-                  </div>
-                  <div className="text-sm text-muted-foreground mt-1">
+                  </span>
+                  <span className="text-muted-foreground text-sm ml-3">
                     {testimonial.role}
-                  </div>
+                  </span>
                 </div>
               </div>
             </motion.div>

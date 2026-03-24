@@ -57,6 +57,7 @@ export default {
         "green-accent": "hsl(var(--green-accent))",
         "dark-accent": "hsl(var(--dark-accent))",
         "project-card": "hsl(var(--project-card))",
+        "card-warm": "hsl(var(--card-warm))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
