@@ -38,13 +38,13 @@ const WorkCard = ({ project, index }: WorkCardProps) => {
     >
       <Link to={`/${project.id}`} className="block">
         <div
-          className="bg-card-warm rounded-[2rem] overflow-hidden p-3 md:p-5 flex flex-col md:flex-row gap-6 md:gap-10 transition-all duration-500 ease-out"
+          className="bg-card-warm rounded-[2rem] overflow-hidden p-2 md:p-3 flex flex-col md:flex-row gap-6 md:gap-10 transition-all duration-500 ease-out"
           style={{
             boxShadow: '0 0 0 0 rgba(232, 81, 2, 0)',
           }}
           onMouseEnter={(e) => {
             (e.currentTarget as HTMLElement).style.boxShadow =
-              '0 0 30px 6px rgba(232, 81, 2, 0.25), 0 0 80px 20px rgba(241, 96, 1, 0.1)';
+              '0 0 20px 4px rgba(232, 81, 2, 0.15), 0 0 50px 12px rgba(241, 96, 1, 0.06)';
           }}
           onMouseLeave={(e) => {
             (e.currentTarget as HTMLElement).style.boxShadow =
@@ -68,17 +68,17 @@ const WorkCard = ({ project, index }: WorkCardProps) => {
               <>
                 <button
                   onClick={prevImage}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-background select-none"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/70 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white select-none"
                   aria-label="Previous image"
                 >
-                  <ChevronLeft className="w-5 h-5 text-foreground" />
+                  <ChevronLeft className="w-4 h-4 text-foreground" />
                 </button>
                 <button
                   onClick={nextImage}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-background select-none"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/70 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white select-none"
                   aria-label="Next image"
                 >
-                  <ChevronRight className="w-5 h-5 text-foreground" />
+                  <ChevronRight className="w-4 h-4 text-foreground" />
                 </button>
 
                 <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
@@ -87,8 +87,8 @@ const WorkCard = ({ project, index }: WorkCardProps) => {
                       key={idx}
                       className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
                         idx === currentImageIndex
-                          ? 'bg-background w-4'
-                          : 'bg-background/50'
+                          ? 'bg-white w-4'
+                          : 'bg-white/50'
                       }`}
                     />
                   ))}

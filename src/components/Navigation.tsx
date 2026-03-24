@@ -1,16 +1,13 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useLanguage } from '@/contexts/LanguageContext';
-import LanguageToggle from './LanguageToggle';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navigation = () => {
-  const { t } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isOnDarkBg, setIsOnDarkBg] = useState(true);
+  const [navTheme, setNavTheme] = useState<'hero' | 'dark' | 'light'>('hero');
   const navRef = useRef<HTMLElement>(null!);
 
   const isHomePage = location.pathname === '/';
@@ -18,9 +15,9 @@ const Navigation = () => {
   useEffect(() => {
     let rafId = 0;
 
-    const getIsOverDarkTheme = () => {
+    const detectTheme = (): 'hero' | 'dark' | 'light' => {
       const navEl = navRef.current;
-      if (!navEl) return true;
+      if (!navEl) return 'light';
       const rect = navEl.getBoundingClientRect();
       const x = rect.left + rect.width / 2;
       const y = rect.top + rect.height / 2;
@@ -28,14 +25,23 @@ const Navigation = () => {
       for (const el of elements) {
         if (!el) continue;
         if (el === navEl || navEl.contains(el)) continue;
-        if (el.closest('[data-nav-theme="dark"]')) return true;
+        // Check if over hero section specifically
+        const section = el.closest('section[data-nav-theme]');
+        if (section) {
+          const theme = section.getAttribute('data-nav-theme');
+          // If it's the hero (first section with dark theme on homepage), use transparent
+          if (theme === 'dark' && section.classList.contains('min-h-screen')) {
+            return 'hero';
+          }
+          if (theme === 'dark') return 'dark';
+        }
       }
-      return false;
+      return 'light';
     };
 
     const update = () => {
-      const nextIsDark = getIsOverDarkTheme();
-      setIsOnDarkBg((prev) => (prev !== nextIsDark ? nextIsDark : prev));
+      const next = detectTheme();
+      setNavTheme((prev) => (prev !== next ? next : prev));
     };
 
     const onChange = () => {
@@ -63,18 +69,16 @@ const Navigation = () => {
 
   const navLinks = isHomePage
     ? [
-        { href: '#work', label: t.nav.work },
-        { href: '#skillset', label: t.nav.skillset },
-        { href: '/experience', label: t.nav.experience },
-        { href: '/about-me', label: t.nav.about },
-        { href: '#contact', label: t.nav.contact },
+        { href: '#work', label: 'Work' },
+        { href: '/experience', label: 'Resume' },
+        { href: '/about-me', label: 'About' },
+        { href: '#contact', label: 'Contact' },
       ]
     : [
-        { href: '/work', label: t.nav.work },
-        { href: '/#skillset', label: t.nav.skillset },
-        { href: '/experience', label: t.nav.experience },
-        { href: '/about-me', label: t.nav.about },
-        { href: '/#contact', label: t.nav.contact },
+        { href: '/work', label: 'Work' },
+        { href: '/experience', label: 'Resume' },
+        { href: '/about-me', label: 'About' },
+        { href: '/#contact', label: 'Contact' },
       ];
 
   const handleLinkClick = useCallback(
@@ -112,10 +116,15 @@ const Navigation = () => {
 
   const logoHref = isHomePage ? '#' : '/';
 
-  // When nav is over the gradient (dark bg), make it fully transparent
-  const navClasses = isOnDarkBg
-    ? 'bg-transparent border-transparent'
-    : 'glass-nav shadow-lg';
+  // Hero = fully transparent, dark sections = dark glass, light = light glass
+  const navClasses =
+    navTheme === 'hero'
+      ? 'bg-transparent border-transparent'
+      : navTheme === 'dark'
+      ? 'glass-nav-dark shadow-lg'
+      : 'glass-nav shadow-lg';
+
+  const isLightText = navTheme === 'hero' || navTheme === 'dark';
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 py-4">
@@ -129,7 +138,7 @@ const Navigation = () => {
               href={logoHref}
               onClick={(e) => handleLinkClick(e, logoHref)}
               className={`font-display text-xl font-medium transition-colors duration-300 ${
-                isOnDarkBg ? 'text-primary-foreground' : 'text-primary'
+                isLightText ? 'text-primary-foreground' : 'text-primary'
               }`}
             >
               GM
@@ -143,7 +152,7 @@ const Navigation = () => {
                   href={link.href}
                   onClick={(e) => handleLinkClick(e, link.href)}
                   className={`text-sm font-normal transition-colors relative group ${
-                    isOnDarkBg
+                    isLightText
                       ? 'text-primary-foreground/80 hover:text-primary-foreground'
                       : 'text-foreground/80 hover:text-foreground'
                   }`}
@@ -152,13 +161,12 @@ const Navigation = () => {
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
                 </a>
               ))}
-              <LanguageToggle isOnDarkBg={isOnDarkBg} />
             </div>
 
             {/* Mobile Menu Button */}
             <button
               className={`md:hidden p-2 transition-colors duration-300 ${
-                isOnDarkBg ? 'text-primary-foreground' : 'text-foreground'
+                isLightText ? 'text-primary-foreground' : 'text-foreground'
               }`}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
@@ -184,7 +192,7 @@ const Navigation = () => {
                       href={link.href}
                       onClick={(e) => handleLinkClick(e, link.href)}
                       className={`text-lg font-normal transition-colors ${
-                        isOnDarkBg
+                        isLightText
                           ? 'text-primary-foreground/80 hover:text-primary-foreground'
                           : 'text-foreground/80 hover:text-foreground'
                       }`}
@@ -192,9 +200,6 @@ const Navigation = () => {
                       {link.label}
                     </a>
                   ))}
-                  <div className="pt-4">
-                    <LanguageToggle isOnDarkBg={isOnDarkBg} />
-                  </div>
                 </div>
               </motion.div>
             )}

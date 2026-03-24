@@ -1,41 +1,26 @@
-import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
 
 const testimonials = [
   {
-    quote: {
-      en: 'Glauber transformed our pitch deck from a basic PowerPoint into a visual masterpiece. We closed our Series A within weeks.',
-      pt: 'Glauber transformou nosso pitch deck de um PowerPoint básico em uma obra-prima visual. Fechamos nossa Série A em semanas.',
-      es: 'Glauber transformó nuestro pitch deck de un PowerPoint básico en una obra maestra visual. Cerramos nuestra Serie A en semanas.',
-    },
+    quote: 'Glauber transformed our pitch deck from a basic PowerPoint into a visual masterpiece. We closed our Series A within weeks.',
     author: 'Sarah Chen',
     role: 'CEO, TechVenture',
   },
   {
-    quote: {
-      en: 'The attention to detail and strategic thinking Glauber brings to every slide is remarkable. Truly a presentation designer at the top of his craft.',
-      pt: 'A atenção aos detalhes e o pensamento estratégico que Glauber traz para cada slide é notável.',
-      es: 'La atención al detalle y el pensamiento estratégico que Glauber aporta a cada diapositiva es notable.',
-    },
+    quote: 'The attention to detail and strategic thinking Glauber brings to every slide is remarkable. Truly a presentation designer at the top of his craft.',
     author: 'Marcus Rodriguez',
     role: 'VP Marketing, GlobalCorp',
   },
   {
-    quote: {
-      en: 'Working with Glauber was a game-changer for our annual conference. The keynote visuals were absolutely stunning.',
-      pt: 'Trabalhar com Glauber foi um divisor de águas para nossa conferência anual. Os visuais do keynote foram absolutamente impressionantes.',
-      es: 'Trabajar con Glauber fue un cambio de juego para nuestra conferencia anual. Las visuales del keynote fueron absolutamente impresionantes.',
-    },
+    quote: 'Working with Glauber was a game-changer for our annual conference. The keynote visuals were absolutely stunning.',
     author: 'Elena Vasquez',
     role: 'Event Director, Innovation Summit',
   },
 ];
 
 const TestimonialsSection = () => {
-  const { t, language } = useLanguage();
-
   return (
-    <section id="testimonials" className="py-20 lg:py-32">
+    <section id="testimonials" className="py-12 lg:py-20">
       <div className="container mx-auto px-6">
         {/* Header */}
         <motion.div
@@ -46,7 +31,7 @@ const TestimonialsSection = () => {
           transition={{ duration: 0.8 }}
         >
           <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold">
-            {t.testimonials.title}
+            What people have to say about me
           </h2>
         </motion.div>
 
@@ -60,14 +45,14 @@ const TestimonialsSection = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: index * 0.12 }}
             >
-              {/* Large quote */}
+              {/* Quote — smaller font, dark gray */}
               <blockquote className="max-w-3xl">
-                <p className="font-display text-2xl md:text-3xl lg:text-[2.5rem] leading-snug text-foreground mb-8">
-                  "{testimonial.quote[language as keyof typeof testimonial.quote]}"
+                <p className="font-sans text-lg md:text-xl lg:text-2xl leading-relaxed text-muted-foreground mb-8">
+                  "{testimonial.quote}"
                 </p>
               </blockquote>
 
-              {/* Attribution — clean horizontal line + info */}
+              {/* Attribution */}
               <div className="flex items-center gap-4">
                 <div className="w-10 h-px bg-accent" />
                 <div>
