@@ -23,8 +23,8 @@ const WorkSection = () => {
           </h2>
         </motion.div>
 
-        {/* Projects List - Stacked with more spacing */}
-        <div className="space-y-12">
+        {/* Projects List */}
+        <div className="space-y-14">
           {featuredProjects.map((project, index) => (
             <WorkCard key={project.id} project={project} index={index} />
           ))}
@@ -32,7 +32,7 @@ const WorkSection = () => {
 
         {/* View All Projects Link */}
         <motion.div
-          className="text-center mt-12"
+          className="text-center mt-12 mb-4"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
