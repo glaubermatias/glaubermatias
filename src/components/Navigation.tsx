@@ -25,11 +25,9 @@ const Navigation = () => {
       for (const el of elements) {
         if (!el) continue;
         if (el === navEl || navEl.contains(el)) continue;
-        // Check if over hero section specifically
         const section = el.closest('section[data-nav-theme]');
         if (section) {
           const theme = section.getAttribute('data-nav-theme');
-          // If it's the hero (first section with dark theme on homepage), use transparent
           if (theme === 'dark' && section.classList.contains('min-h-screen')) {
             return 'hero';
           }
@@ -116,29 +114,47 @@ const Navigation = () => {
 
   const logoHref = isHomePage ? '#' : '/';
 
-  // Hero = fully transparent, dark sections = dark glass, light = light glass
-  const navClasses =
-    navTheme === 'hero'
-      ? 'bg-transparent border-transparent'
-      : navTheme === 'dark'
-      ? 'glass-nav-dark shadow-lg'
-      : 'glass-nav shadow-lg';
-
   const isLightText = navTheme === 'hero' || navTheme === 'dark';
 
+  // Nav bar style: hero = fully transparent, dark = dark glass, light = light glass
+  const navBgStyle: React.CSSProperties =
+    navTheme === 'hero'
+      ? {}
+      : navTheme === 'dark'
+      ? {
+          background: 'rgba(0, 0, 0, 0.6)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+        }
+      : {
+          background: 'rgba(255, 255, 255, 0.75)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+        };
+
+  // For non-hero, add a bottom fade-to-transparent mask
+  const maskStyle: React.CSSProperties =
+    navTheme !== 'hero'
+      ? {
+          maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+        }
+      : {};
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 py-4">
-      <div className="container mx-auto px-6">
-        <nav
-          ref={navRef}
-          className={`w-full transition-all duration-500 rounded-[2rem] px-6 py-3 ${navClasses}`}
-        >
+    <header className="fixed top-0 left-0 right-0 z-50">
+      <nav
+        ref={navRef}
+        className="w-full transition-all duration-500 px-6 py-4"
+        style={{ ...navBgStyle, ...maskStyle }}
+      >
+        <div className="container mx-auto">
           <div className="flex items-center justify-between">
             <a
               href={logoHref}
               onClick={(e) => handleLinkClick(e, logoHref)}
               className={`font-display text-xl font-medium transition-colors duration-300 ${
-                isLightText ? 'text-primary-foreground' : 'text-primary'
+                isLightText ? 'text-white' : 'text-primary'
               }`}
             >
               GM
@@ -151,9 +167,9 @@ const Navigation = () => {
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleLinkClick(e, link.href)}
-                  className={`text-sm font-normal transition-colors relative group ${
+                  className={`text-[0.95rem] font-normal transition-colors relative group ${
                     isLightText
-                      ? 'text-primary-foreground/80 hover:text-primary-foreground'
+                      ? 'text-white/80 hover:text-white'
                       : 'text-foreground/80 hover:text-foreground'
                   }`}
                 >
@@ -166,7 +182,7 @@ const Navigation = () => {
             {/* Mobile Menu Button */}
             <button
               className={`md:hidden p-2 transition-colors duration-300 ${
-                isLightText ? 'text-primary-foreground' : 'text-foreground'
+                isLightText ? 'text-white' : 'text-foreground'
               }`}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
@@ -193,7 +209,7 @@ const Navigation = () => {
                       onClick={(e) => handleLinkClick(e, link.href)}
                       className={`text-lg font-normal transition-colors ${
                         isLightText
-                          ? 'text-primary-foreground/80 hover:text-primary-foreground'
+                          ? 'text-white/80 hover:text-white'
                           : 'text-foreground/80 hover:text-foreground'
                       }`}
                     >
@@ -204,8 +220,8 @@ const Navigation = () => {
               </motion.div>
             )}
           </AnimatePresence>
-        </nav>
-      </div>
+        </div>
+      </nav>
     </header>
   );
 };

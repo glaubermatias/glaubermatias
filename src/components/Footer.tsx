@@ -39,27 +39,27 @@ const Footer = () => {
             zIndex: 1,
           }}
         />
-        {/* Brand gradient — high saturation */}
+        {/* Brand gradient — matching hero saturation */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(ellipse at 15% 80%, #e85102 0%, transparent 45%), ' +
-              'radial-gradient(ellipse at 85% 55%, #f16001 0%, transparent 45%), ' +
-              'radial-gradient(ellipse at 50% 90%, #d9c3ab 0%, transparent 55%), ' +
-              'radial-gradient(ellipse at 35% 70%, #e85102 0%, transparent 30%), ' +
-              'radial-gradient(ellipse at 65% 65%, #f16001 0%, transparent 30%), ' +
-              'linear-gradient(135deg, #d9c3ab 0%, #e85102 25%, #f16001 45%, #e85102 65%, #f16001 80%, #d9c3ab 100%)',
+              'radial-gradient(ellipse at 20% 80%, #e85102 0%, transparent 50%), ' +
+              'radial-gradient(ellipse at 80% 55%, #f16001 0%, transparent 50%), ' +
+              'radial-gradient(ellipse at 50% 90%, #d9c3ab 0%, transparent 60%), ' +
+              'radial-gradient(ellipse at 35% 70%, #e85102 0%, transparent 35%), ' +
+              'radial-gradient(ellipse at 65% 65%, #f16001 0%, transparent 35%), ' +
+              'linear-gradient(135deg, #d9c3ab 0%, #e85102 20%, #f16001 40%, #e85102 60%, #f16001 75%, #d9c3ab 100%)',
           }}
         />
-        {/* Fine grain texture */}
+        {/* High-definition grain texture */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            opacity: 0.18,
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+            opacity: 0.35,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
             backgroundRepeat: 'repeat',
-            backgroundSize: '256px 256px',
+            backgroundSize: '512px 512px',
           }}
         />
 
@@ -75,7 +75,7 @@ const Footer = () => {
                 <div className="space-y-3">
                   <a
                     href="mailto:glauber.matias.ismart@gmail.com"
-                    className="block text-white/90 transition-all duration-300 text-lg w-fit hover:text-white hover:translate-x-1"
+                    className="block text-white/90 transition-colors duration-300 text-lg w-fit hover:text-accent"
                   >
                     glauber.matias.ismart@gmail.com
                   </a>
@@ -83,7 +83,7 @@ const Footer = () => {
                     href="https://linkedin.com/in/glauber-matias"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block text-white/90 transition-all duration-300 text-lg w-fit hover:text-white hover:translate-x-1"
+                    className="block text-white/90 transition-colors duration-300 text-lg w-fit hover:text-accent"
                   >
                     LinkedIn
                   </a>
@@ -100,7 +100,7 @@ const Footer = () => {
                         <li key={link.href}>
                           <a
                             href={link.href}
-                            className="text-white/70 transition-all duration-300 hover:text-white hover:translate-x-1 inline-block"
+                            className="text-white/70 transition-colors duration-300 hover:text-accent inline-block"
                           >
                             {link.label}
                           </a>
