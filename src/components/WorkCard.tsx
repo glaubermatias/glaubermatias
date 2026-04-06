@@ -37,9 +37,9 @@ const WorkCard = ({ project, index }: WorkCardProps) => {
       className="group"
     >
       <Link to={`/${project.id}`} className="block">
-        <div className="bg-card-warm rounded-[2rem] overflow-hidden p-2 md:p-3 flex flex-col md:flex-row gap-6 md:gap-10 transition-shadow duration-500 ease-out hover:shadow-xl">
+        <div className="bg-card-warm rounded-[2rem] overflow-hidden p-2 md:p-3 flex flex-col md:flex-row gap-6 md:gap-10 transition-shadow duration-500 ease-out hover:shadow-lg">
           {/* Image Carousel - Left */}
-          <div className="relative w-full md:w-[45%] shrink-0 aspect-[4/3] md:aspect-auto md:min-h-[280px] overflow-hidden rounded-xl select-none">
+          <div className="relative w-full md:w-[45%] shrink-0 aspect-[4/3] md:aspect-auto md:min-h-[320px] overflow-hidden rounded-xl select-none">
             <motion.img
               key={currentImageIndex}
               src={project.images[currentImageIndex]}
