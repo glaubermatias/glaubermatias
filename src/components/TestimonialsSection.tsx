@@ -1,4 +1,6 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const testimonials = [
   {
@@ -19,12 +21,18 @@ const testimonials = [
 ];
 
 const TestimonialsSection = () => {
+  const [current, setCurrent] = useState(0);
+
+  const next = () => setCurrent((p) => (p + 1) % testimonials.length);
+  const prev = () => setCurrent((p) => (p - 1 + testimonials.length) % testimonials.length);
+
+  const t = testimonials[current];
+
   return (
     <section id="testimonials" className="py-12 lg:py-20">
       <div className="container mx-auto px-6">
-        {/* Header */}
         <motion.div
-          className="mb-16"
+          className="mb-12"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -35,37 +43,56 @@ const TestimonialsSection = () => {
           </h2>
         </motion.div>
 
-        {/* Testimonials — editorial stacked */}
-        <div className="space-y-16 md:space-y-20">
-          {testimonials.map((testimonial, index) => (
+        {/* Single testimonial with navigation */}
+        <div className="max-w-3xl">
+          <AnimatePresence mode="wait">
             <motion.div
-              key={testimonial.author}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: index * 0.12 }}
+              key={current}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.4 }}
             >
-              {/* Quote — smaller font, dark gray */}
-              <blockquote className="max-w-3xl">
-                <p className="font-sans text-lg md:text-xl lg:text-2xl leading-relaxed text-muted-foreground mb-8">
-                  "{testimonial.quote}"
+              {/* Large quote mark */}
+              <span className="block font-display text-6xl text-accent/40 leading-none mb-2 select-none">"</span>
+
+              <blockquote className="mb-8">
+                <p className="font-sans text-lg md:text-xl leading-relaxed text-muted-foreground">
+                  {t.quote}
                 </p>
               </blockquote>
 
-              {/* Attribution */}
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-px bg-accent" />
-                <div>
-                  <span className="text-foreground font-medium text-sm tracking-wide uppercase">
-                    {testimonial.author}
-                  </span>
-                  <span className="text-muted-foreground text-sm ml-3">
-                    {testimonial.role}
-                  </span>
-                </div>
+              <div>
+                <p className="font-sans font-medium text-foreground text-sm tracking-wide">
+                  {t.author}
+                </p>
+                <p className="font-sans text-sm text-muted-foreground">
+                  {t.role}
+                </p>
               </div>
             </motion.div>
-          ))}
+          </AnimatePresence>
+
+          {/* Navigation */}
+          <div className="flex items-center gap-4 mt-10">
+            <button
+              onClick={prev}
+              className="w-9 h-9 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
+              aria-label="Previous testimonial"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <span className="text-sm text-muted-foreground tabular-nums">
+              {String(current + 1).padStart(2, '0')} / {String(testimonials.length).padStart(2, '0')}
+            </span>
+            <button
+              onClick={next}
+              className="w-9 h-9 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
+              aria-label="Next testimonial"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
     </section>

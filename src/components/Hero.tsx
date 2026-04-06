@@ -2,35 +2,30 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import glauberPortrait from '@/assets/glauber-portrait.png';
+import gradientBg from '@/assets/gradient-bg.png';
 
 const Hero = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <section data-nav-theme="dark" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Grainy gradient background — matching reference saturation */}
+      {/* Gradient background from uploaded image */}
       <div
         className="absolute inset-0"
         style={{
-          background:
-            'radial-gradient(ellipse at 20% 40%, #e85102 0%, transparent 50%), ' +
-            'radial-gradient(ellipse at 80% 20%, #f16001 0%, transparent 50%), ' +
-            'radial-gradient(ellipse at 50% 80%, #d9c3ab 0%, transparent 60%), ' +
-            'radial-gradient(ellipse at 70% 40%, #e85102 0%, transparent 40%), ' +
-            'radial-gradient(ellipse at 30% 20%, #f16001 0%, transparent 35%), ' +
-            'radial-gradient(ellipse at 80% 70%, #e85102 0%, transparent 45%), ' +
-            'radial-gradient(ellipse at 40% 60%, #f16001 0%, transparent 35%), ' +
-            'linear-gradient(135deg, #d9c3ab 0%, #e85102 20%, #f16001 40%, #e85102 60%, #f16001 75%, #d9c3ab 100%)',
+          backgroundImage: `url(${gradientBg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
         }}
       />
       {/* High-definition grain texture overlay */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          opacity: 0.35,
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          opacity: 0.3,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
           backgroundRepeat: 'repeat',
-          backgroundSize: '512px 512px',
+          backgroundSize: '256px 256px',
         }}
       />
 
@@ -52,7 +47,7 @@ const Hero = () => {
             <img
               src={glauberPortrait}
               alt="Glauber Matias"
-              className="w-28 h-28 md:w-36 md:h-36 object-cover transition-all duration-700 ease-out group-hover:scale-105 group-hover:brightness-110"
+              className="w-28 h-28 md:w-36 md:h-36 object-cover transition-all duration-700 ease-out group-hover:scale-110 group-hover:brightness-110"
               style={{ borderRadius: '33%' }}
             />
             {/* Orange neon glow on hover */}
@@ -78,12 +73,12 @@ const Hero = () => {
 
         {/* Impact phrase */}
         <motion.h1
-          className="font-display text-3xl sm:text-4xl md:text-[2.75rem] lg:text-[3.25rem] font-semibold leading-[1.25] mb-6 text-white"
+          className="font-display text-3xl sm:text-4xl md:text-[2.75rem] lg:text-[3.25rem] font-semibold leading-[1.35] tracking-normal mb-6 text-white"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          Designing impactful presentations for global leaders
+          Designing presentations that amplify your impact
         </motion.h1>
 
         {/* Subtitle */}
@@ -93,7 +88,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          I craft visual stories that make complex ideas simple and memorable
+          My superpower is to make complex ideas simple and memorable
         </motion.p>
       </div>
     </section>

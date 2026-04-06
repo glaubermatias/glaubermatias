@@ -37,9 +37,9 @@ const WorkCard = ({ project, index }: WorkCardProps) => {
       className="group"
     >
       <Link to={`/${project.id}`} className="block">
-        <div className="bg-card-warm rounded-[2rem] overflow-hidden p-2 md:p-3 flex flex-col md:flex-row gap-6 md:gap-10 transition-shadow duration-500 ease-out hover:shadow-xl">
+        <div className="bg-card-warm rounded-[2rem] overflow-hidden p-2 md:p-3 flex flex-col md:flex-row gap-6 md:gap-10 transition-shadow duration-500 ease-out hover:shadow-lg">
           {/* Image Carousel - Left */}
-          <div className="relative w-full md:w-[45%] shrink-0 aspect-[4/3] md:aspect-auto md:min-h-[280px] overflow-hidden rounded-xl select-none">
+          <div className="relative w-full md:w-[45%] shrink-0 aspect-[4/3] md:aspect-auto md:min-h-[320px] overflow-hidden rounded-xl select-none">
             <motion.img
               key={currentImageIndex}
               src={project.images[currentImageIndex]}
@@ -85,7 +85,7 @@ const WorkCard = ({ project, index }: WorkCardProps) => {
           </div>
 
           {/* Content - Right */}
-          <div className="flex-1 flex flex-col justify-between py-4 md:py-5 px-1 md:px-3">
+          <div className="flex-1 flex flex-col justify-between py-6 md:py-8 px-1 md:px-3">
             <div>
               <h3 className="font-display text-xl md:text-2xl lg:text-3xl font-semibold text-foreground mb-3 group-hover:text-accent transition-colors duration-300">
                 {project.title}

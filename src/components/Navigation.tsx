@@ -133,13 +133,7 @@ const Navigation = () => {
         };
 
   // For non-hero, add a bottom fade-to-transparent mask
-  const maskStyle: React.CSSProperties =
-    navTheme !== 'hero'
-      ? {
-          maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
-          WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
-        }
-      : {};
+  const maskStyle: React.CSSProperties = {};
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">

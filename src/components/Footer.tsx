@@ -1,4 +1,20 @@
 import { useState, useEffect } from 'react';
+import gradientBg from '@/assets/gradient-bg.png';
+
+const RollingLink = ({ href, label, external }: { href: string; label: string; external?: boolean }) => (
+  <a
+    href={href}
+    {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+    className="group relative inline-block overflow-hidden"
+  >
+    <span className="block transition-transform duration-400 ease-out group-hover:-translate-y-full">
+      {label}
+    </span>
+    <span className="absolute left-0 top-full block transition-transform duration-400 ease-out group-hover:-translate-y-full underline">
+      {label}
+    </span>
+  </a>
+);
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -34,32 +50,27 @@ const Footer = () => {
         <div
           className="absolute inset-0"
           style={{
-            background:
-              'linear-gradient(to bottom, hsl(0 0% 100%) 0%, transparent 40%)',
+            background: 'linear-gradient(to bottom, hsl(0 0% 100%) 0%, transparent 40%)',
             zIndex: 1,
           }}
         />
-        {/* Brand gradient — matching hero saturation */}
+        {/* Brand gradient from uploaded image */}
         <div
           className="absolute inset-0"
           style={{
-            background:
-              'radial-gradient(ellipse at 20% 80%, #e85102 0%, transparent 50%), ' +
-              'radial-gradient(ellipse at 80% 55%, #f16001 0%, transparent 50%), ' +
-              'radial-gradient(ellipse at 50% 90%, #d9c3ab 0%, transparent 60%), ' +
-              'radial-gradient(ellipse at 35% 70%, #e85102 0%, transparent 35%), ' +
-              'radial-gradient(ellipse at 65% 65%, #f16001 0%, transparent 35%), ' +
-              'linear-gradient(135deg, #d9c3ab 0%, #e85102 20%, #f16001 40%, #e85102 60%, #f16001 75%, #d9c3ab 100%)',
+            backgroundImage: `url(${gradientBg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
           }}
         />
         {/* High-definition grain texture */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            opacity: 0.35,
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+            opacity: 0.3,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
             backgroundRepeat: 'repeat',
-            backgroundSize: '512px 512px',
+            backgroundSize: '256px 256px',
           }}
         />
 
@@ -72,21 +83,13 @@ const Footer = () => {
                 <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-semibold mb-8 text-white">
                   Let's connect!
                 </h2>
-                <div className="space-y-3">
-                  <a
-                    href="mailto:glauber.matias.ismart@gmail.com"
-                    className="block text-white/90 transition-colors duration-300 text-lg w-fit hover:text-accent"
-                  >
-                    glauber.matias.ismart@gmail.com
-                  </a>
-                  <a
-                    href="https://linkedin.com/in/glauber-matias"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block text-white/90 transition-colors duration-300 text-lg w-fit hover:text-accent"
-                  >
-                    LinkedIn
-                  </a>
+                <div className="space-y-3 text-white/90 text-lg">
+                  <div>
+                    <RollingLink href="mailto:glauber.matias.ismart@gmail.com" label="glauber.matias.ismart@gmail.com" />
+                  </div>
+                  <div>
+                    <RollingLink href="https://linkedin.com/in/glauber-matias" label="LinkedIn" external />
+                  </div>
                 </div>
               </div>
 
@@ -95,15 +98,10 @@ const Footer = () => {
                 <div className="flex gap-16">
                   {/* Quick Links */}
                   <div>
-                    <ul className="space-y-2">
+                    <ul className="space-y-2 text-white/70">
                       {quickLinks.map((link) => (
                         <li key={link.href}>
-                          <a
-                            href={link.href}
-                            className="text-white/70 transition-colors duration-300 hover:text-accent inline-block"
-                          >
-                            {link.label}
-                          </a>
+                          <RollingLink href={link.href} label={link.label} />
                         </li>
                       ))}
                     </ul>
@@ -117,7 +115,7 @@ const Footer = () => {
                     <p className="text-white/60 font-sans font-normal mb-4">
                       (from Aug/26)
                     </p>
-                    <p className="font-sans font-normal text-white/90 tracking-wider">
+                    <p className="font-sans font-normal text-white/90">
                       {lisbonTime}
                     </p>
                   </div>

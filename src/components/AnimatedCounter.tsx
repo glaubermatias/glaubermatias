@@ -11,6 +11,7 @@ const AnimatedCounter = ({ target, suffix = '', duration = 1.5 }: AnimatedCounte
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
   const [count, setCount] = useState(0);
+  const [done, setDone] = useState(false);
 
   useEffect(() => {
     if (!isInView) return;
@@ -20,16 +21,20 @@ const AnimatedCounter = ({ target, suffix = '', duration = 1.5 }: AnimatedCounte
 
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / (duration * 1000), 1);
 
-      // Ease out cubic
+      // Ease out cubic for smooth finish
       const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.floor(eased * target));
+      const current = Math.round(eased * target);
+
+      setCount(current);
 
       if (progress < 1) {
         animationFrame = requestAnimationFrame(animate);
       } else {
         setCount(target);
+        setDone(true);
       }
     };
 
@@ -44,7 +49,7 @@ const AnimatedCounter = ({ target, suffix = '', duration = 1.5 }: AnimatedCounte
       animate={isInView ? { opacity: 1 } : {}}
       transition={{ duration: 0.3 }}
     >
-      {count}{suffix}
+      {done ? target : count}{suffix}
     </motion.span>
   );
 };
