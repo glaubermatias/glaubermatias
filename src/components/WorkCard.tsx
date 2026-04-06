@@ -85,7 +85,7 @@ const WorkCard = ({ project, index }: WorkCardProps) => {
           </div>
 
           {/* Content - Right */}
-          <div className="flex-1 flex flex-col justify-between py-4 md:py-5 px-1 md:px-3">
+          <div className="flex-1 flex flex-col justify-between py-6 md:py-8 px-1 md:px-3">
             <div>
               <h3 className="font-display text-xl md:text-2xl lg:text-3xl font-semibold text-foreground mb-3 group-hover:text-accent transition-colors duration-300">
                 {project.title}
