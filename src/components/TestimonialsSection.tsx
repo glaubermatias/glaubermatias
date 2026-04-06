@@ -73,11 +73,11 @@ const TestimonialsSection = () => {
             </motion.div>
           </AnimatePresence>
 
-          {/* Navigation */}
+          {/* Navigation — borderless */}
           <div className="flex items-center gap-4 mt-10">
             <button
               onClick={prev}
-              className="w-9 h-9 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
+              className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-muted transition-colors"
               aria-label="Previous testimonial"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -87,7 +87,7 @@ const TestimonialsSection = () => {
             </span>
             <button
               onClick={next}
-              className="w-9 h-9 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
+              className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-muted transition-colors"
               aria-label="Next testimonial"
             >
               <ChevronRight className="w-4 h-4" />

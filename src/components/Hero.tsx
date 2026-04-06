@@ -47,15 +47,15 @@ const Hero = () => {
             <img
               src={glauberPortrait}
               alt="Glauber Matias"
-              className="w-28 h-28 md:w-36 md:h-36 object-cover transition-all duration-700 ease-out group-hover:scale-110 group-hover:brightness-110"
+              className="w-28 h-28 md:w-36 md:h-36 object-cover transition-all duration-700 ease-out group-hover:scale-[1.15] group-hover:brightness-110"
               style={{ borderRadius: '33%' }}
             />
-            {/* Orange neon glow on hover */}
+            {/* Subtle neon glow on hover — thinner */}
             <div
               className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
               style={{
                 borderRadius: '33%',
-                boxShadow: '0 0 25px 8px rgba(232, 81, 2, 0.45), 0 0 60px 20px rgba(241, 96, 1, 0.2)',
+                boxShadow: '0 0 15px 3px rgba(232, 81, 2, 0.35), 0 0 40px 10px rgba(241, 96, 1, 0.15)',
               }}
             />
           </Link>
@@ -71,9 +71,9 @@ const Hero = () => {
           I'm Glauber
         </motion.p>
 
-        {/* Impact phrase */}
+        {/* Impact phrase — balanced line breaks */}
         <motion.h1
-          className="font-display text-3xl sm:text-4xl md:text-[2.75rem] lg:text-[3.25rem] font-semibold leading-[1.35] tracking-normal mb-6 text-white"
+          className="font-display text-3xl sm:text-4xl md:text-[2.75rem] lg:text-[3.25rem] font-semibold leading-[1.45] tracking-normal mb-6 text-white max-w-[16ch] mx-auto"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}

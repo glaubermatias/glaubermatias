@@ -24,7 +24,7 @@ const WorkSection = () => {
         </motion.div>
 
         {/* Projects List */}
-        <div className="space-y-14">
+        <div className="space-y-20">
           {featuredProjects.map((project, index) => (
             <WorkCard key={project.id} project={project} index={index} />
           ))}

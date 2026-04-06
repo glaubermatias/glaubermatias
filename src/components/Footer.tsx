@@ -7,11 +7,14 @@ const RollingLink = ({ href, label, external }: { href: string; label: string; e
     {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
     className="group relative inline-block overflow-hidden"
   >
-    <span className="block transition-transform duration-400 ease-out group-hover:-translate-y-full">
+    <span className="block transition-transform duration-500 ease-out group-hover:-translate-y-full">
       {label}
     </span>
-    <span className="absolute left-0 top-full block transition-transform duration-400 ease-out group-hover:-translate-y-full underline">
-      {label}
+    <span
+      className="absolute left-0 top-full block transition-transform duration-500 ease-out group-hover:-translate-y-full"
+      style={{ textUnderlineOffset: '4px', textDecorationThickness: '1px' }}
+    >
+      <span className="underline">{label}</span>
     </span>
   </a>
 );
