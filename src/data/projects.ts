@@ -9,10 +9,14 @@ export interface ProjectData {
   id: string;
   title: string;
   description: string;
+  cardDescription?: string;
   category: ProjectCategory;
   images: string[];
   year: string;
   client: string;
+  company?: string;
+  cardCategory?: string;
+  duration?: string;
   featured?: boolean;
   bigNumbers?: BigNumber[];
   overview?: string;

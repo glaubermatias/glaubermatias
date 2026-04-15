@@ -10,11 +10,15 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      <Hero />
-      <WorkSection />
-      <ServicesSection />
-      <AboutSection />
-      <TestimonialsSection />
+      {/* Main content sits above sticky footer */}
+      <div className="relative z-10 bg-background">
+        <Hero />
+        <WorkSection />
+        <ServicesSection />
+        <AboutSection />
+        <TestimonialsSection />
+      </div>
+      {/* Footer is sticky at bottom, revealed as content scrolls away */}
       <Footer />
     </div>
   );
