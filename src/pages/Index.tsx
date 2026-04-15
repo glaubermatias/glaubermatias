@@ -11,7 +11,14 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       {/* Main content sits above sticky footer */}
-      <div className="relative z-10 bg-background">
+      <div
+        className="relative z-10 bg-background"
+        style={{
+          borderBottomLeftRadius: '24px',
+          borderBottomRightRadius: '24px',
+          boxShadow: '0 10px 40px -10px rgba(0,0,0,0.2)',
+        }}
+      >
         <Hero />
         <WorkSection />
         <ServicesSection />
