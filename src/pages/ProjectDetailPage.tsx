@@ -265,7 +265,7 @@ const ProjectDetailPage = () => {
         </div>
       </main>
 
-      <Footer />
+      
     </PageLayout>
   );
 };
