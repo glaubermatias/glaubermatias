@@ -7,14 +7,13 @@ import { ProjectData } from '@/data/projects';
 interface WorkCardProps {
   project: ProjectData;
   index: number;
+  totalCount: number;
 }
 
-const WorkCard = ({ project, index }: WorkCardProps) => {
+const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  const bigNumbers = project.bigNumbers || [];
 
   const startAutoPlay = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
@@ -44,6 +43,8 @@ const WorkCard = ({ project, index }: WorkCardProps) => {
     }
   };
 
+  const counterLabel = `WORK ${String(index + 1).padStart(2, '0')}/${String(totalCount).padStart(2, '0')}`;
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 40 }}
@@ -53,20 +54,28 @@ const WorkCard = ({ project, index }: WorkCardProps) => {
       className="group"
     >
       <Link to={`/${project.id}`} className="block">
-        {/* Title above image */}
-        <h3 className="font-display text-xl md:text-2xl lg:text-3xl font-semibold text-foreground mb-4">
+        {/* Counter */}
+        <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-4 font-sans">
+          {counterLabel}
+        </p>
+
+        {/* Title + description on same line like carrd reference */}
+        <h3 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold text-foreground mb-1 leading-tight">
           {project.title}
+          <span className="text-muted-foreground font-sans font-normal text-lg md:text-xl lg:text-2xl ml-3">
+            – {project.cardDescription || project.description}
+          </span>
         </h3>
 
         {/* Image carousel with neon shadow */}
         <div
-          className="relative w-full aspect-[16/9] overflow-hidden rounded-2xl select-none transition-shadow duration-500 ease-out"
+          className="relative w-full aspect-[16/9] overflow-hidden rounded-2xl select-none transition-shadow duration-500 ease-out mt-8"
           style={{
             boxShadow: '0 4px 20px -4px rgba(0,0,0,0.08)',
           }}
           onMouseEnter={(e) => {
             (e.currentTarget as HTMLDivElement).style.boxShadow =
-              '0 0 30px 6px rgba(232, 81, 2, 0.2), 0 0 60px 15px rgba(241, 96, 1, 0.08)';
+              '0 0 25px 5px rgba(232, 81, 2, 0.15), 0 0 50px 12px rgba(241, 96, 1, 0.06)';
           }}
           onMouseLeave={(e) => {
             (e.currentTarget as HTMLDivElement).style.boxShadow =
@@ -117,47 +126,45 @@ const WorkCard = ({ project, index }: WorkCardProps) => {
           )}
         </div>
 
-        {/* Three columns below image */}
-        <div className="grid grid-cols-3 gap-6 mt-5">
-          {/* Description */}
+        {/* Three columns below image — following carrd reference */}
+        <div className="grid grid-cols-3 gap-8 mt-8">
+          {/* Column 1: Client / Category / Duration */}
+          <div className="col-span-1 space-y-1.5">
+            {project.company && (
+              <p className="text-sm text-foreground">
+                <span className="font-medium">Company:</span>{' '}
+                <span className="text-muted-foreground">{project.company}</span>
+              </p>
+            )}
+            {project.cardCategory && (
+              <p className="text-sm text-foreground">
+                <span className="font-medium">Category:</span>{' '}
+                <span className="text-muted-foreground">{project.cardCategory}</span>
+              </p>
+            )}
+            {project.duration && (
+              <p className="text-sm text-foreground">
+                <span className="font-medium">Duration:</span>{' '}
+                <span className="text-muted-foreground">{project.duration}</span>
+              </p>
+            )}
+          </div>
+
+          {/* Column 2: Problem */}
           <div className="col-span-1">
+            <p className="text-sm text-foreground font-medium mb-1">Problem:</p>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              {project.description}
+              {project.challenge || project.description}
             </p>
           </div>
 
-          {/* Big Numbers */}
-          {bigNumbers.length >= 2 && (
-            <>
-              <div className="col-span-1 text-left">
-                <div className="font-display text-2xl md:text-3xl font-semibold text-foreground">
-                  {bigNumbers[0].value}
-                </div>
-                <div className="text-xs md:text-sm text-muted-foreground mt-1">
-                  {bigNumbers[0].label}
-                </div>
-              </div>
-              <div className="col-span-1 text-left">
-                <div className="font-display text-2xl md:text-3xl font-semibold text-foreground">
-                  {bigNumbers[1].value}
-                </div>
-                <div className="text-xs md:text-sm text-muted-foreground mt-1">
-                  {bigNumbers[1].label}
-                </div>
-              </div>
-            </>
-          )}
-
-          {bigNumbers.length < 2 && (
-            <>
-              <div className="col-span-1">
-                <p className="text-sm text-muted-foreground">{project.year}</p>
-              </div>
-              <div className="col-span-1">
-                <p className="text-sm text-muted-foreground">{project.client}</p>
-              </div>
-            </>
-          )}
+          {/* Column 3: Solution */}
+          <div className="col-span-1">
+            <p className="text-sm text-foreground font-medium mb-1">Solution:</p>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {project.solution || project.description}
+            </p>
+          </div>
         </div>
       </Link>
     </motion.article>
