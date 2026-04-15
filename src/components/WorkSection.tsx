@@ -12,27 +12,27 @@ const WorkSection = () => {
       <div className="container mx-auto px-6">
         {/* Header — centered */}
         <motion.div
-          className="text-center mb-12"
+          className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
           <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold">
-            Work
+            Selected Work
           </h2>
         </motion.div>
 
         {/* Projects List */}
-        <div className="space-y-20">
+        <div className="space-y-28">
           {featuredProjects.map((project, index) => (
-            <WorkCard key={project.id} project={project} index={index} />
+            <WorkCard key={project.id} project={project} index={index} totalCount={featuredProjects.length} />
           ))}
         </div>
 
         {/* View All Projects Link */}
         <motion.div
-          className="text-center mt-12 mb-4"
+          className="text-center mt-16 mb-4"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

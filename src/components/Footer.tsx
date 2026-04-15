@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import gradientBg from '@/assets/gradient-bg.png';
 
 const RollingLink = ({ href, label, external }: { href: string; label: string; external?: boolean }) => (
   <a
@@ -47,36 +46,17 @@ const Footer = () => {
   ];
 
   return (
-    <footer id="contact" data-nav-theme="dark" className="relative">
-      <div className="relative overflow-hidden pt-32 pb-8">
-        {/* White-to-gradient fade */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(to bottom, hsl(0 0% 100%) 0%, transparent 40%)',
-            zIndex: 1,
-          }}
-        />
-        {/* Brand gradient from uploaded image */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url(${gradientBg})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
-        {/* High-definition grain texture */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            opacity: 0.3,
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-            backgroundRepeat: 'repeat',
-            backgroundSize: '256px 256px',
-          }}
-        />
-
+    <footer
+      id="contact"
+      data-nav-theme="dark"
+      className="relative"
+      style={{
+        position: 'sticky',
+        bottom: 0,
+        zIndex: 0,
+      }}
+    >
+      <div className="relative overflow-hidden pt-32 pb-8 bg-black">
         {/* Content */}
         <div className="container mx-auto px-6 relative z-10">
           <div className="pt-24">
