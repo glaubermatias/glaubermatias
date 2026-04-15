@@ -62,7 +62,7 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
         {/* Title + description on same line like carrd reference */}
         <h3 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold text-foreground mb-1 leading-tight">
           {project.title}
-          <span className="text-muted-foreground font-sans font-normal text-lg md:text-xl lg:text-2xl ml-3">
+          <span className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold ml-3" style={{ color: '#b7b7b7' }}>
             – {project.cardDescription || project.description}
           </span>
         </h3>
@@ -127,23 +127,23 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
         </div>
 
         {/* Three columns below image — following carrd reference */}
-        <div className="grid grid-cols-3 gap-8 mt-8">
+        <div className="grid grid-cols-3 gap-8 mt-10">
           {/* Column 1: Client / Category / Duration */}
           <div className="col-span-1 space-y-1.5">
             {project.company && (
-              <p className="text-sm text-foreground">
+              <p className="text-[0.9rem] text-foreground leading-relaxed">
                 <span className="font-medium">Company:</span>{' '}
                 <span className="text-muted-foreground">{project.company}</span>
               </p>
             )}
             {project.cardCategory && (
-              <p className="text-sm text-foreground">
+              <p className="text-[0.9rem] text-foreground leading-relaxed">
                 <span className="font-medium">Category:</span>{' '}
                 <span className="text-muted-foreground">{project.cardCategory}</span>
               </p>
             )}
             {project.duration && (
-              <p className="text-sm text-foreground">
+              <p className="text-[0.9rem] text-foreground leading-relaxed">
                 <span className="font-medium">Duration:</span>{' '}
                 <span className="text-muted-foreground">{project.duration}</span>
               </p>
@@ -152,16 +152,16 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
 
           {/* Column 2: Problem */}
           <div className="col-span-1">
-            <p className="text-sm text-foreground font-medium mb-1">Problem:</p>
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <p className="text-[0.9rem] text-foreground font-medium mb-1">Problem:</p>
+            <p className="text-[0.9rem] text-muted-foreground leading-relaxed">
               {project.challenge || project.description}
             </p>
           </div>
 
           {/* Column 3: Solution */}
           <div className="col-span-1">
-            <p className="text-sm text-foreground font-medium mb-1">Solution:</p>
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <p className="text-[0.9rem] text-foreground font-medium mb-1">Solution:</p>
+            <p className="text-[0.9rem] text-muted-foreground leading-relaxed">
               {project.solution || project.description}
             </p>
           </div>

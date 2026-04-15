@@ -24,7 +24,7 @@ const WorkSection = () => {
         </motion.div>
 
         {/* Projects List */}
-        <div className="space-y-28">
+        <div className="space-y-20">
           {featuredProjects.map((project, index) => (
             <WorkCard key={project.id} project={project} index={index} totalCount={featuredProjects.length} />
           ))}
@@ -32,7 +32,7 @@ const WorkSection = () => {
 
         {/* View All Projects Link */}
         <motion.div
-          className="text-center mt-16 mb-4"
+          className="text-center mt-16 mb-0"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
