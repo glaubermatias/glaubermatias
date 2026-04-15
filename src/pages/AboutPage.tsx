@@ -3,7 +3,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Linkedin, Mail } from 'lucide-react';
 import PageLayout from '@/components/PageLayout';
-import Footer from '@/components/Footer';
+
 import glauberPhoto from '@/assets/glauber-photo.jpg';
 
 const AboutPage = () => {

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import PageLayout from '@/components/PageLayout';
-import Footer from '@/components/Footer';
+
 import { getProjectById, getRelatedProjects, ProjectData } from '@/data/projects';
 
 const RelatedProjectCard = ({ project }: { project: ProjectData }) => {

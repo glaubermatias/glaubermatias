@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 import PageLayout from '@/components/PageLayout';
-import Footer from '@/components/Footer';
+
 import { projects, ProjectCategory, ProjectData } from '@/data/projects';
 
 const WorkProjectCard = ({ project, index }: { project: ProjectData; index: number }) => {
