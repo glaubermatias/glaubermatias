@@ -8,7 +8,7 @@ const WorkSection = () => {
   const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
 
   return (
-    <section id="work" className="py-16 lg:py-24">
+    <section id="work" className="pt-16 pb-8 lg:pt-24 lg:pb-12">
       <div className="container mx-auto px-6">
         {/* Header — centered */}
         <motion.div
