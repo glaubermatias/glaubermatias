@@ -203,8 +203,12 @@ export const projects: ProjectData[] = [
   {
     id: 'tech-meetups',
     title: 'Tech Meetups',
+    cardDescription: 'Dynamic presentation materials for tech community meetups',
     description: 'Engaging presentation materials for technology community meetups and knowledge-sharing sessions.',
     category: 'tech-events',
+    company: 'Tech Community',
+    cardCategory: 'Tech Events',
+    duration: 'Ongoing',
     images: [
       'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&auto=format&fit=crop',
@@ -248,8 +252,12 @@ export const projects: ProjectData[] = [
   {
     id: 'tech-interns-onboarding',
     title: 'Brilliant Youth',
+    cardDescription: 'Engaging onboarding experience for technology interns',
     description: 'Engaging onboarding program for technology interns creating an impactful first impression and accelerating productivity.',
     category: 'hr-initiatives',
+    company: 'Tech Company HR',
+    cardCategory: 'HR Initiatives',
+    duration: '2 Months',
     images: [
       'https://images.unsplash.com/photo-1531498860502-7c67cf02f657?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop',
@@ -293,8 +301,12 @@ export const projects: ProjectData[] = [
   {
     id: 'ALDI-case-study',
     title: 'ALDI Case Study',
+    cardDescription: 'Strategic analysis for retail optimization and market positioning',
     description: 'Strategic analysis and presentation case study for retail optimization and market positioning.',
     category: 'side-projects',
+    company: 'Personal Project',
+    cardCategory: 'Side Projects',
+    duration: '1 Month',
     images: [
       'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&auto=format&fit=crop',
