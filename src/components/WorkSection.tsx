@@ -8,7 +8,7 @@ const WorkSection = () => {
   const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
 
   return (
-    <section id="work" className="py-16 lg:py-24">
+    <section id="work" className="pt-16 pb-8 lg:pt-24 lg:pb-12">
       <div className="container mx-auto px-6">
         {/* Header — centered */}
         <motion.div
@@ -24,7 +24,7 @@ const WorkSection = () => {
         </motion.div>
 
         {/* Projects List */}
-        <div className="space-y-28">
+        <div className="space-y-20">
           {featuredProjects.map((project, index) => (
             <WorkCard key={project.id} project={project} index={index} totalCount={featuredProjects.length} />
           ))}
@@ -32,7 +32,7 @@ const WorkSection = () => {
 
         {/* View All Projects Link */}
         <motion.div
-          className="text-center mt-16 mb-4"
+          className="text-center mt-16 mb-0"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

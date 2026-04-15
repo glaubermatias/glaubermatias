@@ -2,8 +2,8 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
+import PageLayout from '@/components/PageLayout';
+
 import { getProjectById, getRelatedProjects, ProjectData } from '@/data/projects';
 
 const RelatedProjectCard = ({ project }: { project: ProjectData }) => {
@@ -64,8 +64,7 @@ const ProjectDetailPage = () => {
 
   if (!project) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navigation />
+      <PageLayout>
         <main className="pt-28 pb-16">
           <div className="container mx-auto px-6 text-center">
             <h1 className="font-display text-4xl mb-4">Project Not Found</h1>
@@ -81,14 +80,12 @@ const ProjectDetailPage = () => {
             </Link>
           </div>
         </main>
-        <Footer />
-      </div>
+      </PageLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
+    <PageLayout>
 
       <main className="pt-24 pb-16">
         {/* Back Button */}
@@ -268,8 +265,8 @@ const ProjectDetailPage = () => {
         </div>
       </main>
 
-      <Footer />
-    </div>
+      
+    </PageLayout>
   );
 };
 

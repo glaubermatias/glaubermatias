@@ -2,15 +2,26 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import glauberPortrait from '@/assets/glauber-portrait.png';
-import LiquidBackground from './LiquidBackground';
 
 const Hero = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <section data-nav-theme="dark" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Animated liquid background */}
-      <LiquidBackground />
+      {/* Black background */}
+      <div className="absolute inset-0 bg-black" />
+
+      {/* Video background at 60% opacity, looped */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ opacity: 0.6 }}
+      >
+        <source src="/videos/hero-bg.mp4" type="video/mp4" />
+      </video>
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-3xl mx-auto">
@@ -46,14 +57,16 @@ const Hero = () => {
           I'm Glauber
         </motion.p>
 
-        {/* Impact phrase — balanced line breaks with generous line-height */}
+        {/* Impact phrase — forced line breaks after "Designing" and "that" */}
         <motion.h1
-          className="font-display text-3xl sm:text-4xl md:text-[2.75rem] lg:text-[3.25rem] font-semibold leading-[1.6] tracking-normal mb-6 text-white max-w-[18ch] mx-auto"
+          className="font-display text-3xl sm:text-4xl md:text-[2.75rem] lg:text-[3.25rem] font-semibold leading-[1.8] tracking-normal mb-6 text-white"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          Designing presentations that amplify your impact
+          Designing<br />
+          presentations that<br />
+          amplify your impact
         </motion.h1>
 
         {/* Subtitle */}

@@ -3,8 +3,8 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
+import PageLayout from '@/components/PageLayout';
+
 import { projects, ProjectCategory, ProjectData } from '@/data/projects';
 
 const WorkProjectCard = ({ project, index }: { project: ProjectData; index: number }) => {
@@ -133,9 +133,7 @@ const WorkPage = () => {
       : projects.filter((p) => p.category === activeCategory);
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-
+    <PageLayout>
       <main className="pt-28 pb-16">
         <div className="container mx-auto px-6">
           {/* Header */}
@@ -193,9 +191,7 @@ const WorkPage = () => {
           </motion.div>
         </div>
       </main>
-
-      <Footer />
-    </div>
+    </PageLayout>
   );
 };
 

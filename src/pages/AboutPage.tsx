@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Linkedin, Mail } from 'lucide-react';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
+import PageLayout from '@/components/PageLayout';
+
 import glauberPhoto from '@/assets/glauber-photo.jpg';
 
 const AboutPage = () => {
@@ -17,9 +17,7 @@ const AboutPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-      
+    <PageLayout>
       <main className="pt-32 pb-16">
         <div className="container mx-auto px-6">
           {/* Back Link */}
@@ -165,9 +163,7 @@ const AboutPage = () => {
           </motion.div>
         </div>
       </main>
-
-      <Footer />
-    </div>
+    </PageLayout>
   );
 };
 
