@@ -29,8 +29,12 @@ export const projects: ProjectData[] = [
   {
     id: 'leadership-academy',
     title: 'Leadership Academy',
+    cardDescription: 'Comprehensive leadership development program for executive training',
     description: 'Comprehensive leadership development program presentation materials designed for executive training initiatives.',
     category: 'executive-decks',
+    company: 'Corporate Client',
+    cardCategory: 'Executive Decks',
+    duration: '3 Months',
     images: [
       'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop',
@@ -52,8 +56,12 @@ export const projects: ProjectData[] = [
   {
     id: 'pitch-decks',
     title: 'Pitch Decks',
+    cardDescription: 'Strategic investor pitch decks to communicate value and secure funding',
     description: 'Strategic investor pitch decks designed to communicate value propositions and secure funding for innovative ventures.',
     category: 'executive-decks',
+    company: 'Various Startups',
+    cardCategory: 'Executive Decks',
+    duration: '2 Months',
     images: [
       'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop',
@@ -97,8 +105,12 @@ export const projects: ProjectData[] = [
   {
     id: 'summit',
     title: 'Summit',
+    cardDescription: 'High-impact keynote presentations for major corporate summit events',
     description: 'High-impact keynote and session presentations for major corporate summit events with thousands of attendees.',
     category: 'executive-decks',
+    company: 'Global Corporation',
+    cardCategory: 'Executive Decks',
+    duration: '4 Months',
     images: [
       'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop',
@@ -120,8 +132,12 @@ export const projects: ProjectData[] = [
   {
     id: 'templates-library',
     title: 'Templates Library',
+    cardDescription: 'Scalable template system enabling consistent, on-brand materials',
     description: 'Comprehensive library of presentation templates enabling teams to create consistent, on-brand materials quickly.',
     category: 'templates',
+    company: 'Enterprise Client',
+    cardCategory: 'Templates',
+    duration: '6 Months',
     images: [
       'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1531498860502-7c67cf02f657?w=800&auto=format&fit=crop',
