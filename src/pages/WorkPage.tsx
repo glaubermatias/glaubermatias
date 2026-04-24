@@ -1,118 +1,10 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import PageLayout from '@/components/PageLayout';
+import WorkCard from '@/components/WorkCard';
 
-import { projects, ProjectCategory, ProjectData } from '@/data/projects';
-
-const WorkProjectCard = ({ project, index }: { project: ProjectData; index: number }) => {
-  const { t } = useLanguage();
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  const nextImage = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setCurrentImageIndex((prev) => (prev + 1) % project.images.length);
-  };
-
-  const prevImage = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setCurrentImageIndex((prev) => (prev - 1 + project.images.length) % project.images.length);
-  };
-
-  const getCategoryLabel = (category: string) => {
-    const categoryMap: Record<string, string> = {
-      'executive-decks': t.work.categories.executiveDecks,
-      'templates': t.work.categories.templates,
-      'tech-events': t.work.categories.techEvents,
-      'hr-initiatives': t.work.categories.hrInitiatives,
-      'side-projects': t.work.categories.sideProjects,
-    };
-    return categoryMap[category] || category;
-  };
-
-  return (
-    <motion.article
-      layout
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="group h-full"
-    >
-      <Link to={`/${project.id}`} className="block h-full">
-        <div className="bg-muted rounded-[2rem] overflow-hidden transition-all duration-300 h-full flex flex-col">
-          <div className="p-5 pb-0">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl select-none">
-              <motion.img
-                key={currentImageIndex}
-                src={project.images[currentImageIndex]}
-                alt={`${project.title} - Image ${currentImageIndex + 1}`}
-                className="w-full h-full object-cover pointer-events-none"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-                draggable={false}
-              />
-
-              {project.images.length > 1 && (
-                <>
-                  <button
-                    onClick={prevImage}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-background select-none"
-                    aria-label="Previous image"
-                  >
-                    <ChevronLeft className="w-5 h-5 text-foreground" />
-                  </button>
-                  <button
-                    onClick={nextImage}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-background select-none"
-                    aria-label="Next image"
-                  >
-                    <ChevronRight className="w-5 h-5 text-foreground" />
-                  </button>
-
-                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-                    {project.images.map((_, idx) => (
-                      <div
-                        key={idx}
-                        className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                          idx === currentImageIndex ? 'bg-background w-4' : 'bg-background/50'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-
-          <div className="p-6 space-y-3 flex-1 flex flex-col">
-            <h3 className="font-display text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
-              {project.title}
-            </h3>
-
-            <p className="text-sm flex-1 text-[#676f79]">{project.description}</p>
-
-            <div className="pt-2 mt-auto">
-              <span className="inline-flex items-center px-3 py-1 rounded-full bg-accent text-accent-foreground text-xs font-normal">
-                {getCategoryLabel(project.category)}
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2 text-primary font-normal text-sm group-hover:gap-3 transition-all duration-300 pb-3">
-              <span>{t.work.viewProject}</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </div>
-          </div>
-        </div>
-      </Link>
-    </motion.article>
-  );
-};
+import { projects, ProjectCategory } from '@/data/projects';
 
 const WorkPage = () => {
   const { t } = useLanguage();
@@ -127,15 +19,18 @@ const WorkPage = () => {
     { key: 'side-projects', label: t.work.categories.sideProjects },
   ];
 
-  const filteredProjects =
-    activeCategory === 'all'
-      ? projects
-      : projects.filter((p) => p.category === activeCategory);
+  const filteredProjects = useMemo(
+    () =>
+      activeCategory === 'all'
+        ? projects
+        : projects.filter((p) => p.category === activeCategory),
+    [activeCategory],
+  );
 
   return (
     <PageLayout>
       <main className="pt-28 pb-16">
-        <div className="container mx-auto px-6">
+        <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
           {/* Header */}
           <motion.div
             className="text-left mb-8"
@@ -144,7 +39,7 @@ const WorkPage = () => {
             transition={{ duration: 0.8 }}
           >
             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">
-              {t.work.title}
+              Work
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl">
               {t.work.subtitle}
@@ -165,7 +60,7 @@ const WorkPage = () => {
                 className={`relative px-5 py-2.5 rounded-full text-sm font-normal transition-all duration-300 ${
                   activeCategory === cat.key
                     ? 'text-primary-foreground'
-                    : 'text-muted-foreground hover:text-foreground bg-secondary/50 hover:bg-secondary'
+                    : 'text-muted-foreground hover:text-foreground bg-secondary/40 hover:bg-secondary/60'
                 }`}
               >
                 {activeCategory === cat.key && (
@@ -180,15 +75,32 @@ const WorkPage = () => {
             ))}
           </motion.div>
 
-          {/* Projects Grid */}
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            layout
-          >
-            {filteredProjects.map((project, index) => (
-              <WorkProjectCard key={project.id} project={project} index={index} />
-            ))}
-          </motion.div>
+          {/* Projects List — same layout as Selected Work */}
+          <div className="border-t border-foreground/10">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeCategory}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {filteredProjects.map((project, index) => (
+                  <WorkCard
+                    key={project.id}
+                    project={project}
+                    index={index}
+                    totalCount={filteredProjects.length}
+                  />
+                ))}
+                {filteredProjects.length === 0 && (
+                  <p className="py-20 text-center text-muted-foreground">
+                    No projects in this category yet.
+                  </p>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </main>
     </PageLayout>
