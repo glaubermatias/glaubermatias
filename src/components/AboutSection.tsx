@@ -14,7 +14,7 @@ const AboutSection = () => {
 
   return (
     <section id="about" className="py-8 pb-[50px] lg:py-[27px]">
-      <div className="container mx-auto px-6">
+      <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
         {/* Header */}
         <motion.div
           className="text-left mb-8"

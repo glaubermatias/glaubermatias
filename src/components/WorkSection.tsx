@@ -8,24 +8,25 @@ const WorkSection = () => {
   const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
 
   return (
-    <section id="work" className="pt-12 pb-8 lg:pt-20 lg:pb-12">
+    // Full-bleed section — no horizontal padding so card hover background covers edges.
+    <section id="work" className="pt-0 pb-8 lg:pb-12">
+      {/* Top divider spans full width, aligned with cards */}
+      <div className="border-t border-foreground/10" />
+
+      {/* Projects List — each card is full-bleed; padding lives inside the card */}
+      <div>
+        {featuredProjects.map((project, index) => (
+          <WorkCard
+            key={project.id}
+            project={project}
+            index={index}
+            totalCount={featuredProjects.length}
+          />
+        ))}
+      </div>
+
+      {/* View all — left aligned, inside max-w container */}
       <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
-        {/* Top divider */}
-        <div className="border-t border-foreground/10" />
-
-        {/* Projects List — dividers handled per card */}
-        <div>
-          {featuredProjects.map((project, index) => (
-            <WorkCard
-              key={project.id}
-              project={project}
-              index={index}
-              totalCount={featuredProjects.length}
-            />
-          ))}
-        </div>
-
-        {/* View all — left aligned */}
         <motion.div
           className="text-left mt-10"
           initial={{ opacity: 0, y: 20 }}
