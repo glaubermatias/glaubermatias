@@ -139,10 +139,10 @@ const Navigation = () => {
     <header className="fixed top-0 left-0 right-0 z-50">
       <nav
         ref={navRef}
-        className="w-full transition-all duration-500 px-6 py-4"
+        className="w-full transition-all duration-500 py-4"
         style={{ ...navBgStyle, ...maskStyle }}
       >
-        <div className="container mx-auto">
+        <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
           <div className="flex items-center justify-between">
             <a
               href={logoHref}

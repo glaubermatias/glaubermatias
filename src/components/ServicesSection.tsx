@@ -100,7 +100,7 @@ const ServicesSection = () => {
       </AnimatePresence>
     </motion.div>;
   return <section id="skillset" className="py-8 mb-2 lg:py-[26px]">
-      <div className="container mx-auto px-6">
+      <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
         {/* Services Container with dark background */}
         <div data-nav-theme="dark" className="bg-dark-accent rounded-[2.5rem] p-8 md:p-12">
           {/* Header - Left aligned */}
