@@ -10,13 +10,13 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      {/* Main content sits above sticky footer */}
+      {/* Main content sits above sticky footer. Rounded bottom stays visible during reveal. */}
       <div
-        className="relative z-10 bg-background"
+        className="relative z-10 bg-background pb-12"
         style={{
-          borderBottomLeftRadius: '24px',
-          borderBottomRightRadius: '24px',
-          boxShadow: '0 10px 40px -10px rgba(0,0,0,0.2)',
+          borderBottomLeftRadius: '32px',
+          borderBottomRightRadius: '32px',
+          boxShadow: '0 24px 48px -12px rgba(0,0,0,0.25)',
         }}
       >
         <Hero />
@@ -25,7 +25,7 @@ const Index = () => {
         <AboutSection />
         <TestimonialsSection />
       </div>
-      {/* Footer is sticky at bottom, revealed as content scrolls away */}
+      {/* Footer revealed as content scrolls away */}
       <Footer />
     </div>
   );

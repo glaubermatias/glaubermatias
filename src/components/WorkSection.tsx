@@ -8,35 +8,30 @@ const WorkSection = () => {
   const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
 
   return (
-    <section id="work" className="pt-16 pb-8 lg:pt-24 lg:pb-12">
-      <div className="container mx-auto px-6">
-        {/* Header — centered */}
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold">
-            Selected Work
-          </h2>
-        </motion.div>
+    <section id="work" className="pt-12 pb-8 lg:pt-20 lg:pb-12">
+      <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
+        {/* Top divider */}
+        <div className="border-t border-foreground/10" />
 
-        {/* Projects List */}
-        <div className="space-y-20">
+        {/* Projects List — dividers handled per card */}
+        <div>
           {featuredProjects.map((project, index) => (
-            <WorkCard key={project.id} project={project} index={index} totalCount={featuredProjects.length} />
+            <WorkCard
+              key={project.id}
+              project={project}
+              index={index}
+              totalCount={featuredProjects.length}
+            />
           ))}
         </div>
 
-        {/* View All Projects Link */}
+        {/* View all — left aligned */}
         <motion.div
-          className="text-center mt-16 mb-0"
+          className="text-left mt-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.6 }}
         >
           <Link
             to="/work"
