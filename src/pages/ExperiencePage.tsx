@@ -1,24 +1,34 @@
-import { ArrowDown } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import PageLayout from '@/components/PageLayout';
 import PageHeader from '@/components/PageHeader';
 import WorkExperienceSection from '@/components/WorkExperienceSection';
 
+const ResumeCTA = () => (
+  <a
+    href="#experience"
+    className="group relative inline-flex items-center isolate"
+    aria-label="Read my resume"
+  >
+    {/* Expanding pill background — sits behind everything */}
+    <span
+      aria-hidden="true"
+      className="absolute left-0 top-1/2 -translate-y-1/2 h-14 md:h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 transition-all duration-500 ease-out w-14 md:w-16 group-hover:w-full"
+      style={{ zIndex: 0 }}
+    />
+    {/* Circle icon (always visible) */}
+    <span className="relative z-10 inline-flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-full bg-white text-black transition-transform duration-500 group-hover:scale-100">
+      <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-0.5" />
+    </span>
+    {/* Text */}
+    <span className="relative z-10 pl-4 pr-6 md:pr-8 text-white font-display text-base md:text-lg font-medium whitespace-nowrap">
+      Read my resume
+    </span>
+  </a>
+);
+
 const ExperiencePage = () => {
   const header = (
-    <PageHeader
-      rightSlot={
-        <a
-          href="#experience"
-          className="group relative inline-flex items-center justify-center w-32 h-32 md:w-40 md:h-40 rounded-full bg-white text-black hover:bg-[#e85102] hover:text-white transition-colors duration-500"
-          aria-label="Read it — jump to experience"
-        >
-          <span className="font-display text-lg md:text-xl font-semibold flex items-center gap-2">
-            Read it
-            <ArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
-          </span>
-        </a>
-      }
-    >
+    <PageHeader rightSlot={<ResumeCTA />}>
       <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">
         Work experience
       </h1>
@@ -31,7 +41,7 @@ const ExperiencePage = () => {
 
   return (
     <PageLayout header={header}>
-      <div className="pt-12 md:pt-16 pb-32">
+      <div className="pt-12 md:pt-16 pb-12 md:pb-16">
         <WorkExperienceSection />
       </div>
     </PageLayout>
