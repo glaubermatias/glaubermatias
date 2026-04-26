@@ -42,7 +42,6 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
   };
 
   const tagLabel = `WORK ${String(index + 1).padStart(2, '0')}/${String(totalCount).padStart(2, '0')}`;
-  const isLast = index === totalCount - 1;
 
   // Combined paragraph: prefer challenge + solution joined; fallback to description
   const combinedParagraph =
@@ -56,9 +55,7 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.08 }}
-      className={`group transition-colors duration-300 hover:bg-[#f8f6f5] ${
-        isLast ? '' : 'border-b border-foreground/10'
-      }`}
+      className="group transition-colors duration-300 hover:bg-[#f8f6f5] border-b border-foreground/10"
     >
       {/* Inner padding container for content; outer article spans full width for full-bleed hover */}
       <Link to={`/${project.id}`} className="block">
@@ -66,18 +63,14 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-center">
             {/* LEFT — Text content (50%) */}
             <div>
-              {/* Tag row: WORK 0X/0Y + colored category pill */}
-              <div className="flex items-center gap-3 mb-6 flex-wrap">
-                <span className="text-xs tracking-[0.2em] uppercase text-muted-foreground font-sans">
-                  {tagLabel}
-                </span>
+              {/* Tag row: WORK 0X/0Y • Category — same style, bullet separator */}
+              <div className="flex items-center gap-2 mb-6 flex-wrap text-xs tracking-[0.2em] uppercase text-muted-foreground font-sans">
+                <span>{tagLabel}</span>
                 {project.cardCategory && (
-                  <span
-                    className="text-[0.7rem] tracking-[0.15em] uppercase font-sans font-medium px-2.5 py-1 rounded-full text-white"
-                    style={{ backgroundColor: '#e85102' }}
-                  >
-                    {project.cardCategory}
-                  </span>
+                  <>
+                    <span aria-hidden="true">•</span>
+                    <span>{project.cardCategory}</span>
+                  </>
                 )}
               </div>
 
