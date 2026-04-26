@@ -1,33 +1,157 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import PageLayout from '@/components/PageLayout';
 import PageHeader from '@/components/PageHeader';
+import glauberAboutHeader from '@/assets/glauber-about-header.jpg';
 import glauberPortrait from '@/assets/glauber-portrait.png';
 import glauberPhoto from '@/assets/glauber-photo.jpg';
 
+// Side menu (no "About me" — first scroll target is fun-facts).
 const sections = [
-  { id: 'about', label: 'About me' },
   { id: 'fun-facts', label: 'Fun facts' },
   { id: 'skills', label: 'Skills' },
   { id: 'beyond-work', label: 'Beyond work' },
 ];
 
 const funFacts = [
-  { emoji: '☕', title: 'Espresso enthusiast', desc: 'I have strong opinions about brew ratios and bean origins.' },
-  { emoji: '🎧', title: 'Lo-fi addict', desc: "I can't design without a steady stream of mellow beats." },
-  { emoji: '🌎', title: 'Brazilian abroad', desc: 'Carioca soul, Lisbon-bound. Always chasing good light and good food.' },
-  { emoji: '📚', title: 'Book hoarder', desc: 'My to-read pile grows faster than I can possibly keep up with.' },
+  {
+    tag: 'COFFEE',
+    title: 'Espresso enthusiast',
+    desc: 'I have strong opinions about brew ratios, bean origins and the perfect crema.',
+    image: glauberPhoto,
+  },
+  {
+    tag: 'MUSIC',
+    title: 'Lo-fi addict',
+    desc: "I can't design without a steady stream of mellow beats running in the background.",
+    image: glauberPortrait,
+  },
+  {
+    tag: 'TRAVEL',
+    title: 'Brazilian abroad',
+    desc: 'Carioca soul, Lisbon-bound. Always chasing good light, good food and new perspectives.',
+    image: glauberPhoto,
+  },
+  {
+    tag: 'READING',
+    title: 'Book hoarder',
+    desc: 'My to-read pile grows faster than I can possibly keep up with — and I love it.',
+    image: glauberPortrait,
+  },
 ];
 
-const skills = [
+const featuredSkills = [
+  {
+    title: 'Executive storytelling',
+    desc: 'Translating complex business narratives into decks that earn attention and drive decisions.',
+  },
+  {
+    title: 'Visual systems',
+    desc: 'Building scalable templates and design tokens so teams stay on-brand without slowing down.',
+  },
+  {
+    title: 'Data visualization',
+    desc: 'Turning dense numbers into charts and visuals that make the insight obvious.',
+  },
+  {
+    title: 'Keynote design',
+    desc: 'Crafting stage-ready slides that amplify the speaker rather than competing with them.',
+  },
+];
+
+const allCapabilities = [
   'Pitch decks', 'Keynote design', 'Data visualization', 'Template systems',
   'Brand storytelling', 'Visual hierarchy', 'Slide narratives', 'Workshops',
+  'Iconography', 'Motion basics', 'Typography', 'Information design',
 ];
 
-const personalPhotos = [
+const beyondWorkPhotos = [
   glauberPhoto,
   glauberPortrait,
+  glauberAboutHeader,
+  glauberPhoto,
+  glauberPortrait,
+  glauberAboutHeader,
   glauberPhoto,
 ];
+
+const SideMenu = () => (
+  <aside className="lg:col-span-3 hidden lg:block">
+    <div className="sticky top-32">
+      <h3 className="font-display text-2xl text-black mb-6">Get to know me</h3>
+      <nav className="flex flex-col">
+        {sections.map((s) => (
+          <a
+            key={s.id}
+            href={`#${s.id}`}
+            className="group relative pl-4 py-2 text-base text-foreground/60 hover:text-black transition-colors"
+          >
+            <span
+              className="absolute left-0 top-0 bottom-0 w-px bg-foreground/20 group-hover:bg-black group-hover:w-[2px] transition-all duration-300"
+              aria-hidden="true"
+            />
+            {s.label}
+          </a>
+        ))}
+      </nav>
+    </div>
+  </aside>
+);
+
+const BeyondWorkGallery = () => {
+  const [active, setActive] = useState(0);
+  const total = beyondWorkPhotos.length;
+  const go = (dir: 1 | -1) => setActive((p) => (p + dir + total) % total);
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+      {/* Featured */}
+      <div className="md:col-span-8 relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted">
+        <motion.img
+          key={active}
+          src={beyondWorkPhotos[active]}
+          alt={`Personal moment ${active + 1}`}
+          className="w-full h-full object-cover absolute inset-0"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4 }}
+        />
+        <button
+          onClick={() => go(-1)}
+          aria-label="Previous photo"
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/50 transition-colors"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+        <button
+          onClick={() => go(1)}
+          aria-label="Next photo"
+          className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/50 transition-colors"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
+
+      {/* Thumbnails (skip the active one to keep 6 visible if total === 7) */}
+      <div className="md:col-span-4 grid grid-cols-3 md:grid-cols-2 gap-3">
+        {beyondWorkPhotos
+          .map((src, idx) => ({ src, idx }))
+          .filter((x) => x.idx !== active)
+          .slice(0, 6)
+          .map(({ src, idx }) => (
+            <button
+              key={idx}
+              onClick={() => setActive(idx)}
+              className="aspect-square overflow-hidden rounded-xl bg-muted ring-1 ring-foreground/10 hover:ring-foreground/40 transition"
+            >
+              <img src={src} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+            </button>
+          ))}
+      </div>
+    </div>
+  );
+};
 
 const AboutPage = () => {
   const header = (
@@ -35,9 +159,9 @@ const AboutPage = () => {
       flushRight
       rightSlot={
         <img
-          src={glauberPortrait}
+          src={glauberAboutHeader}
           alt="Glauber Matias"
-          className="h-full w-auto object-cover object-top"
+          className="h-full w-auto object-contain object-bottom"
           style={{ maxHeight: '420px' }}
         />
       }
@@ -88,95 +212,81 @@ const AboutPage = () => {
                 </motion.div>
               </section>
 
-              {/* Fun facts */}
+              {/* Fun facts — card with image, tag and caption */}
               <section id="fun-facts" className="scroll-mt-32">
                 <h2 className="font-display text-3xl md:text-4xl font-semibold mb-8">
                   Fun facts
                 </h2>
-                <div className="grid sm:grid-cols-2 gap-6">
+                <div className="grid sm:grid-cols-2 gap-8">
                   {funFacts.map((fact) => (
-                    <motion.div
+                    <motion.article
                       key={fact.title}
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.5 }}
-                      className="bg-muted rounded-[1.5rem] p-6"
                     >
-                      <div className="text-3xl mb-3">{fact.emoji}</div>
-                      <h3 className="font-display text-lg font-semibold mb-1">{fact.title}</h3>
-                      <p className="text-sm text-muted-foreground">{fact.desc}</p>
-                    </motion.div>
+                      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-muted mb-4">
+                        <img
+                          src={fact.image}
+                          alt={fact.title}
+                          className="w-full h-full object-cover"
+                        />
+                        <span className="absolute top-3 left-3 inline-flex items-center px-3 py-1 rounded-full bg-white/90 backdrop-blur text-[0.65rem] tracking-[0.2em] uppercase text-black font-medium">
+                          {fact.tag}
+                        </span>
+                      </div>
+                      <h3 className="font-display text-xl font-semibold mb-1">{fact.title}</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{fact.desc}</p>
+                    </motion.article>
                   ))}
                 </div>
               </section>
 
-              {/* Skills */}
+              {/* Skills — 4 featured + all capabilities list */}
               <section id="skills" className="scroll-mt-32">
                 <h2 className="font-display text-3xl md:text-4xl font-semibold mb-8">
                   Skills
                 </h2>
-                <div className="flex flex-wrap gap-3">
-                  {skills.map((skill) => (
-                    <span
-                      key={skill}
-                      className="inline-flex items-center px-5 py-2.5 rounded-full border border-foreground/15 text-sm text-foreground/80"
-                    >
-                      {skill}
-                    </span>
+                <div className="grid sm:grid-cols-2 gap-x-10 gap-y-8 mb-14">
+                  {featuredSkills.map((s) => (
+                    <div key={s.title}>
+                      <h3 className="font-display text-xl font-semibold mb-2">{s.title}</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
+                    </div>
                   ))}
+                </div>
+
+                <div>
+                  <h4 className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">
+                    All capabilities
+                  </h4>
+                  <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-foreground/80">
+                    {allCapabilities.map((cap, idx) => (
+                      <li key={cap} className="flex items-center gap-3">
+                        {idx > 0 && <span className="text-foreground/20">·</span>}
+                        <span>{cap}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </section>
 
-              {/* Beyond work — personal photos */}
+              {/* Beyond work — featured + thumbnails gallery */}
               <section id="beyond-work" className="scroll-mt-32">
-                <h2 className="font-display text-3xl md:text-4xl font-semibold mb-8">
+                <h2 className="font-display text-3xl md:text-4xl font-semibold mb-4">
                   Beyond work
                 </h2>
                 <p className="text-base text-muted-foreground max-w-2xl mb-8 leading-relaxed">
                   A few snapshots from outside the studio — travels, hobbies,
                   and the small moments that keep me inspired.
                 </p>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {personalPhotos.map((photo, idx) => (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: idx * 0.08 }}
-                      className="aspect-[4/5] overflow-hidden rounded-2xl bg-muted"
-                    >
-                      <img
-                        src={photo}
-                        alt={`Personal moment ${idx + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </motion.div>
-                  ))}
-                </div>
+                <BeyondWorkGallery />
               </section>
             </div>
 
             {/* Right — Sticky side menu */}
-            <aside className="lg:col-span-3 hidden lg:block">
-              <div className="sticky top-32">
-                <h3 className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">
-                  Get to know me
-                </h3>
-                <nav className="flex flex-col gap-3">
-                  {sections.map((s) => (
-                    <a
-                      key={s.id}
-                      href={`#${s.id}`}
-                      className="text-base text-foreground/70 hover:text-foreground transition-colors border-l-2 border-transparent hover:border-foreground pl-3"
-                    >
-                      {s.label}
-                    </a>
-                  ))}
-                </nav>
-              </div>
-            </aside>
+            <SideMenu />
           </div>
         </div>
       </main>
