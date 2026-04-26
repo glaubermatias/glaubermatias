@@ -53,7 +53,7 @@ const WorkExperienceSection = () => {
     setExpandedId(expandedId === id ? null : id);
   };
   return <section id="experience" className="lg:py-[20px] py-0">
-      <div className="container mx-auto px-[23px] py-[15px]">
+      <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
         {/* Header - Left aligned */}
         <motion.div className="text-left mb-8" initial={{
         opacity: 0,
