@@ -20,7 +20,7 @@ const Hero = () => {
   const startAuto = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
-      setActiveIndex((p) => (p + 1) % ROTATING_WORDS.length);
+      setActiveIndex((p) => p + 1);
     }, 3000);
   }, []);
 
@@ -42,10 +42,7 @@ const Hero = () => {
       if (wheelLockRef.current) return;
       if (Math.abs(e.deltaY) < 6) return;
       wheelLockRef.current = true;
-      setActiveIndex((p) => {
-        if (e.deltaY > 0) return (p + 1) % ROTATING_WORDS.length;
-        return (p - 1 + ROTATING_WORDS.length) % ROTATING_WORDS.length;
-      });
+      setActiveIndex((p) => (e.deltaY > 0 ? p + 1 : p - 1));
       startAuto();
       window.setTimeout(() => {
         wheelLockRef.current = false;
@@ -56,13 +53,19 @@ const Hero = () => {
     return () => el.removeEventListener('wheel', onWheel);
   }, [startAuto]);
 
-  // Visible window: 1 word above + active + 2 words below (4 lines visible)
-  const LINE_HEIGHT = 1.4;
-  const VISIBLE_ABOVE = 1;
+  // Roulette rendering: render a window of words around activeIndex; translate the column
+  // smoothly so words physically scroll. Inactive words are smaller and "flattened".
+  const ACTIVE_LINE = 1.15; // em — height of active line
+  const INACTIVE_LINE = 0.7; // em — flattened height of side words
+  const WINDOW = 4; // how many items to keep in DOM around the active one
   const len = ROTATING_WORDS.length;
+  const mod = (n: number) => ((n % len) + len) % len;
 
-  const getWord = (offset: number) =>
-    ROTATING_WORDS[((activeIndex + offset) % len + len) % len];
+  // Build a stable list of items keyed by absolute index so framer can animate, not remount.
+  const items: number[] = [];
+  for (let i = -WINDOW; i <= WINDOW; i++) {
+    items.push(activeIndex + i);
+  }
 
   return (
     <section
@@ -107,56 +110,62 @@ const Hero = () => {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="font-display text-white font-semibold text-3xl md:text-4xl lg:text-[2.75rem] xl:text-[3.25rem]"
-              style={{ lineHeight: LINE_HEIGHT }}
+              className="font-display text-white font-semibold text-[1.75rem] sm:text-3xl md:text-[2.25rem] lg:text-[2.6rem] xl:text-[3rem]"
+              style={{ lineHeight: 1.25 }}
             >
               <span className="block">Designer of visual stories</span>
-              <span className="flex items-baseline flex-wrap gap-x-4">
+              <span className="flex items-baseline flex-wrap gap-x-3 gap-y-1">
                 <span>that amplify the impact of</span>
-                {/* Inline roulette — shows 1 above + active + 2 below */}
                 <span
                   ref={rouletteRef}
-                  className="relative inline-block cursor-pointer"
+                  className="relative inline-block cursor-pointer align-baseline overflow-hidden"
                   style={{
-                    height: `${LINE_HEIGHT * 4}em`,
-                    lineHeight: `${LINE_HEIGHT}em`,
-                    width: '9em',
-                    maxWidth: '60vw',
-                    overflow: 'hidden',
-                    // Vertically center the active (2nd) line with surrounding text baseline
-                    transform: `translateY(${LINE_HEIGHT * VISIBLE_ABOVE}em)`,
-                    marginTop: `-${LINE_HEIGHT * VISIBLE_ABOVE}em`,
+                    // Reserve room for active line + 1 above + 2 below.
+                    // On small screens fall back to active + 2 below (no above).
+                    height: `${ACTIVE_LINE + INACTIVE_LINE * 3}em`,
+                    width: '7.5em',
+                    maxWidth: '90vw',
                   }}
                   aria-label="Rotating list — click to view all work"
                 >
                   <Link to="/work" className="block w-full h-full">
-                    {[-1, 0, 1, 2].map((offset) => {
-                      const isActive = offset === 0;
-                      return (
-                        <motion.span
-                          key={offset}
-                          className="block whitespace-nowrap"
-                          style={{
-                            height: `${LINE_HEIGHT}em`,
-                            lineHeight: `${LINE_HEIGHT}em`,
-                            color: isActive ? '#e85102' : '#2f1106',
-                            fontWeight: isActive ? 600 : 500,
-                          }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 0.4 }}
-                        >
-                          <motion.span
-                            key={getWord(offset)}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                            className="inline-block"
+                    {/* Translating column: keep activeIndex on the "active row".
+                        Active row sits at offset 1 from top on desktop (1 above + active + 2 below)
+                        and at offset 0 on small screens (active + 2 below). We use one
+                        layout and let CSS hide the "above" row on small screens by clipping. */}
+                    {/* Active row should sit one INACTIVE_LINE from the top so we see
+                        1 inactive above + active + 2 inactive below. */}
+                    <div
+                      style={{
+                        transform: `translateY(-${(WINDOW - 1) * INACTIVE_LINE}em)`,
+                      }}
+                    >
+                      {items.map((absIdx) => {
+                        const isActive = absIdx === activeIndex;
+                        return (
+                          <motion.div
+                            key={absIdx}
+                            className="whitespace-nowrap flex items-center"
+                            animate={{
+                              height: isActive ? `${ACTIVE_LINE}em` : `${INACTIVE_LINE}em`,
+                              opacity: isActive ? 1 : 0.85,
+                              fontSize: isActive ? '1em' : '0.55em',
+                              color: isActive ? '#e85102' : '#5a2410',
+                              fontWeight: isActive ? 600 : 500,
+                            }}
+                            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                            style={{
+                              lineHeight: 1,
+                              willChange: 'height, font-size, color',
+                            }}
                           >
-                            {getWord(offset)}
-                          </motion.span>
-                        </motion.span>
-                      );
-                    })}
+                            <span style={{ display: 'inline-block' }}>
+                              {ROTATING_WORDS[mod(absIdx)]}
+                            </span>
+                          </motion.div>
+                        );
+                      })}
+                    </div>
                   </Link>
                 </span>
               </span>

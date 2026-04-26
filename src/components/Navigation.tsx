@@ -25,13 +25,11 @@ const Navigation = () => {
       for (const el of elements) {
         if (!el) continue;
         if (el === navEl || navEl.contains(el)) continue;
-        const section = el.closest('section[data-nav-theme]');
+        const section = el.closest('section[data-nav-theme], header[data-nav-theme]');
         if (section) {
           const theme = section.getAttribute('data-nav-theme');
-          if (theme === 'dark' && section.classList.contains('min-h-screen')) {
-            return 'hero';
-          }
-          if (theme === 'dark') return 'dark';
+          // Any dark surface (hero or subpage header) → fully transparent nav.
+          if (theme === 'dark') return 'hero';
         }
       }
       return 'light';
@@ -76,7 +74,7 @@ const Navigation = () => {
         { href: '/work', label: 'Work' },
         { href: '/experience', label: 'Resume' },
         { href: '/about-me', label: 'About' },
-        { href: '/#contact', label: 'Contact' },
+        { href: '#contact', label: 'Contact' },
       ];
 
   const handleLinkClick = useCallback(
