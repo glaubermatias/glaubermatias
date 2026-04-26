@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import PageLayout from '@/components/PageLayout';
+import PageHeader from '@/components/PageHeader';
 import WorkCard from '@/components/WorkCard';
 
 import { projects, ProjectCategory } from '@/data/projects';
@@ -27,80 +28,71 @@ const WorkPage = () => {
     [activeCategory],
   );
 
+  const header = (
+    <PageHeader>
+      <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-8">
+        Work
+      </h1>
+
+      {/* Filter buttons — selected = solid white pill, others = minimal text */}
+      <div className="flex flex-wrap gap-2">
+        {categories.map((cat) => {
+          const isActive = activeCategory === cat.key;
+          return (
+            <button
+              key={cat.key}
+              onClick={() => setActiveCategory(cat.key)}
+              className={`relative px-5 py-2 rounded-full text-sm font-normal transition-colors duration-300 ${
+                isActive
+                  ? 'text-black'
+                  : 'text-white/60 hover:text-white'
+              }`}
+            >
+              {isActive && (
+                <motion.div
+                  layoutId="activeWorkFilter"
+                  className="absolute inset-0 bg-white rounded-full"
+                  transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                />
+              )}
+              <span className="relative z-10">{cat.label}</span>
+            </button>
+          );
+        })}
+      </div>
+    </PageHeader>
+  );
+
   return (
-    <PageLayout>
-      <main className="pt-28 pb-16">
-        <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
-          {/* Header */}
-          <motion.div
-            className="text-left mb-8"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">
-              Work
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl">
-              {t.work.subtitle}
-            </p>
-          </motion.div>
-
-          {/* Category Filter */}
-          <motion.div
-            className="flex flex-wrap gap-3 mb-10"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            {categories.map((cat) => (
-              <button
-                key={cat.key}
-                onClick={() => setActiveCategory(cat.key)}
-                className={`relative px-5 py-2.5 rounded-full text-sm font-normal transition-all duration-300 ${
-                  activeCategory === cat.key
-                    ? 'text-primary-foreground'
-                    : 'text-muted-foreground hover:text-foreground bg-secondary/40 hover:bg-secondary/60'
-                }`}
-              >
-                {activeCategory === cat.key && (
-                  <motion.div
-                    layoutId="activeCategoryWork"
-                    className="absolute inset-0 bg-primary rounded-full"
-                    transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-                <span className="relative z-10">{cat.label}</span>
-              </button>
-            ))}
-          </motion.div>
-
-          {/* Projects List — same layout as Selected Work */}
-          <div className="border-t border-foreground/10">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeCategory}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                {filteredProjects.map((project, index) => (
-                  <WorkCard
-                    key={project.id}
-                    project={project}
-                    index={index}
-                    totalCount={filteredProjects.length}
-                  />
-                ))}
-                {filteredProjects.length === 0 && (
+    <PageLayout header={header}>
+      <main className="pb-16">
+        {/* Projects List — full-bleed cards (same layout as homepage) */}
+        <div className="border-t border-foreground/10">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeCategory}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              {filteredProjects.map((project, index) => (
+                <WorkCard
+                  key={project.id}
+                  project={project}
+                  index={index}
+                  totalCount={filteredProjects.length}
+                />
+              ))}
+              {filteredProjects.length === 0 && (
+                <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
                   <p className="py-20 text-center text-muted-foreground">
                     No projects in this category yet.
                   </p>
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </div>
+                </div>
+              )}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </main>
     </PageLayout>
