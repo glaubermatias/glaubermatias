@@ -133,16 +133,12 @@ const Hero = () => {
                         Active row sits at offset 1 from top on desktop (1 above + active + 2 below)
                         and at offset 0 on small screens (active + 2 below). We use one
                         layout and let CSS hide the "above" row on small screens by clipping. */}
-                    <motion.div
-                      animate={{
-                        // translateY so that the active item lands on the active row.
-                        // Each item before active contributes INACTIVE_LINE (em); active contributes ACTIVE_LINE.
-                        // We render WINDOW items above active; we want only 1 visible above on >=md
-                        // and 0 on <md. We clip with overflow-hidden + a top mask via padding trick.
-                        y: `-${WINDOW * INACTIVE_LINE}em`,
+                    {/* Active row should sit one INACTIVE_LINE from the top so we see
+                        1 inactive above + active + 2 inactive below. */}
+                    <div
+                      style={{
+                        transform: `translateY(-${(WINDOW - 1) * INACTIVE_LINE}em)`,
                       }}
-                      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                      style={{ willChange: 'transform' }}
                     >
                       {items.map((absIdx) => {
                         const isActive = absIdx === activeIndex;
