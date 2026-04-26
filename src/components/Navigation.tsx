@@ -76,7 +76,7 @@ const Navigation = () => {
         { href: '/work', label: 'Work' },
         { href: '/experience', label: 'Resume' },
         { href: '/about-me', label: 'About' },
-        { href: '/#contact', label: 'Contact' },
+        { href: '#contact', label: 'Contact' },
       ];
 
   const handleLinkClick = useCallback(
