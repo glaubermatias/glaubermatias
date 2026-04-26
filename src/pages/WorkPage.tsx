@@ -75,6 +75,7 @@ const WorkPage = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
+              className="[&>article:last-child]:border-b-0"
             >
               {filteredProjects.map((project, index) => (
                 <WorkCard
