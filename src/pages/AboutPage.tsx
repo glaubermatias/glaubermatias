@@ -159,7 +159,7 @@ const AboutPage = () => {
         <img
           src={glauberAboutHeader}
           alt="Glauber Matias"
-          className="h-full w-auto object-cover object-bottom block"
+          className="h-full w-auto max-w-none object-contain object-bottom block"
         />
       }
     >
@@ -178,7 +178,7 @@ const AboutPage = () => {
         <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
             {/* Left — Content */}
-            <div className="lg:col-span-9 space-y-24">
+            <div className="lg:col-span-9 space-y-24 min-w-0">
               {/* About paragraphs */}
               <section id="about" className="scroll-mt-32">
                 <motion.div
@@ -214,7 +214,7 @@ const AboutPage = () => {
                 <h2 className="font-display text-3xl md:text-4xl font-semibold mb-8">
                   Fun facts
                 </h2>
-                <div className="grid sm:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 w-full">
                   {funFacts.map((fact) => (
                     <motion.article
                       key={fact.title}
@@ -223,7 +223,7 @@ const AboutPage = () => {
                       viewport={{ once: true }}
                       transition={{ duration: 0.5 }}
                     >
-                      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-muted mb-4">
+                      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-muted mb-4 w-full">
                         <img
                           src={fact.image}
                           alt={fact.title}
@@ -245,11 +245,11 @@ const AboutPage = () => {
                 <h2 className="font-display text-3xl md:text-4xl font-semibold mb-8">
                   Skills
                 </h2>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-14 w-full">
                   {featuredSkills.map((s) => (
                     <div
                       key={s.title}
-                      className="rounded-2xl border border-foreground/10 bg-white/60 p-6 hover:border-foreground/30 transition-colors h-full"
+                      className="rounded-2xl bg-muted p-6 transition-all duration-300 h-full hover:-translate-y-1 hover:shadow-[0_18px_45px_-28px_hsl(var(--foreground)/0.45)]"
                     >
                       <h3 className="font-display text-lg lg:text-xl font-semibold mb-2">
                         {s.title}
