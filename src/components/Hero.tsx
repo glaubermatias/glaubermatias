@@ -55,47 +55,37 @@ const Hero = () => {
       if (wheelLockRef.current) return;
       if (Math.abs(e.deltaY) < 6) return;
       wheelLockRef.current = true;
-      setActiveIndex((p) => (e.deltaY > 0 ? p + 1 : p - 1));
+      setIsResettingTrack(false);
+      setTrackIndex((p) => (e.deltaY > 0 ? p + 1 : p - 1));
       startAuto();
       window.setTimeout(() => {
         wheelLockRef.current = false;
-      }, 380);
+      }, 520);
     };
     el.addEventListener('wheel', onWheel, { passive: false });
     return () => el.removeEventListener('wheel', onWheel);
   }, [startAuto]);
 
-  const len = ROTATING_WORDS.length;
-  const mod = (n: number) => ((n % len) + len) % len;
-
-  // Visible window:
-  //  - Desktop (inline): 1 above + active + 1 below (smooth column scroll)
-  //  - Mobile (stacked below text): active + 2 below (no above)
-  const ITEM_HEIGHT_EM = 1.15; // each row height in em (relative to active font-size)
-  const WINDOW_BEFORE = isMobile ? 0 : 1;
-  const WINDOW_AFTER = 2;
-
-  const items: number[] = [];
-  for (let i = -WINDOW_BEFORE - 2; i <= WINDOW_AFTER + 2; i++) {
-    items.push(activeIndex + i);
-  }
-
-  const containerHeightEm = (WINDOW_BEFORE + 1 + WINDOW_AFTER) * ITEM_HEIGHT_EM;
-  // Translate so that the active row sits at row index = WINDOW_BEFORE
-  // The list above is centered around activeIndex (which lives at offset 0 in the list).
-  // List spans from -(WINDOW_BEFORE+2) to (WINDOW_AFTER+2). The "first visible" row offset
-  // from the top of the list is (-(WINDOW_BEFORE+2)) — so we translate by:
-  //   translateY = -((WINDOW_BEFORE+2) - WINDOW_BEFORE) * ITEM_HEIGHT_EM = -2 * ITEM_HEIGHT_EM
-  // That keeps the active row at the WINDOW_BEFORE position from the top of the visible window.
-  const translateEm = 2 * ITEM_HEIGHT_EM;
+  const ITEM_HEIGHT_EM = 1.08;
+  const visibleRows = isCompact ? 2 : 3;
+  const trackWords = Array.from({ length: TRACK_REPEAT * len }, (_, i) => ROTATING_WORDS[mod(i)]);
+  const normalizeTrack = () => {
+    if (trackIndex > (TRACK_REPEAT - 2) * len || trackIndex < len) {
+      setIsResettingTrack(true);
+      setTrackIndex(TRACK_START_LOOP * len + mod(trackIndex));
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => setIsResettingTrack(false));
+      });
+    }
+  };
 
   const Roulette = (
     <span
       ref={rouletteRef}
       className="relative inline-block cursor-pointer overflow-hidden align-baseline"
       style={{
-        height: `${containerHeightEm}em`,
-        width: isMobile ? '100%' : '7.2em',
+        height: `${visibleRows * ITEM_HEIGHT_EM}em`,
+        width: isCompact ? '100%' : '8.7em',
         maxWidth: '90vw',
         lineHeight: ITEM_HEIGHT_EM,
       }}
@@ -103,21 +93,26 @@ const Hero = () => {
     >
       <Link to="/work" className="block w-full h-full">
         <motion.div
-          animate={{ y: `-${translateEm}em` }}
-          transition={{ duration: 0 }}
+          animate={{ y: `-${trackIndex * ITEM_HEIGHT_EM}em` }}
+          transition={
+            isResettingTrack
+              ? { duration: 0 }
+              : { duration: 0.82, ease: [0.76, 0, 0.24, 1] }
+          }
+          onAnimationComplete={normalizeTrack}
           style={{ willChange: 'transform' }}
         >
-          {items.map((absIdx) => {
-            const isActive = absIdx === activeIndex;
+          {trackWords.map((word, absIdx) => {
+            const isActive = mod(absIdx) === mod(trackIndex);
             return (
               <motion.div
                 key={absIdx}
                 className="whitespace-nowrap flex items-center"
                 animate={{
                   opacity: isActive ? 1 : 0.55,
-                  color: isActive ? '#e85102' : '#5a2410',
+                  color: isActive ? '#e85102' : '#2f1106',
                 }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
                 style={{
                   height: `${ITEM_HEIGHT_EM}em`,
                   fontWeight: 600,
@@ -130,7 +125,7 @@ const Hero = () => {
                   animate={{ y: 0 }}
                   style={{ display: 'inline-block' }}
                 >
-                  {ROTATING_WORDS[mod(absIdx)]}
+                  {word}
                 </motion.span>
               </motion.div>
             );
