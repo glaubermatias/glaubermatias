@@ -87,7 +87,19 @@ const Navigation = () => {
         const target = footer
           ? footer.getBoundingClientRect().top + window.scrollY
           : document.documentElement.scrollHeight;
-        window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+        const start = window.scrollY;
+        const end = Math.max(0, target);
+        const duration = 650;
+        const startedAt = performance.now();
+
+        const tick = (now: number) => {
+          const progress = Math.min((now - startedAt) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          window.scrollTo(0, start + (end - start) * eased);
+          if (progress < 1) window.requestAnimationFrame(tick);
+        };
+
+        window.requestAnimationFrame(tick);
       };
 
       if (href.startsWith('#')) {
