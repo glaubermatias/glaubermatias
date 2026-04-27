@@ -235,6 +235,7 @@ export const projects: ProjectData[] = [
     title: 'Tech Conference',
     description: 'Conference-grade presentations for major technology events featuring cinematic visuals and compelling narratives.',
     category: 'tech-events',
+    cardCategory: 'Tech Events',
     images: [
       'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&auto=format&fit=crop',
@@ -284,6 +285,7 @@ export const projects: ProjectData[] = [
     title: 'P&T External Newsletter',
     description: 'Professional newsletter design and templates for external technology and people communications.',
     category: 'hr-initiatives',
+    cardCategory: 'HR Initiatives',
     images: [
       'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop',
@@ -333,6 +335,7 @@ export const projects: ProjectData[] = [
     title: 'Uberall Dashboard',
     description: 'Dashboard design and data visualization project for location marketing analytics platform.',
     category: 'side-projects',
+    cardCategory: 'Side Projects',
     images: [
       'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop',
