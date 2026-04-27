@@ -13,30 +13,41 @@ const ROTATING_WORDS = [
 
 const TRACK_REPEAT = 9;
 const TRACK_START_LOOP = 4;
+const ITEM_HEIGHT_EM = 1.22; // matches headline line-height
+const AUTOPLAY_MS = 2100;
 
 const Hero = () => {
-  const [trackIndex, setTrackIndex] = useState(TRACK_START_LOOP * ROTATING_WORDS.length);
-  const [isCompact, setIsCompact] = useState(false);
-  const [isResettingTrack, setIsResettingTrack] = useState(false);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const wheelLockRef = useRef(false);
-  const rouletteRef = useRef<HTMLSpanElement>(null);
   const len = ROTATING_WORDS.length;
   const mod = (n: number) => ((n % len) + len) % len;
+
+  const [trackIndex, setTrackIndex] = useState(TRACK_START_LOOP * len);
+  const [isCompact, setIsCompact] = useState(false);
+  const [isResettingTrack, setIsResettingTrack] = useState(false);
+  const [isInteracting, setIsInteracting] = useState(false);
+
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const interactionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const wheelLockRef = useRef(false);
+  const rouletteRef = useRef<HTMLSpanElement>(null);
 
   const startAuto = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
       setTrackIndex((p) => p + 1);
-    }, 2100);
+    }, AUTOPLAY_MS);
+  }, []);
+
+  const stopAuto = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
   }, []);
 
   useEffect(() => {
-    startAuto();
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [startAuto]);
+    if (!isInteracting) startAuto();
+    return stopAuto;
+  }, [isInteracting, startAuto, stopAuto]);
 
   // Detect viewport width to switch roulette layout (inline vs stacked-below).
   useEffect(() => {
@@ -50,25 +61,40 @@ const Hero = () => {
   useEffect(() => {
     const el = rouletteRef.current;
     if (!el) return;
+
+    const markInteracting = () => {
+      setIsInteracting(true);
+      if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current);
+      interactionTimeoutRef.current = setTimeout(() => {
+        setIsInteracting(false);
+      }, 1200);
+    };
+
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
+      e.stopPropagation();
+      markInteracting();
       if (wheelLockRef.current) return;
       if (Math.abs(e.deltaY) < 6) return;
       wheelLockRef.current = true;
       setIsResettingTrack(false);
       setTrackIndex((p) => (e.deltaY > 0 ? p + 1 : p - 1));
-      startAuto();
       window.setTimeout(() => {
         wheelLockRef.current = false;
-      }, 520);
+      }, 480);
     };
-    el.addEventListener('wheel', onWheel, { passive: false });
-    return () => el.removeEventListener('wheel', onWheel);
-  }, [startAuto]);
 
-  const ITEM_HEIGHT_EM = 1.08;
-  const visibleRows = isCompact ? 2 : 3;
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => {
+      el.removeEventListener('wheel', onWheel);
+      if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current);
+    };
+  }, []);
+
   const trackWords = Array.from({ length: TRACK_REPEAT * len }, (_, i) => ROTATING_WORDS[mod(i)]);
+
+  // Seamless loop: when we drift toward the ends of the repeated track,
+  // jump (without animation) back to the equivalent position near the middle.
   const normalizeTrack = () => {
     if (trackIndex > (TRACK_REPEAT - 2) * len || trackIndex < len) {
       setIsResettingTrack(true);
@@ -79,19 +105,37 @@ const Hero = () => {
     }
   };
 
+  // The roulette container is exactly ONE line tall (so it doesn't affect
+  // vertical centering of the headline block). Adjacent words live outside
+  // that box thanks to overflow: visible, and a fade mask hides them softly.
   const Roulette = (
     <span
       ref={rouletteRef}
-      className="relative inline-block cursor-pointer overflow-hidden align-baseline"
+      className="relative inline-block cursor-pointer align-baseline"
       style={{
-        height: `${visibleRows * ITEM_HEIGHT_EM}em`,
+        height: `${ITEM_HEIGHT_EM}em`,
         width: isCompact ? '100%' : '8.7em',
         maxWidth: '90vw',
         lineHeight: ITEM_HEIGHT_EM,
+        overflow: 'visible',
+        overscrollBehavior: 'contain',
+        // Soft fade above & below the active line
+        WebkitMaskImage:
+          'linear-gradient(to bottom, transparent 0%, #000 38%, #000 62%, transparent 100%)',
+        maskImage:
+          'linear-gradient(to bottom, transparent 0%, #000 38%, #000 62%, transparent 100%)',
       }}
       aria-label="Rotating list — click to view all work"
     >
-      <Link to="/work" className="block w-full h-full">
+      {/* Expanded visual area extending above & below the 1-line box */}
+      <span
+        className="pointer-events-none absolute left-0 right-0"
+        style={{
+          top: `-${ITEM_HEIGHT_EM}em`,
+          height: `${3 * ITEM_HEIGHT_EM}em`,
+          overflow: 'hidden',
+        }}
+      >
         <motion.div
           animate={{ y: `-${trackIndex * ITEM_HEIGHT_EM}em` }}
           transition={
@@ -100,38 +144,40 @@ const Hero = () => {
               : { duration: 0.82, ease: [0.76, 0, 0.24, 1] }
           }
           onAnimationComplete={normalizeTrack}
-          style={{ willChange: 'transform' }}
+          style={{
+            willChange: 'transform',
+            // Push the track down by one line so that index N sits on the
+            // active (middle) row of the 3-line visual window.
+            paddingTop: `${ITEM_HEIGHT_EM}em`,
+          }}
         >
           {trackWords.map((word, absIdx) => {
-            const isActive = mod(absIdx) === mod(trackIndex);
+            const isActive = absIdx === trackIndex;
             return (
-              <motion.div
+              <div
                 key={absIdx}
                 className="whitespace-nowrap flex items-center"
-                animate={{
-                  opacity: isActive ? 1 : 0.55,
-                  color: isActive ? '#e85102' : '#2f1106',
-                }}
-                transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
                 style={{
                   height: `${ITEM_HEIGHT_EM}em`,
                   fontWeight: 600,
-                  willChange: 'opacity, color',
+                  color: isActive ? '#e85102' : '#2f1106',
+                  willChange: 'color',
+                  transition: 'color 0.5s ease',
                 }}
               >
-                <motion.span
-                  layout={false}
-                  initial={false}
-                  animate={{ y: 0 }}
-                  style={{ display: 'inline-block' }}
-                >
-                  {word}
-                </motion.span>
-              </motion.div>
+                {word}
+              </div>
             );
           })}
         </motion.div>
-      </Link>
+      </span>
+
+      {/* Click target overlays the active line */}
+      <Link
+        to="/work"
+        className="absolute inset-0 block"
+        aria-label="View all work"
+      />
     </span>
   );
 
@@ -144,7 +190,7 @@ const Hero = () => {
       }}
     >
       <div className="relative z-10 w-full max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
-        <div className="grid grid-cols-1 md:grid-cols-[minmax(160px,260px)_minmax(0,880px)] gap-10 md:gap-14 lg:gap-16 items-center justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-[minmax(160px,240px)_minmax(0,880px)] gap-6 md:gap-8 lg:gap-10 items-center justify-center">
           {/* Left — Portrait */}
           <motion.div
             initial={{ opacity: 0, scale: 0.92 }}
@@ -179,11 +225,11 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               className="font-display text-white font-semibold text-[1.75rem] sm:text-[2rem] md:text-[2.25rem] lg:text-[2.5rem] xl:text-[2.75rem]"
-              style={{ lineHeight: 1.22 }}
+              style={{ lineHeight: ITEM_HEIGHT_EM }}
             >
               <span className="block">Designer of visual stories</span>
               {/* Desktop / wide tablet: roulette is a true continuation of line 2 */}
-              <span className="hidden lg:flex items-start flex-nowrap gap-x-3">
+              <span className="hidden lg:flex items-baseline flex-nowrap gap-x-3">
                 <span className="whitespace-nowrap">that amplify the impact of</span>
                 {Roulette}
               </span>
