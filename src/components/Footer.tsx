@@ -41,7 +41,7 @@ const Footer = () => {
 
   const quickLinks = [
     { href: '#work', label: 'Work' },
-    { href: '/experience', label: 'Resume' },
+    { href: '/experience', label: 'CV' },
     { href: '/about-me', label: 'About' },
   ];
 
