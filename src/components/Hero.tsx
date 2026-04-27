@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useAnimationControls } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import glauberPortrait from '@/assets/glauber-portrait.png';
 
@@ -11,45 +11,33 @@ const ROTATING_WORDS = [
   'keynotes',
 ];
 
-const TRACK_REPEAT = 9;
-const TRACK_START_LOOP = 4;
-const ITEM_HEIGHT_EM = 1.22; // matches headline line-height
+// Tighter headline line-height for a more compact, premium look.
+const LINE_HEIGHT = 1.12;
+// Visible window: 1 word above + active + 2 words below = 4 rows total.
+const ROWS_ABOVE = 1;
+const ROWS_BELOW = 2;
+const WINDOW_ROWS = ROWS_ABOVE + 1 + ROWS_BELOW;
 const AUTOPLAY_MS = 2100;
+const TRANSITION_MS = 700;
+
+// Duplicate the words enough times to create a seamless infinite illusion.
+const LOOPS = 40;
+const len = ROTATING_WORDS.length;
+const TRACK = Array.from({ length: LOOPS * len }, (_, i) => ROTATING_WORDS[i % len]);
+const START_INDEX = Math.floor(LOOPS / 2) * len; // start in the middle
 
 const Hero = () => {
-  const len = ROTATING_WORDS.length;
-  const mod = (n: number) => ((n % len) + len) % len;
-
-  const [trackIndex, setTrackIndex] = useState(TRACK_START_LOOP * len);
+  const [index, setIndex] = useState(START_INDEX);
   const [isCompact, setIsCompact] = useState(false);
-  const [isResettingTrack, setIsResettingTrack] = useState(false);
-  const [isInteracting, setIsInteracting] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+  const [animate, setAnimate] = useState(true);
 
+  const controls = useAnimationControls();
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const interactionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wheelLockRef = useRef(false);
   const rouletteRef = useRef<HTMLSpanElement>(null);
 
-  const startAuto = useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => {
-      setTrackIndex((p) => p + 1);
-    }, AUTOPLAY_MS);
-  }, []);
-
-  const stopAuto = useCallback(() => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!isInteracting) startAuto();
-    return stopAuto;
-  }, [isInteracting, startAuto, stopAuto]);
-
-  // Detect viewport width to switch roulette layout (inline vs stacked-below).
+  // Detect viewport for inline vs stacked layout.
   useEffect(() => {
     const check = () => setIsCompact(window.innerWidth < 1024);
     check();
@@ -57,125 +45,116 @@ const Hero = () => {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  // Wheel-to-spin only when cursor is over the roulette.
+  // Autoplay — pauses while hovering.
+  useEffect(() => {
+    if (isHovering) return;
+    intervalRef.current = setInterval(() => {
+      setIndex((p) => p + 1);
+    }, AUTOPLAY_MS);
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [isHovering]);
+
+  // Seamless loop normalization — when far from middle, jump back invisibly.
+  useEffect(() => {
+    const safeMin = len * 2;
+    const safeMax = TRACK.length - len * 3;
+    if (index < safeMin || index > safeMax) {
+      const normalized = START_INDEX + ((index % len) + len) % len;
+      // Jump without animation
+      setAnimate(false);
+      setIndex(normalized);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setAnimate(true));
+      });
+    }
+  }, [index]);
+
+  // Wheel listener — exclusive to the roulette.
   useEffect(() => {
     const el = rouletteRef.current;
     if (!el) return;
 
-    const markInteracting = () => {
-      setIsInteracting(true);
-      if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current);
-      interactionTimeoutRef.current = setTimeout(() => {
-        setIsInteracting(false);
-      }, 1200);
-    };
-
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
       e.stopPropagation();
-      markInteracting();
       if (wheelLockRef.current) return;
-      if (Math.abs(e.deltaY) < 6) return;
+      if (Math.abs(e.deltaY) < 4) return;
       wheelLockRef.current = true;
-      setIsResettingTrack(false);
-      setTrackIndex((p) => (e.deltaY > 0 ? p + 1 : p - 1));
+      setIndex((p) => (e.deltaY > 0 ? p + 1 : p - 1));
       window.setTimeout(() => {
         wheelLockRef.current = false;
-      }, 480);
+      }, 380);
     };
 
     el.addEventListener('wheel', onWheel, { passive: false });
-    return () => {
-      el.removeEventListener('wheel', onWheel);
-      if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current);
-    };
+    return () => el.removeEventListener('wheel', onWheel);
   }, []);
 
-  const trackWords = Array.from({ length: TRACK_REPEAT * len }, (_, i) => ROTATING_WORDS[mod(i)]);
+  const handleMouseEnter = useCallback(() => setIsHovering(true), []);
+  const handleMouseLeave = useCallback(() => setIsHovering(false), []);
 
-  // Seamless loop: when we drift toward the ends of the repeated track,
-  // jump (without animation) back to the equivalent position near the middle.
-  const normalizeTrack = () => {
-    if (trackIndex > (TRACK_REPEAT - 2) * len || trackIndex < len) {
-      setIsResettingTrack(true);
-      setTrackIndex(TRACK_START_LOOP * len + mod(trackIndex));
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => setIsResettingTrack(false));
-      });
-    }
-  };
-
-  // The roulette container is exactly ONE line tall (so it doesn't affect
-  // vertical centering of the headline block). Adjacent words live outside
-  // that box thanks to overflow: visible, and a fade mask hides them softly.
+  // The roulette is a window of WINDOW_ROWS lines tall (overflow-hidden),
+  // with the active row offset by ROWS_ABOVE from the top so we see one
+  // word above and two below. We translate the track by `index` rows.
   const Roulette = (
     <span
       ref={rouletteRef}
-      className="relative inline-block cursor-pointer align-baseline"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className="relative inline-block cursor-pointer"
       style={{
-        height: `${ITEM_HEIGHT_EM}em`,
+        height: `${WINDOW_ROWS * LINE_HEIGHT}em`,
         width: isCompact ? '100%' : '8.7em',
         maxWidth: '90vw',
-        lineHeight: ITEM_HEIGHT_EM,
-        overflow: 'visible',
+        lineHeight: LINE_HEIGHT,
+        overflow: 'hidden',
         overscrollBehavior: 'contain',
-        // Soft fade above & below the active line
-        WebkitMaskImage:
-          'linear-gradient(to bottom, transparent 0%, #000 38%, #000 62%, transparent 100%)',
-        maskImage:
-          'linear-gradient(to bottom, transparent 0%, #000 38%, #000 62%, transparent 100%)',
+        // Pull the window up so the active row sits on the same baseline
+        // as the surrounding text (which is on the first visible row line).
+        verticalAlign: 'top',
+        marginTop: `-${ROWS_ABOVE * LINE_HEIGHT}em`,
       }}
-      aria-label="Rotating list — click to view all work"
+      aria-label="Rotating list — hover to scroll, click to view all work"
     >
-      {/* Expanded visual area extending above & below the 1-line box */}
-      <span
-        className="pointer-events-none absolute left-0 right-0"
-        style={{
-          top: `-${ITEM_HEIGHT_EM}em`,
-          height: `${3 * ITEM_HEIGHT_EM}em`,
-          overflow: 'hidden',
-        }}
+      <motion.div
+        animate={{ y: `-${(index - ROWS_ABOVE) * LINE_HEIGHT}em` }}
+        transition={
+          animate
+            ? { duration: TRANSITION_MS / 1000, ease: [0.76, 0, 0.24, 1] }
+            : { duration: 0 }
+        }
+        style={{ willChange: 'transform' }}
       >
-        <motion.div
-          animate={{ y: `-${trackIndex * ITEM_HEIGHT_EM}em` }}
-          transition={
-            isResettingTrack
-              ? { duration: 0 }
-              : { duration: 0.82, ease: [0.76, 0, 0.24, 1] }
-          }
-          onAnimationComplete={normalizeTrack}
-          style={{
-            willChange: 'transform',
-            // Push the track down by one line so that index N sits on the
-            // active (middle) row of the 3-line visual window.
-            paddingTop: `${ITEM_HEIGHT_EM}em`,
-          }}
-        >
-          {trackWords.map((word, absIdx) => {
-            const isActive = absIdx === trackIndex;
-            return (
-              <div
-                key={absIdx}
-                className="whitespace-nowrap flex items-center"
-                style={{
-                  height: `${ITEM_HEIGHT_EM}em`,
-                  fontWeight: 600,
-                  color: isActive ? '#e85102' : '#2f1106',
-                  willChange: 'color',
-                  transition: 'color 0.5s ease',
-                }}
-              >
-                {word}
-              </div>
-            );
-          })}
-        </motion.div>
-      </span>
+        {TRACK.map((word, i) => {
+          const isActive = i === index;
+          return (
+            <div
+              key={i}
+              className="whitespace-nowrap"
+              style={{
+                height: `${LINE_HEIGHT}em`,
+                lineHeight: LINE_HEIGHT,
+                fontWeight: 600,
+                color: isActive ? '#e85102' : '#2f1106',
+                transition: 'color 0.4s ease',
+              }}
+            >
+              {word}
+            </div>
+          );
+        })}
+      </motion.div>
 
-      {/* Click target overlays the active line */}
+      {/* Click target on the active row */}
       <Link
         to="/work"
-        className="absolute inset-0 block"
+        className="absolute left-0 right-0 block"
+        style={{
+          top: `${ROWS_ABOVE * LINE_HEIGHT}em`,
+          height: `${LINE_HEIGHT}em`,
+        }}
         aria-label="View all work"
       />
     </span>
@@ -225,11 +204,14 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               className="font-display text-white font-semibold text-[1.75rem] sm:text-[2rem] md:text-[2.25rem] lg:text-[2.5rem] xl:text-[2.75rem]"
-              style={{ lineHeight: ITEM_HEIGHT_EM }}
+              style={{ lineHeight: LINE_HEIGHT }}
             >
               <span className="block">Designer of visual stories</span>
-              {/* Desktop / wide tablet: roulette is a true continuation of line 2 */}
-              <span className="hidden lg:flex items-baseline flex-nowrap gap-x-3">
+              {/* Desktop / wide tablet: roulette continues line 2 inline */}
+              <span
+                className="hidden lg:inline-flex flex-nowrap gap-x-3"
+                style={{ alignItems: 'baseline' }}
+              >
                 <span className="whitespace-nowrap">that amplify the impact of</span>
                 {Roulette}
               </span>
