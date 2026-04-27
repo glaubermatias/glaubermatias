@@ -16,25 +16,25 @@ const sections = [
 
 const funFacts = [
   {
-    tag: 'COFFEE',
+    tag: 'FAVORITE HOBBIE',
     title: 'Espresso enthusiast',
     desc: 'I have strong opinions about brew ratios, bean origins and the perfect crema.',
     image: glauberPhoto,
   },
   {
-    tag: 'MUSIC',
+    tag: 'FAVORITE FOOD',
     title: 'Lo-fi addict',
     desc: "I can't design without a steady stream of mellow beats running in the background.",
     image: glauberPortrait,
   },
   {
-    tag: 'TRAVEL',
+    tag: 'FAVORITE MOVIE',
     title: 'Brazilian abroad',
     desc: 'Carioca soul, Lisbon-bound. Always chasing good light, good food and new perspectives.',
     image: glauberPhoto,
   },
   {
-    tag: 'READING',
+    tag: 'FAVORITE SINGER',
     title: 'Book hoarder',
     desc: 'My to-read pile grows faster than I can possibly keep up with — and I love it.',
     image: glauberPortrait,
@@ -79,18 +79,16 @@ const beyondWorkPhotos = [
 const SideMenu = () => (
   <aside className="lg:col-span-3 hidden lg:block">
     <div className="sticky top-32">
-      <h3 className="font-display text-2xl text-black mb-6">Get to know me</h3>
-      <nav className="flex flex-col">
+      <h3 className="font-display font-semibold text-2xl text-black mb-6">
+        Get to know me
+      </h3>
+      <nav className="flex flex-col border-t border-foreground/15">
         {sections.map((s) => (
           <a
             key={s.id}
             href={`#${s.id}`}
-            className="group relative pl-4 py-2 text-base text-foreground/60 hover:text-black transition-colors"
+            className="block text-left py-3 text-base text-foreground/60 hover:text-black transition-colors border-b border-foreground/15"
           >
-            <span
-              className="absolute left-0 top-0 bottom-0 w-px bg-foreground/20 group-hover:bg-black group-hover:w-[2px] transition-all duration-300"
-              aria-hidden="true"
-            />
             {s.label}
           </a>
         ))}
@@ -161,8 +159,7 @@ const AboutPage = () => {
         <img
           src={glauberAboutHeader}
           alt="Glauber Matias"
-          className="h-full w-auto object-contain object-bottom"
-          style={{ maxHeight: '420px' }}
+          className="h-full w-auto object-cover object-bottom block"
         />
       }
     >
@@ -232,7 +229,7 @@ const AboutPage = () => {
                           alt={fact.title}
                           className="w-full h-full object-cover"
                         />
-                        <span className="absolute top-3 left-3 inline-flex items-center px-3 py-1 rounded-full bg-white/90 backdrop-blur text-[0.65rem] tracking-[0.2em] uppercase text-black font-medium">
+                        <span className="absolute top-5 left-5 inline-flex items-center px-3 py-1 rounded-full bg-white/90 backdrop-blur text-[0.65rem] tracking-[0.2em] uppercase text-black font-medium">
                           {fact.tag}
                         </span>
                       </div>
@@ -248,10 +245,15 @@ const AboutPage = () => {
                 <h2 className="font-display text-3xl md:text-4xl font-semibold mb-8">
                   Skills
                 </h2>
-                <div className="grid sm:grid-cols-2 gap-x-10 gap-y-8 mb-14">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
                   {featuredSkills.map((s) => (
-                    <div key={s.title}>
-                      <h3 className="font-display text-xl font-semibold mb-2">{s.title}</h3>
+                    <div
+                      key={s.title}
+                      className="rounded-2xl border border-foreground/10 bg-white/60 p-6 hover:border-foreground/30 transition-colors h-full"
+                    >
+                      <h3 className="font-display text-lg lg:text-xl font-semibold mb-2">
+                        {s.title}
+                      </h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
                     </div>
                   ))}
