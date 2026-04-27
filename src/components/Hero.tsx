@@ -11,18 +11,24 @@ const ROTATING_WORDS = [
   'keynotes',
 ];
 
+const TRACK_REPEAT = 9;
+const TRACK_START_LOOP = 4;
+
 const Hero = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
+  const [trackIndex, setTrackIndex] = useState(TRACK_START_LOOP * ROTATING_WORDS.length);
+  const [isCompact, setIsCompact] = useState(false);
+  const [isResettingTrack, setIsResettingTrack] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const wheelLockRef = useRef(false);
   const rouletteRef = useRef<HTMLSpanElement>(null);
+  const len = ROTATING_WORDS.length;
+  const mod = (n: number) => ((n % len) + len) % len;
 
   const startAuto = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
-      setActiveIndex((p) => p + 1);
-    }, 2200);
+      setTrackIndex((p) => p + 1);
+    }, 2100);
   }, []);
 
   useEffect(() => {
@@ -34,7 +40,7 @@ const Hero = () => {
 
   // Detect viewport width to switch roulette layout (inline vs stacked-below).
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
+    const check = () => setIsCompact(window.innerWidth < 1024);
     check();
     window.addEventListener('resize', check);
     return () => window.removeEventListener('resize', check);
