@@ -82,10 +82,20 @@ const Navigation = () => {
       e.preventDefault();
       setIsMobileMenuOpen(false);
 
+      const scrollFastToFooter = () => {
+        const footer = document.getElementById('contact');
+        const target = footer
+          ? footer.getBoundingClientRect().top + window.scrollY
+          : document.documentElement.scrollHeight;
+        window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+      };
+
       if (href.startsWith('#')) {
         const id = href.slice(1);
         if (!id) {
           window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else if (id === 'contact') {
+          scrollFastToFooter();
         } else {
           document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
         }
