@@ -358,6 +358,7 @@ export const projects: ProjectData[] = [
     title: 'Graphic Design Project',
     description: 'Print and digital booklet design showcasing creative layout techniques and typography exploration.',
     category: 'side-projects',
+    cardCategory: 'Side Projects',
     images: [
       'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&auto=format&fit=crop',
@@ -376,6 +377,7 @@ export const projects: ProjectData[] = [
     title: 'NY Trip Itinerary',
     description: 'Beautifully designed travel itinerary presentation combining practical information with visual storytelling.',
     category: 'side-projects',
+    cardCategory: 'Side Projects',
     images: [
       'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&auto=format&fit=crop',
