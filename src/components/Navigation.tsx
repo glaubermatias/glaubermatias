@@ -82,10 +82,32 @@ const Navigation = () => {
       e.preventDefault();
       setIsMobileMenuOpen(false);
 
+      const scrollFastToFooter = () => {
+        const footer = document.getElementById('contact');
+        const target = footer
+          ? footer.getBoundingClientRect().top + window.scrollY
+          : document.documentElement.scrollHeight;
+        const start = window.scrollY;
+        const end = Math.max(0, target);
+        const duration = 650;
+        const startedAt = performance.now();
+
+        const tick = (now: number) => {
+          const progress = Math.min((now - startedAt) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          window.scrollTo(0, start + (end - start) * eased);
+          if (progress < 1) window.requestAnimationFrame(tick);
+        };
+
+        window.requestAnimationFrame(tick);
+      };
+
       if (href.startsWith('#')) {
         const id = href.slice(1);
         if (!id) {
           window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else if (id === 'contact') {
+          scrollFastToFooter();
         } else {
           document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
         }

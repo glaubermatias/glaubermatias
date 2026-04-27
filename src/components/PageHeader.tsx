@@ -20,7 +20,12 @@ const PageHeader = ({ children, rightSlot, flushRight = false }: PageHeaderProps
       className="relative w-full bg-black text-white overflow-hidden"
       style={{ minHeight: '420px' }}
     >
-      <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 h-full">
+      {flushRight && rightSlot && (
+        <div className="absolute inset-y-0 right-0 z-0 flex h-full items-stretch justify-end">
+          {rightSlot}
+        </div>
+      )}
+      <div className="relative z-10 max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 h-full">
         <div
           className={`grid grid-cols-1 ${rightSlot ? 'md:grid-cols-12' : ''} gap-10 md:gap-12 items-stretch min-h-[420px]`}
         >
@@ -33,7 +38,7 @@ const PageHeader = ({ children, rightSlot, flushRight = false }: PageHeaderProps
             {children}
           </motion.div>
 
-          {rightSlot && (
+          {rightSlot && !flushRight && (
             <div
               className={`md:col-span-4 ${flushRight ? 'self-stretch flex items-stretch justify-end' : 'flex items-end justify-end pt-32 md:pt-36 pb-12 md:pb-16'}`}
             >

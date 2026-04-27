@@ -85,6 +85,7 @@ export const projects: ProjectData[] = [
     title: 'All Hands & Leadership Meetings',
     description: 'Engaging company-wide and leadership meeting presentations that align teams and communicate strategic vision.',
     category: 'executive-decks',
+    cardCategory: 'Executive Decks',
     images: [
       'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1531498860502-7c67cf02f657?w=800&auto=format&fit=crop',
@@ -161,6 +162,7 @@ export const projects: ProjectData[] = [
     title: 'Presentation Templates',
     description: 'Purpose-built presentation templates for specific use cases including sales, proposals, and reports.',
     category: 'templates',
+    cardCategory: 'Templates',
     images: [
       'https://images.unsplash.com/photo-1531498860502-7c67cf02f657?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop',
@@ -183,6 +185,7 @@ export const projects: ProjectData[] = [
     title: 'Presentation Masterclasses',
     description: 'Educational materials and workshop presentations teaching effective presentation design and delivery techniques.',
     category: 'templates',
+    cardCategory: 'Templates',
     images: [
       'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop',
@@ -232,6 +235,7 @@ export const projects: ProjectData[] = [
     title: 'Tech Conference',
     description: 'Conference-grade presentations for major technology events featuring cinematic visuals and compelling narratives.',
     category: 'tech-events',
+    cardCategory: 'Tech Events',
     images: [
       'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&auto=format&fit=crop',
@@ -281,6 +285,7 @@ export const projects: ProjectData[] = [
     title: 'P&T External Newsletter',
     description: 'Professional newsletter design and templates for external technology and people communications.',
     category: 'hr-initiatives',
+    cardCategory: 'HR Initiatives',
     images: [
       'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop',
@@ -330,6 +335,7 @@ export const projects: ProjectData[] = [
     title: 'Uberall Dashboard',
     description: 'Dashboard design and data visualization project for location marketing analytics platform.',
     category: 'side-projects',
+    cardCategory: 'Side Projects',
     images: [
       'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop',
@@ -352,6 +358,7 @@ export const projects: ProjectData[] = [
     title: 'Graphic Design Project',
     description: 'Print and digital booklet design showcasing creative layout techniques and typography exploration.',
     category: 'side-projects',
+    cardCategory: 'Side Projects',
     images: [
       'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&auto=format&fit=crop',
@@ -370,6 +377,7 @@ export const projects: ProjectData[] = [
     title: 'NY Trip Itinerary',
     description: 'Beautifully designed travel itinerary presentation combining practical information with visual storytelling.',
     category: 'side-projects',
+    cardCategory: 'Side Projects',
     images: [
       'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&auto=format&fit=crop',

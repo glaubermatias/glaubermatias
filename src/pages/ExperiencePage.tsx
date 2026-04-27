@@ -29,7 +29,7 @@ const ResumeCTA = () => (
       <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-0.5" />
     </span>
     {/* Label — white by default, turns black on hover when fill takes over */}
-    <span className="relative z-10 pl-2 pr-6 md:pr-8 font-display text-base md:text-lg font-medium whitespace-nowrap text-white transition-colors duration-500 group-hover:text-black">
+    <span className="relative z-10 pl-4 pr-6 md:pl-5 md:pr-8 font-display text-base md:text-lg font-medium whitespace-nowrap text-white transition-colors duration-500 group-hover:text-black">
       Read my CV
     </span>
   </a>
@@ -39,7 +39,7 @@ const ExperiencePage = () => {
   const header = (
     <PageHeader rightSlot={<ResumeCTA />}>
       <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">
-        CV
+        Work experience
       </h1>
       <p className="text-base md:text-lg text-white/70 max-w-2xl leading-relaxed">
         A journey through my professional career — designing executive narratives,
