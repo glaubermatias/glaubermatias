@@ -67,7 +67,7 @@ const WorkExperienceSection = () => {
         duration: 0.8
       }}>
           <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold mb-3">
-            {t.experience.title}
+            CV
           </h2>
           <p className="text-base md:text-lg max-w-2xl text-[#78726d]">
             {t.experience.subtitle}
