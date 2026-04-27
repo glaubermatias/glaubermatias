@@ -85,6 +85,7 @@ export const projects: ProjectData[] = [
     title: 'All Hands & Leadership Meetings',
     description: 'Engaging company-wide and leadership meeting presentations that align teams and communicate strategic vision.',
     category: 'executive-decks',
+    cardCategory: 'Executive Decks',
     images: [
       'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1531498860502-7c67cf02f657?w=800&auto=format&fit=crop',
@@ -161,6 +162,7 @@ export const projects: ProjectData[] = [
     title: 'Presentation Templates',
     description: 'Purpose-built presentation templates for specific use cases including sales, proposals, and reports.',
     category: 'templates',
+    cardCategory: 'Templates',
     images: [
       'https://images.unsplash.com/photo-1531498860502-7c67cf02f657?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop',
@@ -183,6 +185,7 @@ export const projects: ProjectData[] = [
     title: 'Presentation Masterclasses',
     description: 'Educational materials and workshop presentations teaching effective presentation design and delivery techniques.',
     category: 'templates',
+    cardCategory: 'Templates',
     images: [
       'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop',
