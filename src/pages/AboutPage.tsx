@@ -41,30 +41,6 @@ const funFacts = [
   },
 ];
 
-const featuredSkills = [
-  {
-    title: 'Executive storytelling',
-    desc: 'Translating complex business narratives into decks that earn attention and drive decisions.',
-  },
-  {
-    title: 'Visual systems',
-    desc: 'Building scalable templates and design tokens so teams stay on-brand without slowing down.',
-  },
-  {
-    title: 'Data visualization',
-    desc: 'Turning dense numbers into charts and visuals that make the insight obvious.',
-  },
-  {
-    title: 'Keynote design',
-    desc: 'Crafting stage-ready slides that amplify the speaker rather than competing with them.',
-  },
-];
-
-const allCapabilities = [
-  'Pitch decks', 'Keynote design', 'Data visualization', 'Template systems',
-  'Brand storytelling', 'Visual hierarchy', 'Slide narratives', 'Workshops',
-  'Iconography', 'Motion basics', 'Typography', 'Information design',
-];
 
 const beyondWorkPhotos = [
   glauberPhoto,
