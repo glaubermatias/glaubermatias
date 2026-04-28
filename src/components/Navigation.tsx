@@ -115,9 +115,15 @@ const Navigation = () => {
         return;
       }
 
+      // Same-page link → scroll to top smoothly instead of re-navigating.
+      if (href === location.pathname) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
       navigate(href);
     },
-    [isHomePage, navigate],
+    [isHomePage, navigate, location.pathname],
   );
 
   const logoHref = isHomePage ? '#' : '/';
