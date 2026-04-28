@@ -184,7 +184,7 @@ const AboutPage = () => {
     <PageLayout header={header}>
       <main className="pt-16 md:pt-24 pb-24">
         <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10">
             {/* Left — Content */}
             <div className="lg:col-span-9 space-y-24 min-w-0">
               {/* About paragraphs */}
