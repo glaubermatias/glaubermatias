@@ -123,7 +123,7 @@ const Navigation = () => {
 
       navigate(href);
     },
-    [isHomePage, navigate],
+    [isHomePage, navigate, location.pathname],
   );
 
   const logoHref = isHomePage ? '#' : '/';
