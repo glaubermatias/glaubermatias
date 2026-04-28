@@ -12,16 +12,18 @@ const ROTATING_WORDS = [
 ];
 
 const LINE_HEIGHT = 1.12;
+const ROW_EM = LINE_HEIGHT; // height of one word row, in em
 const ROWS_ABOVE = 1;
 const ROWS_BELOW = 2;
 const WINDOW_ROWS = ROWS_ABOVE + 1 + ROWS_BELOW; // 4 visible rows
 const AUTOPLAY_MS = 2100;
 
-// Long duplicated track to fake an infinite loop.
-const LOOPS = 60;
-const len = ROTATING_WORDS.length;
-const TRACK = Array.from({ length: LOOPS * len }, (_, i) => ROTATING_WORDS[i % len]);
-const START_INDEX = Math.floor(LOOPS / 2) * len;
+// Triplicate-style infinite track. We render LOOPS copies and silently jump
+// the index back to the middle whenever it strays — never a "rewind".
+const LOOPS = 80;
+const LEN = ROTATING_WORDS.length;
+const TRACK = Array.from({ length: LOOPS * LEN }, (_, i) => ROTATING_WORDS[i % LEN]);
+const START_INDEX = Math.floor(LOOPS / 2) * LEN;
 
 const Hero = () => {
   const [index, setIndex] = useState(START_INDEX);
@@ -40,7 +42,7 @@ const Hero = () => {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  // Autoplay
+  // Autoplay (paused on hover).
   useEffect(() => {
     if (isHovering) return;
     intervalRef.current = setInterval(() => setIndex((p) => p + 1), AUTOPLAY_MS);
@@ -49,19 +51,22 @@ const Hero = () => {
     };
   }, [isHovering]);
 
-  // Seamless normalization — invisibly jump back near the middle.
+  // Seamless infinite loop — when we drift toward either edge of the track,
+  // jump back to the middle on the equivalent word, with the animation OFF.
   useEffect(() => {
-    const safeMin = len * 3;
-    const safeMax = TRACK.length - len * 4;
+    const safeMin = LEN * 4;
+    const safeMax = TRACK.length - LEN * 5;
     if (index < safeMin || index > safeMax) {
-      const normalized = START_INDEX + ((index % len) + len) % len;
+      const normalized = START_INDEX + (((index % LEN) + LEN) % LEN);
       setAnimate(false);
       setIndex(normalized);
+      // Re-enable animation on the NEXT frame so the jump is invisible.
       requestAnimationFrame(() => requestAnimationFrame(() => setAnimate(true)));
     }
   }, [index]);
 
-  // Wheel — physical drag feel: each step = one word, throttled by lock.
+  // Wheel — non-passive listener so we can preventDefault and stop the page
+  // from scrolling while the cursor is over the roulette.
   useEffect(() => {
     const el = rouletteRef.current;
     if (!el) return;
@@ -74,7 +79,7 @@ const Hero = () => {
       setIndex((p) => (e.deltaY > 0 ? p + 1 : p - 1));
       window.setTimeout(() => {
         wheelLockRef.current = false;
-      }, 220);
+      }, 200);
     };
     el.addEventListener('wheel', onWheel, { passive: false });
     return () => el.removeEventListener('wheel', onWheel);
@@ -83,39 +88,32 @@ const Hero = () => {
   const handleMouseEnter = useCallback(() => setIsHovering(true), []);
   const handleMouseLeave = useCallback(() => setIsHovering(false), []);
 
-  // Roulette — width:0 wrapper so it does NOT push the centered text off-axis.
-  // The inner span overflows to the right (white-space:nowrap) anchored to
-  // the end of "the impact of".
+  // The roulette: a fixed-height window showing 4 rows. Rendered as a block
+  // so we can position it absolutely from the anchor span. NO overflow:hidden
+  // on the parent span (would clip it) — clipping happens here.
   const Roulette = (
     <span
       ref={rouletteRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="relative inline-block cursor-pointer align-baseline"
+      className="block cursor-pointer select-none"
       style={{
-        height: `${WINDOW_ROWS * LINE_HEIGHT}em`,
-        width: isCompact ? '100%' : '0',
+        height: `${WINDOW_ROWS * ROW_EM}em`,
         lineHeight: LINE_HEIGHT,
         overflow: 'hidden',
         overscrollBehavior: 'contain',
-        verticalAlign: 'baseline',
-        // Pull the window up so the active row sits exactly on baseline.
-        marginTop: `-${ROWS_ABOVE * LINE_HEIGHT}em`,
-        marginBottom: `-${ROWS_BELOW * LINE_HEIGHT}em`,
+        // Lift the window so the ACTIVE row (row index = ROWS_ABOVE) sits on
+        // the same baseline as the surrounding sentence text.
+        transform: `translateY(-${ROWS_ABOVE * ROW_EM}em)`,
       }}
       aria-label="Rotating list — hover to scroll, click to view all work"
     >
-      <motion.div
-        animate={{ y: `-${(index - ROWS_ABOVE) * LINE_HEIGHT}em` }}
+      <motion.span
+        className="block"
+        animate={{ y: `-${index * ROW_EM}em` }}
         transition={
           animate
-            ? {
-                // Spring — feels like a physical cylinder.
-                type: 'spring',
-                stiffness: 260,
-                damping: 32,
-                mass: 0.9,
-              }
+            ? { type: 'spring', stiffness: 100, damping: 15, mass: 0.9 }
             : { duration: 0 }
         }
         style={{ willChange: 'transform' }}
@@ -123,33 +121,27 @@ const Hero = () => {
         {TRACK.map((word, i) => {
           const isActive = i === index;
           return (
-            <div
+            <span
               key={i}
-              className="whitespace-nowrap"
+              className="block whitespace-nowrap"
               style={{
-                height: `${LINE_HEIGHT}em`,
+                height: `${ROW_EM}em`,
                 lineHeight: LINE_HEIGHT,
                 fontWeight: 600,
                 color: isActive ? '#e85102' : '#2f1106',
-                paddingLeft: isCompact ? 0 : '0.6rem',
               }}
             >
               {word}
-            </div>
+            </span>
           );
         })}
-      </motion.div>
+      </motion.span>
 
       <Link
         to="/work"
-        className="absolute left-0 right-0 block"
-        style={{
-          top: `${ROWS_ABOVE * LINE_HEIGHT}em`,
-          height: `${LINE_HEIGHT}em`,
-          // Force a hit area regardless of width:0 wrapper.
-          width: isCompact ? '100%' : '8.7em',
-        }}
+        className="absolute inset-0 block"
         aria-label="View all work"
+        style={{ zIndex: 2 }}
       />
     </span>
   );
@@ -179,7 +171,9 @@ const Hero = () => {
             </Link>
           </motion.div>
 
-          {/* Text block — centering ignores the roulette (width:0 wrapper). */}
+          {/* Text block — its own height drives centering vs the portrait.
+              The roulette is anchored to the END of "the impact of" and has
+              ZERO weight in the layout (position: absolute on a relative span). */}
           <div className="text-center md:text-left">
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -199,14 +193,37 @@ const Hero = () => {
               style={{ lineHeight: LINE_HEIGHT }}
             >
               <span className="block">Designer of visual stories</span>
-              {/* Desktop: roulette is appended inline but width:0, so it does
-                  not affect the centered position of the static text. */}
+
+              {/* Desktop: the anchor span wraps "the impact of" and hosts the
+                  absolutely-positioned roulette at left:100%, bottom:0. */}
               <span className="hidden lg:block">
-                that amplify the impact of{Roulette}
+                that amplify{' '}
+                <span style={{ position: 'relative', display: 'inline-block' }}>
+                  the impact of
+                  <span
+                    style={{
+                      position: 'absolute',
+                      left: '100%',
+                      bottom: 0,
+                      paddingLeft: '0.5rem',
+                      // Width must be explicit so absolute children render;
+                      // we cap it generously to fit the longest word.
+                      width: '12em',
+                      pointerEvents: 'auto',
+                    }}
+                  >
+                    {Roulette}
+                  </span>
+                </span>
               </span>
+
               {/* Compact stacked layout */}
               <span className="block lg:hidden">that amplify the impact of</span>
-              <span className="block lg:hidden mt-2 text-left md:text-center">{Roulette}</span>
+              <span className="block lg:hidden mt-2 text-left md:text-center">
+                <span style={{ position: 'relative', display: 'inline-block', width: '12em' }}>
+                  {Roulette}
+                </span>
+              </span>
             </motion.h1>
           </div>
         </div>
