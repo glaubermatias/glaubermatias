@@ -83,20 +83,27 @@ const Navigation = () => {
       setIsMobileMenuOpen(false);
 
       const scrollFastToFooter = () => {
-        const footer = document.getElementById('contact');
-        const target = footer
-          ? footer.getBoundingClientRect().top + window.scrollY
-          : document.documentElement.scrollHeight;
         const start = window.scrollY;
-        const end = Math.max(0, target);
         const duration = 650;
         const startedAt = performance.now();
+
+        const computeEnd = () =>
+          Math.max(
+            0,
+            document.documentElement.scrollHeight - window.innerHeight,
+          );
 
         const tick = (now: number) => {
           const progress = Math.min((now - startedAt) / duration, 1);
           const eased = 1 - Math.pow(1 - progress, 3);
+          const end = computeEnd(); // recompute in case layout changes
           window.scrollTo(0, start + (end - start) * eased);
-          if (progress < 1) window.requestAnimationFrame(tick);
+          if (progress < 1) {
+            window.requestAnimationFrame(tick);
+          } else {
+            // Final guarantee: snap to absolute bottom.
+            window.scrollTo(0, computeEnd());
+          }
         };
 
         window.requestAnimationFrame(tick);
