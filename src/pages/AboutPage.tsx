@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import PageLayout from '@/components/PageLayout';
 import PageHeader from '@/components/PageHeader';
 import glauberAboutHeader from '@/assets/glauber-about-header.jpg';
 import glauberPortrait from '@/assets/glauber-portrait.png';
 import glauberPhoto from '@/assets/glauber-photo.jpg';
+import smileIcon from '@/assets/smile-icon.png';
 
 // Side menu (no "About me" — first scroll target is fun-facts).
 const sections = [
@@ -87,9 +88,10 @@ const SideMenu = () => (
           <a
             key={s.id}
             href={`#${s.id}`}
-            className="block text-left py-3 text-base text-foreground/60 hover:text-black transition-colors border-b border-foreground/15"
+            className="flex items-center justify-between py-3 text-base text-foreground/60 hover:text-black transition-colors border-b border-foreground/15 group"
           >
-            {s.label}
+            <span>{s.label}</span>
+            <Plus className="w-4 h-4 text-foreground/40 group-hover:text-black transition-colors" />
           </a>
         ))}
       </nav>
@@ -163,6 +165,12 @@ const AboutPage = () => {
         />
       }
     >
+      <img
+        src={smileIcon}
+        alt=""
+        aria-hidden="true"
+        className="w-10 h-10 md:w-12 md:h-12 mb-4 object-contain"
+      />
       <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">
         Glauber Matias
       </h1>
@@ -249,7 +257,7 @@ const AboutPage = () => {
                   {featuredSkills.map((s) => (
                     <div
                       key={s.title}
-                      className="rounded-2xl bg-muted p-6 transition-all duration-300 h-full hover:-translate-y-1 hover:shadow-[0_18px_45px_-28px_hsl(var(--foreground)/0.45)]"
+                      className="rounded-2xl bg-muted p-6 transition-transform duration-300 h-full hover:scale-[1.03]"
                     >
                       <h3 className="font-display text-lg lg:text-xl font-semibold mb-2">
                         {s.title}
