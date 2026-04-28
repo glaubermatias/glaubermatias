@@ -8,10 +8,9 @@ import glauberPortrait from '@/assets/glauber-portrait.png';
 import glauberPhoto from '@/assets/glauber-photo.jpg';
 import smileIcon from '@/assets/smile-icon.png';
 
-// Side menu (no "About me" — first scroll target is fun-facts).
+// Side menu (Skills removed).
 const sections = [
   { id: 'fun-facts', label: 'Fun facts' },
-  { id: 'skills', label: 'Skills' },
   { id: 'beyond-work', label: 'Beyond work' },
 ];
 
