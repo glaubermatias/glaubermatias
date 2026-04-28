@@ -216,12 +216,15 @@ const AboutPage = () => {
                 </motion.div>
               </section>
 
-              {/* Fun facts — card with image, tag and caption */}
+              {/* Fun facts — 3 column grid */}
               <section id="fun-facts" className="scroll-mt-32">
                 <h2 className="font-display text-3xl md:text-4xl font-semibold mb-8">
                   Fun facts
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 w-full">
+                <div
+                  className="grid gap-6 lg:gap-8 w-full"
+                  style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}
+                >
                   {funFacts.map((fact) => (
                     <motion.article
                       key={fact.title}
@@ -246,58 +249,28 @@ const AboutPage = () => {
                   ))}
                 </div>
               </section>
-
-              {/* Skills — 4 featured + all capabilities list */}
-              <section id="skills" className="scroll-mt-32">
-                <h2 className="font-display text-3xl md:text-4xl font-semibold mb-8">
-                  Skills
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-14 w-full">
-                  {featuredSkills.map((s) => (
-                    <div
-                      key={s.title}
-                      className="rounded-2xl bg-muted p-6 transition-transform duration-300 h-full hover:scale-[1.03]"
-                    >
-                      <h3 className="font-display text-lg lg:text-xl font-semibold mb-2">
-                        {s.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <div>
-                  <h4 className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">
-                    All capabilities
-                  </h4>
-                  <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-foreground/80">
-                    {allCapabilities.map((cap, idx) => (
-                      <li key={cap} className="flex items-center gap-3">
-                        {idx > 0 && <span className="text-foreground/20">·</span>}
-                        <span>{cap}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </section>
-
-              {/* Beyond work — featured + thumbnails gallery */}
-              <section id="beyond-work" className="scroll-mt-32">
-                <h2 className="font-display text-3xl md:text-4xl font-semibold mb-4">
-                  Beyond work
-                </h2>
-                <p className="text-base text-muted-foreground max-w-2xl mb-8 leading-relaxed">
-                  A few snapshots from outside the studio — travels, hobbies,
-                  and the small moments that keep me inspired.
-                </p>
-                <BeyondWorkGallery />
-              </section>
             </div>
 
             {/* Right — Sticky side menu */}
             <SideMenu />
           </div>
         </div>
+
+        {/* Beyond work — full-width container that mirrors the floating nav
+            (max-w 1400px, px 8/16/24) so its left edge aligns with the GM logo
+            and its right edge aligns with the Contact button. */}
+        <section id="beyond-work" className="scroll-mt-32 mt-24">
+          <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
+            <h2 className="font-display text-3xl md:text-4xl font-semibold mb-4">
+              Beyond work
+            </h2>
+            <p className="text-base text-muted-foreground max-w-2xl mb-8 leading-relaxed">
+              A few snapshots from outside the studio — travels, hobbies,
+              and the small moments that keep me inspired.
+            </p>
+            <BeyondWorkGallery />
+          </div>
+        </section>
       </main>
     </PageLayout>
   );
