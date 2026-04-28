@@ -1,150 +1,8 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import glauberPortrait from '@/assets/glauber-portrait.png';
 
-const ROTATING_WORDS = [
-  'pitch decks',
-  'presentations',
-  'events',
-  'internal comms',
-  'keynotes',
-];
-
-const LINE_HEIGHT = 1.05;
-const ROW_EM = LINE_HEIGHT;
-const AUTOPLAY_MS = 2100;
-
-// Triplicate-style infinite track for seamless loop.
-const LOOPS = 80;
-const LEN = ROTATING_WORDS.length;
-const TRACK = Array.from({ length: LOOPS * LEN }, (_, i) => ROTATING_WORDS[i % LEN]);
-const START_INDEX = Math.floor(LOOPS / 2) * LEN;
-
-type RouletteProps = {
-  rowsAbove: number;
-  rowsBelow: number;
-};
-
 const Hero = () => {
-  const [index, setIndex] = useState(START_INDEX);
-  const [isCompact, setIsCompact] = useState(false);
-  const [isHovering, setIsHovering] = useState(false);
-  const [animate, setAnimate] = useState(true);
-
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const wheelLockRef = useRef(false);
-  const rouletteRef = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    const check = () => setIsCompact(window.innerWidth < 1024);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
-
-  // Autoplay (paused on hover).
-  useEffect(() => {
-    if (isHovering) return;
-    intervalRef.current = setInterval(() => setIndex((p) => p + 1), AUTOPLAY_MS);
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [isHovering]);
-
-  // Seamless infinite loop normalization.
-  useEffect(() => {
-    const safeMin = LEN * 4;
-    const safeMax = TRACK.length - LEN * 5;
-    if (index < safeMin || index > safeMax) {
-      const normalized = START_INDEX + (((index % LEN) + LEN) % LEN);
-      setAnimate(false);
-      setIndex(normalized);
-      requestAnimationFrame(() => requestAnimationFrame(() => setAnimate(true)));
-    }
-  }, [index]);
-
-  // Wheel — preventDefault while hovering the roulette.
-  useEffect(() => {
-    const el = rouletteRef.current;
-    if (!el) return;
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (wheelLockRef.current) return;
-      if (Math.abs(e.deltaY) < 4) return;
-      wheelLockRef.current = true;
-      setIndex((p) => (e.deltaY > 0 ? p + 1 : p - 1));
-      window.setTimeout(() => {
-        wheelLockRef.current = false;
-      }, 200);
-    };
-    el.addEventListener('wheel', onWheel, { passive: false });
-    return () => el.removeEventListener('wheel', onWheel);
-  }, []);
-
-  const handleMouseEnter = useCallback(() => setIsHovering(true), []);
-  const handleMouseLeave = useCallback(() => setIsHovering(false), []);
-
-  const renderRoulette = ({ rowsAbove, rowsBelow }: RouletteProps) => {
-    const windowRows = rowsAbove + 1 + rowsBelow;
-    return (
-      <span
-        ref={rouletteRef}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        className="relative cursor-pointer select-none"
-        style={{
-          display: 'inline-block',
-          height: `${windowRows * ROW_EM}em`,
-          lineHeight: LINE_HEIGHT,
-          overflow: 'hidden',
-          overscrollBehavior: 'contain',
-          verticalAlign: 'baseline',
-          // Lift so the ACTIVE row sits on the baseline.
-          transform: `translateY(${rowsBelow * ROW_EM}em)`,
-        }}
-        aria-label="Rotating list — hover to scroll, click to view all work"
-      >
-        <motion.span
-          className="block"
-          animate={{ y: `-${(index - rowsAbove) * ROW_EM}em` }}
-          transition={
-            animate
-              ? { type: 'spring', stiffness: 100, damping: 15, mass: 0.9 }
-              : { duration: 0 }
-          }
-          style={{ willChange: 'transform' }}
-        >
-          {TRACK.map((word, i) => {
-            const isActive = i === index;
-            return (
-              <span
-                key={i}
-                className="block whitespace-nowrap"
-                style={{
-                  height: `${ROW_EM}em`,
-                  lineHeight: LINE_HEIGHT,
-                  fontWeight: 600,
-                  color: isActive ? '#e85102' : '#2f1106',
-                }}
-              >
-                {word}
-              </span>
-            );
-          })}
-        </motion.span>
-
-        <Link
-          to="/work"
-          className="absolute inset-0 block"
-          aria-label="View all work"
-          style={{ zIndex: 2 }}
-        />
-      </span>
-    );
-  };
-
   return (
     <section
       data-nav-theme="dark"
@@ -185,28 +43,16 @@ const Hero = () => {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="font-display text-white font-semibold text-[1.75rem] sm:text-[2rem] md:text-[2.25rem] lg:text-[2.5rem] xl:text-[2.75rem]"
-              style={{ lineHeight: LINE_HEIGHT }}
+              className="font-display text-white font-semibold text-[1.25rem] sm:text-[1.5rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.75rem]"
+              style={{ lineHeight: 1.1 }}
             >
-              <span className="block">Designer of visual stories</span>
+              {/* Wide screens: two separate lines */}
+              <span className="hidden sm:block">Designer of visual stories</span>
+              <span className="hidden sm:block">that amplify the impact of brands.</span>
 
-              {/* Desktop: inline-flex with baseline alignment so the active
-                  roulette word sits exactly on the sentence baseline. */}
-              <span
-                className="hidden lg:inline-flex"
-                style={{ alignItems: 'baseline', gap: '0.5rem' }}
-              >
-                <span>that amplify the impact of</span>
-                {renderRoulette({ rowsAbove: 1, rowsBelow: 2 })}
-              </span>
-
-              {/* Mobile/Compact: title in one line, roulette below — no row above. */}
-              <span className="block lg:hidden">that amplify the impact of</span>
-              <span
-                className="lg:hidden mt-2"
-                style={{ display: 'inline-flex', alignItems: 'baseline' }}
-              >
-                {renderRoulette({ rowsAbove: 0, rowsBelow: 2 })}
+              {/* Very narrow screens: collapse into a single flowing sentence */}
+              <span className="block sm:hidden">
+                Designer of visual stories that amplify the impact of brands.
               </span>
             </motion.h1>
           </div>
