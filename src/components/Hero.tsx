@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import glauberPortrait from '@/assets/glauber-portrait.png';
@@ -17,10 +17,16 @@ const Hero = () => {
 
   useEffect(() => {
     const id = setInterval(() => {
-      setIndex((i) => (i + 1) % WORDS.length);
-    }, 2200);
+      setIndex((i) => i + 1);
+    }, 2400);
     return () => clearInterval(id);
   }, []);
+
+  // Render an extra copy of the first word at the end so the loop wraps seamlessly
+  const items = [...WORDS, WORDS[0]];
+  const total = WORDS.length;
+  const displayIndex = index % (total + 1);
+  const isResetting = displayIndex === 0 && index !== 0;
 
   return (
     <section
