@@ -14,32 +14,42 @@ const WORDS = [
 
 // Triplicate to fake an infinite loop
 const LOOP_WORDS = [...WORDS, ...WORDS, ...WORDS];
-const ITEM_HEIGHT = 1.1; // in em, matches line-height of hero text
+const LINE_HEIGHT = 1.1; // em — must match the h1 line-height
 
 const Hero = () => {
   // Start at the middle block
   const [currentIndex, setCurrentIndex] = useState(WORDS.length);
   const controls = useAnimationControls();
-  const isAnimatingRef = useRef(false);
+  const jumpingRef = useRef(false);
 
-  // Animate scroll whenever index changes
+  // Animate the strip whenever index changes
   useEffect(() => {
+    let cancelled = false;
     const run = async () => {
-      isAnimatingRef.current = true;
+      if (jumpingRef.current) {
+        // We just teleported; skip animation this tick
+        jumpingRef.current = false;
+        controls.set({ y: `-${currentIndex * LINE_HEIGHT}em` });
+        return;
+      }
       await controls.start({
-        y: `-${currentIndex * ITEM_HEIGHT}em`,
-        transition: { type: 'spring', stiffness: 90, damping: 18, mass: 0.9 },
+        y: `-${currentIndex * LINE_HEIGHT}em`,
+        transition: { type: 'spring', stiffness: 110, damping: 20, mass: 0.8 },
       });
-      isAnimatingRef.current = false;
+      if (cancelled) return;
 
-      // Silent jump back to middle block when entering the last third
+      // When we cross into the last block, silently rewind to the middle block.
       if (currentIndex >= WORDS.length * 2) {
         const normalized = currentIndex - WORDS.length;
-        controls.set({ y: `-${normalized * ITEM_HEIGHT}em` });
+        jumpingRef.current = true;
+        controls.set({ y: `-${normalized * LINE_HEIGHT}em` });
         setCurrentIndex(normalized);
       }
     };
     run();
+    return () => {
+      cancelled = true;
+    };
   }, [currentIndex, controls]);
 
   // Auto-play
@@ -51,6 +61,11 @@ const Hero = () => {
   }, []);
 
   const activeWordIdx = currentIndex % WORDS.length;
+
+  // Mask: reveal exactly 4 line-slots (one above, active, two below).
+  // The active line sits at the 2nd slot (index 1) of the visible window.
+  const WINDOW_LINES = 4;
+  const ACTIVE_SLOT = 1; // 0 = top adjacent, 1 = active, 2/3 = below
 
   return (
     <section
@@ -93,94 +108,61 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               className="font-display text-white font-semibold text-[1.25rem] sm:text-[1.5rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.75rem]"
-              style={{ lineHeight: 1.1 }}
+              style={{ lineHeight: LINE_HEIGHT }}
             >
               <span className="block">Designer of visual stories</span>
               <span className="inline-flex items-baseline flex-wrap">
                 <span>that amplify the impact of&nbsp;</span>
 
-                {/* Roulette anchor: zero-weight in centralization.
-                    A single-line slot reveals the active word; absolutely
-                    positioned siblings render the adjacent words above/below
-                    so they don't push surrounding layout. */}
+                {/*
+                  Roulette anchor.
+                  - Has the height of ONE line so it sits on the baseline of "the impact of".
+                  - Adjacent words (top: -1 line, bottom: +1/+2 lines) overflow visibly.
+                  - The strip is clipped by a CSS mask so only -1, 0, +1, +2 are visible.
+                  - Single strip means no overlap and no flickering ghosts.
+                */}
                 <span
                   className="relative inline-block align-baseline"
                   style={{
-                    height: '1.1em',
-                    // Reserve enough width for the longest word so the
-                    // following layout (none here) stays calm; tracked via ch.
+                    height: `${LINE_HEIGHT}em`,
                     minWidth: '8ch',
-                    overflow: 'visible',
                     verticalAlign: 'baseline',
                   }}
                   aria-live="polite"
                 >
-                  {/* Clipped viewport for the active word only */}
+                  {/* Visible window: 4 lines tall, starting one line above baseline */}
                   <span
-                    className="absolute left-0 top-0"
+                    className="absolute left-0 pointer-events-none"
                     style={{
-                      height: '1.1em',
-                      lineHeight: 1.1,
+                      top: `-${ACTIVE_SLOT * LINE_HEIGHT}em`,
+                      height: `${WINDOW_LINES * LINE_HEIGHT}em`,
+                      width: '100%',
                       overflow: 'hidden',
-                      width: '100%',
+                      // Soft fade at the very top/bottom edges (optional polish)
+                      WebkitMaskImage:
+                        'linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)',
+                      maskImage:
+                        'linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)',
                     }}
                   >
                     <motion.span
                       animate={controls}
-                      initial={{ y: `-${currentIndex * ITEM_HEIGHT}em` }}
-                      className="flex flex-col"
-                      style={{ willChange: 'transform' }}
-                    >
-                      {LOOP_WORDS.map((w, i) => {
-                        const isActive = i === currentIndex;
-                        return (
-                          <span
-                            key={`active-${i}`}
-                            style={{
-                              height: '1.1em',
-                              lineHeight: 1.1,
-                              color: isActive ? '#e85102' : 'transparent',
-                              transition: 'color 350ms ease',
-                            }}
-                          >
-                            {w}
-                          </span>
-                        );
-                      })}
-                    </motion.span>
-                  </span>
-
-                  {/* Adjacent words (above + 2 below) drawn in #2f1106.
-                      They sit absolutely so they never affect centralization. */}
-                  <span
-                    aria-hidden
-                    className="absolute left-0 top-0 pointer-events-none"
-                    style={{
-                      height: '1.1em',
-                      lineHeight: 1.1,
-                      width: '100%',
-                      overflow: 'visible',
-                    }}
-                  >
-                    <motion.span
-                      animate={controls}
-                      initial={{ y: `-${currentIndex * ITEM_HEIGHT}em` }}
+                      initial={{ y: `-${currentIndex * LINE_HEIGHT}em` }}
                       className="flex flex-col"
                       style={{ willChange: 'transform' }}
                     >
                       {LOOP_WORDS.map((w, i) => {
                         const offset = i - currentIndex;
-                        // Show only -1, +1, +2 (active is rendered above)
-                        const visible = offset === -1 || offset === 1 || offset === 2;
+                        const isActive = offset === 0;
                         return (
                           <span
-                            key={`ghost-${i}`}
+                            key={i}
                             style={{
-                              height: '1.1em',
-                              lineHeight: 1.1,
-                              color: '#2f1106',
-                              opacity: visible ? 1 : 0,
-                              transition: 'opacity 350ms ease',
+                              height: `${LINE_HEIGHT}em`,
+                              lineHeight: LINE_HEIGHT,
+                              color: isActive ? '#e85102' : '#2f1106',
+                              transition: 'color 350ms ease',
+                              whiteSpace: 'nowrap',
                             }}
                           >
                             {w}
