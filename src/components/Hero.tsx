@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import glauberPortrait from '@/assets/glauber-portrait.png';
