@@ -180,6 +180,9 @@ const AboutPage = () => {
         src={smileIcon}
         alt=""
         aria-hidden="true"
+        loading="eager"
+        fetchPriority="high"
+        decoding="sync"
         className="w-10 h-10 md:w-12 md:h-12 mb-4 object-contain"
       />
       <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">
