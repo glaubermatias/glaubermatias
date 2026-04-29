@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -13,21 +13,23 @@ const WORDS = [
   'reports',
 ];
 
+// Duration constants (seconds)
+const HOLD = 2.2;
+const ANIM = 0.55;
+
 const Hero = () => {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const id = setInterval(() => {
-      setIndex((i) => i + 1);
-    }, 2400);
+      setIndex((i) => (i + 1) % WORDS.length);
+    }, (HOLD + ANIM) * 1000);
     return () => clearInterval(id);
   }, []);
 
-  // Render an extra copy of the first word at the end so the loop wraps seamlessly
-  const items = [...WORDS, WORDS[0]];
-  const total = WORDS.length;
-  const displayIndex = index % (total + 1);
-  const isResetting = displayIndex === 0 && index !== 0;
+  const activeWord = WORDS[index];
+  // Widest word reserves the inline width so layout doesn't jump
+  const widestWord = WORDS.reduce((a, b) => (b.length > a.length ? b : a), WORDS[0]);
 
   return (
     <section
