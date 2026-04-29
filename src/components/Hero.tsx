@@ -50,6 +50,9 @@ const Hero = () => {
               <img
                 src={glauberPortrait}
                 alt="Glauber Matias"
+                loading="eager"
+                fetchPriority="high"
+                decoding="sync"
                 className="w-44 h-44 md:w-52 md:h-52 lg:w-60 lg:h-60 object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
                 style={{ borderRadius: '38%' }}
               />
