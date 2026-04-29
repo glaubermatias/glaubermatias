@@ -19,10 +19,10 @@ const ResumeCTA = () => (
       aria-hidden="true"
       className="absolute inset-0 rounded-full bg-white/10 backdrop-blur-md border border-white/20 transition-colors duration-500"
     />
-    {/* White expanding fill — starts as the circle (left), grows to full width on hover */}
+    {/* White expanding fill — inset slightly so the liquid-glass pill is always visible as a thin outline */}
     <span
       aria-hidden="true"
-      className="absolute left-0 top-0 h-full rounded-full bg-white transition-all duration-500 ease-out w-14 md:w-16 group-hover:w-full"
+      className="absolute top-1 bottom-1 left-1 rounded-full bg-white transition-all duration-500 ease-out w-12 md:w-14 group-hover:w-[calc(100%-0.5rem)]"
     />
     {/* Arrow icon — sits over the white area */}
     <span className="relative z-10 inline-flex items-center justify-center w-14 h-14 md:w-16 md:h-16 text-black">
