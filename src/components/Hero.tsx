@@ -86,46 +86,33 @@ const Hero = () => {
                 }}
                 aria-live="polite"
               >
-                {/* Invisible spacer keeps the inline width matching the active word */}
+                {/* Invisible spacer = widest word, reserves inline width so layout doesn't jump */}
                 <span
                   aria-hidden="true"
                   className="invisible whitespace-nowrap"
                   style={{ lineHeight: 1.2 }}
                 >
-                  {WORDS[displayIndex % WORDS.length] || WORDS[0]}
+                  {widestWord}
                 </span>
 
-                {/* Sliding strip of words */}
-                <span
-                  className="absolute left-0 top-0 flex flex-col"
-                  style={{
-                    transform: `translateY(-${displayIndex * 1.2}em)`,
-                    transition: isResetting
-                      ? 'none'
-                      : 'transform 700ms cubic-bezier(0.65, 0, 0.35, 1)',
-                    willChange: 'transform',
-                  }}
-                  onTransitionEnd={() => {
-                    // When we reach the duplicated first word, snap back to real index 0
-                    if (displayIndex === total) {
-                      setIndex((i) => i + 1); // moves displayIndex from `total` to 0
-                    }
-                  }}
-                >
-                  {items.map((word, i) => (
-                    <span
-                      key={`${word}-${i}`}
-                      className="whitespace-nowrap"
-                      style={{
-                        color: '#e85102',
-                        lineHeight: 1.2,
-                        height: '1.2em',
-                      }}
-                    >
-                      {word}
-                    </span>
-                  ))}
-                </span>
+                {/* Only the active word is ever rendered. Old word slides up & out, new word slides up & in. */}
+                <AnimatePresence mode="popLayout" initial={false}>
+                  <motion.span
+                    key={activeWord}
+                    initial={{ y: '100%' }}
+                    animate={{ y: '0%' }}
+                    exit={{ y: '-100%' }}
+                    transition={{ duration: ANIM, ease: [0.65, 0, 0.35, 1] }}
+                    className="absolute left-0 top-0 whitespace-nowrap"
+                    style={{
+                      color: '#e85102',
+                      lineHeight: 1.2,
+                      height: '1.2em',
+                    }}
+                  >
+                    {activeWord}
+                  </motion.span>
+                </AnimatePresence>
               </Link>
             </motion.h1>
           </div>
