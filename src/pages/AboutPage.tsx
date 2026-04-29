@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import PageLayout from '@/components/PageLayout';
@@ -7,6 +7,25 @@ import glauberAboutHeader from '@/assets/glauber-about-header.jpg';
 import glauberPortrait from '@/assets/glauber-portrait.png';
 import glauberPhoto from '@/assets/glauber-photo.jpg';
 import smileIcon from '@/assets/smile-icon.png';
+
+// Inject <link rel="preload" as="image"> as early as possible (module eval time)
+// so the browser starts fetching the hero assets in parallel with the JS chunk.
+if (typeof document !== 'undefined') {
+  const preloads: Array<[string, string]> = [
+    [glauberAboutHeader, 'image/jpeg'],
+    [smileIcon, 'image/png'],
+  ];
+  preloads.forEach(([href, type]) => {
+    if (document.head.querySelector(`link[rel="preload"][href="${href}"]`)) return;
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = href;
+    link.type = type;
+    (link as HTMLLinkElement & { fetchPriority?: string }).fetchPriority = 'high';
+    document.head.appendChild(link);
+  });
+}
 
 // Side menu (Skills removed).
 const sections = [
