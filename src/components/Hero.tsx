@@ -1,8 +1,57 @@
-import { motion } from 'framer-motion';
+import { motion, useAnimationControls } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 import glauberPortrait from '@/assets/glauber-portrait.png';
 
+const WORDS = [
+  'presentations',
+  'pitch decks',
+  'events',
+  'internal comms',
+  'templates',
+  'reports',
+];
+
+// Triplicate to fake an infinite loop
+const LOOP_WORDS = [...WORDS, ...WORDS, ...WORDS];
+const ITEM_HEIGHT = 1.1; // in em, matches line-height of hero text
+
 const Hero = () => {
+  // Start at the middle block
+  const [currentIndex, setCurrentIndex] = useState(WORDS.length);
+  const controls = useAnimationControls();
+  const isAnimatingRef = useRef(false);
+
+  // Animate scroll whenever index changes
+  useEffect(() => {
+    const run = async () => {
+      isAnimatingRef.current = true;
+      await controls.start({
+        y: `-${currentIndex * ITEM_HEIGHT}em`,
+        transition: { type: 'spring', stiffness: 90, damping: 18, mass: 0.9 },
+      });
+      isAnimatingRef.current = false;
+
+      // Silent jump back to middle block when entering the last third
+      if (currentIndex >= WORDS.length * 2) {
+        const normalized = currentIndex - WORDS.length;
+        controls.set({ y: `-${normalized * ITEM_HEIGHT}em` });
+        setCurrentIndex(normalized);
+      }
+    };
+    run();
+  }, [currentIndex, controls]);
+
+  // Auto-play
+  useEffect(() => {
+    const id = setInterval(() => {
+      setCurrentIndex((i) => i + 1);
+    }, 2200);
+    return () => clearInterval(id);
+  }, []);
+
+  const activeWordIdx = currentIndex % WORDS.length;
+
   return (
     <section
       data-nav-theme="dark"
@@ -46,15 +95,106 @@ const Hero = () => {
               className="font-display text-white font-semibold text-[1.25rem] sm:text-[1.5rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.75rem]"
               style={{ lineHeight: 1.1 }}
             >
-              {/* Wide screens: two separate lines */}
-              <span className="hidden sm:block">Designer of visual stories</span>
-              <span className="hidden sm:block">that amplify the impact of brands.</span>
+              <span className="block">Designer of visual stories</span>
+              <span className="inline-flex items-baseline flex-wrap">
+                <span>that amplify the impact of&nbsp;</span>
 
-              {/* Very narrow screens: collapse into a single flowing sentence */}
-              <span className="block sm:hidden">
-                Designer of visual stories that amplify the impact of brands.
+                {/* Roulette anchor: zero-weight in centralization.
+                    A single-line slot reveals the active word; absolutely
+                    positioned siblings render the adjacent words above/below
+                    so they don't push surrounding layout. */}
+                <span
+                  className="relative inline-block align-baseline"
+                  style={{
+                    height: '1.1em',
+                    // Reserve enough width for the longest word so the
+                    // following layout (none here) stays calm; tracked via ch.
+                    minWidth: '8ch',
+                    overflow: 'visible',
+                    verticalAlign: 'baseline',
+                  }}
+                  aria-live="polite"
+                >
+                  {/* Clipped viewport for the active word only */}
+                  <span
+                    className="absolute left-0 top-0"
+                    style={{
+                      height: '1.1em',
+                      lineHeight: 1.1,
+                      overflow: 'hidden',
+                      width: '100%',
+                    }}
+                  >
+                    <motion.span
+                      animate={controls}
+                      initial={{ y: `-${currentIndex * ITEM_HEIGHT}em` }}
+                      className="flex flex-col"
+                      style={{ willChange: 'transform' }}
+                    >
+                      {LOOP_WORDS.map((w, i) => {
+                        const isActive = i === currentIndex;
+                        return (
+                          <span
+                            key={`active-${i}`}
+                            style={{
+                              height: '1.1em',
+                              lineHeight: 1.1,
+                              color: isActive ? '#e85102' : 'transparent',
+                              transition: 'color 350ms ease',
+                            }}
+                          >
+                            {w}
+                          </span>
+                        );
+                      })}
+                    </motion.span>
+                  </span>
+
+                  {/* Adjacent words (above + 2 below) drawn in #2f1106.
+                      They sit absolutely so they never affect centralization. */}
+                  <span
+                    aria-hidden
+                    className="absolute left-0 top-0 pointer-events-none"
+                    style={{
+                      height: '1.1em',
+                      lineHeight: 1.1,
+                      width: '100%',
+                      overflow: 'visible',
+                    }}
+                  >
+                    <motion.span
+                      animate={controls}
+                      initial={{ y: `-${currentIndex * ITEM_HEIGHT}em` }}
+                      className="flex flex-col"
+                      style={{ willChange: 'transform' }}
+                    >
+                      {LOOP_WORDS.map((w, i) => {
+                        const offset = i - currentIndex;
+                        // Show only -1, +1, +2 (active is rendered above)
+                        const visible = offset === -1 || offset === 1 || offset === 2;
+                        return (
+                          <span
+                            key={`ghost-${i}`}
+                            style={{
+                              height: '1.1em',
+                              lineHeight: 1.1,
+                              color: '#2f1106',
+                              opacity: visible ? 1 : 0,
+                              transition: 'opacity 350ms ease',
+                            }}
+                          >
+                            {w}
+                          </span>
+                        );
+                      })}
+                    </motion.span>
+                  </span>
+                </span>
               </span>
             </motion.h1>
+
+            {/* Screen-reader fallback */}
+            <span className="sr-only">{WORDS[activeWordIdx]}</span>
           </div>
         </div>
       </div>
