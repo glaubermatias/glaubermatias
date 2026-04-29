@@ -22,22 +22,34 @@ const funFacts = [
     image: glauberPhoto,
   },
   {
-    tag: 'FAVORITE FOOD',
+    tag: 'FAVORITE MUSIC',
     title: 'Lo-fi addict',
     desc: "I can't design without a steady stream of mellow beats running in the background.",
     image: glauberPortrait,
   },
   {
-    tag: 'FAVORITE MOVIE',
+    tag: 'FAVORITE PLACE',
     title: 'Brazilian abroad',
     desc: 'Carioca soul, Lisbon-bound. Always chasing good light, good food and new perspectives.',
     image: glauberPhoto,
   },
   {
-    tag: 'FAVORITE SINGER',
+    tag: 'FAVORITE BOOK',
     title: 'Book hoarder',
     desc: 'My to-read pile grows faster than I can possibly keep up with — and I love it.',
     image: glauberPortrait,
+  },
+  {
+    tag: 'FAVORITE MOVIE',
+    title: 'Cinema lover',
+    desc: 'From Wong Kar-wai to Wes Anderson — I collect frames the way others collect records.',
+    image: glauberAboutHeader,
+  },
+  {
+    tag: 'FAVORITE FOOD',
+    title: 'Stubborn home cook',
+    desc: 'Brazilian roots, Mediterranean obsessions. Dinner is always an experiment.',
+    image: glauberPhoto,
   },
 ];
 
