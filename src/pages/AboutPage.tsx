@@ -99,6 +99,8 @@ const BeyondWorkGallery = () => {
           key={active}
           src={beyondWorkPhotos[active]}
           alt={`Personal moment ${active + 1}`}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover absolute inset-0"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
