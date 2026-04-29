@@ -203,40 +203,6 @@ const AboutPage = () => {
                   </p>
                 </motion.div>
               </section>
-
-              {/* Fun facts — 3 column grid */}
-              <section id="fun-facts" className="scroll-mt-32">
-                <h2 className="font-display text-3xl md:text-4xl font-semibold mb-8">
-                  Fun facts
-                </h2>
-                <div
-                  className="grid gap-6 lg:gap-8 w-full"
-                  style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}
-                >
-                  {funFacts.map((fact) => (
-                    <motion.article
-                      key={fact.title}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-muted mb-4 w-full">
-                        <img
-                          src={fact.image}
-                          alt={fact.title}
-                          className="w-full h-full object-cover"
-                        />
-                        <span className="absolute top-5 left-5 inline-flex items-center px-3 py-1 rounded-full bg-white/90 backdrop-blur text-[0.65rem] tracking-[0.2em] uppercase text-black font-medium">
-                          {fact.tag}
-                        </span>
-                      </div>
-                      <h3 className="font-display text-xl font-semibold mb-1">{fact.title}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{fact.desc}</p>
-                    </motion.article>
-                  ))}
-                </div>
-              </section>
             </div>
 
             {/* Right — Sticky side menu */}
