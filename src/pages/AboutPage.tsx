@@ -150,6 +150,9 @@ const AboutPage = () => {
         <img
           src={glauberAboutHeader}
           alt="Glauber Matias"
+          loading="eager"
+          fetchPriority="high"
+          decoding="sync"
           className="h-full w-auto max-w-none object-contain object-bottom block"
         />
       }
