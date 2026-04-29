@@ -62,29 +62,36 @@ const Hero = () => {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="font-display text-white font-semibold text-[1.25rem] sm:text-[1.5rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.75rem]"
-              style={{ lineHeight: 1.1 }}
+              className="font-display text-white font-semibold text-[1.75rem] sm:text-[2rem] md:text-[2.25rem] lg:text-[2.5rem] xl:text-[2.75rem]"
+              style={{ lineHeight: 1.2 }}
             >
-              Designer of visual stories that amplify the impact of{' '}
-              <span
-                className="relative inline-block align-baseline overflow-hidden"
-                style={{ height: '1.1em', verticalAlign: 'baseline' }}
+              Designer of visual stories that amplify the impact of{'\u00A0'}
+              <Link
+                to="/work"
+                className="relative inline-flex align-baseline overflow-hidden cursor-pointer"
+                style={{
+                  height: '1.2em',
+                  verticalAlign: 'baseline',
+                  lineHeight: 1.2,
+                  paddingBottom: '0.15em',
+                  marginBottom: '-0.15em',
+                }}
                 aria-live="polite"
               >
-                <AnimatePresence mode="wait" initial={false}>
+                <AnimatePresence mode="popLayout" initial={false}>
                   <motion.span
                     key={WORDS[index]}
-                    initial={{ y: '100%', opacity: 0 }}
-                    animate={{ y: '0%', opacity: 1 }}
-                    exit={{ y: '-100%', opacity: 0 }}
-                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    initial={{ y: '100%' }}
+                    animate={{ y: '0%' }}
+                    exit={{ y: '-100%' }}
+                    transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
                     className="inline-block whitespace-nowrap"
-                    style={{ color: '#e85102', lineHeight: 1.1 }}
+                    style={{ color: '#e85102', lineHeight: 1.2 }}
                   >
                     {WORDS[index]}
                   </motion.span>
                 </AnimatePresence>
-              </span>
+              </Link>
             </motion.h1>
           </div>
         </div>
