@@ -22,22 +22,34 @@ const funFacts = [
     image: glauberPhoto,
   },
   {
-    tag: 'FAVORITE FOOD',
+    tag: 'FAVORITE MUSIC',
     title: 'Lo-fi addict',
     desc: "I can't design without a steady stream of mellow beats running in the background.",
     image: glauberPortrait,
   },
   {
-    tag: 'FAVORITE MOVIE',
+    tag: 'FAVORITE PLACE',
     title: 'Brazilian abroad',
     desc: 'Carioca soul, Lisbon-bound. Always chasing good light, good food and new perspectives.',
     image: glauberPhoto,
   },
   {
-    tag: 'FAVORITE SINGER',
+    tag: 'FAVORITE BOOK',
     title: 'Book hoarder',
     desc: 'My to-read pile grows faster than I can possibly keep up with — and I love it.',
     image: glauberPortrait,
+  },
+  {
+    tag: 'FAVORITE MOVIE',
+    title: 'Cinema lover',
+    desc: 'From Wong Kar-wai to Wes Anderson — I collect frames the way others collect records.',
+    image: glauberAboutHeader,
+  },
+  {
+    tag: 'FAVORITE FOOD',
+    title: 'Stubborn home cook',
+    desc: 'Brazilian roots, Mediterranean obsessions. Dinner is always an experiment.',
+    image: glauberPhoto,
   },
 ];
 
@@ -87,6 +99,8 @@ const BeyondWorkGallery = () => {
           key={active}
           src={beyondWorkPhotos[active]}
           alt={`Personal moment ${active + 1}`}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover absolute inset-0"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -191,40 +205,6 @@ const AboutPage = () => {
                   </p>
                 </motion.div>
               </section>
-
-              {/* Fun facts — 3 column grid */}
-              <section id="fun-facts" className="scroll-mt-32">
-                <h2 className="font-display text-3xl md:text-4xl font-semibold mb-8">
-                  Fun facts
-                </h2>
-                <div
-                  className="grid gap-6 lg:gap-8 w-full"
-                  style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}
-                >
-                  {funFacts.map((fact) => (
-                    <motion.article
-                      key={fact.title}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-muted mb-4 w-full">
-                        <img
-                          src={fact.image}
-                          alt={fact.title}
-                          className="w-full h-full object-cover"
-                        />
-                        <span className="absolute top-5 left-5 inline-flex items-center px-3 py-1 rounded-full bg-white/90 backdrop-blur text-[0.65rem] tracking-[0.2em] uppercase text-black font-medium">
-                          {fact.tag}
-                        </span>
-                      </div>
-                      <h3 className="font-display text-xl font-semibold mb-1">{fact.title}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{fact.desc}</p>
-                    </motion.article>
-                  ))}
-                </div>
-              </section>
             </div>
 
             {/* Right — Sticky side menu */}
@@ -232,9 +212,44 @@ const AboutPage = () => {
           </div>
         </div>
 
-        {/* Beyond work — full-width container that mirrors the floating nav
-            (max-w 1400px, px 8/16/24) so its left edge aligns with the GM logo
-            and its right edge aligns with the Contact button. */}
+        {/* Fun facts — full-width container aligned with the floating nav
+            (max-w 1400px, px 8/16/24) so left/right edges match the GM logo
+            and the Contact button. 6 cards in a 3-column grid. */}
+        <section id="fun-facts" className="scroll-mt-32 mt-24">
+          <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
+            <h2 className="font-display text-3xl md:text-4xl font-semibold mb-8">
+              Fun facts
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 w-full">
+              {funFacts.map((fact) => (
+                <motion.article
+                  key={fact.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-muted mb-4 w-full">
+                    <img
+                      src={fact.image}
+                      alt={fact.title}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover"
+                    />
+                    <span className="absolute top-5 left-5 inline-flex items-center px-3 py-1 rounded-full bg-white/90 backdrop-blur text-[0.65rem] tracking-[0.2em] uppercase text-black font-medium">
+                      {fact.tag}
+                    </span>
+                  </div>
+                  <h3 className="font-display text-xl font-semibold mb-1">{fact.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{fact.desc}</p>
+                </motion.article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Beyond work — full-width container that mirrors the floating nav. */}
         <section id="beyond-work" className="scroll-mt-32 mt-24">
           <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
             <h2 className="font-display text-3xl md:text-4xl font-semibold mb-4">
