@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -13,21 +13,23 @@ const WORDS = [
   'reports',
 ];
 
+// Duration constants (seconds)
+const HOLD = 2.2;
+const ANIM = 0.55;
+
 const Hero = () => {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const id = setInterval(() => {
-      setIndex((i) => i + 1);
-    }, 2400);
+      setIndex((i) => (i + 1) % WORDS.length);
+    }, (HOLD + ANIM) * 1000);
     return () => clearInterval(id);
   }, []);
 
-  // Render an extra copy of the first word at the end so the loop wraps seamlessly
-  const items = [...WORDS, WORDS[0]];
-  const total = WORDS.length;
-  const displayIndex = index % (total + 1);
-  const isResetting = displayIndex === 0 && index !== 0;
+  const activeWord = WORDS[index];
+  // Widest word reserves the inline width so layout doesn't jump
+  const widestWord = WORDS.reduce((a, b) => (b.length > a.length ? b : a), WORDS[0]);
 
   return (
     <section
@@ -84,46 +86,33 @@ const Hero = () => {
                 }}
                 aria-live="polite"
               >
-                {/* Invisible spacer keeps the inline width matching the active word */}
+                {/* Invisible spacer = widest word, reserves inline width so layout doesn't jump */}
                 <span
                   aria-hidden="true"
                   className="invisible whitespace-nowrap"
                   style={{ lineHeight: 1.2 }}
                 >
-                  {WORDS[displayIndex % WORDS.length] || WORDS[0]}
+                  {widestWord}
                 </span>
 
-                {/* Sliding strip of words */}
-                <span
-                  className="absolute left-0 top-0 flex flex-col"
-                  style={{
-                    transform: `translateY(-${displayIndex * 1.2}em)`,
-                    transition: isResetting
-                      ? 'none'
-                      : 'transform 700ms cubic-bezier(0.65, 0, 0.35, 1)',
-                    willChange: 'transform',
-                  }}
-                  onTransitionEnd={() => {
-                    // When we reach the duplicated first word, snap back to real index 0
-                    if (displayIndex === total) {
-                      setIndex((i) => i + 1); // moves displayIndex from `total` to 0
-                    }
-                  }}
-                >
-                  {items.map((word, i) => (
-                    <span
-                      key={`${word}-${i}`}
-                      className="whitespace-nowrap"
-                      style={{
-                        color: '#e85102',
-                        lineHeight: 1.2,
-                        height: '1.2em',
-                      }}
-                    >
-                      {word}
-                    </span>
-                  ))}
-                </span>
+                {/* Only the active word is ever rendered. Old word slides up & out, new word slides up & in. */}
+                <AnimatePresence mode="popLayout" initial={false}>
+                  <motion.span
+                    key={activeWord}
+                    initial={{ y: '100%' }}
+                    animate={{ y: '0%' }}
+                    exit={{ y: '-100%' }}
+                    transition={{ duration: ANIM, ease: [0.65, 0, 0.35, 1] }}
+                    className="absolute left-0 top-0 whitespace-nowrap"
+                    style={{
+                      color: '#e85102',
+                      lineHeight: 1.2,
+                      height: '1.2em',
+                    }}
+                  >
+                    {activeWord}
+                  </motion.span>
+                </AnimatePresence>
               </Link>
             </motion.h1>
           </div>
