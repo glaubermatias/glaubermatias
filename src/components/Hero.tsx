@@ -1,6 +1,6 @@
-import { motion, useAnimationControls } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import glauberPortrait from '@/assets/glauber-portrait.png';
 
 const WORDS = [
@@ -12,60 +12,15 @@ const WORDS = [
   'reports',
 ];
 
-// Triplicate to fake an infinite loop
-const LOOP_WORDS = [...WORDS, ...WORDS, ...WORDS];
-const LINE_HEIGHT = 1.1; // em — must match the h1 line-height
-
 const Hero = () => {
-  // Start at the middle block
-  const [currentIndex, setCurrentIndex] = useState(WORDS.length);
-  const controls = useAnimationControls();
-  const jumpingRef = useRef(false);
+  const [index, setIndex] = useState(0);
 
-  // Animate the strip whenever index changes
-  useEffect(() => {
-    let cancelled = false;
-    const run = async () => {
-      if (jumpingRef.current) {
-        // We just teleported; skip animation this tick
-        jumpingRef.current = false;
-        controls.set({ y: `-${currentIndex * LINE_HEIGHT}em` });
-        return;
-      }
-      await controls.start({
-        y: `-${currentIndex * LINE_HEIGHT}em`,
-        transition: { type: 'spring', stiffness: 110, damping: 20, mass: 0.8 },
-      });
-      if (cancelled) return;
-
-      // When we cross into the last block, silently rewind to the middle block.
-      if (currentIndex >= WORDS.length * 2) {
-        const normalized = currentIndex - WORDS.length;
-        jumpingRef.current = true;
-        controls.set({ y: `-${normalized * LINE_HEIGHT}em` });
-        setCurrentIndex(normalized);
-      }
-    };
-    run();
-    return () => {
-      cancelled = true;
-    };
-  }, [currentIndex, controls]);
-
-  // Auto-play
   useEffect(() => {
     const id = setInterval(() => {
-      setCurrentIndex((i) => i + 1);
+      setIndex((i) => (i + 1) % WORDS.length);
     }, 2200);
     return () => clearInterval(id);
   }, []);
-
-  const activeWordIdx = currentIndex % WORDS.length;
-
-  // Mask: reveal exactly 4 line-slots (one above, active, two below).
-  // The active line sits at the 2nd slot (index 1) of the visible window.
-  const WINDOW_LINES = 4;
-  const ACTIVE_SLOT = 1; // 0 = top adjacent, 1 = active, 2/3 = below
 
   return (
     <section
@@ -108,75 +63,29 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               className="font-display text-white font-semibold text-[1.25rem] sm:text-[1.5rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.75rem]"
-              style={{ lineHeight: LINE_HEIGHT }}
+              style={{ lineHeight: 1.1 }}
             >
-              <span className="block">Designer of visual stories</span>
-              <span className="inline-flex items-baseline flex-wrap">
-                <span>that amplify the impact of&nbsp;</span>
-
-                {/*
-                  Roulette anchor.
-                  - Has the height of ONE line so it sits on the baseline of "the impact of".
-                  - Adjacent words (top: -1 line, bottom: +1/+2 lines) overflow visibly.
-                  - The strip is clipped by a CSS mask so only -1, 0, +1, +2 are visible.
-                  - Single strip means no overlap and no flickering ghosts.
-                */}
-                <span
-                  className="relative inline-block align-baseline"
-                  style={{
-                    height: `${LINE_HEIGHT}em`,
-                    minWidth: '8ch',
-                    verticalAlign: 'baseline',
-                  }}
-                  aria-live="polite"
-                >
-                  {/* Visible window: 4 lines tall, starting one line above baseline */}
-                  <span
-                    className="absolute left-0 pointer-events-none"
-                    style={{
-                      top: `-${ACTIVE_SLOT * LINE_HEIGHT}em`,
-                      height: `${WINDOW_LINES * LINE_HEIGHT}em`,
-                      width: '100%',
-                      overflow: 'hidden',
-                      // Soft fade at the very top/bottom edges (optional polish)
-                      WebkitMaskImage:
-                        'linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)',
-                      maskImage:
-                        'linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)',
-                    }}
+              Designer of visual stories that amplify the impact of{' '}
+              <span
+                className="relative inline-block align-baseline overflow-hidden"
+                style={{ height: '1.1em', verticalAlign: 'baseline' }}
+                aria-live="polite"
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={WORDS[index]}
+                    initial={{ y: '100%', opacity: 0 }}
+                    animate={{ y: '0%', opacity: 1 }}
+                    exit={{ y: '-100%', opacity: 0 }}
+                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    className="inline-block whitespace-nowrap"
+                    style={{ color: '#e85102', lineHeight: 1.1 }}
                   >
-                    <motion.span
-                      animate={controls}
-                      initial={{ y: `-${currentIndex * LINE_HEIGHT}em` }}
-                      className="flex flex-col"
-                      style={{ willChange: 'transform' }}
-                    >
-                      {LOOP_WORDS.map((w, i) => {
-                        const offset = i - currentIndex;
-                        const isActive = offset === 0;
-                        return (
-                          <span
-                            key={i}
-                            style={{
-                              height: `${LINE_HEIGHT}em`,
-                              lineHeight: LINE_HEIGHT,
-                              color: isActive ? '#e85102' : '#2f1106',
-                              transition: 'color 350ms ease',
-                              whiteSpace: 'nowrap',
-                            }}
-                          >
-                            {w}
-                          </span>
-                        );
-                      })}
-                    </motion.span>
-                  </span>
-                </span>
+                    {WORDS[index]}
+                  </motion.span>
+                </AnimatePresence>
               </span>
             </motion.h1>
-
-            {/* Screen-reader fallback */}
-            <span className="sr-only">{WORDS[activeWordIdx]}</span>
           </div>
         </div>
       </div>
