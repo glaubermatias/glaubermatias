@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import glauberPortrait from '@/assets/glauber-portrait.png';
@@ -17,10 +17,16 @@ const Hero = () => {
 
   useEffect(() => {
     const id = setInterval(() => {
-      setIndex((i) => (i + 1) % WORDS.length);
-    }, 2200);
+      setIndex((i) => i + 1);
+    }, 2400);
     return () => clearInterval(id);
   }, []);
+
+  // Render an extra copy of the first word at the end so the loop wraps seamlessly
+  const items = [...WORDS, WORDS[0]];
+  const total = WORDS.length;
+  const displayIndex = index % (total + 1);
+  const isResetting = displayIndex === 0 && index !== 0;
 
   return (
     <section
@@ -68,29 +74,55 @@ const Hero = () => {
               Designer of visual stories that amplify the impact of{'\u00A0'}
               <Link
                 to="/work"
-                className="relative inline-flex align-baseline overflow-hidden cursor-pointer"
+                className="relative inline-flex cursor-pointer align-baseline"
                 style={{
                   height: '1.2em',
-                  verticalAlign: 'baseline',
                   lineHeight: 1.2,
-                  paddingBottom: '0.15em',
-                  marginBottom: '-0.15em',
+                  verticalAlign: 'baseline',
+                  overflow: 'hidden',
                 }}
                 aria-live="polite"
               >
-                <AnimatePresence mode="popLayout" initial={false}>
-                  <motion.span
-                    key={WORDS[index]}
-                    initial={{ y: '100%' }}
-                    animate={{ y: '0%' }}
-                    exit={{ y: '-100%' }}
-                    transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-                    className="inline-block whitespace-nowrap"
-                    style={{ color: '#e85102', lineHeight: 1.2 }}
-                  >
-                    {WORDS[index]}
-                  </motion.span>
-                </AnimatePresence>
+                {/* Invisible spacer keeps the inline width matching the active word */}
+                <span
+                  aria-hidden="true"
+                  className="invisible whitespace-nowrap"
+                  style={{ lineHeight: 1.2 }}
+                >
+                  {WORDS[displayIndex % WORDS.length] || WORDS[0]}
+                </span>
+
+                {/* Sliding strip of words */}
+                <span
+                  className="absolute left-0 top-0 flex flex-col"
+                  style={{
+                    transform: `translateY(-${displayIndex * 1.2}em)`,
+                    transition: isResetting
+                      ? 'none'
+                      : 'transform 700ms cubic-bezier(0.65, 0, 0.35, 1)',
+                    willChange: 'transform',
+                  }}
+                  onTransitionEnd={() => {
+                    // When we reach the duplicated first word, snap back to real index 0
+                    if (displayIndex === total) {
+                      setIndex((i) => i + 1); // moves displayIndex from `total` to 0
+                    }
+                  }}
+                >
+                  {items.map((word, i) => (
+                    <span
+                      key={`${word}-${i}`}
+                      className="whitespace-nowrap"
+                      style={{
+                        color: '#e85102',
+                        lineHeight: 1.2,
+                        height: '1.2em',
+                      }}
+                    >
+                      {word}
+                    </span>
+                  ))}
+                </span>
               </Link>
             </motion.h1>
           </div>
