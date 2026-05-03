@@ -152,6 +152,9 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Global Corporation',
     featured: true,
+    stakeholders: 'CEO, Comms team, Event production',
+    tools: 'Figma, Keynote, After Effects',
+    tradeoffs: 'Cinematic motion was constrained to keynote-only moments to preserve clarity for breakout sessions, where speakers needed slides that worked even with weak rehearsal time.',
     bigNumbers: [
       { value: '4.9/5', label: 'Average session rating' },
       { value: '2K+', label: 'Attendees' },
