@@ -193,69 +193,103 @@ const CenterStageCarousel = ({ images }: { images: string[] }) => {
 
   if (total === 0) return null;
 
-  const left = (idx - 1 + total) % total;
-  const right = (idx + 1) % total;
+  // Layout config — fixed small gap regardless of viewport.
+  const CENTER_W = 64; // % of container width
+  const SIDE_W = 16;   // % of container width
+  const GAP = 1.2;     // % gap between center and adjacent
+
+  const slidePos = (i: number) => {
+    let offset = i - idx;
+    if (offset > total / 2) offset -= total;
+    if (offset < -total / 2) offset += total;
+    if (offset === 0) {
+      return { left: '50%', width: `${CENTER_W}%`, x: '-50%', opacity: 1, scale: 1, z: 10 };
+    }
+    if (offset === -1) {
+      return {
+        left: `${50 - CENTER_W / 2 - GAP - SIDE_W / 2}%`,
+        width: `${SIDE_W}%`,
+        x: '-50%',
+        opacity: 0.45,
+        scale: 0.92,
+        z: 1,
+      };
+    }
+    if (offset === 1) {
+      return {
+        left: `${50 + CENTER_W / 2 + GAP + SIDE_W / 2}%`,
+        width: `${SIDE_W}%`,
+        x: '-50%',
+        opacity: 0.45,
+        scale: 0.92,
+        z: 1,
+      };
+    }
+    return {
+      left: offset < 0 ? '-30%' : '130%',
+      width: `${SIDE_W}%`,
+      x: '-50%',
+      opacity: 0,
+      scale: 0.85,
+      z: 0,
+    };
+  };
 
   return (
     <div className="relative w-full">
-      <div className="relative h-[55vh] md:h-[68vh] flex items-center justify-center overflow-hidden">
-        {/* Left peek */}
-        {total > 1 && (
-          <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-[18vw] h-[55%] overflow-hidden rounded-r-xl opacity-50">
-            <img src={images[left]} alt="" className="h-full w-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/30 to-transparent" />
-          </div>
-        )}
-
-        {/* Center */}
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={idx}
-            src={images[idx]}
-            alt=""
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.45 }}
-            className="relative z-10 h-full max-w-[64%] object-cover rounded-2xl shadow-xl"
-          />
-        </AnimatePresence>
-
-        {/* Right peek */}
-        {total > 1 && (
-          <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-[18vw] h-[55%] overflow-hidden rounded-l-xl opacity-50">
-            <img src={images[right]} alt="" className="h-full w-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-l from-background/80 via-background/30 to-transparent" />
-          </div>
-        )}
+      <div className="relative h-[55vh] md:h-[68vh] overflow-hidden">
+        {images.map((src, i) => {
+          const p = slidePos(i);
+          return (
+            <motion.div
+              key={i}
+              className="absolute top-1/2 overflow-hidden rounded-md bg-muted"
+              style={{ zIndex: p.z, height: '100%' }}
+              initial={false}
+              animate={{
+                left: p.left,
+                width: p.width,
+                x: p.x,
+                y: '-50%',
+                opacity: p.opacity,
+                scale: p.scale,
+              }}
+              transition={{ type: 'spring', stiffness: 220, damping: 32, mass: 0.9 }}
+            >
+              <img src={src} alt="" className="h-full w-full object-cover" draggable={false} />
+            </motion.div>
+          );
+        })}
 
         {total > 1 && (
           <>
             <button
               onClick={prev}
-              className="absolute left-4 md:left-8 z-20 w-11 h-11 rounded-full bg-background/80 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
+              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full border border-foreground/20 bg-background/70 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
               aria-label="Previous"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-4 h-4" strokeWidth={1.5} />
             </button>
             <button
               onClick={next}
-              className="absolute right-4 md:right-8 z-20 w-11 h-11 rounded-full bg-background/80 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
+              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full border border-foreground/20 bg-background/70 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
               aria-label="Next"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
             </button>
           </>
         )}
       </div>
 
       {total > 1 && (
-        <div className="flex justify-center gap-1.5 mt-6">
+        <div className="flex justify-center gap-2 mt-6">
           {images.map((_, i) => (
-            <span
+            <button
               key={i}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === idx ? 'bg-foreground w-6' : 'bg-foreground/25 w-1.5'
+              onClick={() => setIdx(i)}
+              aria-label={`Go to ${i + 1}`}
+              className={`h-[2px] rounded-full transition-all duration-300 ${
+                i === idx ? 'bg-foreground w-8' : 'bg-foreground/25 w-4 hover:bg-foreground/50'
               }`}
             />
           ))}
