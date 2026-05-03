@@ -5,6 +5,17 @@ export interface BigNumber {
   label: string;
 }
 
+export interface ProcessImage {
+  src: string;
+  caption?: string;
+}
+
+export interface Quote {
+  text: string;
+  author?: string;
+  role?: string;
+}
+
 export interface ProjectData {
   id: string;
   title: string;
@@ -23,6 +34,19 @@ export interface ProjectData {
   challenge?: string;
   solution?: string;
   results?: string[];
+  /** Optional richer fields used by the project detail page */
+  headerImage?: string;
+  tldr?: string;
+  meaningfulTitle?: string;
+  context?: string;
+  strategy?: string;
+  processImages?: ProcessImage[];
+  tradeoffs?: string;
+  liveImages?: string[];
+  quote?: Quote;
+  closingParagraph?: string;
+  role?: string;
+  skills?: string[];
 }
 
 export const projects: ProjectData[] = [
