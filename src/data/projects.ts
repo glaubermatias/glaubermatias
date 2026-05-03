@@ -99,6 +99,9 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Various Startups',
     featured: true,
+    stakeholders: 'Founders, CFOs, Investor relations',
+    tools: 'Figma, Keynote, PowerPoint',
+    tradeoffs: 'Each deck was tailored from scratch rather than templated, since investor narratives demanded uniqueness. This raised production time, but raised average investor response quality significantly.',
     bigNumbers: [
       { value: '$20M+', label: 'Combined funding secured' },
       { value: '90%', label: 'Positive investor feedback' },
