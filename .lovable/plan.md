@@ -1,154 +1,42 @@
+## Por que isso acontece
 
+Em `src/pages/ProjectDetailPage.tsx`:
+- A lista de metadados usa `.filter((m) => m.value)` — qualquer campo vazio é descartado.
+- O bloco "Trade-offs & Constraints" só renderiza com `{derived.tradeoffs && (...)}`.
 
-# Plano: Criar Página /work e Páginas de Detalhes para Cada Projeto
+Em `src/data/projects.ts`, **nenhum** dos 16 projetos tem `stakeholders`, `tools` ou `tradeoffs` preenchidos. Só `duration` está em todos e `role` cai num fallback genérico ("Lead Designer"). Resultado: só Role e Duration aparecem, e Trade-offs nunca renderiza.
 
-## Resumo
+## Plano de correção
 
-Este plano implementará uma nova página `/work` para listar todos os projetos e criará páginas individuais de detalhes para cada um dos 15 projetos, organizados nas 5 categorias fornecidas.
+Garantir que **todos** os projetos sempre exibam os 4 metadados e o bloco Trade-offs, com conteúdo de qualidade — sem precisar reescrever 16 case studies à mão.
 
----
+### 1. Fallbacks inteligentes em `ProjectDetailPage.tsx` (`derived`)
 
-## Estrutura de Projetos a Criar
+Para cada campo faltante, derivar um valor sensato a partir do que já existe no projeto, garantindo que nunca fiquem em branco:
 
-| Categoria | Projeto | Rota |
-|-----------|---------|------|
-| Executive decks | Leadership Academy | `/leadership-academy` |
-| Executive decks | Pitch decks | `/pitch-decks` |
-| Executive decks | All Hands & Leadership Meetings | `/all-hands-and-leadership-meetings` |
-| Executive decks | Summit | `/summit` |
-| Templates | Templates library | `/templates-library` |
-| Templates | Presentation templates | `/presentation-templates` |
-| Templates | Presentation masterclasses | `/presentation-masterclasses` |
-| Tech events | Tech meetups | `/tech-meetups` |
-| Tech events | Tech conference | `/tech-conference` |
-| HR initiatives | Brilliant Youth | `/tech-interns-onboarding` |
-| HR initiatives | P&T external newsletter | `/tech-newsletter` |
-| Side projects | ALDI case study | `/ALDI-case-study` |
-| Side projects | Uberall dashboard | `/Uberall-dashboard` |
-| Side projects | Graphic design project | `/booklet` |
-| Side projects | NY trip itinerary | `/ny-trip-itinerary` |
+- `role` — manter fallback atual ("Lead Designer").
+- `stakeholders` — fallback derivado por `category`:
+  - executive-decks → "Executive leadership, C-suite"
+  - tech-events → "Engineering leadership, Event ops"
+  - hr-initiatives → "People team, Program leads"
+  - templates → "Design ops, Internal teams"
+  - side-projects → "Self-initiated"
+- `tools` — fallback "Figma, Keynote, PowerPoint" (ajustável por categoria de tech-events para incluir "Notion").
+- `duration` — já está em todos; manter.
+- `tradeoffs` — fallback genérico curto e honesto:
+  > "Tight delivery windows meant prioritizing clarity over visual experimentation in some areas; reusable systems were favored over bespoke one-offs to keep the work scalable."
 
----
+### 2. Sobrescritas reais em projetos-chave (qualidade editorial)
 
-## Etapas de Implementação
+Preencher manualmente `stakeholders`, `tools` e `tradeoffs` nos projetos em destaque (`featured: true` + os mais visitados — Leadership Academy, Pitch Decks, Summit, Templates Library, ALDI, Uberall) com texto específico ao caso, para que esses não usem o fallback.
 
-### Etapa 1: Criar Arquivo de Dados Centralizado
+### 3. Garantia de renderização
 
-Criar um novo arquivo `src/data/projects.ts` com todos os projetos e seus detalhes:
+Remover o `.filter((m) => m.value)` (não mais necessário, pois fallback garante valor) e remover o gating `{derived.tradeoffs && ...}` para sempre renderizar o bloco. Fontes/layout/grid 30/70 permanecem intactos.
 
-- Definir interface `ProjectData` com campos para:
-  - `id` (slug da URL)
-  - `title` (nome do projeto)
-  - `category` (categoria)
-  - `description` (descrição curta)
-  - `images` (array de imagens do carrossel)
-  - `year`, `client`
-  - Detalhes expandidos: `overview`, `challenge`, `solution`, `results`
-  
-- Exportar array com os 15 projetos com dados placeholder (imagens do Unsplash)
+## Arquivos afetados
 
-### Etapa 2: Renomear Rota /projects para /work
+- `src/data/projects.ts` — adicionar `stakeholders`, `tools`, `tradeoffs` em ~6 projetos featured.
+- `src/pages/ProjectDetailPage.tsx` — fallbacks no `derived`, remover filtros condicionais.
 
-Atualizar o arquivo `src/App.tsx`:
-
-```text
-Mudanças:
-- Adicionar import do novo componente WorkPage
-- Mudar rota "/projects" para "/work"
-- Adicionar rota dinâmica "/:projectId" para páginas de detalhes
-```
-
-### Etapa 3: Criar Página /work (WorkPage.tsx)
-
-Criar `src/pages/WorkPage.tsx`:
-
-- Seguir o layout existente de `ProjectsPage.tsx`
-- Usar os dados do arquivo centralizado
-- Manter os filtros por categoria
-- Atualizar os links dos cards para usar as novas rotas (ex: `/leadership-academy`)
-
-### Etapa 4: Criar Componente de Página de Detalhes (ProjectDetailPage.tsx)
-
-Criar `src/pages/ProjectDetailPage.tsx`:
-
-- Usar `useParams()` para capturar o ID do projeto da URL
-- Buscar dados do projeto no arquivo centralizado
-- Layout seguindo o padrão de `CaseStudyDetail.tsx`:
-  - Imagem hero
-  - Seção "Overview"
-  - Seção "Challenge"
-  - Seção "Solution"
-  - Galeria de imagens
-  - Seção "Other projects" (projetos relacionados da mesma categoria)
-- Botão de voltar para `/work`
-
-### Etapa 5: Atualizar Links nos Componentes Existentes
-
-**Arquivo `src/components/WorkSection.tsx`:**
-- Mudar link "View all my projects" de `/projects` para `/work`
-
-**Arquivo `src/components/ProjectCard.tsx`:**
-- Atualizar href de `/project/${project.id}` para `/${project.id}` (slug direto)
-
-### Etapa 6: Atualizar Rotas no App.tsx
-
-Adicionar as novas rotas:
-
-```text
-<Route path="/work" element={<WorkPage />} />
-<Route path="/:projectId" element={<ProjectDetailPage />} />
-```
-
----
-
-## Estrutura de Arquivos
-
-```text
-src/
-├── data/
-│   └── projects.ts          # Novo: dados centralizados
-├── pages/
-│   ├── WorkPage.tsx          # Novo: página /work
-│   └── ProjectDetailPage.tsx # Novo: página de detalhes
-├── components/
-│   ├── WorkSection.tsx       # Atualizar link
-│   └── ProjectCard.tsx       # Atualizar href
-└── App.tsx                   # Adicionar novas rotas
-```
-
----
-
-## Detalhes Técnicos
-
-### Roteamento Dinâmico
-
-As rotas serão configuradas para que URLs como `/leadership-academy` correspondam diretamente ao `id` do projeto no array de dados.
-
-### Validação de Projeto
-
-Se um usuário acessar uma URL inválida (ex: `/projeto-inexistente`), a página mostrará uma mensagem de "Projeto não encontrado" com link para voltar à página `/work`.
-
-### Responsividade
-
-Todas as páginas seguirão o padrão responsivo existente no site, usando:
-- Grid de 1 coluna em mobile
-- Grid de 2 colunas em tablet
-- Grid de 3 colunas em desktop
-
----
-
-## Próximos Passos Após Aprovação
-
-1. Criar o arquivo de dados centralizado com os 15 projetos
-2. Criar a página WorkPage
-3. Criar a página ProjectDetailPage
-4. Atualizar rotas no App.tsx
-5. Atualizar links nos componentes existentes
-6. Testar navegação completa
-
----
-
-## Nota
-
-Os conteúdos das páginas de detalhes (overview, challenge, solution, results) serão preenchidos com textos placeholder inicialmente. Você poderá me fornecer os textos reais de cada projeto posteriormente para eu atualizar.
-
+Nada de animação, nem layout do header/carrossel/bento muda.
