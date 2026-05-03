@@ -631,18 +631,16 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 6. TRADE-OFFS & CONSTRAINTS - same layout as narrative         */}
         {/* ============================================================= */}
-        {derived.tradeoffs && (
-          <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
-            <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10">
-              <h3 className="md:col-span-3 font-display text-xl md:text-2xl font-semibold text-foreground">
-                Trade-offs &amp; Constraints
-              </h3>
-              <p className="md:col-span-7 text-base md:text-lg text-muted-foreground leading-relaxed">
-                {derived.tradeoffs}
-              </p>
-            </div>
-          </section>
-        )}
+        <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
+          <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10">
+            <h3 className="md:col-span-3 font-display text-xl md:text-2xl font-semibold text-foreground">
+              Trade-offs &amp; Constraints
+            </h3>
+            <p className="md:col-span-7 text-base md:text-lg text-muted-foreground leading-relaxed">
+              {derived.tradeoffs}
+            </p>
+          </div>
+        </section>
 
         {/* ============================================================= */}
         {/* 7. SECOND CAROUSEL (same layout as the first)                  */}
