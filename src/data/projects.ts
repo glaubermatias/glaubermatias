@@ -258,6 +258,9 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Tech Community',
     featured: true,
+    stakeholders: 'Engineering leads, DevRel, Community organizers',
+    tools: 'Figma, Keynote, Notion',
+    tradeoffs: 'Speakers received a tight visual system instead of full creative freedom, ensuring brand consistency across talks at the cost of individual stylistic flourishes.',
     bigNumbers: [
       { value: '+50%', label: 'Attendance increase' },
       { value: '24', label: 'Events designed' },
