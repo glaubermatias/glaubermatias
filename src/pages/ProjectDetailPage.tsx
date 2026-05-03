@@ -545,21 +545,19 @@ const ProjectDetailPage = () => {
             <dl className="md:col-span-5 flex flex-col gap-7">
               {[
                 { label: 'Role', value: derived.role },
-                { label: 'Stakeholders', value: project.stakeholders },
-                { label: 'Tools', value: project.tools },
-                { label: 'Duration', value: project.duration },
-              ]
-                .filter((m) => m.value)
-                .map((m) => (
-                  <div key={m.label}>
-                    <dt className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground mb-1.5">
-                      {m.label}
-                    </dt>
-                    <dd className="text-sm md:text-[15px] text-foreground leading-snug">
-                      {m.value}
-                    </dd>
-                  </div>
-                ))}
+                { label: 'Stakeholders', value: derived.stakeholders },
+                { label: 'Tools', value: derived.tools },
+                { label: 'Duration', value: derived.duration },
+              ].map((m) => (
+                <div key={m.label}>
+                  <dt className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground mb-1.5">
+                    {m.label}
+                  </dt>
+                  <dd className="text-sm md:text-[15px] text-foreground leading-snug">
+                    {m.value}
+                  </dd>
+                </div>
+              ))}
             </dl>
 
             {/* Big numbers - right, all same size, harmonious grid */}
