@@ -311,6 +311,9 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Tech Company HR',
     featured: true,
+    stakeholders: 'HR, Tech hiring managers, Intern program leads',
+    tools: 'Figma, Keynote, Notion',
+    tradeoffs: 'Gamified elements were kept lightweight to avoid overshadowing the technical content, balancing playful tone with the seriousness of a real engineering onboarding.',
     bigNumbers: [
       { value: '-40%', label: 'Time-to-productivity' },
       { value: '98%', label: 'Intern satisfaction' },
