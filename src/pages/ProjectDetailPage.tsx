@@ -11,8 +11,11 @@ import { getProjectById, getRelatedProjects, ProjectData, ProcessImage } from '@
 /* ------------------------------------------------------------------ */
 const RelatedProjectCard = ({ project }: { project: ProjectData }) => {
   return (
-    <Link to={`/${project.id}`} className="group block">
-      <div className="overflow-hidden rounded-xl bg-muted aspect-[16/9]">
+    <Link
+      to={`/${project.id}`}
+      className="group block overflow-hidden rounded-lg border border-foreground/10 bg-background"
+    >
+      <div className="overflow-hidden bg-muted aspect-[16/9]">
         <img
           src={project.images[0]}
           alt={project.title}
@@ -21,18 +24,18 @@ const RelatedProjectCard = ({ project }: { project: ProjectData }) => {
           className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
         />
       </div>
-      <div className="mt-4 space-y-1">
+      <div className="p-5 space-y-1.5">
+        {project.cardCategory && (
+          <p className="text-[11px] tracking-[0.22em] uppercase text-muted-foreground/80 font-sans">
+            {project.cardCategory}
+          </p>
+        )}
         <h4 className="font-display text-xl font-semibold text-foreground">
           {project.title}
         </h4>
         {(project.cardDescription || project.description) && (
-          <p className="font-display text-base text-muted-foreground leading-snug line-clamp-2">
+          <p className="font-sans text-sm text-muted-foreground leading-snug line-clamp-2">
             {project.cardDescription || project.description}
-          </p>
-        )}
-        {project.cardCategory && (
-          <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground/80 pt-1 font-sans">
-            {project.cardCategory}
           </p>
         )}
       </div>
@@ -128,13 +131,18 @@ const Lightbox = ({
 /* ------------------------------------------------------------------ */
 /* Bento grid (process)                                                */
 /* ------------------------------------------------------------------ */
-const BENTO_SHAPES = [
-  'md:col-span-2 md:row-span-2 aspect-square',
-  'md:col-span-2 aspect-[16/9]',
-  'aspect-square',
-  'aspect-square',
-  'md:col-span-2 aspect-[16/9]',
-  'md:col-span-2 md:row-span-2 aspect-square',
+/**
+ * Bento pattern of 6 tiles that always tile to a perfect rectangle
+ * (4 cols × 4 rows). When more images are passed in, the pattern repeats
+ * cleanly so the outer edges always remain a clean rectangle.
+ */
+const BENTO_PATTERN = [
+  'md:col-span-2 md:row-span-2',
+  'md:col-span-2 md:row-span-1',
+  'md:col-span-1 md:row-span-1',
+  'md:col-span-1 md:row-span-1',
+  'md:col-span-2 md:row-span-1',
+  'md:col-span-2 md:row-span-2',
 ];
 
 const BentoGrid = ({
@@ -144,13 +152,13 @@ const BentoGrid = ({
   images: ProcessImage[];
   onOpen: (i: number) => void;
 }) => (
-  <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-fr gap-4 md:gap-5">
+  <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[minmax(180px,1fr)] md:auto-rows-[minmax(200px,1fr)] gap-3 md:gap-4">
     {images.map((img, i) => (
       <button
         key={i}
         type="button"
         onClick={() => onOpen(i)}
-        className={`group relative overflow-hidden rounded-xl bg-muted ${BENTO_SHAPES[i % BENTO_SHAPES.length]}`}
+        className={`group relative overflow-hidden rounded-md bg-muted ${BENTO_PATTERN[i % BENTO_PATTERN.length]}`}
       >
         <img
           src={img.src}
@@ -160,11 +168,14 @@ const BentoGrid = ({
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
         {img.caption && (
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 p-4 md:p-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/85 via-black/40 to-transparent">
-            <p className="text-white text-sm md:text-[15px] leading-snug">
-              {img.caption}
-            </p>
-          </div>
+          <>
+            <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 p-4 md:p-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <p className="text-white text-sm md:text-[15px] leading-snug text-left">
+                {img.caption}
+              </p>
+            </div>
+          </>
         )}
       </button>
     ))}
@@ -182,69 +193,103 @@ const CenterStageCarousel = ({ images }: { images: string[] }) => {
 
   if (total === 0) return null;
 
-  const left = (idx - 1 + total) % total;
-  const right = (idx + 1) % total;
+  // Layout config — fixed small gap regardless of viewport.
+  const CENTER_W = 64; // % of container width
+  const SIDE_W = 16;   // % of container width
+  const GAP = 1.2;     // % gap between center and adjacent
+
+  const slidePos = (i: number) => {
+    let offset = i - idx;
+    if (offset > total / 2) offset -= total;
+    if (offset < -total / 2) offset += total;
+    if (offset === 0) {
+      return { left: '50%', width: `${CENTER_W}%`, x: '-50%', opacity: 1, scale: 1, z: 10 };
+    }
+    if (offset === -1) {
+      return {
+        left: `${50 - CENTER_W / 2 - GAP - SIDE_W / 2}%`,
+        width: `${SIDE_W}%`,
+        x: '-50%',
+        opacity: 0.45,
+        scale: 0.92,
+        z: 1,
+      };
+    }
+    if (offset === 1) {
+      return {
+        left: `${50 + CENTER_W / 2 + GAP + SIDE_W / 2}%`,
+        width: `${SIDE_W}%`,
+        x: '-50%',
+        opacity: 0.45,
+        scale: 0.92,
+        z: 1,
+      };
+    }
+    return {
+      left: offset < 0 ? '-30%' : '130%',
+      width: `${SIDE_W}%`,
+      x: '-50%',
+      opacity: 0,
+      scale: 0.85,
+      z: 0,
+    };
+  };
 
   return (
     <div className="relative w-full">
-      <div className="relative h-[55vh] md:h-[68vh] flex items-center justify-center overflow-hidden">
-        {/* Left peek */}
-        {total > 1 && (
-          <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-[18vw] h-[55%] overflow-hidden rounded-r-xl opacity-50">
-            <img src={images[left]} alt="" className="h-full w-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/30 to-transparent" />
-          </div>
-        )}
-
-        {/* Center */}
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={idx}
-            src={images[idx]}
-            alt=""
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.45 }}
-            className="relative z-10 h-full max-w-[64%] object-cover rounded-2xl shadow-xl"
-          />
-        </AnimatePresence>
-
-        {/* Right peek */}
-        {total > 1 && (
-          <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-[18vw] h-[55%] overflow-hidden rounded-l-xl opacity-50">
-            <img src={images[right]} alt="" className="h-full w-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-l from-background/80 via-background/30 to-transparent" />
-          </div>
-        )}
+      <div className="relative h-[55vh] md:h-[68vh] overflow-hidden">
+        {images.map((src, i) => {
+          const p = slidePos(i);
+          return (
+            <motion.div
+              key={i}
+              className="absolute top-1/2 overflow-hidden rounded-md bg-muted"
+              style={{ zIndex: p.z, height: '100%' }}
+              initial={false}
+              animate={{
+                left: p.left,
+                width: p.width,
+                x: p.x,
+                y: '-50%',
+                opacity: p.opacity,
+                scale: p.scale,
+              }}
+              transition={{ type: 'spring', stiffness: 220, damping: 32, mass: 0.9 }}
+            >
+              <img src={src} alt="" className="h-full w-full object-cover" draggable={false} />
+            </motion.div>
+          );
+        })}
 
         {total > 1 && (
           <>
             <button
               onClick={prev}
-              className="absolute left-4 md:left-8 z-20 w-11 h-11 rounded-full bg-background/80 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
+              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full border border-foreground/20 bg-background/70 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
               aria-label="Previous"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-4 h-4" strokeWidth={1.5} />
             </button>
             <button
               onClick={next}
-              className="absolute right-4 md:right-8 z-20 w-11 h-11 rounded-full bg-background/80 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
+              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full border border-foreground/20 bg-background/70 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
               aria-label="Next"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
             </button>
           </>
         )}
       </div>
 
       {total > 1 && (
-        <div className="flex justify-center gap-1.5 mt-6">
+        <div className="flex justify-center gap-2 mt-6">
           {images.map((_, i) => (
-            <span
+            <button
               key={i}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === idx ? 'bg-foreground w-6' : 'bg-foreground/25 w-1.5'
+              onClick={() => setIdx(i)}
+              aria-label={`Go to ${i + 1}`}
+              className={`h-[2px] rounded-full transition-all duration-300 ${
+                i === idx ? 'bg-foreground w-8' : 'bg-foreground/25 w-4 hover:bg-foreground/50'
               }`}
             />
           ))}
@@ -267,7 +312,7 @@ const HeroCarousel = ({ images, title }: { images: string[]; title: string }) =>
 
   return (
     <div className="relative w-full">
-      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-muted">
+      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-md bg-muted">
         <AnimatePresence mode="wait">
           <motion.img
             key={idx}
@@ -285,29 +330,31 @@ const HeroCarousel = ({ images, title }: { images: string[]; title: string }) =>
           <>
             <button
               onClick={prev}
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-background/80 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-foreground/15 bg-background/70 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
               aria-label="Previous"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-4 h-4" strokeWidth={1.5} />
             </button>
             <button
               onClick={next}
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-background/80 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-foreground/15 bg-background/70 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
               aria-label="Next"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
             </button>
           </>
         )}
       </div>
 
       {total > 1 && (
-        <div className="flex justify-center gap-1.5 mt-5">
+        <div className="flex justify-center gap-2 mt-5">
           {images.map((_, i) => (
-            <span
+            <button
               key={i}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === idx ? 'bg-foreground w-6' : 'bg-foreground/25 w-1.5'
+              onClick={() => setIdx(i)}
+              aria-label={`Go to ${i + 1}`}
+              className={`h-[2px] rounded-full transition-all duration-300 ${
+                i === idx ? 'bg-foreground w-8' : 'bg-foreground/25 w-4 hover:bg-foreground/50'
               }`}
             />
           ))}
@@ -452,14 +499,14 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 2. OVERVIEW                                                     */}
         {/* ============================================================= */}
-        <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-16 md:pt-24">
+        <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-8 md:pt-10">
           {/* Tagline */}
           <p className="text-xs tracking-[0.22em] uppercase text-muted-foreground font-sans">
             {(project.company || project.client)} <span className="mx-2">•</span> {project.year} <span className="mx-2">•</span> {getCategoryLabel(project.category)}
           </p>
 
-          {/* Meaningful title */}
-          <h2 className="font-display text-3xl md:text-5xl lg:text-6xl font-normal mt-6 leading-tight max-w-4xl text-black">
+          {/* Meaningful title - gray */}
+          <h2 className="font-display text-3xl md:text-5xl lg:text-6xl font-normal mt-6 leading-tight max-w-4xl text-[#b7b7b7]">
             {derived.meaningfulTitle}
           </h2>
 
@@ -471,41 +518,56 @@ const ProjectDetailPage = () => {
           )}
 
           {/* Metadata + Big Numbers */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 items-start">
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16 items-start">
             {/* Metadata - left */}
-            <div className="md:col-span-5 space-y-6">
-              <div>
-                <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-1">Role</p>
-                <p className="text-foreground">{derived.role}</p>
-              </div>
-              {project.duration && (
-                <div>
-                  <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-1">Duration</p>
-                  <p className="text-foreground">{project.duration}</p>
-                </div>
-              )}
-              <div>
-                <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-2">Skills</p>
-                <p className="text-foreground leading-relaxed">
-                  {derived.skills.join(' · ')}
-                </p>
-              </div>
-            </div>
+            <dl className="md:col-span-5 grid grid-cols-2 gap-x-6 gap-y-7">
+              {[
+                { label: 'Role', value: derived.role },
+                { label: 'Stakeholders', value: project.stakeholders },
+                { label: 'Tools', value: project.tools },
+                { label: 'Duration', value: project.duration },
+              ]
+                .filter((m) => m.value)
+                .map((m) => (
+                  <div key={m.label}>
+                    <dt className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground mb-1.5">
+                      {m.label}
+                    </dt>
+                    <dd className="text-sm md:text-[15px] text-foreground leading-snug">
+                      {m.value}
+                    </dd>
+                  </div>
+                ))}
+            </dl>
 
-            {/* Big numbers - right, floating */}
+            {/* Big numbers - right (no divider, harmonious layout) */}
             {bigNumbers.length > 0 && (
-              <div className="md:col-span-7 md:pl-12 md:border-l md:border-foreground/10">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10">
-                  {bigNumbers.map((n, i) => (
-                    <div key={i}>
-                      <p className="font-display text-5xl md:text-6xl font-semibold text-foreground leading-none tracking-tight">
-                        {n.value}
-                      </p>
-                      <p className="mt-3 text-xs tracking-[0.15em] uppercase text-muted-foreground">
-                        {n.label}
-                      </p>
+              <div className="md:col-span-7">
+                {/* Hero number + supporting */}
+                <div className="flex flex-col gap-10">
+                  <div>
+                    <p className="font-display text-7xl md:text-8xl font-semibold text-foreground leading-[0.9] tracking-tight">
+                      {bigNumbers[0].value}
+                    </p>
+                    <p className="mt-3 text-[11px] tracking-[0.2em] uppercase text-muted-foreground max-w-xs">
+                      {bigNumbers[0].label}
+                    </p>
+                  </div>
+
+                  {bigNumbers.length > 1 && (
+                    <div className="grid grid-cols-2 gap-8">
+                      {bigNumbers.slice(1).map((n, i) => (
+                        <div key={i}>
+                          <p className="font-display text-3xl md:text-4xl font-semibold text-foreground leading-none tracking-tight">
+                            {n.value}
+                          </p>
+                          <p className="mt-2 text-[11px] tracking-[0.2em] uppercase text-muted-foreground">
+                            {n.label}
+                          </p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
             )}
@@ -513,9 +575,9 @@ const ProjectDetailPage = () => {
         </section>
 
         {/* ============================================================= */}
-        {/* 3. INITIAL CAROUSEL (show, don't tell)                         */}
+        {/* 3. INITIAL CAROUSEL                                            */}
         {/* ============================================================= */}
-        <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-20 md:pt-28">
+        <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-12 md:pt-14">
           <HeroCarousel images={derived.heroCarousel} title={project.title} />
         </section>
 
@@ -523,7 +585,7 @@ const ProjectDetailPage = () => {
         {/* 4. NARRATIVE (Context, Problem, Strategy)                      */}
         {/* ============================================================= */}
         {(derived.context || derived.challenge || derived.strategy) && (
-          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-24 md:pt-32">
+          <section className="max-w-3xl mx-auto px-6 md:px-8 pt-14 md:pt-16">
             <div className="space-y-0">
               {[
                 { label: 'Context', body: derived.context },
@@ -534,20 +596,14 @@ const ProjectDetailPage = () => {
                 .map((block, i) => (
                   <div
                     key={block.label}
-                    className={`grid grid-cols-1 md:grid-cols-10 gap-8 md:gap-12 py-10 md:py-14 ${
-                      i > 0 ? 'border-t border-foreground/10' : ''
-                    }`}
+                    className={`py-8 md:py-10 ${i > 0 ? 'border-t border-foreground/10' : ''}`}
                   >
-                    <div className="md:col-span-3">
-                      <h3 className="font-display text-xl md:text-2xl font-semibold text-foreground">
-                        {block.label}
-                      </h3>
-                    </div>
-                    <div className="md:col-span-7">
-                      <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-                        {block.body}
-                      </p>
-                    </div>
+                    <h3 className="font-display text-xl md:text-2xl font-semibold text-foreground mb-4">
+                      {block.label}
+                    </h3>
+                    <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+                      {block.body}
+                    </p>
                   </div>
                 ))}
             </div>
@@ -558,19 +614,7 @@ const ProjectDetailPage = () => {
         {/* 5. PROCESS - BENTO                                              */}
         {/* ============================================================= */}
         {derived.processImages.length > 0 && (
-          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-24 md:pt-32">
-            <div className="grid grid-cols-1 md:grid-cols-10 gap-8 md:gap-12 mb-10">
-              <div className="md:col-span-3">
-                <h3 className="font-display text-xl md:text-2xl font-semibold text-foreground">
-                  Behind the scenes
-                </h3>
-              </div>
-              <div className="md:col-span-7">
-                <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-                  Visual evolution and process iterations — hover to see the intent behind each decision.
-                </p>
-              </div>
-            </div>
+          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-10 md:pt-12">
             <BentoGrid
               images={derived.processImages}
               onOpen={(i) => setLightboxIndex(i)}
@@ -579,15 +623,15 @@ const ProjectDetailPage = () => {
         )}
 
         {/* ============================================================= */}
-        {/* 6. TRADE-OFFS                                                  */}
+        {/* 6. TRADE-OFFS (same width as narrative)                        */}
         {/* ============================================================= */}
         {derived.tradeoffs && (
-          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-24 md:pt-32">
-            <div className="md:pl-[30%]">
+          <section className="max-w-3xl mx-auto px-6 md:px-8 pt-14 md:pt-16">
+            <div className="py-8 md:py-10 border-t border-foreground/10">
               <h3 className="font-display text-xl md:text-2xl font-semibold text-foreground mb-4">
                 Trade-offs & constraints
               </h3>
-              <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-3xl">
+              <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
                 {derived.tradeoffs}
               </p>
             </div>
@@ -598,21 +642,7 @@ const ProjectDetailPage = () => {
         {/* 7. LIVE EVENT CAROUSEL (center stage)                          */}
         {/* ============================================================= */}
         {derived.liveImages.length > 0 && (
-          <section className="pt-24 md:pt-32">
-            <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 mb-10">
-              <div className="grid grid-cols-1 md:grid-cols-10 gap-8 md:gap-12">
-                <div className="md:col-span-3">
-                  <h3 className="font-display text-xl md:text-2xl font-semibold text-foreground">
-                    In the wild
-                  </h3>
-                </div>
-                <div className="md:col-span-7">
-                  <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-                    Design running in the real world — stage, screen, and rooms.
-                  </p>
-                </div>
-              </div>
-            </div>
+          <section className="pt-20 md:pt-28">
             <CenterStageCarousel images={derived.liveImages} />
           </section>
         )}
@@ -659,17 +689,19 @@ const ProjectDetailPage = () => {
         </section>
 
         {/* ============================================================= */}
-        {/* 9. RELATED PROJECTS                                            */}
+        {/* 9. RELATED WORK                                                */}
         {/* ============================================================= */}
         {relatedProjects.length > 0 && (
-          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-28 md:pt-36">
-            <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground mb-10">
-              Related projects
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
-              {relatedProjects.slice(0, 3).map((p) => (
-                <RelatedProjectCard key={p.id} project={p} />
-              ))}
+          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-20 md:pt-24">
+            <div className="border-t border-foreground/10 pt-12 md:pt-14">
+              <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground mb-10">
+                Related work
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+                {relatedProjects.slice(0, 3).map((p) => (
+                  <RelatedProjectCard key={p.id} project={p} />
+                ))}
+              </div>
             </div>
           </section>
         )}
