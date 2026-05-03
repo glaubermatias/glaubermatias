@@ -11,8 +11,11 @@ import { getProjectById, getRelatedProjects, ProjectData, ProcessImage } from '@
 /* ------------------------------------------------------------------ */
 const RelatedProjectCard = ({ project }: { project: ProjectData }) => {
   return (
-    <Link to={`/${project.id}`} className="group block">
-      <div className="overflow-hidden rounded-xl bg-muted aspect-[16/9]">
+    <Link
+      to={`/${project.id}`}
+      className="group block overflow-hidden rounded-lg border border-foreground/10 bg-background"
+    >
+      <div className="overflow-hidden bg-muted aspect-[16/9]">
         <img
           src={project.images[0]}
           alt={project.title}
@@ -21,18 +24,18 @@ const RelatedProjectCard = ({ project }: { project: ProjectData }) => {
           className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
         />
       </div>
-      <div className="mt-4 space-y-1">
+      <div className="p-5 space-y-1.5">
+        {project.cardCategory && (
+          <p className="text-[11px] tracking-[0.22em] uppercase text-muted-foreground/80 font-sans">
+            {project.cardCategory}
+          </p>
+        )}
         <h4 className="font-display text-xl font-semibold text-foreground">
           {project.title}
         </h4>
         {(project.cardDescription || project.description) && (
-          <p className="font-display text-base text-muted-foreground leading-snug line-clamp-2">
+          <p className="font-sans text-sm text-muted-foreground leading-snug line-clamp-2">
             {project.cardDescription || project.description}
-          </p>
-        )}
-        {project.cardCategory && (
-          <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground/80 pt-1 font-sans">
-            {project.cardCategory}
           </p>
         )}
       </div>
