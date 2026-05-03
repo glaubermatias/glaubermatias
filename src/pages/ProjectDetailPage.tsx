@@ -406,7 +406,9 @@ const ProjectDetailPage = () => {
     const context = project.context || project.overview || '';
     const challenge = project.challenge || '';
     const strategy = project.strategy || project.solution || '';
-    const tradeoffs = project.tradeoffs || '';
+    const tradeoffs =
+      project.tradeoffs ||
+      'Tight delivery windows meant prioritizing clarity over visual experimentation in some areas. Reusable systems were favored over bespoke one-offs to keep the work scalable across future iterations.';
     const closingParagraph =
       project.closingParagraph ||
       (project.results && project.results.length > 0
@@ -416,6 +418,23 @@ const ProjectDetailPage = () => {
       ? project.skills
       : ['Visual Design', 'Storytelling', 'Information Architecture'];
     const role = project.role || 'Lead Designer';
+    const stakeholdersByCategory: Record<string, string> = {
+      'executive-decks': 'Executive leadership, C-suite',
+      'tech-events': 'Engineering leadership, Event ops',
+      'hr-initiatives': 'People team, Program leads',
+      'templates': 'Design ops, Internal teams',
+      'side-projects': 'Self-initiated',
+    };
+    const stakeholders =
+      project.stakeholders ||
+      stakeholdersByCategory[project.category] ||
+      'Cross-functional stakeholders';
+    const tools =
+      project.tools ||
+      (project.category === 'tech-events'
+        ? 'Figma, Keynote, Notion'
+        : 'Figma, Keynote, PowerPoint');
+    const duration = project.duration || '—';
     return {
       headerImage,
       heroCarousel,
@@ -430,6 +449,9 @@ const ProjectDetailPage = () => {
       closingParagraph,
       skills,
       role,
+      stakeholders,
+      tools,
+      duration,
     };
   }, [project]);
 
