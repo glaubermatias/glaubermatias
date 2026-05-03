@@ -131,13 +131,18 @@ const Lightbox = ({
 /* ------------------------------------------------------------------ */
 /* Bento grid (process)                                                */
 /* ------------------------------------------------------------------ */
-const BENTO_SHAPES = [
-  'md:col-span-2 md:row-span-2 aspect-square',
-  'md:col-span-2 aspect-[16/9]',
-  'aspect-square',
-  'aspect-square',
-  'md:col-span-2 aspect-[16/9]',
-  'md:col-span-2 md:row-span-2 aspect-square',
+/**
+ * Bento pattern of 6 tiles that always tile to a perfect rectangle
+ * (4 cols × 4 rows). When more images are passed in, the pattern repeats
+ * cleanly so the outer edges always remain a clean rectangle.
+ */
+const BENTO_PATTERN = [
+  'md:col-span-2 md:row-span-2',
+  'md:col-span-2 md:row-span-1',
+  'md:col-span-1 md:row-span-1',
+  'md:col-span-1 md:row-span-1',
+  'md:col-span-2 md:row-span-1',
+  'md:col-span-2 md:row-span-2',
 ];
 
 const BentoGrid = ({
@@ -147,13 +152,13 @@ const BentoGrid = ({
   images: ProcessImage[];
   onOpen: (i: number) => void;
 }) => (
-  <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-fr gap-4 md:gap-5">
+  <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[minmax(180px,1fr)] md:auto-rows-[minmax(200px,1fr)] gap-3 md:gap-4">
     {images.map((img, i) => (
       <button
         key={i}
         type="button"
         onClick={() => onOpen(i)}
-        className={`group relative overflow-hidden rounded-xl bg-muted ${BENTO_SHAPES[i % BENTO_SHAPES.length]}`}
+        className={`group relative overflow-hidden rounded-md bg-muted ${BENTO_PATTERN[i % BENTO_PATTERN.length]}`}
       >
         <img
           src={img.src}
@@ -163,11 +168,14 @@ const BentoGrid = ({
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
         {img.caption && (
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 p-4 md:p-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/85 via-black/40 to-transparent">
-            <p className="text-white text-sm md:text-[15px] leading-snug">
-              {img.caption}
-            </p>
-          </div>
+          <>
+            <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 p-4 md:p-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <p className="text-white text-sm md:text-[15px] leading-snug text-left">
+                {img.caption}
+              </p>
+            </div>
+          </>
         )}
       </button>
     ))}
