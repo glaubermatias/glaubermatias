@@ -459,7 +459,7 @@ const ProjectDetailPage = () => {
           </p>
 
           {/* Meaningful title */}
-          <h2 className="font-display text-3xl md:text-5xl lg:text-6xl font-normal mt-6 leading-tight max-w-4xl text-[#b7b7b7]">
+          <h2 className="font-display text-3xl md:text-5xl lg:text-6xl font-normal mt-6 leading-tight max-w-4xl text-black">
             {derived.meaningfulTitle}
           </h2>
 
