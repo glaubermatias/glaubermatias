@@ -69,6 +69,9 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Corporate Client',
     featured: true,
+    stakeholders: 'CHRO, Learning & Development, Executive sponsors',
+    tools: 'Figma, Keynote, PowerPoint',
+    tradeoffs: 'Modular reuse was prioritized over fully bespoke layouts per cohort, so each module could be updated by L&D without design support. Some advanced animations were dropped to keep slides editable in PowerPoint by non-designers.',
     bigNumbers: [
       { value: '5', label: 'Leadership cohorts' },
       { value: '+40%', label: 'Engagement increase' },
