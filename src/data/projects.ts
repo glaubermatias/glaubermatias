@@ -182,6 +182,9 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Enterprise Client',
     featured: true,
+    stakeholders: 'Brand team, Marketing, Sales enablement',
+    tools: 'Figma, PowerPoint, Keynote',
+    tradeoffs: 'PowerPoint was chosen as the master format over Figma to maximize adoption, even though it constrained typographic and motion options. Governance won over creative ceiling.',
     bigNumbers: [
       { value: '95%', label: 'Adoption rate' },
       { value: '-60%', label: 'Creation time' },
