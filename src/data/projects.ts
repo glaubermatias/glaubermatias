@@ -364,6 +364,9 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Personal Project',
     featured: true,
+    stakeholders: 'Self-initiated, mentor reviewers',
+    tools: 'Figma, Keynote, Excel',
+    tradeoffs: 'Scope was narrowed to three core markets to keep the analysis honest within the available data, rather than diluting the case with surface-level global claims.',
     bigNumbers: [
       { value: '3', label: 'Markets analyzed' },
       { value: '40+', label: 'Data points' },
