@@ -47,6 +47,8 @@ export interface ProjectData {
   closingParagraph?: string;
   role?: string;
   skills?: string[];
+  stakeholders?: string;
+  tools?: string;
 }
 
 export const projects: ProjectData[] = [
