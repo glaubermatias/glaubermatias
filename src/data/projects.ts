@@ -69,6 +69,9 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Corporate Client',
     featured: true,
+    stakeholders: 'CHRO, Learning & Development, Executive sponsors',
+    tools: 'Figma, Keynote, PowerPoint',
+    tradeoffs: 'Modular reuse was prioritized over fully bespoke layouts per cohort, so each module could be updated by L&D without design support. Some advanced animations were dropped to keep slides editable in PowerPoint by non-designers.',
     bigNumbers: [
       { value: '5', label: 'Leadership cohorts' },
       { value: '+40%', label: 'Engagement increase' },
@@ -96,6 +99,9 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Various Startups',
     featured: true,
+    stakeholders: 'Founders, CFOs, Investor relations',
+    tools: 'Figma, Keynote, PowerPoint',
+    tradeoffs: 'Each deck was tailored from scratch rather than templated, since investor narratives demanded uniqueness. This raised production time, but raised average investor response quality significantly.',
     bigNumbers: [
       { value: '$20M+', label: 'Combined funding secured' },
       { value: '90%', label: 'Positive investor feedback' },
@@ -146,6 +152,9 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Global Corporation',
     featured: true,
+    stakeholders: 'CEO, Comms team, Event production',
+    tools: 'Figma, Keynote, After Effects',
+    tradeoffs: 'Cinematic motion was constrained to keynote-only moments to preserve clarity for breakout sessions, where speakers needed slides that worked even with weak rehearsal time.',
     bigNumbers: [
       { value: '4.9/5', label: 'Average session rating' },
       { value: '2K+', label: 'Attendees' },
@@ -173,6 +182,9 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Enterprise Client',
     featured: true,
+    stakeholders: 'Brand team, Marketing, Sales enablement',
+    tools: 'Figma, PowerPoint, Keynote',
+    tradeoffs: 'PowerPoint was chosen as the master format over Figma to maximize adoption, even though it constrained typographic and motion options. Governance won over creative ceiling.',
     bigNumbers: [
       { value: '95%', label: 'Adoption rate' },
       { value: '-60%', label: 'Creation time' },
@@ -246,6 +258,9 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Tech Community',
     featured: true,
+    stakeholders: 'Engineering leads, DevRel, Community organizers',
+    tools: 'Figma, Keynote, Notion',
+    tradeoffs: 'Speakers received a tight visual system instead of full creative freedom, ensuring brand consistency across talks at the cost of individual stylistic flourishes.',
     bigNumbers: [
       { value: '+50%', label: 'Attendance increase' },
       { value: '24', label: 'Events designed' },
@@ -296,6 +311,9 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Tech Company HR',
     featured: true,
+    stakeholders: 'HR, Tech hiring managers, Intern program leads',
+    tools: 'Figma, Keynote, Notion',
+    tradeoffs: 'Gamified elements were kept lightweight to avoid overshadowing the technical content, balancing playful tone with the seriousness of a real engineering onboarding.',
     bigNumbers: [
       { value: '-40%', label: 'Time-to-productivity' },
       { value: '98%', label: 'Intern satisfaction' },
@@ -346,6 +364,9 @@ export const projects: ProjectData[] = [
     year: '2024',
     client: 'Personal Project',
     featured: true,
+    stakeholders: 'Self-initiated, mentor reviewers',
+    tools: 'Figma, Keynote, Excel',
+    tradeoffs: 'Scope was narrowed to three core markets to keep the analysis honest within the available data, rather than diluting the case with surface-level global claims.',
     bigNumbers: [
       { value: '3', label: 'Markets analyzed' },
       { value: '40+', label: 'Data points' },

@@ -406,7 +406,9 @@ const ProjectDetailPage = () => {
     const context = project.context || project.overview || '';
     const challenge = project.challenge || '';
     const strategy = project.strategy || project.solution || '';
-    const tradeoffs = project.tradeoffs || '';
+    const tradeoffs =
+      project.tradeoffs ||
+      'Tight delivery windows meant prioritizing clarity over visual experimentation in some areas. Reusable systems were favored over bespoke one-offs to keep the work scalable across future iterations.';
     const closingParagraph =
       project.closingParagraph ||
       (project.results && project.results.length > 0
@@ -416,6 +418,23 @@ const ProjectDetailPage = () => {
       ? project.skills
       : ['Visual Design', 'Storytelling', 'Information Architecture'];
     const role = project.role || 'Lead Designer';
+    const stakeholdersByCategory: Record<string, string> = {
+      'executive-decks': 'Executive leadership, C-suite',
+      'tech-events': 'Engineering leadership, Event ops',
+      'hr-initiatives': 'People team, Program leads',
+      'templates': 'Design ops, Internal teams',
+      'side-projects': 'Self-initiated',
+    };
+    const stakeholders =
+      project.stakeholders ||
+      stakeholdersByCategory[project.category] ||
+      'Cross-functional stakeholders';
+    const tools =
+      project.tools ||
+      (project.category === 'tech-events'
+        ? 'Figma, Keynote, Notion'
+        : 'Figma, Keynote, PowerPoint');
+    const duration = project.duration || '—';
     return {
       headerImage,
       heroCarousel,
@@ -430,6 +449,9 @@ const ProjectDetailPage = () => {
       closingParagraph,
       skills,
       role,
+      stakeholders,
+      tools,
+      duration,
     };
   }, [project]);
 
@@ -523,21 +545,19 @@ const ProjectDetailPage = () => {
             <dl className="md:col-span-5 flex flex-col gap-7">
               {[
                 { label: 'Role', value: derived.role },
-                { label: 'Stakeholders', value: project.stakeholders },
-                { label: 'Tools', value: project.tools },
-                { label: 'Duration', value: project.duration },
-              ]
-                .filter((m) => m.value)
-                .map((m) => (
-                  <div key={m.label}>
-                    <dt className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground mb-1.5">
-                      {m.label}
-                    </dt>
-                    <dd className="text-sm md:text-[15px] text-foreground leading-snug">
-                      {m.value}
-                    </dd>
-                  </div>
-                ))}
+                { label: 'Stakeholders', value: derived.stakeholders },
+                { label: 'Tools', value: derived.tools },
+                { label: 'Duration', value: derived.duration },
+              ].map((m) => (
+                <div key={m.label}>
+                  <dt className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground mb-1.5">
+                    {m.label}
+                  </dt>
+                  <dd className="text-sm md:text-[15px] text-foreground leading-snug">
+                    {m.value}
+                  </dd>
+                </div>
+              ))}
             </dl>
 
             {/* Big numbers - right, all same size, harmonious grid */}
@@ -611,18 +631,16 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 6. TRADE-OFFS & CONSTRAINTS - same layout as narrative         */}
         {/* ============================================================= */}
-        {derived.tradeoffs && (
-          <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
-            <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10">
-              <h3 className="md:col-span-3 font-display text-xl md:text-2xl font-semibold text-foreground">
-                Trade-offs &amp; Constraints
-              </h3>
-              <p className="md:col-span-7 text-base md:text-lg text-muted-foreground leading-relaxed">
-                {derived.tradeoffs}
-              </p>
-            </div>
-          </section>
-        )}
+        <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
+          <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10">
+            <h3 className="md:col-span-3 font-display text-xl md:text-2xl font-semibold text-foreground">
+              Trade-offs &amp; Constraints
+            </h3>
+            <p className="md:col-span-7 text-base md:text-lg text-muted-foreground leading-relaxed">
+              {derived.tradeoffs}
+            </p>
+          </div>
+        </section>
 
         {/* ============================================================= */}
         {/* 7. SECOND CAROUSEL (same layout as the first)                  */}
