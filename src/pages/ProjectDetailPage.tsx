@@ -330,17 +330,17 @@ const HeroCarousel = ({ images, title }: { images: string[]; title: string }) =>
           <>
             <button
               onClick={prev}
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-foreground/15 bg-background/70 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
+              className="absolute left-3 md:left-5 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center text-white/90 hover:text-white transition-colors"
               aria-label="Previous"
             >
-              <ChevronLeft className="w-4 h-4" strokeWidth={1.5} />
+              <ChevronLeft className="w-5 h-5" strokeWidth={1.25} />
             </button>
             <button
               onClick={next}
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-foreground/15 bg-background/70 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
+              className="absolute right-3 md:right-5 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center text-white/90 hover:text-white transition-colors"
               aria-label="Next"
             >
-              <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
+              <ChevronRight className="w-5 h-5" strokeWidth={1.25} />
             </button>
           </>
         )}
@@ -505,22 +505,22 @@ const ProjectDetailPage = () => {
             {(project.company || project.client)} <span className="mx-2">•</span> {project.year} <span className="mx-2">•</span> {getCategoryLabel(project.category)}
           </p>
 
-          {/* Meaningful title - gray */}
-          <h2 className="font-display text-3xl md:text-5xl lg:text-6xl font-normal mt-6 leading-tight max-w-4xl text-[#b7b7b7]">
+          {/* Meaningful title - gray, full content width */}
+          <h2 className="font-display text-3xl md:text-5xl lg:text-6xl font-normal mt-6 leading-tight text-[#b7b7b7]">
             {derived.meaningfulTitle}
           </h2>
 
-          {/* TL;DR */}
+          {/* TL;DR - full content width */}
           {derived.tldr && (
-            <p className="mt-10 text-lg md:text-xl leading-relaxed text-foreground max-w-3xl">
+            <p className="mt-10 text-lg md:text-xl leading-relaxed text-foreground">
               {derived.tldr}
             </p>
           )}
 
           {/* Metadata + Big Numbers */}
           <div className="mt-16 grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16 items-start">
-            {/* Metadata - left */}
-            <dl className="md:col-span-5 grid grid-cols-2 gap-x-6 gap-y-7">
+            {/* Metadata - left, stacked vertically */}
+            <dl className="md:col-span-5 flex flex-col gap-7">
               {[
                 { label: 'Role', value: derived.role },
                 { label: 'Stakeholders', value: project.stakeholders },
@@ -540,34 +540,20 @@ const ProjectDetailPage = () => {
                 ))}
             </dl>
 
-            {/* Big numbers - right (no divider, harmonious layout) */}
+            {/* Big numbers - right, all same size, harmonious grid */}
             {bigNumbers.length > 0 && (
               <div className="md:col-span-7">
-                {/* Hero number + supporting */}
-                <div className="flex flex-col gap-10">
-                  <div>
-                    <p className="font-display text-7xl md:text-8xl font-semibold text-foreground leading-[0.9] tracking-tight">
-                      {bigNumbers[0].value}
-                    </p>
-                    <p className="mt-3 text-[11px] tracking-[0.2em] uppercase text-muted-foreground max-w-xs">
-                      {bigNumbers[0].label}
-                    </p>
-                  </div>
-
-                  {bigNumbers.length > 1 && (
-                    <div className="grid grid-cols-2 gap-8">
-                      {bigNumbers.slice(1).map((n, i) => (
-                        <div key={i}>
-                          <p className="font-display text-3xl md:text-4xl font-semibold text-foreground leading-none tracking-tight">
-                            {n.value}
-                          </p>
-                          <p className="mt-2 text-[11px] tracking-[0.2em] uppercase text-muted-foreground">
-                            {n.label}
-                          </p>
-                        </div>
-                      ))}
+                <div className="grid grid-cols-2 gap-x-10 gap-y-12">
+                  {bigNumbers.map((n, i) => (
+                    <div key={i}>
+                      <p className="font-display text-5xl md:text-6xl font-semibold text-foreground leading-[0.95] tracking-tight">
+                        {n.value}
+                      </p>
+                      <p className="mt-3 text-[11px] tracking-[0.2em] uppercase text-muted-foreground">
+                        {n.label}
+                      </p>
                     </div>
-                  )}
+                  ))}
                 </div>
               </div>
             )}
@@ -582,26 +568,26 @@ const ProjectDetailPage = () => {
         </section>
 
         {/* ============================================================= */}
-        {/* 4. NARRATIVE (Context, Problem, Strategy)                      */}
+        {/* 4. NARRATIVE (Context, Problem, Strategy) - 30/70 asymmetric  */}
         {/* ============================================================= */}
         {(derived.context || derived.challenge || derived.strategy) && (
-          <section className="max-w-3xl mx-auto px-6 md:px-8 pt-14 md:pt-16">
+          <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
             <div className="space-y-0">
               {[
                 { label: 'Context', body: derived.context },
-                { label: 'The Problem', body: derived.challenge },
-                { label: 'The Strategy', body: derived.strategy },
+                { label: 'Problem', body: derived.challenge },
+                { label: 'Strategy', body: derived.strategy },
               ]
                 .filter((b) => b.body)
                 .map((block, i) => (
                   <div
                     key={block.label}
-                    className={`py-8 md:py-10 ${i > 0 ? 'border-t border-foreground/10' : ''}`}
+                    className={`grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 ${i > 0 ? 'border-t border-foreground/10' : ''}`}
                   >
-                    <h3 className="font-display text-xl md:text-2xl font-semibold text-foreground mb-4">
+                    <h3 className="md:col-span-3 font-display text-xl md:text-2xl font-semibold text-foreground">
                       {block.label}
                     </h3>
-                    <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+                    <p className="md:col-span-7 text-base md:text-lg text-muted-foreground leading-relaxed">
                       {block.body}
                     </p>
                   </div>
@@ -623,15 +609,15 @@ const ProjectDetailPage = () => {
         )}
 
         {/* ============================================================= */}
-        {/* 6. TRADE-OFFS (same width as narrative)                        */}
+        {/* 6. TRADE-OFFS & CONSTRAINTS - same layout as narrative         */}
         {/* ============================================================= */}
         {derived.tradeoffs && (
-          <section className="max-w-3xl mx-auto px-6 md:px-8 pt-14 md:pt-16">
-            <div className="py-8 md:py-10 border-t border-foreground/10">
-              <h3 className="font-display text-xl md:text-2xl font-semibold text-foreground mb-4">
-                Trade-offs & constraints
+          <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
+            <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10">
+              <h3 className="md:col-span-3 font-display text-xl md:text-2xl font-semibold text-foreground">
+                Trade-offs &amp; Constraints
               </h3>
-              <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+              <p className="md:col-span-7 text-base md:text-lg text-muted-foreground leading-relaxed">
                 {derived.tradeoffs}
               </p>
             </div>
@@ -639,11 +625,11 @@ const ProjectDetailPage = () => {
         )}
 
         {/* ============================================================= */}
-        {/* 7. LIVE EVENT CAROUSEL (center stage)                          */}
+        {/* 7. SECOND CAROUSEL (same layout as the first)                  */}
         {/* ============================================================= */}
         {derived.liveImages.length > 0 && (
-          <section className="pt-20 md:pt-28">
-            <CenterStageCarousel images={derived.liveImages} />
+          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-14 md:pt-16">
+            <HeroCarousel images={derived.liveImages} title={project.title} />
           </section>
         )}
 
