@@ -312,7 +312,7 @@ const HeroCarousel = ({ images, title }: { images: string[]; title: string }) =>
 
   return (
     <div className="relative w-full">
-      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-muted">
+      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-md bg-muted">
         <AnimatePresence mode="wait">
           <motion.img
             key={idx}
@@ -330,29 +330,31 @@ const HeroCarousel = ({ images, title }: { images: string[]; title: string }) =>
           <>
             <button
               onClick={prev}
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-background/80 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-foreground/15 bg-background/70 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
               aria-label="Previous"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-4 h-4" strokeWidth={1.5} />
             </button>
             <button
               onClick={next}
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-background/80 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-foreground/15 bg-background/70 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
               aria-label="Next"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
             </button>
           </>
         )}
       </div>
 
       {total > 1 && (
-        <div className="flex justify-center gap-1.5 mt-5">
+        <div className="flex justify-center gap-2 mt-5">
           {images.map((_, i) => (
-            <span
+            <button
               key={i}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === idx ? 'bg-foreground w-6' : 'bg-foreground/25 w-1.5'
+              onClick={() => setIdx(i)}
+              aria-label={`Go to ${i + 1}`}
+              className={`h-[2px] rounded-full transition-all duration-300 ${
+                i === idx ? 'bg-foreground w-8' : 'bg-foreground/25 w-4 hover:bg-foreground/50'
               }`}
             />
           ))}
