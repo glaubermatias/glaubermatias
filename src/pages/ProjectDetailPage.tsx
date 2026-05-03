@@ -625,11 +625,11 @@ const ProjectDetailPage = () => {
         )}
 
         {/* ============================================================= */}
-        {/* 7. LIVE EVENT CAROUSEL (center stage)                          */}
+        {/* 7. SECOND CAROUSEL (same layout as the first)                  */}
         {/* ============================================================= */}
         {derived.liveImages.length > 0 && (
-          <section className="pt-20 md:pt-28">
-            <CenterStageCarousel images={derived.liveImages} />
+          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-14 md:pt-16">
+            <HeroCarousel images={derived.liveImages} title={project.title} />
           </section>
         )}
 
