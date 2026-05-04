@@ -290,7 +290,7 @@ const AboutPage = () => {
               Beyond work
             </h2>
             <p className="text-base text-muted-foreground max-w-2xl mb-8 leading-relaxed">
-              What inspires me when I log off.
+              What inspires me when I log off :)
             </p>
             <BeyondWorkGallery />
           </div>
