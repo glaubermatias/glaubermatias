@@ -123,14 +123,14 @@ const BeyondWorkGallery = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-      <div className="md:col-span-6 relative aspect-[3/4] rounded-2xl overflow-hidden bg-muted">
+      <div className="md:col-span-7 relative aspect-[4/3] rounded-lg overflow-hidden bg-muted">
         <motion.img
           key={active}
           src={beyondWorkPhotos[active]}
           alt={`Personal moment ${active + 1}`}
           loading="lazy"
           decoding="async"
-          className="w-full h-full object-cover absolute inset-0"
+          className="w-full h-full object-contain absolute inset-0"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
