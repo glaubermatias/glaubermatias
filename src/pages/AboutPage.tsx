@@ -4,9 +4,17 @@ import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import PageLayout from '@/components/PageLayout';
 import PageHeader from '@/components/PageHeader';
 import glauberAboutHeader from '@/assets/glauber-about-header.jpg';
-import glauberPortrait from '@/assets/glauber-portrait.png';
-import glauberPhoto from '@/assets/glauber-photo.jpg';
 import smileIcon from '@/assets/smile-icon.png';
+import beyond01 from '@/assets/beyond-work/01.jpeg';
+import beyond02 from '@/assets/beyond-work/02.jpeg';
+import beyond03 from '@/assets/beyond-work/03.jpeg';
+import beyond04 from '@/assets/beyond-work/04.jpg';
+import beyond05 from '@/assets/beyond-work/05.jpeg';
+import beyond06 from '@/assets/beyond-work/06.jpeg';
+import beyond07 from '@/assets/beyond-work/07.jpeg';
+import beyond08 from '@/assets/beyond-work/08.jpg';
+import beyond09 from '@/assets/beyond-work/09.jpg';
+import beyond10 from '@/assets/beyond-work/10.jpeg';
 
 // Inject <link rel="preload" as="image"> as early as possible (module eval time)
 // so the browser starts fetching the hero assets in parallel with the JS chunk.
