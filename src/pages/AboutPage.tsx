@@ -123,8 +123,7 @@ const BeyondWorkGallery = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-      {/* Featured */}
-      <div className="md:col-span-8 relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted">
+      <div className="md:col-span-6 relative aspect-[3/4] rounded-2xl overflow-hidden bg-muted">
         <motion.img
           key={active}
           src={beyondWorkPhotos[active]}
@@ -152,17 +151,16 @@ const BeyondWorkGallery = () => {
         </button>
       </div>
 
-      {/* Thumbnails (skip the active one to keep 6 visible if total === 7) */}
-      <div className="md:col-span-4 grid grid-cols-3 md:grid-cols-2 gap-3">
+      <div className="md:col-span-6 grid grid-cols-3 gap-3">
         {beyondWorkPhotos
           .map((src, idx) => ({ src, idx }))
           .filter((x) => x.idx !== active)
-          .slice(0, 6)
+          .slice(0, 9)
           .map(({ src, idx }) => (
             <button
               key={idx}
               onClick={() => setActive(idx)}
-              className="aspect-square overflow-hidden rounded-xl bg-muted ring-1 ring-foreground/10 hover:ring-foreground/40 transition"
+              className="aspect-[3/4] overflow-hidden rounded-xl bg-muted ring-1 ring-foreground/10 hover:ring-foreground/40 transition"
             >
               <img src={src} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
             </button>
