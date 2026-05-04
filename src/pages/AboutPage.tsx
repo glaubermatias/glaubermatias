@@ -263,14 +263,7 @@ const AboutPage = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5 }}
                 >
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted mb-4 w-full">
-                    <img
-                      src={fact.image}
-                      alt={fact.title}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-full object-cover"
-                    />
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-foreground/10 mb-4 w-full">
                     <span className="absolute top-5 left-5 inline-flex items-center px-3 py-1 rounded-full bg-white/90 backdrop-blur text-[0.65rem] tracking-[0.2em] uppercase text-black font-medium">
                       {fact.tag}
                     </span>
