@@ -4,9 +4,17 @@ import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import PageLayout from '@/components/PageLayout';
 import PageHeader from '@/components/PageHeader';
 import glauberAboutHeader from '@/assets/glauber-about-header.jpg';
-import glauberPortrait from '@/assets/glauber-portrait.png';
-import glauberPhoto from '@/assets/glauber-photo.jpg';
 import smileIcon from '@/assets/smile-icon.png';
+import beyond01 from '@/assets/beyond-work/01.jpeg';
+import beyond02 from '@/assets/beyond-work/02.jpeg';
+import beyond03 from '@/assets/beyond-work/03.jpeg';
+import beyond04 from '@/assets/beyond-work/04.jpg';
+import beyond05 from '@/assets/beyond-work/05.jpeg';
+import beyond06 from '@/assets/beyond-work/06.jpeg';
+import beyond07 from '@/assets/beyond-work/07.jpeg';
+import beyond08 from '@/assets/beyond-work/08.jpg';
+import beyond09 from '@/assets/beyond-work/09.jpg';
+import beyond10 from '@/assets/beyond-work/10.jpeg';
 
 // Inject <link rel="preload" as="image"> as early as possible (module eval time)
 // so the browser starts fetching the hero assets in parallel with the JS chunk.
@@ -35,52 +43,55 @@ const sections = [
 
 const funFacts = [
   {
-    tag: 'FAVORITE HOBBIE',
-    title: 'Espresso enthusiast',
-    desc: 'I have strong opinions about brew ratios, bean origins and the perfect crema.',
-    image: glauberPhoto,
+    tag: 'FAVORITE FOOD',
+    title: 'Japanese',
+    desc: 'I just love eating sushi, sashimi, temaki... you name it.',
+    image: beyond01,
   },
   {
-    tag: 'FAVORITE MUSIC',
-    title: 'Lo-fi addict',
-    desc: "I can't design without a steady stream of mellow beats running in the background.",
-    image: glauberPortrait,
+    tag: 'FAVORITE SINGER',
+    title: 'Taylor Swift',
+    desc: "It's a tough call between her, Beyoncé, and P!nk, but her eras are just everything.",
+    image: beyond03,
   },
   {
     tag: 'FAVORITE PLACE',
-    title: 'Brazilian abroad',
-    desc: 'Carioca soul, Lisbon-bound. Always chasing good light, good food and new perspectives.',
-    image: glauberPhoto,
+    title: 'Fernando de Noronha',
+    desc: "There's something about the nature and close contact with wildlife that sets this place apart.",
+    image: beyond10,
   },
   {
-    tag: 'FAVORITE BOOK',
-    title: 'Book hoarder',
-    desc: 'My to-read pile grows faster than I can possibly keep up with — and I love it.',
-    image: glauberPortrait,
+    tag: 'FAVORITE SHOW',
+    title: 'Modern Family',
+    desc: 'The ultimate comfort watch that never fails to fill me with joy.',
+    image: beyond04,
   },
   {
     tag: 'FAVORITE MOVIE',
-    title: 'Cinema lover',
-    desc: 'From Wong Kar-wai to Wes Anderson — I collect frames the way others collect records.',
-    image: glauberAboutHeader,
+    title: 'White Chicks',
+    desc: 'Can we talk about guilty pleasures? Because I absolutely love a good trashy comedy.',
+    image: beyond08,
   },
   {
-    tag: 'FAVORITE FOOD',
-    title: 'Stubborn home cook',
-    desc: 'Brazilian roots, Mediterranean obsessions. Dinner is always an experiment.',
-    image: glauberPhoto,
+    tag: 'FAVORITE SPORT',
+    title: 'Open water swimming',
+    desc: 'The freedom of connecting with the ocean takes me somewhere else entirely.',
+    image: beyond02,
   },
 ];
 
 
 const beyondWorkPhotos = [
-  glauberPhoto,
-  glauberPortrait,
-  glauberAboutHeader,
-  glauberPhoto,
-  glauberPortrait,
-  glauberAboutHeader,
-  glauberPhoto,
+  beyond01,
+  beyond02,
+  beyond03,
+  beyond04,
+  beyond05,
+  beyond06,
+  beyond07,
+  beyond08,
+  beyond09,
+  beyond10,
 ];
 
 const SideMenu = () => (
@@ -112,8 +123,7 @@ const BeyondWorkGallery = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-      {/* Featured */}
-      <div className="md:col-span-8 relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted">
+      <div className="md:col-span-6 relative aspect-[3/4] rounded-2xl overflow-hidden bg-muted">
         <motion.img
           key={active}
           src={beyondWorkPhotos[active]}
@@ -141,17 +151,16 @@ const BeyondWorkGallery = () => {
         </button>
       </div>
 
-      {/* Thumbnails (skip the active one to keep 6 visible if total === 7) */}
-      <div className="md:col-span-4 grid grid-cols-3 md:grid-cols-2 gap-3">
+      <div className="md:col-span-6 grid grid-cols-3 gap-3">
         {beyondWorkPhotos
           .map((src, idx) => ({ src, idx }))
           .filter((x) => x.idx !== active)
-          .slice(0, 6)
+          .slice(0, 9)
           .map(({ src, idx }) => (
             <button
               key={idx}
               onClick={() => setActive(idx)}
-              className="aspect-square overflow-hidden rounded-xl bg-muted ring-1 ring-foreground/10 hover:ring-foreground/40 transition"
+              className="aspect-[3/4] overflow-hidden rounded-xl bg-muted ring-1 ring-foreground/10 hover:ring-foreground/40 transition"
             >
               <img src={src} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
             </button>
@@ -281,8 +290,7 @@ const AboutPage = () => {
               Beyond work
             </h2>
             <p className="text-base text-muted-foreground max-w-2xl mb-8 leading-relaxed">
-              A few snapshots from outside the studio — travels, hobbies,
-              and the small moments that keep me inspired.
+              What inspires me when I log off.
             </p>
             <BeyondWorkGallery />
           </div>
