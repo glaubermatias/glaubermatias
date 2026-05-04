@@ -151,16 +151,16 @@ const BeyondWorkGallery = () => {
         </button>
       </div>
 
-      <div className="md:col-span-6 grid grid-cols-3 gap-3">
+      <div className="md:col-span-5 grid grid-cols-2 gap-3 content-start">
         {beyondWorkPhotos
           .map((src, idx) => ({ src, idx }))
           .filter((x) => x.idx !== active)
-          .slice(0, 9)
+          .slice(0, 6)
           .map(({ src, idx }) => (
             <button
               key={idx}
               onClick={() => setActive(idx)}
-              className="aspect-[3/4] overflow-hidden rounded-xl bg-muted ring-1 ring-foreground/10 hover:ring-foreground/40 transition"
+              className="aspect-[4/3] overflow-hidden rounded-lg bg-muted ring-1 ring-foreground/10 hover:ring-foreground/40 transition"
             >
               <img src={src} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
             </button>
