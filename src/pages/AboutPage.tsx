@@ -122,8 +122,8 @@ const BeyondWorkGallery = () => {
   const go = (dir: 1 | -1) => setActive((p) => (p + dir + total) % total);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[minmax(220px,0.72fr)_minmax(0,1.6fr)] gap-4 md:gap-5 items-start md:items-stretch">
-      <div className="relative aspect-[3/4] w-full min-w-0 rounded-md overflow-hidden bg-muted">
+    <div className="grid grid-cols-1 md:grid-cols-[clamp(270px,31.5vw,375px)_minmax(0,1fr)] gap-4 md:gap-5 items-start md:items-stretch md:h-[clamp(360px,42vw,500px)]">
+      <div className="relative aspect-[3/4] md:h-full w-full min-w-0 rounded-md overflow-hidden bg-muted">
         <motion.img
           key={active}
           src={beyondWorkPhotos[active]}
@@ -151,7 +151,7 @@ const BeyondWorkGallery = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-3 grid-rows-3 gap-2.5 md:gap-3 self-stretch min-h-0 overflow-hidden">
+      <div className="grid grid-cols-3 grid-rows-3 gap-2.5 md:gap-3 self-stretch min-h-0 overflow-hidden md:h-full">
         {beyondWorkPhotos
           .map((src, idx) => ({ src, idx }))
           .filter((x) => x.idx !== active)
@@ -159,9 +159,9 @@ const BeyondWorkGallery = () => {
             <button
               key={idx}
               onClick={() => setActive(idx)}
-              className="overflow-hidden rounded-md bg-muted ring-1 ring-foreground/10 hover:ring-foreground/40 transition w-full h-full min-h-0 aspect-[3/4] md:aspect-auto"
+              className="relative overflow-hidden rounded-md bg-muted ring-1 ring-foreground/10 hover:ring-foreground/40 transition w-full h-full min-h-0 aspect-[3/4] md:aspect-auto"
             >
-              <img src={src} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+              <img src={src} alt={`Thumbnail ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover" />
             </button>
           ))}
       </div>
