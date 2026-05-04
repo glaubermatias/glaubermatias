@@ -123,14 +123,14 @@ const BeyondWorkGallery = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-      <div className="md:col-span-6 relative aspect-[3/4] rounded-2xl overflow-hidden bg-muted">
+      <div className="md:col-span-7 relative aspect-[4/3] rounded-lg overflow-hidden bg-muted">
         <motion.img
           key={active}
           src={beyondWorkPhotos[active]}
           alt={`Personal moment ${active + 1}`}
           loading="lazy"
           decoding="async"
-          className="w-full h-full object-cover absolute inset-0"
+          className="w-full h-full object-contain absolute inset-0"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
@@ -151,16 +151,16 @@ const BeyondWorkGallery = () => {
         </button>
       </div>
 
-      <div className="md:col-span-6 grid grid-cols-3 gap-3">
+      <div className="md:col-span-5 grid grid-cols-2 gap-3 content-start">
         {beyondWorkPhotos
           .map((src, idx) => ({ src, idx }))
           .filter((x) => x.idx !== active)
-          .slice(0, 9)
+          .slice(0, 6)
           .map(({ src, idx }) => (
             <button
               key={idx}
               onClick={() => setActive(idx)}
-              className="aspect-[3/4] overflow-hidden rounded-xl bg-muted ring-1 ring-foreground/10 hover:ring-foreground/40 transition"
+              className="aspect-[4/3] overflow-hidden rounded-lg bg-muted ring-1 ring-foreground/10 hover:ring-foreground/40 transition"
             >
               <img src={src} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
             </button>
@@ -263,14 +263,7 @@ const AboutPage = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5 }}
                 >
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-muted mb-4 w-full">
-                    <img
-                      src={fact.image}
-                      alt={fact.title}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-full object-cover"
-                    />
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-foreground/10 mb-4 w-full">
                     <span className="absolute top-5 left-5 inline-flex items-center px-3 py-1 rounded-full bg-white/90 backdrop-blur text-[0.65rem] tracking-[0.2em] uppercase text-black font-medium">
                       {fact.tag}
                     </span>
@@ -290,7 +283,7 @@ const AboutPage = () => {
               Beyond work
             </h2>
             <p className="text-base text-muted-foreground max-w-2xl mb-8 leading-relaxed">
-              What inspires me when I log off.
+              What inspires me when I log off :)
             </p>
             <BeyondWorkGallery />
           </div>
