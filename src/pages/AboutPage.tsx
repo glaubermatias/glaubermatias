@@ -122,7 +122,7 @@ const BeyondWorkGallery = () => {
   const go = (dir: 1 | -1) => setActive((p) => (p + dir + total) % total);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-stretch">
       <div className="md:col-span-7 relative aspect-[4/3] rounded-lg overflow-hidden bg-muted">
         <motion.img
           key={active}
@@ -130,7 +130,7 @@ const BeyondWorkGallery = () => {
           alt={`Personal moment ${active + 1}`}
           loading="lazy"
           decoding="async"
-          className="w-full h-full object-contain absolute inset-0"
+          className="w-full h-full object-cover absolute inset-0"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
@@ -151,16 +151,15 @@ const BeyondWorkGallery = () => {
         </button>
       </div>
 
-      <div className="md:col-span-5 grid grid-cols-2 gap-3 content-start">
+      <div className="md:col-span-5 grid grid-cols-3 grid-rows-3 gap-3 h-full">
         {beyondWorkPhotos
           .map((src, idx) => ({ src, idx }))
           .filter((x) => x.idx !== active)
-          .slice(0, 6)
           .map(({ src, idx }) => (
             <button
               key={idx}
               onClick={() => setActive(idx)}
-              className="aspect-[4/3] overflow-hidden rounded-lg bg-muted ring-1 ring-foreground/10 hover:ring-foreground/40 transition"
+              className="overflow-hidden rounded-lg bg-muted ring-1 ring-foreground/10 hover:ring-foreground/40 transition w-full h-full"
             >
               <img src={src} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
             </button>
