@@ -122,8 +122,8 @@ const BeyondWorkGallery = () => {
   const go = (dir: 1 | -1) => setActive((p) => (p + dir + total) % total);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5 items-start md:items-stretch">
-      <div className="md:col-span-4 relative aspect-[3/4] min-w-0 rounded-md overflow-hidden bg-muted">
+    <div className="grid grid-cols-1 md:grid-cols-[minmax(220px,0.72fr)_minmax(0,1.6fr)] gap-4 md:gap-5 items-start md:items-stretch">
+      <div className="relative aspect-[3/4] w-full min-w-0 rounded-md overflow-hidden bg-muted">
         <motion.img
           key={active}
           src={beyondWorkPhotos[active]}
@@ -151,7 +151,7 @@ const BeyondWorkGallery = () => {
         </button>
       </div>
 
-      <div className="md:col-span-8 grid grid-cols-3 grid-rows-3 gap-2.5 md:gap-3 self-stretch min-h-0">
+      <div className="grid grid-cols-3 grid-rows-3 gap-2.5 md:gap-3 self-stretch min-h-0 overflow-hidden">
         {beyondWorkPhotos
           .map((src, idx) => ({ src, idx }))
           .filter((x) => x.idx !== active)
