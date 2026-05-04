@@ -263,7 +263,7 @@ const AboutPage = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5 }}
                 >
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-muted mb-4 w-full">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted mb-4 w-full">
                     <img
                       src={fact.image}
                       alt={fact.title}
