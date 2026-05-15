@@ -779,16 +779,18 @@ const ProjectDetailPage = () => {
             </p>
           )}
 
-          {/* Metadata + Big Numbers — 40 / 30 / 30, framed by hairlines */}
+          {/* Metadata + Big Numbers — 50 / 25 / 25, framed by hairlines.
+              Floats up on viewport entry. */}
           <motion.div
-            initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-            className="mt-16 border-t border-b border-foreground/15"
+            initial={{ opacity: 0, y: 36 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-16 border-t border-b border-foreground/[0.08]"
           >
-            <div className="grid grid-cols-1 md:grid-cols-10 gap-12 md:gap-12 items-start py-10 md:py-12">
-              {/* Metadata - left, 40% */}
-              <dl className="md:col-span-4 flex flex-col gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-12 items-start py-10 md:py-12">
+              {/* Metadata - left, 50% */}
+              <dl className="md:col-span-2 flex flex-col gap-4">
                 {[
                   { label: 'Role', value: derived.role },
                   { label: 'Stakeholders', value: derived.stakeholders },
@@ -802,10 +804,10 @@ const ProjectDetailPage = () => {
                 ))}
               </dl>
 
-              {/* Big numbers — two slots, 30% each. */}
+              {/* Big numbers — two slots, 25% each. */}
               {bigNumbers.length > 0 &&
                 bigNumbers.slice(0, 2).map((n, i) => (
-                  <div key={i} className="md:col-span-3">
+                  <div key={i} className="md:col-span-1">
                     <p className="text-xs md:text-[13px] tracking-[0.22em] uppercase text-muted-foreground mb-4">
                       {n.label}
                     </p>
