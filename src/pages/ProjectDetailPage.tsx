@@ -629,10 +629,25 @@ const ProjectDetailPage = () => {
         ? 'Figma, Keynote, Notion'
         : 'Figma, Keynote, PowerPoint');
     const duration = project.duration || '—';
+    // Bento holds up to 6 photos; the layout adapts to the actual count.
+    const bentoImages: ProcessImage[] = processImages.slice(0, 6);
+    // Before / After: explicit field wins; otherwise fall back to first vs.
+    // last process image when at least 2 are available.
+    let beforeAfter: { before: string; after: string } | null = null;
+    if (project.beforeAfter) {
+      beforeAfter = project.beforeAfter;
+    } else if (processImages.length >= 2) {
+      beforeAfter = {
+        before: processImages[0].src,
+        after: processImages[processImages.length - 1].src,
+      };
+    }
     return {
       headerImage,
       heroCarousel,
       processImages,
+      bentoImages,
+      beforeAfter,
       liveImages,
       meaningfulTitle,
       tldr,
@@ -813,11 +828,26 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 5. PROCESS - BENTO                                              */}
         {/* ============================================================= */}
-        {derived.processImages.length > 0 && (
+        {derived.bentoImages.length > 0 && (
           <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-10 md:pt-12">
             <BentoGrid
-              images={derived.processImages}
+              images={derived.bentoImages}
               onOpen={(i) => setLightboxIndex(i)}
+            />
+          </section>
+        )}
+
+        {/* ============================================================= */}
+        {/* 5b. BEFORE & AFTER COMPARISON                                   */}
+        {/* ============================================================= */}
+        {derived.beforeAfter && (
+          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-16 md:pt-20">
+            <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground text-center mb-8 md:mb-10">
+              Before and After
+            </h3>
+            <BeforeAfterSlider
+              before={derived.beforeAfter.before}
+              after={derived.beforeAfter.after}
             />
           </section>
         )}
