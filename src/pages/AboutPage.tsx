@@ -129,11 +129,11 @@ const BeyondWorkGallery = () => {
       <div className="relative aspect-[3/4] md:h-full w-full min-w-0 rounded-md overflow-hidden bg-muted">
         <motion.img
           key={active}
-          src={beyondWorkPhotos[active]}
+          src={beyondWorkPhotos[active].src}
           alt={`Personal moment ${active + 1}`}
           loading="lazy"
           decoding="async"
-          className="absolute inset-0 w-full h-full object-contain object-center"
+          className="absolute inset-0 w-full h-full object-cover object-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
@@ -141,22 +141,32 @@ const BeyondWorkGallery = () => {
         <button
           onClick={() => go(-1)}
           aria-label="Previous photo"
-          className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/50 transition-colors"
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/50 transition-colors z-10"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
         <button
           onClick={() => go(1)}
           aria-label="Next photo"
-          className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/50 transition-colors"
+          className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/50 transition-colors z-10"
         >
           <ChevronRight className="w-4 h-4" />
         </button>
+
+        {/* Caption with gradient + hairline (only on featured photo) */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 pt-16 bg-gradient-to-t from-black/75 via-black/40 to-transparent">
+          <div className="px-5 pb-4">
+            <div className="h-px w-full bg-white/40 mb-3" />
+            <p className="text-white text-sm leading-snug min-h-[2.5rem]">
+              {beyondWorkPhotos[active].caption}
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-3 grid-rows-3 gap-2.5 md:gap-3 self-stretch min-h-0 overflow-hidden md:h-full">
         {beyondWorkPhotos
-          .map((src, idx) => ({ src, idx }))
+          .map((photo, idx) => ({ ...photo, idx }))
           .filter((x) => x.idx !== active)
           .map(({ src, idx }) => (
             <button
