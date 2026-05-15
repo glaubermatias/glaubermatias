@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ChevronLeft, ChevronRight, X } from 'lucide-react';
@@ -132,18 +132,99 @@ const Lightbox = ({
 /* Bento grid (process)                                                */
 /* ------------------------------------------------------------------ */
 /**
- * Bento pattern of 6 tiles that always tile to a perfect rectangle
- * (4 cols × 4 rows). When more images are passed in, the pattern repeats
- * cleanly so the outer edges always remain a clean rectangle.
+ * Adaptive bento patterns. Each entry tiles to a perfect rectangle
+ * (no holes), with the column count and per-tile spans tuned to the
+ * number of images.
  */
-const BENTO_PATTERN = [
-  'md:col-span-2 md:row-span-2',
-  'md:col-span-2 md:row-span-1',
-  'md:col-span-1 md:row-span-1',
-  'md:col-span-1 md:row-span-1',
-  'md:col-span-2 md:row-span-1',
-  'md:col-span-2 md:row-span-2',
-];
+type BentoLayout = { cols: string; tiles: string[] };
+
+const BENTO_LAYOUTS: Record<number, BentoLayout> = {
+  1: {
+    cols: 'md:grid-cols-1',
+    tiles: ['md:col-span-1 md:row-span-2'],
+  },
+  2: {
+    cols: 'md:grid-cols-2',
+    tiles: ['md:col-span-1 md:row-span-2', 'md:col-span-1 md:row-span-2'],
+  },
+  3: {
+    // 1 tall feature + 2 stacked  → 3 cols × 2 rows
+    cols: 'md:grid-cols-3',
+    tiles: [
+      'md:col-span-2 md:row-span-2',
+      'md:col-span-1 md:row-span-1',
+      'md:col-span-1 md:row-span-1',
+    ],
+  },
+  4: {
+    // 2 × 2
+    cols: 'md:grid-cols-2',
+    tiles: [
+      'md:col-span-1 md:row-span-1',
+      'md:col-span-1 md:row-span-1',
+      'md:col-span-1 md:row-span-1',
+      'md:col-span-1 md:row-span-1',
+    ],
+  },
+  5: {
+    // 4 cols × 2 rows: big feature + 4 small
+    cols: 'md:grid-cols-4',
+    tiles: [
+      'md:col-span-2 md:row-span-2',
+      'md:col-span-1 md:row-span-1',
+      'md:col-span-1 md:row-span-1',
+      'md:col-span-1 md:row-span-1',
+      'md:col-span-1 md:row-span-1',
+    ],
+  },
+  6: {
+    // 4 cols × 4 rows bento
+    cols: 'md:grid-cols-4',
+    tiles: [
+      'md:col-span-2 md:row-span-2',
+      'md:col-span-2 md:row-span-1',
+      'md:col-span-1 md:row-span-1',
+      'md:col-span-1 md:row-span-1',
+      'md:col-span-2 md:row-span-1',
+      'md:col-span-2 md:row-span-2',
+    ],
+  },
+  7: {
+    // 4 cols × 3 rows
+    cols: 'md:grid-cols-4',
+    tiles: [
+      'md:col-span-2 md:row-span-2',
+      'md:col-span-1 md:row-span-1',
+      'md:col-span-1 md:row-span-1',
+      'md:col-span-1 md:row-span-1',
+      'md:col-span-1 md:row-span-1',
+      'md:col-span-2 md:row-span-1',
+      'md:col-span-2 md:row-span-1',
+    ],
+  },
+  8: {
+    // 4 cols × 2 rows
+    cols: 'md:grid-cols-4',
+    tiles: Array(8).fill('md:col-span-1 md:row-span-1'),
+  },
+};
+
+const getBentoLayout = (count: number): BentoLayout => {
+  if (count <= 0) return { cols: 'md:grid-cols-1', tiles: [] };
+  if (BENTO_LAYOUTS[count]) return BENTO_LAYOUTS[count];
+  // Fallback for >8: tile uniformly in 4 cols (no holes if count % 4 === 0,
+  // otherwise extend the last row with wider tiles).
+  const tiles: string[] = [];
+  const remainder = count % 4;
+  const fullRows = Math.floor(count / 4);
+  for (let i = 0; i < fullRows * 4; i++) tiles.push('md:col-span-1 md:row-span-1');
+  if (remainder === 1) tiles.push('md:col-span-4 md:row-span-1');
+  else if (remainder === 2) tiles.push('md:col-span-2 md:row-span-1', 'md:col-span-2 md:row-span-1');
+  else if (remainder === 3) {
+    tiles.push('md:col-span-2 md:row-span-1', 'md:col-span-1 md:row-span-1', 'md:col-span-1 md:row-span-1');
+  }
+  return { cols: 'md:grid-cols-4', tiles };
+};
 
 const BentoGrid = ({
   images,
@@ -151,36 +232,149 @@ const BentoGrid = ({
 }: {
   images: ProcessImage[];
   onOpen: (i: number) => void;
-}) => (
-  <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[minmax(180px,1fr)] md:auto-rows-[minmax(200px,1fr)] gap-3 md:gap-4">
-    {images.map((img, i) => (
-      <button
-        key={i}
-        type="button"
-        onClick={() => onOpen(i)}
-        className={`group relative overflow-hidden rounded-md bg-muted ${BENTO_PATTERN[i % BENTO_PATTERN.length]}`}
+}) => {
+  const layout = getBentoLayout(images.length);
+  return (
+    <div className={`grid grid-cols-2 ${layout.cols} auto-rows-[minmax(180px,1fr)] md:auto-rows-[minmax(200px,1fr)] gap-3 md:gap-4`}>
+      {images.map((img, i) => (
+        <button
+          key={i}
+          type="button"
+          onClick={() => onOpen(i)}
+          className={`group relative overflow-hidden rounded-md bg-muted ${layout.tiles[i] ?? ''}`}
+        >
+          <img
+            src={img.src}
+            alt={img.caption || ''}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          />
+          {img.caption && (
+            <>
+              <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 p-4 md:p-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <p className="text-white text-sm md:text-[15px] leading-snug text-left">
+                  {img.caption}
+                </p>
+              </div>
+            </>
+          )}
+        </button>
+      ))}
+    </div>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/* Before / After comparison slider                                    */
+/* ------------------------------------------------------------------ */
+const BeforeAfterSlider = ({ before, after }: { before: string; after: string }) => {
+  const [pos, setPos] = useState(50); // %
+  const [dragging, setDragging] = useState(false);
+  const [hinted, setHinted] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  // Subtle hint animation on mount: nudge the divider so users see it's interactive.
+  useEffect(() => {
+    if (hinted) return;
+    const t1 = setTimeout(() => setPos(58), 700);
+    const t2 = setTimeout(() => setPos(42), 1300);
+    const t3 = setTimeout(() => { setPos(50); setHinted(true); }, 1900);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, [hinted]);
+
+  const updateFromClientX = (clientX: number) => {
+    const el = containerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = ((clientX - rect.left) / rect.width) * 100;
+    setPos(Math.max(0, Math.min(100, x)));
+  };
+
+  useEffect(() => {
+    if (!dragging) return;
+    const onMove = (e: MouseEvent | TouchEvent) => {
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+      updateFromClientX(clientX);
+    };
+    const onUp = () => setDragging(false);
+    window.addEventListener('mousemove', onMove as EventListener);
+    window.addEventListener('mouseup', onUp);
+    window.addEventListener('touchmove', onMove as EventListener, { passive: true });
+    window.addEventListener('touchend', onUp);
+    return () => {
+      window.removeEventListener('mousemove', onMove as EventListener);
+      window.removeEventListener('mouseup', onUp);
+      window.removeEventListener('touchmove', onMove as EventListener);
+      window.removeEventListener('touchend', onUp);
+    };
+  }, [dragging]);
+
+  const startDrag = (clientX: number) => {
+    setHinted(true);
+    setDragging(true);
+    updateFromClientX(clientX);
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative w-full aspect-[16/9] overflow-hidden rounded-md bg-muted select-none touch-none"
+      onMouseDown={(e) => startDrag(e.clientX)}
+      onTouchStart={(e) => startDrag(e.touches[0].clientX)}
+    >
+      {/* After (full) */}
+      <img
+        src={after}
+        alt="After"
+        className="absolute inset-0 h-full w-full object-cover pointer-events-none"
+        draggable={false}
+      />
+      {/* Before (clipped from the left up to pos) */}
+      <div
+        className="absolute inset-0 overflow-hidden pointer-events-none"
+        style={{ width: `${pos}%` }}
       >
         <img
-          src={img.src}
-          alt={img.caption || ''}
-          loading="lazy"
-          decoding="async"
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          src={before}
+          alt="Before"
+          className="absolute inset-0 h-full w-full object-cover"
+          style={{ width: `${(100 / Math.max(pos, 0.0001)) * 100}%`, maxWidth: 'none' }}
+          draggable={false}
         />
-        {img.caption && (
-          <>
-            <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 p-4 md:p-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <p className="text-white text-sm md:text-[15px] leading-snug text-left">
-                {img.caption}
-              </p>
-            </div>
-          </>
-        )}
-      </button>
-    ))}
-  </div>
-);
+      </div>
+
+      {/* Labels */}
+      <span className="absolute top-4 left-4 z-10 text-[10px] tracking-[0.22em] uppercase text-white bg-black/45 backdrop-blur-sm rounded px-2 py-1 pointer-events-none">
+        Before
+      </span>
+      <span className="absolute top-4 right-4 z-10 text-[10px] tracking-[0.22em] uppercase text-white bg-black/45 backdrop-blur-sm rounded px-2 py-1 pointer-events-none">
+        After
+      </span>
+
+      {/* Divider line + handle */}
+      <motion.div
+        className="absolute top-0 bottom-0 z-20"
+        style={{ left: `${pos}%` }}
+        animate={{ left: `${pos}%` }}
+        transition={{ type: 'spring', stiffness: 240, damping: 28 }}
+      >
+        <div className="absolute top-0 bottom-0 -translate-x-1/2 w-px bg-white/90 shadow-[0_0_10px_rgba(0,0,0,0.35)]" />
+        <button
+          type="button"
+          aria-label="Drag to compare before and after"
+          onMouseDown={(e) => { e.stopPropagation(); startDrag(e.clientX); }}
+          onTouchStart={(e) => { e.stopPropagation(); startDrag(e.touches[0].clientX); }}
+          className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white text-foreground shadow-lg flex items-center justify-center cursor-ew-resize"
+        >
+          <ChevronLeft className="w-4 h-4 -mr-1" strokeWidth={2} />
+          <ChevronRight className="w-4 h-4 -ml-1" strokeWidth={2} />
+        </button>
+      </motion.div>
+    </div>
+  );
+};
 
 /* ------------------------------------------------------------------ */
 /* Center-stage carousel (live event)                                  */
@@ -435,10 +629,25 @@ const ProjectDetailPage = () => {
         ? 'Figma, Keynote, Notion'
         : 'Figma, Keynote, PowerPoint');
     const duration = project.duration || '—';
+    // Bento holds up to 6 photos; the layout adapts to the actual count.
+    const bentoImages: ProcessImage[] = processImages.slice(0, 6);
+    // Before / After: explicit field wins; otherwise fall back to first vs.
+    // last process image when at least 2 are available.
+    let beforeAfter: { before: string; after: string } | null = null;
+    if (project.beforeAfter) {
+      beforeAfter = project.beforeAfter;
+    } else if (processImages.length >= 2) {
+      beforeAfter = {
+        before: processImages[0].src,
+        after: processImages[processImages.length - 1].src,
+      };
+    }
     return {
       headerImage,
       heroCarousel,
       processImages,
+      bentoImages,
+      beforeAfter,
       liveImages,
       meaningfulTitle,
       tldr,
@@ -560,11 +769,11 @@ const ProjectDetailPage = () => {
               ))}
             </dl>
 
-            {/* Big numbers - right, all same size, harmonious grid */}
+            {/* Big numbers - right, capped at 2 for harmonic distribution */}
             {bigNumbers.length > 0 && (
               <div className="md:col-span-7">
-                <div className="grid grid-cols-2 gap-x-10 gap-y-12">
-                  {bigNumbers.map((n, i) => (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-12">
+                  {bigNumbers.slice(0, 2).map((n, i) => (
                     <div key={i}>
                       <p className="font-display text-5xl md:text-6xl font-semibold text-foreground leading-[0.95] tracking-tight">
                         {n.value}
@@ -619,11 +828,26 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 5. PROCESS - BENTO                                              */}
         {/* ============================================================= */}
-        {derived.processImages.length > 0 && (
+        {derived.bentoImages.length > 0 && (
           <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-10 md:pt-12">
             <BentoGrid
-              images={derived.processImages}
+              images={derived.bentoImages}
               onOpen={(i) => setLightboxIndex(i)}
+            />
+          </section>
+        )}
+
+        {/* ============================================================= */}
+        {/* 5b. BEFORE & AFTER COMPARISON                                   */}
+        {/* ============================================================= */}
+        {derived.beforeAfter && (
+          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-16 md:pt-20">
+            <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground text-center mb-8 md:mb-10">
+              Before and After
+            </h3>
+            <BeforeAfterSlider
+              before={derived.beforeAfter.before}
+              after={derived.beforeAfter.after}
             />
           </section>
         )}
