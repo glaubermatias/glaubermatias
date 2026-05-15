@@ -748,43 +748,42 @@ const ProjectDetailPage = () => {
             </p>
           )}
 
-          {/* Metadata + Big Numbers */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16 items-start">
-            {/* Metadata - left, stacked vertically */}
-            <dl className="md:col-span-5 flex flex-col gap-7">
+          {/* Metadata + Big Numbers — 40 / 30 / 30 */}
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-10 gap-12 md:gap-12 items-start">
+            {/* Metadata - left, 40% */}
+            <dl className="md:col-span-4 flex flex-col gap-4">
               {[
                 { label: 'Role', value: derived.role },
                 { label: 'Stakeholders', value: derived.stakeholders },
                 { label: 'Tools', value: derived.tools },
                 { label: 'Duration', value: derived.duration },
               ].map((m) => (
-                <div key={m.label}>
-                  <dt className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground mb-1.5">
-                    {m.label}
-                  </dt>
-                  <dd className="text-sm md:text-[15px] text-foreground leading-snug">
-                    {m.value}
-                  </dd>
+                <div key={m.label} className="text-sm md:text-[15px] leading-snug text-foreground">
+                  <dt className="inline font-semibold">{m.label}:</dt>{' '}
+                  <dd className="inline text-muted-foreground">{m.value}</dd>
                 </div>
               ))}
             </dl>
 
-            {/* Big numbers - right, capped at 2 for harmonic distribution */}
+            {/* Big numbers — two slots, 30% each. Format: label / big value / description */}
             {bigNumbers.length > 0 && (
-              <div className="md:col-span-7">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-12">
-                  {bigNumbers.slice(0, 2).map((n, i) => (
-                    <div key={i}>
-                      <p className="font-display text-5xl md:text-6xl font-semibold text-foreground leading-[0.95] tracking-tight">
-                        {n.value}
+              <>
+                {bigNumbers.slice(0, 2).map((n, i) => (
+                  <div key={i} className="md:col-span-3">
+                    <p className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground mb-3">
+                      {n.label}
+                    </p>
+                    <p className="font-display text-5xl md:text-6xl font-semibold text-foreground leading-[0.95] tracking-tight">
+                      {n.value}
+                    </p>
+                    {n.description && (
+                      <p className="mt-4 text-sm md:text-[15px] text-muted-foreground leading-relaxed">
+                        {n.description}
                       </p>
-                      <p className="mt-3 text-[11px] tracking-[0.2em] uppercase text-muted-foreground">
-                        {n.label}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                    )}
+                  </div>
+                ))}
+              </>
             )}
           </div>
         </section>
