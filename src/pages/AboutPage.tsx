@@ -15,6 +15,9 @@ import beyond07 from '@/assets/beyond-work/07.jpeg';
 import beyond08 from '@/assets/beyond-work/08.jpg';
 import beyond09 from '@/assets/beyond-work/09.jpg';
 import beyond10 from '@/assets/beyond-work/10.jpeg';
+import japaneseFood from '@/assets/fun-facts/japanese-food.png';
+import taylorSwift from '@/assets/fun-facts/taylor-swift.png';
+import fernandoDeNoronha from '@/assets/fun-facts/fernando-de-noronha.jpg';
 
 // Inject <link rel="preload" as="image"> as early as possible (module eval time)
 // so the browser starts fetching the hero assets in parallel with the JS chunk.
