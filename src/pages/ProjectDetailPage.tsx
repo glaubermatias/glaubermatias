@@ -629,8 +629,14 @@ const ProjectDetailPage = () => {
         ? 'Figma, Keynote, Notion'
         : 'Figma, Keynote, PowerPoint');
     const duration = project.duration || '—';
-    // Bento holds up to 6 photos; the layout adapts to the actual count.
-    const bentoImages: ProcessImage[] = processImages.slice(0, 6);
+    // Bento always shows 6 tiles; if fewer source images exist, cycle through them.
+    const bentoImages: ProcessImage[] = (() => {
+      if (processImages.length === 0) return [];
+      const target = 6;
+      const out: ProcessImage[] = [];
+      for (let i = 0; i < target; i++) out.push(processImages[i % processImages.length]);
+      return out;
+    })();
     // Before / After: explicit field wins; otherwise fall back to first vs.
     // last process image when at least 2 are available.
     let beforeAfter: { before: string; after: string } | null = null;
