@@ -110,14 +110,16 @@ const Lightbox = ({
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.25 }}
-        className="max-w-[90vw] max-h-[85vh] flex flex-col items-center gap-4"
+        className="w-[90vw] max-w-[1400px] flex flex-col items-center gap-4"
         onClick={(e) => e.stopPropagation()}
       >
-        <img
-          src={current.src}
-          alt={current.caption || ''}
-          className="max-w-full max-h-[78vh] object-contain rounded-lg"
-        />
+        <div className="w-full aspect-[16/9] bg-black/40 rounded-lg overflow-hidden flex items-center justify-center">
+          <img
+            src={current.src}
+            alt={current.caption || ''}
+            className="w-full h-full object-cover"
+          />
+        </div>
         {current.caption && (
           <p className="text-white/80 text-sm md:text-base text-center max-w-2xl px-4">
             {current.caption}
