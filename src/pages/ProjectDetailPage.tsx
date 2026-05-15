@@ -275,14 +275,29 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
   const [hinted, setHinted] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Subtle hint animation on mount: nudge the divider so users see it's interactive.
+  // Looping subtle bounce hint until the user interacts.
   useEffect(() => {
-    if (hinted) return;
-    const t1 = setTimeout(() => setPos(58), 700);
-    const t2 = setTimeout(() => setPos(42), 1300);
-    const t3 = setTimeout(() => { setPos(50); setHinted(true); }, 1900);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
-  }, [hinted]);
+    if (hinted || dragging) return;
+    let cancelled = false;
+    const seq = async () => {
+      const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+      while (!cancelled && !hinted) {
+        await wait(1200);
+        if (cancelled || hinted) return;
+        setPos(56);
+        await wait(550);
+        if (cancelled || hinted) return;
+        setPos(44);
+        await wait(550);
+        if (cancelled || hinted) return;
+        setPos(50);
+      }
+    };
+    seq();
+    return () => {
+      cancelled = true;
+    };
+  }, [hinted, dragging]);
 
   const updateFromClientX = (clientX: number) => {
     const el = containerRef.current;
@@ -317,6 +332,9 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
     updateFromClientX(clientX);
   };
 
+  // Smooth transition only during the auto-hint; instant follow during drag.
+  const dividerTransition = dragging ? 'none' : 'left 350ms cubic-bezier(0.4, 0, 0.2, 1)';
+
   return (
     <div
       ref={containerRef}
@@ -334,7 +352,7 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
       {/* Before (clipped from the left up to pos) */}
       <div
         className="absolute inset-0 overflow-hidden pointer-events-none"
-        style={{ width: `${pos}%` }}
+        style={{ width: `${pos}%`, transition: dividerTransition }}
       >
         <img
           src={before}
@@ -353,14 +371,12 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
         After
       </span>
 
-      {/* Divider line + handle */}
-      <motion.div
+      {/* Divider line + handle — instant follow during drag */}
+      <div
         className="absolute top-0 bottom-0 z-20"
-        style={{ left: `${pos}%` }}
-        animate={{ left: `${pos}%` }}
-        transition={{ type: 'spring', stiffness: 240, damping: 28 }}
+        style={{ left: `${pos}%`, transition: dividerTransition }}
       >
-        <div className="absolute top-0 bottom-0 -translate-x-1/2 w-px bg-white/90 shadow-[0_0_10px_rgba(0,0,0,0.35)]" />
+        <div className="absolute top-0 bottom-0 -translate-x-1/2 w-[3px] bg-white shadow-[0_0_12px_rgba(0,0,0,0.45)]" />
         <button
           type="button"
           aria-label="Drag to compare before and after"
@@ -371,7 +387,7 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
           <ChevronLeft className="w-4 h-4 -mr-1" strokeWidth={2} />
           <ChevronRight className="w-4 h-4 -ml-1" strokeWidth={2} />
         </button>
-      </motion.div>
+      </div>
     </div>
   );
 };
