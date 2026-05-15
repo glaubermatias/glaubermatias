@@ -754,11 +754,11 @@ const ProjectDetailPage = () => {
               ))}
             </dl>
 
-            {/* Big numbers - right, all same size, harmonious grid */}
+            {/* Big numbers - right, capped at 2 for harmonic distribution */}
             {bigNumbers.length > 0 && (
               <div className="md:col-span-7">
-                <div className="grid grid-cols-2 gap-x-10 gap-y-12">
-                  {bigNumbers.map((n, i) => (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-12">
+                  {bigNumbers.slice(0, 2).map((n, i) => (
                     <div key={i}>
                       <p className="font-display text-5xl md:text-6xl font-semibold text-foreground leading-[0.95] tracking-tight">
                         {n.value}
