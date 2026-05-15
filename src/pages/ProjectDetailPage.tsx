@@ -276,21 +276,22 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
   const [hinted, setHinted] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Looping subtle bounce hint until the user interacts.
+  // Subtle hint: runs only twice, slow & gentle, in a small range.
   useEffect(() => {
     if (hinted || dragging) return;
     let cancelled = false;
+    const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
     const seq = async () => {
-      const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
-      while (!cancelled && !hinted) {
-        await wait(1200);
-        if (cancelled || hinted) return;
-        setPos(56);
-        await wait(550);
-        if (cancelled || hinted) return;
-        setPos(44);
-        await wait(550);
-        if (cancelled || hinted) return;
+      for (let i = 0; i < 2; i++) {
+        if (cancelled) return;
+        await wait(900);
+        if (cancelled) return;
+        setPos(53);
+        await wait(1100);
+        if (cancelled) return;
+        setPos(47);
+        await wait(1100);
+        if (cancelled) return;
         setPos(50);
       }
     };
@@ -333,8 +334,10 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
     updateFromClientX(clientX);
   };
 
-  // Smooth transition only during the auto-hint; instant follow during drag.
-  const dividerTransition = dragging ? 'none' : 'left 350ms cubic-bezier(0.4, 0, 0.2, 1)';
+  // No transition during drag (instant follow). Slow, gentle ease for hint.
+  const sharedTransition = dragging
+    ? 'none'
+    : 'clip-path 1100ms cubic-bezier(0.4, 0, 0.2, 1), left 1100ms cubic-bezier(0.4, 0, 0.2, 1)';
 
   return (
     <div
@@ -343,26 +346,26 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
       onMouseDown={(e) => startDrag(e.clientX)}
       onTouchStart={(e) => startDrag(e.touches[0].clientX)}
     >
-      {/* After (full) */}
+      {/* After (full underlying) */}
       <img
         src={after}
         alt="After"
         className="absolute inset-0 h-full w-full object-cover pointer-events-none"
         draggable={false}
       />
-      {/* Before (clipped from the left up to pos) */}
-      <div
-        className="absolute inset-0 overflow-hidden pointer-events-none"
-        style={{ width: `${pos}%`, transition: dividerTransition }}
-      >
-        <img
-          src={before}
-          alt="Before"
-          className="absolute inset-0 h-full w-full object-cover"
-          style={{ width: `${(100 / Math.max(pos, 0.0001)) * 100}%`, maxWidth: 'none' }}
-          draggable={false}
-        />
-      </div>
+      {/* Before — same size as container, revealed via clip-path so the
+          image itself never resizes (eliminates the perceived lag). */}
+      <img
+        src={before}
+        alt="Before"
+        className="absolute inset-0 h-full w-full object-cover pointer-events-none"
+        style={{
+          clipPath: `inset(0 ${100 - pos}% 0 0)`,
+          WebkitClipPath: `inset(0 ${100 - pos}% 0 0)`,
+          transition: sharedTransition,
+        }}
+        draggable={false}
+      />
 
       {/* Labels */}
       <span className="absolute top-4 left-4 z-10 text-[10px] tracking-[0.22em] uppercase text-white bg-black/45 backdrop-blur-sm rounded px-2 py-1 pointer-events-none">
@@ -372,10 +375,10 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
         After
       </span>
 
-      {/* Divider line + handle — instant follow during drag */}
+      {/* Divider line + handle */}
       <div
         className="absolute top-0 bottom-0 z-20"
-        style={{ left: `${pos}%`, transition: dividerTransition }}
+        style={{ left: `${pos}%`, transition: sharedTransition }}
       >
         <div className="absolute top-0 bottom-0 -translate-x-1/2 w-[3px] bg-white shadow-[0_0_12px_rgba(0,0,0,0.45)]" />
         <button
