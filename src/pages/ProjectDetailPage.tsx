@@ -384,7 +384,6 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
         </button>
       </div>
       <style>{`@keyframes ba-teeter { 0%,100% { transform: translate(-50%,-50%) rotate(0deg);} 25% { transform: translate(-50%,-50%) rotate(-12deg);} 75% { transform: translate(-50%,-50%) rotate(12deg);} }`}</style>
-      </div>
     </div>
   );
 };
