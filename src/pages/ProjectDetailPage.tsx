@@ -278,28 +278,36 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
   const [hinted, setHinted] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Subtle hint: runs only twice, slow & gentle, in a small range.
+  // Trigger hint only once when section enters the viewport.
   useEffect(() => {
-    if (hinted || dragging) return;
+    const el = containerRef.current;
+    if (!el || hinted) return;
     let cancelled = false;
     const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
-    const seq = async () => {
-      for (let i = 0; i < 2; i++) {
+    const runHint = async () => {
+      // Single pass: left → right → left → right → center. Subtle, vibrator-like.
+      const seq = [47, 53, 47, 53, 50];
+      for (const p of seq) {
         if (cancelled) return;
-        await wait(900);
-        if (cancelled) return;
-        setPos(53);
-        await wait(1100);
-        if (cancelled) return;
-        setPos(47);
-        await wait(1100);
-        if (cancelled) return;
-        setPos(50);
+        setPos(p);
+        await wait(240);
       }
     };
-    seq();
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting && !hinted && !dragging) {
+            setHinted(true);
+            runHint();
+          }
+        });
+      },
+      { threshold: 0.4 },
+    );
+    obs.observe(el);
     return () => {
       cancelled = true;
+      obs.disconnect();
     };
   }, [hinted, dragging]);
 
@@ -336,10 +344,10 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
     updateFromClientX(clientX);
   };
 
-  // No transition during drag (instant follow). Slow, gentle ease for hint.
+  // No transition during drag (instant follow). Quick, smooth ease for hint.
   const sharedTransition = dragging
     ? 'none'
-    : 'clip-path 1100ms cubic-bezier(0.4, 0, 0.2, 1), left 1100ms cubic-bezier(0.4, 0, 0.2, 1)';
+    : 'clip-path 220ms cubic-bezier(0.4, 0, 0.2, 1), left 220ms cubic-bezier(0.4, 0, 0.2, 1)';
 
   return (
     <div
@@ -348,15 +356,12 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
       onMouseDown={(e) => startDrag(e.clientX)}
       onTouchStart={(e) => startDrag(e.touches[0].clientX)}
     >
-      {/* After (full underlying) */}
       <img
         src={after}
         alt="After"
         className="absolute inset-0 h-full w-full object-cover pointer-events-none"
         draggable={false}
       />
-      {/* Before — same size as container, revealed via clip-path so the
-          image itself never resizes (eliminates the perceived lag). */}
       <img
         src={before}
         alt="Before"
@@ -369,7 +374,6 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
         draggable={false}
       />
 
-      {/* Labels */}
       <span className="absolute top-4 left-4 z-10 text-[10px] tracking-[0.22em] uppercase text-white bg-black/45 backdrop-blur-sm rounded px-2 py-1 pointer-events-none">
         Before
       </span>
@@ -377,7 +381,6 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
         After
       </span>
 
-      {/* Divider line + handle */}
       <div
         className="absolute top-0 bottom-0 z-20"
         style={{ left: `${pos}%`, transition: sharedTransition }}
