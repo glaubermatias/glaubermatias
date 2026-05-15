@@ -3,6 +3,7 @@ export type ProjectCategory = 'all' | 'executive-decks' | 'templates' | 'tech-ev
 export interface BigNumber {
   value: string;
   label: string;
+  description?: string;
 }
 
 export interface ProcessImage {

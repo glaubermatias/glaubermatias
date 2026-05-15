@@ -275,14 +275,29 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
   const [hinted, setHinted] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Subtle hint animation on mount: nudge the divider so users see it's interactive.
+  // Looping subtle bounce hint until the user interacts.
   useEffect(() => {
-    if (hinted) return;
-    const t1 = setTimeout(() => setPos(58), 700);
-    const t2 = setTimeout(() => setPos(42), 1300);
-    const t3 = setTimeout(() => { setPos(50); setHinted(true); }, 1900);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
-  }, [hinted]);
+    if (hinted || dragging) return;
+    let cancelled = false;
+    const seq = async () => {
+      const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+      while (!cancelled && !hinted) {
+        await wait(1200);
+        if (cancelled || hinted) return;
+        setPos(56);
+        await wait(550);
+        if (cancelled || hinted) return;
+        setPos(44);
+        await wait(550);
+        if (cancelled || hinted) return;
+        setPos(50);
+      }
+    };
+    seq();
+    return () => {
+      cancelled = true;
+    };
+  }, [hinted, dragging]);
 
   const updateFromClientX = (clientX: number) => {
     const el = containerRef.current;
@@ -317,6 +332,9 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
     updateFromClientX(clientX);
   };
 
+  // Smooth transition only during the auto-hint; instant follow during drag.
+  const dividerTransition = dragging ? 'none' : 'left 350ms cubic-bezier(0.4, 0, 0.2, 1)';
+
   return (
     <div
       ref={containerRef}
@@ -334,7 +352,7 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
       {/* Before (clipped from the left up to pos) */}
       <div
         className="absolute inset-0 overflow-hidden pointer-events-none"
-        style={{ width: `${pos}%` }}
+        style={{ width: `${pos}%`, transition: dividerTransition }}
       >
         <img
           src={before}
@@ -353,14 +371,12 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
         After
       </span>
 
-      {/* Divider line + handle */}
-      <motion.div
+      {/* Divider line + handle — instant follow during drag */}
+      <div
         className="absolute top-0 bottom-0 z-20"
-        style={{ left: `${pos}%` }}
-        animate={{ left: `${pos}%` }}
-        transition={{ type: 'spring', stiffness: 240, damping: 28 }}
+        style={{ left: `${pos}%`, transition: dividerTransition }}
       >
-        <div className="absolute top-0 bottom-0 -translate-x-1/2 w-px bg-white/90 shadow-[0_0_10px_rgba(0,0,0,0.35)]" />
+        <div className="absolute top-0 bottom-0 -translate-x-1/2 w-[3px] bg-white shadow-[0_0_12px_rgba(0,0,0,0.45)]" />
         <button
           type="button"
           aria-label="Drag to compare before and after"
@@ -371,7 +387,7 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
           <ChevronLeft className="w-4 h-4 -mr-1" strokeWidth={2} />
           <ChevronRight className="w-4 h-4 -ml-1" strokeWidth={2} />
         </button>
-      </motion.div>
+      </div>
     </div>
   );
 };
@@ -629,8 +645,14 @@ const ProjectDetailPage = () => {
         ? 'Figma, Keynote, Notion'
         : 'Figma, Keynote, PowerPoint');
     const duration = project.duration || '—';
-    // Bento holds up to 6 photos; the layout adapts to the actual count.
-    const bentoImages: ProcessImage[] = processImages.slice(0, 6);
+    // Bento always shows 6 tiles; if fewer source images exist, cycle through them.
+    const bentoImages: ProcessImage[] = (() => {
+      if (processImages.length === 0) return [];
+      const target = 6;
+      const out: ProcessImage[] = [];
+      for (let i = 0; i < target; i++) out.push(processImages[i % processImages.length]);
+      return out;
+    })();
     // Before / After: explicit field wins; otherwise fall back to first vs.
     // last process image when at least 2 are available.
     let beforeAfter: { before: string; after: string } | null = null;
@@ -748,43 +770,42 @@ const ProjectDetailPage = () => {
             </p>
           )}
 
-          {/* Metadata + Big Numbers */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16 items-start">
-            {/* Metadata - left, stacked vertically */}
-            <dl className="md:col-span-5 flex flex-col gap-7">
+          {/* Metadata + Big Numbers — 40 / 30 / 30 */}
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-10 gap-12 md:gap-12 items-start">
+            {/* Metadata - left, 40% */}
+            <dl className="md:col-span-4 flex flex-col gap-4">
               {[
                 { label: 'Role', value: derived.role },
                 { label: 'Stakeholders', value: derived.stakeholders },
                 { label: 'Tools', value: derived.tools },
                 { label: 'Duration', value: derived.duration },
               ].map((m) => (
-                <div key={m.label}>
-                  <dt className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground mb-1.5">
-                    {m.label}
-                  </dt>
-                  <dd className="text-sm md:text-[15px] text-foreground leading-snug">
-                    {m.value}
-                  </dd>
+                <div key={m.label} className="text-sm md:text-[15px] leading-snug text-foreground">
+                  <dt className="inline font-semibold">{m.label}:</dt>{' '}
+                  <dd className="inline text-muted-foreground">{m.value}</dd>
                 </div>
               ))}
             </dl>
 
-            {/* Big numbers - right, capped at 2 for harmonic distribution */}
+            {/* Big numbers — two slots, 30% each. Format: label / big value / description */}
             {bigNumbers.length > 0 && (
-              <div className="md:col-span-7">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-12">
-                  {bigNumbers.slice(0, 2).map((n, i) => (
-                    <div key={i}>
-                      <p className="font-display text-5xl md:text-6xl font-semibold text-foreground leading-[0.95] tracking-tight">
-                        {n.value}
+              <>
+                {bigNumbers.slice(0, 2).map((n, i) => (
+                  <div key={i} className="md:col-span-3">
+                    <p className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground mb-3">
+                      {n.label}
+                    </p>
+                    <p className="font-display text-5xl md:text-6xl font-semibold text-foreground leading-[0.95] tracking-tight">
+                      {n.value}
+                    </p>
+                    {n.description && (
+                      <p className="mt-4 text-sm md:text-[15px] text-muted-foreground leading-relaxed">
+                        {n.description}
                       </p>
-                      <p className="mt-3 text-[11px] tracking-[0.2em] uppercase text-muted-foreground">
-                        {n.label}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                    )}
+                  </div>
+                ))}
+              </>
             )}
           </div>
         </section>
