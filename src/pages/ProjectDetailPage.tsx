@@ -774,44 +774,48 @@ const ProjectDetailPage = () => {
             </p>
           )}
 
-          {/* Metadata + Big Numbers — 40 / 30 / 30 */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-10 gap-12 md:gap-12 items-start">
-            {/* Metadata - left, 40% */}
-            <dl className="md:col-span-4 flex flex-col gap-4">
-              {[
-                { label: 'Role', value: derived.role },
-                { label: 'Stakeholders', value: derived.stakeholders },
-                { label: 'Tools', value: derived.tools },
-                { label: 'Duration', value: derived.duration },
-              ].map((m) => (
-                <div key={m.label} className="text-sm md:text-[15px] leading-snug text-foreground">
-                  <dt className="inline font-semibold">{m.label}:</dt>{' '}
-                  <dd className="inline text-muted-foreground">{m.value}</dd>
-                </div>
-              ))}
-            </dl>
+          {/* Metadata + Big Numbers — 40 / 30 / 30, framed by hairlines */}
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+            className="mt-16 border-t border-b border-foreground/15"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-10 gap-12 md:gap-12 items-start py-10 md:py-12">
+              {/* Metadata - left, 40% */}
+              <dl className="md:col-span-4 flex flex-col gap-4">
+                {[
+                  { label: 'Role', value: derived.role },
+                  { label: 'Stakeholders', value: derived.stakeholders },
+                  { label: 'Tools', value: derived.tools },
+                  { label: 'Duration', value: derived.duration },
+                ].map((m) => (
+                  <div key={m.label} className="text-sm md:text-[15px] leading-snug text-foreground">
+                    <dt className="inline font-semibold">{m.label}:</dt>{' '}
+                    <dd className="inline text-muted-foreground">{m.value}</dd>
+                  </div>
+                ))}
+              </dl>
 
-            {/* Big numbers — two slots, 30% each. Format: label / big value / description */}
-            {bigNumbers.length > 0 && (
-              <>
-                {bigNumbers.slice(0, 2).map((n, i) => (
+              {/* Big numbers — two slots, 30% each. */}
+              {bigNumbers.length > 0 &&
+                bigNumbers.slice(0, 2).map((n, i) => (
                   <div key={i} className="md:col-span-3">
-                    <p className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground mb-3">
+                    <p className="text-xs md:text-[13px] tracking-[0.22em] uppercase text-muted-foreground mb-4">
                       {n.label}
                     </p>
-                    <p className="font-display text-5xl md:text-6xl font-semibold text-foreground leading-[0.95] tracking-tight">
+                    <p className="font-display text-6xl md:text-7xl font-semibold text-foreground leading-[0.95] tracking-tight">
                       {n.value}
                     </p>
                     {n.description && (
-                      <p className="mt-4 text-sm md:text-[15px] text-muted-foreground leading-relaxed">
+                      <p className="mt-5 text-sm md:text-[15px] text-muted-foreground leading-relaxed">
                         {n.description}
                       </p>
                     )}
                   </div>
                 ))}
-              </>
-            )}
-          </div>
+            </div>
+          </motion.div>
         </section>
 
         {/* ============================================================= */}
