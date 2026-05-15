@@ -907,7 +907,7 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 8. CLOSING - IMPACT                                            */}
         {/* ============================================================= */}
-        <section className="max-w-[1100px] mx-auto px-8 md:px-16 pt-28 md:pt-36 text-center">
+        <section className="max-w-[1100px] mx-auto px-8 md:px-16 pt-12 md:pt-16 text-center">
           {bigNumbers.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 sm:gap-16 mb-16 max-w-3xl mx-auto">
               {bigNumbers.slice(0, 2).map((n, i) => (
