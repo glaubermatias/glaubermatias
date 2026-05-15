@@ -233,15 +233,16 @@ const BentoGrid = ({
   images: ProcessImage[];
   onOpen: (i: number) => void;
 }) => {
-  const layout = getBentoLayout(images.length);
+  // Uniform 4-column × 2-row grid. Row height matches the previous featured
+  // tile height (2 × 200px + gap) so the overall block stays the same size.
   return (
-    <div className={`grid grid-cols-2 ${layout.cols} auto-rows-[minmax(180px,1fr)] md:auto-rows-[minmax(200px,1fr)] gap-3 md:gap-4`}>
+    <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[minmax(180px,1fr)] md:auto-rows-[minmax(200px,1fr)] gap-3 md:gap-4">
       {images.map((img, i) => (
         <button
           key={i}
           type="button"
           onClick={() => onOpen(i)}
-          className={`group relative overflow-hidden rounded-md bg-muted ${layout.tiles[i] ?? ''}`}
+          className="group relative overflow-hidden rounded-md bg-muted"
         >
           <img
             src={img.src}
