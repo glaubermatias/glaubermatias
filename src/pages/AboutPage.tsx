@@ -84,17 +84,17 @@ const funFacts = [
 ];
 
 
-const beyondWorkPhotos = [
-  beyond01,
-  beyond02,
-  beyond03,
-  beyond04,
-  beyond05,
-  beyond06,
-  beyond07,
-  beyond08,
-  beyond09,
-  beyond10,
+const beyondWorkPhotos: { src: string; caption: string }[] = [
+  { src: beyond01, caption: 'Sushi night — my favorite kind of evening.' },
+  { src: beyond02, caption: 'Open water swim, somewhere off the coast.' },
+  { src: beyond03, caption: 'Eras Tour — a night I will never forget.' },
+  { src: beyond04, caption: 'Sunday rewatch with the Dunphys.' },
+  { src: beyond05, caption: 'Wandering through a new city.' },
+  { src: beyond06, caption: 'Golden hour, no filter needed.' },
+  { src: beyond07, caption: 'Cooking experiments at home.' },
+  { src: beyond08, caption: 'Comfort movie picks, on repeat.' },
+  { src: beyond09, caption: 'Friends, food and long conversations.' },
+  { src: beyond10, caption: 'Fernando de Noronha — pure paradise.' },
 ];
 
 const SideMenu = () => (
