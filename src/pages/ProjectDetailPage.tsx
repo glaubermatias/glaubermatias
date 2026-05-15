@@ -377,10 +377,13 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
           onMouseDown={(e) => { e.stopPropagation(); startDrag(e.clientX); }}
           onTouchStart={(e) => { e.stopPropagation(); startDrag(e.touches[0].clientX); }}
           className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white text-foreground shadow-lg flex items-center justify-center cursor-ew-resize"
+          style={hinted && !dragging ? { animation: 'ba-teeter 900ms ease-in-out 1' } : undefined}
         >
           <ChevronLeft className="w-4 h-4 -mr-1" strokeWidth={2} />
           <ChevronRight className="w-4 h-4 -ml-1" strokeWidth={2} />
         </button>
+      </div>
+      <style>{`@keyframes ba-teeter { 0%,100% { transform: translate(-50%,-50%) rotate(0deg);} 25% { transform: translate(-50%,-50%) rotate(-12deg);} 75% { transform: translate(-50%,-50%) rotate(12deg);} }`}</style>
       </div>
     </div>
   );
