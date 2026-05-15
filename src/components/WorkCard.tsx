@@ -101,7 +101,7 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
 
             {/* RIGHT — Carousel (50%) */}
             <div>
-              <div className="relative w-full aspect-[16/10] overflow-hidden rounded-2xl select-none bg-muted">
+              <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg select-none bg-muted">
                 <motion.img
                   key={currentImageIndex}
                   src={project.images[currentImageIndex]}

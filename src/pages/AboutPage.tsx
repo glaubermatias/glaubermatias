@@ -15,6 +15,9 @@ import beyond07 from '@/assets/beyond-work/07.jpeg';
 import beyond08 from '@/assets/beyond-work/08.jpg';
 import beyond09 from '@/assets/beyond-work/09.jpg';
 import beyond10 from '@/assets/beyond-work/10.jpeg';
+import japaneseFood from '@/assets/fun-facts/japanese-food.png';
+import taylorSwift from '@/assets/fun-facts/taylor-swift.png';
+import fernandoDeNoronha from '@/assets/fun-facts/fernando-de-noronha.jpg';
 
 // Inject <link rel="preload" as="image"> as early as possible (module eval time)
 // so the browser starts fetching the hero assets in parallel with the JS chunk.
@@ -46,52 +49,52 @@ const funFacts = [
     tag: 'FAVORITE FOOD',
     title: 'Japanese',
     desc: 'I just love eating sushi, sashimi, temaki... you name it.',
-    image: beyond01,
+    image: japaneseFood,
   },
   {
     tag: 'FAVORITE SINGER',
     title: 'Taylor Swift',
     desc: "It's a tough call between her, Beyoncé, and P!nk, but her eras are just everything.",
-    image: beyond03,
+    image: taylorSwift,
   },
   {
     tag: 'FAVORITE PLACE',
     title: 'Fernando de Noronha',
     desc: "There's something about the nature and close contact with wildlife that sets this place apart.",
-    image: beyond10,
+    image: fernandoDeNoronha,
   },
   {
     tag: 'FAVORITE SHOW',
-    title: 'Modern Family',
-    desc: 'The ultimate comfort watch that never fails to fill me with joy.',
-    image: beyond04,
+    title: 'The Office',
+    desc: 'My go-to comfort show that never fails to make me laugh out loud.',
+    image: null,
   },
   {
     tag: 'FAVORITE MOVIE',
     title: 'White Chicks',
     desc: 'Can we talk about guilty pleasures? Because I absolutely love a good trashy comedy.',
-    image: beyond08,
+    image: null,
   },
   {
     tag: 'FAVORITE SPORT',
     title: 'Open water swimming',
     desc: 'The freedom of connecting with the ocean takes me somewhere else entirely.',
-    image: beyond02,
+    image: null,
   },
 ];
 
 
-const beyondWorkPhotos = [
-  beyond01,
-  beyond02,
-  beyond03,
-  beyond04,
-  beyond05,
-  beyond06,
-  beyond07,
-  beyond08,
-  beyond09,
-  beyond10,
+const beyondWorkPhotos: { src: string; caption: string }[] = [
+  { src: beyond01, caption: 'Sushi night — my favorite kind of evening.' },
+  { src: beyond02, caption: 'Open water swim, somewhere off the coast.' },
+  { src: beyond03, caption: 'Eras Tour — a night I will never forget.' },
+  { src: beyond04, caption: 'Sunday rewatch with the Dunphys.' },
+  { src: beyond05, caption: 'Wandering through a new city.' },
+  { src: beyond06, caption: 'Golden hour, no filter needed.' },
+  { src: beyond07, caption: 'Cooking experiments at home.' },
+  { src: beyond08, caption: 'Comfort movie picks, on repeat.' },
+  { src: beyond09, caption: 'Friends, food and long conversations.' },
+  { src: beyond10, caption: 'Fernando de Noronha — pure paradise.' },
 ];
 
 const SideMenu = () => (
@@ -126,11 +129,11 @@ const BeyondWorkGallery = () => {
       <div className="relative aspect-[3/4] md:h-full w-full min-w-0 rounded-md overflow-hidden bg-muted">
         <motion.img
           key={active}
-          src={beyondWorkPhotos[active]}
+          src={beyondWorkPhotos[active].src}
           alt={`Personal moment ${active + 1}`}
           loading="lazy"
           decoding="async"
-          className="absolute inset-0 w-full h-full object-contain object-center"
+          className="absolute inset-0 w-full h-full object-cover object-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
@@ -138,22 +141,32 @@ const BeyondWorkGallery = () => {
         <button
           onClick={() => go(-1)}
           aria-label="Previous photo"
-          className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/50 transition-colors"
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/50 transition-colors z-10"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
         <button
           onClick={() => go(1)}
           aria-label="Next photo"
-          className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/50 transition-colors"
+          className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/50 transition-colors z-10"
         >
           <ChevronRight className="w-4 h-4" />
         </button>
+
+        {/* Caption with gradient + hairline (only on featured photo) */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 pt-16 bg-gradient-to-t from-black/75 via-black/40 to-transparent">
+          <div className="px-5 pb-4">
+            <div className="h-px w-full bg-white/40 mb-3" />
+            <p className="text-white text-sm leading-snug min-h-[2.5rem]">
+              {beyondWorkPhotos[active].caption}
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-3 grid-rows-3 gap-2.5 md:gap-3 self-stretch min-h-0 overflow-hidden md:h-full">
         {beyondWorkPhotos
-          .map((src, idx) => ({ src, idx }))
+          .map((photo, idx) => ({ ...photo, idx }))
           .filter((x) => x.idx !== active)
           .map(({ src, idx }) => (
             <button
@@ -261,8 +274,17 @@ const AboutPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5 }}
+                  className="group"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-foreground/10 mb-4 w-full">
+                    {fact.image && (
+                      <img
+                        src={fact.image}
+                        alt={fact.title}
+                        loading="lazy"
+                        className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-[filter] duration-500"
+                      />
+                    )}
                     <span className="absolute top-5 left-5 inline-flex items-center px-3 py-1 rounded-full bg-white/90 backdrop-blur text-[0.65rem] tracking-[0.2em] uppercase text-black font-medium">
                       {fact.tag}
                     </span>
