@@ -654,10 +654,10 @@ const ProjectDetailPage = () => {
         ? 'Figma, Keynote, Notion'
         : 'Figma, Keynote, PowerPoint');
     const duration = project.duration || '—';
-    // Bento always shows 6 tiles; if fewer source images exist, cycle through them.
+    // Bento always shows 8 tiles; if fewer source images exist, cycle through them.
     const bentoImages: ProcessImage[] = (() => {
       if (processImages.length === 0) return [];
-      const target = 6;
+      const target = 8;
       const out: ProcessImage[] = [];
       for (let i = 0; i < target; i++) out.push(processImages[i % processImages.length]);
       return out;
