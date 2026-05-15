@@ -233,15 +233,16 @@ const BentoGrid = ({
   images: ProcessImage[];
   onOpen: (i: number) => void;
 }) => {
-  const layout = getBentoLayout(images.length);
+  // Uniform 4-column × 2-row grid. Row height matches the previous featured
+  // tile height (2 × 200px + gap) so the overall block stays the same size.
   return (
-    <div className={`grid grid-cols-2 ${layout.cols} auto-rows-[minmax(180px,1fr)] md:auto-rows-[minmax(200px,1fr)] gap-3 md:gap-4`}>
+    <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[minmax(180px,1fr)] md:auto-rows-[minmax(200px,1fr)] gap-3 md:gap-4">
       {images.map((img, i) => (
         <button
           key={i}
           type="button"
           onClick={() => onOpen(i)}
-          className={`group relative overflow-hidden rounded-md bg-muted ${layout.tiles[i] ?? ''}`}
+          className="group relative overflow-hidden rounded-md bg-muted"
         >
           <img
             src={img.src}
@@ -275,21 +276,22 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
   const [hinted, setHinted] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Looping subtle bounce hint until the user interacts.
+  // Subtle hint: runs only twice, slow & gentle, in a small range.
   useEffect(() => {
     if (hinted || dragging) return;
     let cancelled = false;
+    const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
     const seq = async () => {
-      const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
-      while (!cancelled && !hinted) {
-        await wait(1200);
-        if (cancelled || hinted) return;
-        setPos(56);
-        await wait(550);
-        if (cancelled || hinted) return;
-        setPos(44);
-        await wait(550);
-        if (cancelled || hinted) return;
+      for (let i = 0; i < 2; i++) {
+        if (cancelled) return;
+        await wait(900);
+        if (cancelled) return;
+        setPos(53);
+        await wait(1100);
+        if (cancelled) return;
+        setPos(47);
+        await wait(1100);
+        if (cancelled) return;
         setPos(50);
       }
     };
@@ -332,8 +334,10 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
     updateFromClientX(clientX);
   };
 
-  // Smooth transition only during the auto-hint; instant follow during drag.
-  const dividerTransition = dragging ? 'none' : 'left 350ms cubic-bezier(0.4, 0, 0.2, 1)';
+  // No transition during drag (instant follow). Slow, gentle ease for hint.
+  const sharedTransition = dragging
+    ? 'none'
+    : 'clip-path 1100ms cubic-bezier(0.4, 0, 0.2, 1), left 1100ms cubic-bezier(0.4, 0, 0.2, 1)';
 
   return (
     <div
@@ -342,26 +346,26 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
       onMouseDown={(e) => startDrag(e.clientX)}
       onTouchStart={(e) => startDrag(e.touches[0].clientX)}
     >
-      {/* After (full) */}
+      {/* After (full underlying) */}
       <img
         src={after}
         alt="After"
         className="absolute inset-0 h-full w-full object-cover pointer-events-none"
         draggable={false}
       />
-      {/* Before (clipped from the left up to pos) */}
-      <div
-        className="absolute inset-0 overflow-hidden pointer-events-none"
-        style={{ width: `${pos}%`, transition: dividerTransition }}
-      >
-        <img
-          src={before}
-          alt="Before"
-          className="absolute inset-0 h-full w-full object-cover"
-          style={{ width: `${(100 / Math.max(pos, 0.0001)) * 100}%`, maxWidth: 'none' }}
-          draggable={false}
-        />
-      </div>
+      {/* Before — same size as container, revealed via clip-path so the
+          image itself never resizes (eliminates the perceived lag). */}
+      <img
+        src={before}
+        alt="Before"
+        className="absolute inset-0 h-full w-full object-cover pointer-events-none"
+        style={{
+          clipPath: `inset(0 ${100 - pos}% 0 0)`,
+          WebkitClipPath: `inset(0 ${100 - pos}% 0 0)`,
+          transition: sharedTransition,
+        }}
+        draggable={false}
+      />
 
       {/* Labels */}
       <span className="absolute top-4 left-4 z-10 text-[10px] tracking-[0.22em] uppercase text-white bg-black/45 backdrop-blur-sm rounded px-2 py-1 pointer-events-none">
@@ -371,10 +375,10 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
         After
       </span>
 
-      {/* Divider line + handle — instant follow during drag */}
+      {/* Divider line + handle */}
       <div
         className="absolute top-0 bottom-0 z-20"
-        style={{ left: `${pos}%`, transition: dividerTransition }}
+        style={{ left: `${pos}%`, transition: sharedTransition }}
       >
         <div className="absolute top-0 bottom-0 -translate-x-1/2 w-[3px] bg-white shadow-[0_0_12px_rgba(0,0,0,0.45)]" />
         <button
@@ -770,44 +774,48 @@ const ProjectDetailPage = () => {
             </p>
           )}
 
-          {/* Metadata + Big Numbers — 40 / 30 / 30 */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-10 gap-12 md:gap-12 items-start">
-            {/* Metadata - left, 40% */}
-            <dl className="md:col-span-4 flex flex-col gap-4">
-              {[
-                { label: 'Role', value: derived.role },
-                { label: 'Stakeholders', value: derived.stakeholders },
-                { label: 'Tools', value: derived.tools },
-                { label: 'Duration', value: derived.duration },
-              ].map((m) => (
-                <div key={m.label} className="text-sm md:text-[15px] leading-snug text-foreground">
-                  <dt className="inline font-semibold">{m.label}:</dt>{' '}
-                  <dd className="inline text-muted-foreground">{m.value}</dd>
-                </div>
-              ))}
-            </dl>
+          {/* Metadata + Big Numbers — 40 / 30 / 30, framed by hairlines */}
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+            className="mt-16 border-t border-b border-foreground/15"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-10 gap-12 md:gap-12 items-start py-10 md:py-12">
+              {/* Metadata - left, 40% */}
+              <dl className="md:col-span-4 flex flex-col gap-4">
+                {[
+                  { label: 'Role', value: derived.role },
+                  { label: 'Stakeholders', value: derived.stakeholders },
+                  { label: 'Tools', value: derived.tools },
+                  { label: 'Duration', value: derived.duration },
+                ].map((m) => (
+                  <div key={m.label} className="text-sm md:text-[15px] leading-snug text-foreground">
+                    <dt className="inline font-semibold">{m.label}:</dt>{' '}
+                    <dd className="inline text-muted-foreground">{m.value}</dd>
+                  </div>
+                ))}
+              </dl>
 
-            {/* Big numbers — two slots, 30% each. Format: label / big value / description */}
-            {bigNumbers.length > 0 && (
-              <>
-                {bigNumbers.slice(0, 2).map((n, i) => (
+              {/* Big numbers — two slots, 30% each. */}
+              {bigNumbers.length > 0 &&
+                bigNumbers.slice(0, 2).map((n, i) => (
                   <div key={i} className="md:col-span-3">
-                    <p className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground mb-3">
+                    <p className="text-xs md:text-[13px] tracking-[0.22em] uppercase text-muted-foreground mb-4">
                       {n.label}
                     </p>
-                    <p className="font-display text-5xl md:text-6xl font-semibold text-foreground leading-[0.95] tracking-tight">
+                    <p className="font-display text-6xl md:text-7xl font-semibold text-foreground leading-[0.95] tracking-tight">
                       {n.value}
                     </p>
                     {n.description && (
-                      <p className="mt-4 text-sm md:text-[15px] text-muted-foreground leading-relaxed">
+                      <p className="mt-5 text-sm md:text-[15px] text-muted-foreground leading-relaxed">
                         {n.description}
                       </p>
                     )}
                   </div>
                 ))}
-              </>
-            )}
-          </div>
+            </div>
+          </motion.div>
         </section>
 
         {/* ============================================================= */}
@@ -899,7 +907,7 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 8. CLOSING - IMPACT                                            */}
         {/* ============================================================= */}
-        <section className="max-w-[1100px] mx-auto px-8 md:px-16 pt-28 md:pt-36 text-center">
+        <section className="max-w-[1100px] mx-auto px-8 md:px-16 pt-12 md:pt-16 text-center">
           {bigNumbers.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 sm:gap-16 mb-16 max-w-3xl mx-auto">
               {bigNumbers.slice(0, 2).map((n, i) => (
