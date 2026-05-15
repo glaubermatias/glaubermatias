@@ -278,37 +278,22 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
   const [hinted, setHinted] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Trigger hint only once when section enters the viewport.
+  // Trigger handle teeter hint once when section enters the viewport.
   useEffect(() => {
     const el = containerRef.current;
     if (!el || hinted) return;
-    let cancelled = false;
-    const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
-    const runHint = async () => {
-      // Single pass: left → right → left → right → center. Subtle, vibrator-like.
-      const seq = [47, 53, 47, 53, 50];
-      for (const p of seq) {
-        if (cancelled) return;
-        setPos(p);
-        await wait(240);
-      }
-    };
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
           if (e.isIntersecting && !hinted && !dragging) {
             setHinted(true);
-            runHint();
           }
         });
       },
       { threshold: 0.4 },
     );
     obs.observe(el);
-    return () => {
-      cancelled = true;
-      obs.disconnect();
-    };
+    return () => obs.disconnect();
   }, [hinted, dragging]);
 
   const updateFromClientX = (clientX: number) => {
