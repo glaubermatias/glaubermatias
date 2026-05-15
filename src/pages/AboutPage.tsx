@@ -18,6 +18,9 @@ import beyond10 from '@/assets/beyond-work/10.jpeg';
 import japaneseFood from '@/assets/fun-facts/japanese-food.png';
 import taylorSwift from '@/assets/fun-facts/taylor-swift.png';
 import fernandoDeNoronha from '@/assets/fun-facts/fernando-de-noronha.jpg';
+import theOffice from '@/assets/fun-facts/the-office.png';
+import whiteChicks from '@/assets/fun-facts/white-chicks.jpg';
+import openWaterSwimming from '@/assets/fun-facts/open-water-swimming.jpg';
 
 // Inject <link rel="preload" as="image"> as early as possible (module eval time)
 // so the browser starts fetching the hero assets in parallel with the JS chunk.
@@ -67,19 +70,19 @@ const funFacts = [
     tag: 'FAVORITE SHOW',
     title: 'The Office',
     desc: 'My go-to comfort show that never fails to make me laugh out loud.',
-    image: null,
+    image: theOffice,
   },
   {
     tag: 'FAVORITE MOVIE',
     title: 'White Chicks',
     desc: 'Can we talk about guilty pleasures? Because I absolutely love a good trashy comedy.',
-    image: null,
+    image: whiteChicks,
   },
   {
     tag: 'FAVORITE SPORT',
     title: 'Open water swimming',
     desc: 'The freedom of connecting with the ocean takes me somewhere else entirely.',
-    image: null,
+    image: openWaterSwimming,
   },
 ];
 
@@ -153,11 +156,10 @@ const BeyondWorkGallery = () => {
           <ChevronRight className="w-4 h-4" />
         </button>
 
-        {/* Caption with gradient + hairline (only on featured photo) */}
+        {/* Caption with gradient (only on featured photo) */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 pt-16 bg-gradient-to-t from-black/75 via-black/40 to-transparent">
-          <div className="px-5 pb-4">
-            <div className="h-px w-full bg-white/40 mb-3" />
-            <p className="text-white text-sm leading-snug min-h-[2.5rem]">
+          <div className="px-5 pb-5">
+            <p className="text-white text-sm leading-snug">
               {beyondWorkPhotos[active].caption}
             </p>
           </div>
