@@ -278,7 +278,8 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
   const [hinted, setHinted] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Trigger handle teeter hint once when section enters the viewport.
+  // Sweep the divider once when the section enters the viewport,
+  // a subtle horizontal nudge to hint that it's interactive.
   useEffect(() => {
     const el = containerRef.current;
     if (!el || hinted) return;
@@ -287,6 +288,12 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
         entries.forEach((e) => {
           if (e.isIntersecting && !hinted && !dragging) {
             setHinted(true);
+            const keyframes = [50, 56, 44, 52, 48, 50];
+            keyframes.forEach((v, i) => {
+              setTimeout(() => {
+                setPos((cur) => (dragging ? cur : v));
+              }, i * 260);
+            });
           }
         });
       },
