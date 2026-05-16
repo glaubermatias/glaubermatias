@@ -278,7 +278,8 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
   const [hinted, setHinted] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Trigger handle teeter hint once when section enters the viewport.
+  // Sweep the divider once when the section enters the viewport,
+  // a subtle horizontal nudge to hint that it's interactive.
   useEffect(() => {
     const el = containerRef.current;
     if (!el || hinted) return;
@@ -287,6 +288,12 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
         entries.forEach((e) => {
           if (e.isIntersecting && !hinted && !dragging) {
             setHinted(true);
+            const keyframes = [50, 56, 44, 52, 48, 50];
+            keyframes.forEach((v, i) => {
+              setTimeout(() => {
+                setPos((cur) => (dragging ? cur : v));
+              }, i * 260);
+            });
           }
         });
       },
@@ -329,10 +336,10 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
     updateFromClientX(clientX);
   };
 
-  // No transition during drag (instant follow). Quick, smooth ease for hint.
+  // No transition during drag (instant follow). Smooth ease for the intro sweep.
   const sharedTransition = dragging
     ? 'none'
-    : 'clip-path 220ms cubic-bezier(0.4, 0, 0.2, 1), left 220ms cubic-bezier(0.4, 0, 0.2, 1)';
+    : 'clip-path 260ms cubic-bezier(0.4, 0, 0.2, 1), left 260ms cubic-bezier(0.4, 0, 0.2, 1)';
 
   return (
     <div
@@ -377,13 +384,13 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
           onMouseDown={(e) => { e.stopPropagation(); startDrag(e.clientX); }}
           onTouchStart={(e) => { e.stopPropagation(); startDrag(e.touches[0].clientX); }}
           className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white text-foreground shadow-lg flex items-center justify-center cursor-ew-resize"
-          style={hinted && !dragging ? { animation: 'ba-teeter 900ms ease-in-out 1' } : undefined}
+          style={hinted && !dragging ? { animation: 'ba-handle-pulse 1600ms ease-out 1' } : undefined}
         >
           <ChevronLeft className="w-4 h-4 -mr-1" strokeWidth={2} />
           <ChevronRight className="w-4 h-4 -ml-1" strokeWidth={2} />
         </button>
       </div>
-      <style>{`@keyframes ba-teeter { 0%,100% { transform: translate(-50%,-50%) rotate(0deg);} 25% { transform: translate(-50%,-50%) rotate(-12deg);} 75% { transform: translate(-50%,-50%) rotate(12deg);} }`}</style>
+      <style>{`@keyframes ba-handle-pulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.7), 0 10px 25px rgba(0,0,0,0.18);} 70% { box-shadow: 0 0 0 14px rgba(255,255,255,0), 0 10px 25px rgba(0,0,0,0.18);} 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0), 0 10px 25px rgba(0,0,0,0.18);} }`}</style>
     </div>
   );
 };
