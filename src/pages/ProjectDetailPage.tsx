@@ -336,10 +336,10 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
     updateFromClientX(clientX);
   };
 
-  // No transition during drag (instant follow). Quick, smooth ease for hint.
+  // No transition during drag (instant follow). Smooth ease for the intro sweep.
   const sharedTransition = dragging
     ? 'none'
-    : 'clip-path 220ms cubic-bezier(0.4, 0, 0.2, 1), left 220ms cubic-bezier(0.4, 0, 0.2, 1)';
+    : 'clip-path 260ms cubic-bezier(0.4, 0, 0.2, 1), left 260ms cubic-bezier(0.4, 0, 0.2, 1)';
 
   return (
     <div
