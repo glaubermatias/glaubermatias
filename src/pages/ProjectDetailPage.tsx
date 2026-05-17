@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, X, Copy, Check } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import PageLayout from '@/components/PageLayout';
 import { getProjectById, getRelatedProjects, ProjectData, ProcessImage } from '@/data/projects';
@@ -693,6 +693,23 @@ const ProjectDetailPage = () => {
 
   const [lightbox, setLightbox] = useState<{ images: ProcessImage[]; title: string; index: number } | null>(null);
   const [activeGalleryId, setActiveGalleryId] = useState<string | null>(null);
+  const [emailCopied, setEmailCopied] = useState(false);
+
+  const handleCopyEmail = async () => {
+    const email = 'glauber.matias.ismart@gmail.com';
+    try {
+      await navigator.clipboard.writeText(email);
+    } catch {
+      const ta = document.createElement('textarea');
+      ta.value = email;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    setEmailCopied(true);
+    window.setTimeout(() => setEmailCopied(false), 2000);
+  };
 
   const getCategoryLabel = (category: string) => {
     const map: Record<string, string> = {
@@ -1106,6 +1123,62 @@ const ProjectDetailPage = () => {
               {derived.closingParagraph}
             </p>
           )}
+        </section>
+
+        {/* ============================================================= */}
+        {/* 8b. NDA / CONTACT BLOCK                                        */}
+        {/* ============================================================= */}
+        <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-16 md:pt-20">
+          <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden isolate">
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  'radial-gradient(120% 120% at 0% 0%, hsl(20 96% 56%) 0%, hsl(20 96% 46%) 35%, hsl(15 80% 28%) 70%, hsl(0 0% 8%) 100%)',
+              }}
+              aria-hidden="true"
+            />
+            <div
+              className="absolute -top-24 -right-24 w-[55%] h-[55%] rounded-full opacity-60"
+              style={{ background: 'radial-gradient(circle, hsl(40 100% 70% / 0.55), transparent 70%)' }}
+              aria-hidden="true"
+            />
+            <div
+              className="absolute -bottom-32 -left-16 w-[60%] h-[60%] rounded-full opacity-50"
+              style={{ background: 'radial-gradient(circle, hsl(20 100% 50% / 0.5), transparent 70%)' }}
+              aria-hidden="true"
+            />
+            <div
+              className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 md:px-12 border border-white/20"
+              style={{
+                backdropFilter: 'blur(28px) saturate(180%)',
+                WebkitBackdropFilter: 'blur(28px) saturate(180%)',
+                background:
+                  'linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 100%)',
+              }}
+            >
+              <h2 className="font-display text-3xl md:text-5xl lg:text-6xl font-semibold text-white mb-4 md:mb-6 leading-tight">
+                This Project is Under NDA
+              </h2>
+              <p className="text-white/85 text-base md:text-lg max-w-xl mb-8 md:mb-10 leading-relaxed">
+                Thank you for showing interest in my work. If you'd like to learn more about this project, please reach out!
+              </p>
+              <button
+                type="button"
+                onClick={handleCopyEmail}
+                aria-live="polite"
+                className="inline-flex items-center gap-2.5 px-6 md:px-7 py-3 md:py-3.5 rounded-full border border-white/30 text-white font-medium text-sm md:text-[15px] hover:bg-white/25 transition-colors duration-300"
+                style={{
+                  backdropFilter: 'blur(16px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(16px) saturate(180%)',
+                  background: 'rgba(255,255,255,0.14)',
+                }}
+              >
+                {emailCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                {emailCopied ? 'Email copied!' : 'Copy Email'}
+              </button>
+            </div>
+          </div>
         </section>
 
         {/* ============================================================= */}
