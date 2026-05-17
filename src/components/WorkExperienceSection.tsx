@@ -149,9 +149,9 @@ const WorkExperienceSection = () => {
                   duration: 0.4,
                   ease: 'easeInOut'
                 }} className="overflow-hidden">
-                        <ul className="mt-4 space-y-2 pl-4 border-l-2 border-accent">
+                        <ul className="mt-4 space-y-2">
                           {exp.expandedDetails.map((detail, idx) => <li key={idx} className="text-muted-foreground text-sm">
-                              {detail}
+                              • {detail}
                             </li>)}
                         </ul>
                       </motion.div>}
