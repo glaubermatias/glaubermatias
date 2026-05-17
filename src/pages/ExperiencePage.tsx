@@ -11,7 +11,7 @@ import WorkExperienceSection from '@/components/WorkExperienceSection';
 const ResumeCTA = () => (
   <a
     href="#experience"
-    className="group relative inline-flex items-center isolate h-14 md:h-16"
+    className="group relative hidden md:inline-flex items-center isolate h-14 md:h-16"
     aria-label="Read my CV"
   >
     {/* Liquid-glass pill (always visible) */}
@@ -42,7 +42,7 @@ const ExperiencePage = () => {
         Work experience
       </h1>
       <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-xl">
-        A journey through my professional career.
+        A journey through my professional career — designing executive narratives, investor materials, and brand systems for some of the most demanding companies in the world.
       </p>
     </PageHeader>
   );
