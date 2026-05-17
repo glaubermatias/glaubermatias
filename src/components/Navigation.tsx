@@ -260,6 +260,11 @@ const Navigation = () => {
           <AnimatePresence>
             {isMobileMenuOpen && (
               <motion.div
+                ref={mobileMenuRef}
+                id="mobile-nav"
+                role="dialog"
+                aria-modal="true"
+                aria-label="Site navigation"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
