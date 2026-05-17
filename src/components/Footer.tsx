@@ -76,9 +76,9 @@ const Footer = () => {
                 </div>
               </div>
 
-              {/* Right side — two columns pushed right */}
-              <div className="md:col-span-7 flex justify-end">
-                <div className="flex gap-16">
+              {/* Right side — two columns, side-by-side even on mobile */}
+              <div className="md:col-span-7 flex md:justify-end">
+                <div className="flex gap-8 md:gap-16 w-full md:w-auto justify-between md:justify-start">
                   {/* Quick Links */}
                   <div>
                     <ul className="space-y-2 text-white/70">

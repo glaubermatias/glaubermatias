@@ -14,6 +14,7 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const touchStartX = useRef<number | null>(null);
 
   const startAutoPlay = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
@@ -29,9 +30,7 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
     };
   }, [autoPlay, startAutoPlay, project.images.length]);
 
-  const handleNav = (e: React.MouseEvent, direction: 'prev' | 'next') => {
-    e.preventDefault();
-    e.stopPropagation();
+  const goTo = (direction: 'prev' | 'next') => {
     setAutoPlay(false);
     if (intervalRef.current) clearInterval(intervalRef.current);
     setCurrentImageIndex((p) =>
@@ -39,6 +38,22 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
         ? (p + 1) % project.images.length
         : (p - 1 + project.images.length) % project.images.length,
     );
+  };
+
+  const handleNav = (e: React.MouseEvent, direction: 'prev' | 'next') => {
+    e.preventDefault();
+    e.stopPropagation();
+    goTo(direction);
+  };
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current == null || project.images.length <= 1) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(dx) > 40) goTo(dx < 0 ? 'next' : 'prev');
   };
 
   const tagLabel = `WORK ${String(index + 1).padStart(2, '0')}/${String(totalCount).padStart(2, '0')}`;
@@ -101,7 +116,11 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
 
             {/* RIGHT — Carousel (50%) */}
             <div>
-              <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg select-none bg-muted">
+              <div
+                className="relative w-full aspect-[16/10] overflow-hidden rounded-lg select-none bg-muted"
+                onTouchStart={onTouchStart}
+                onTouchEnd={onTouchEnd}
+              >
                 <motion.img
                   key={currentImageIndex}
                   src={project.images[currentImageIndex]}
