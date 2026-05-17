@@ -276,32 +276,39 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
   const [pos, setPos] = useState(50); // %
   const [dragging, setDragging] = useState(false);
   const [hinted, setHinted] = useState(false);
+  const hintedRef = useRef(false);
+  const draggingRef = useRef(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Sweep the divider once when the section enters the viewport,
-  // a subtle horizontal nudge to hint that it's interactive.
+  // Tiny lateral "vibration" once the user scrolls the section into view.
+  // Very subtle, narrow range, quick — just enough to hint interactivity.
   useEffect(() => {
     const el = containerRef.current;
-    if (!el || hinted) return;
+    if (!el) return;
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting && !hinted && !dragging) {
-            setHinted(true);
-            const keyframes = [50, 56, 44, 52, 48, 50];
-            keyframes.forEach((v, i) => {
-              setTimeout(() => {
-                setPos((cur) => (dragging ? cur : v));
-              }, i * 260);
-            });
-          }
+          if (!e.isIntersecting) return;
+          if (hintedRef.current || draggingRef.current) return;
+          hintedRef.current = true;
+          setHinted(true);
+          // ±1.5% nudge, ~90ms steps, returns to 50%.
+          const keyframes = [50, 51.5, 48.5, 51, 49, 50];
+          keyframes.forEach((v, i) => {
+            setTimeout(() => {
+              if (!draggingRef.current) setPos(v);
+            }, i * 90);
+          });
+          obs.disconnect();
         });
       },
-      { threshold: 0.4 },
+      { threshold: 0.6 },
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, [hinted, dragging]);
+  }, []);
+
+  useEffect(() => { draggingRef.current = dragging; }, [dragging]);
 
   const updateFromClientX = (clientX: number) => {
     const el = containerRef.current;
@@ -336,10 +343,10 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
     updateFromClientX(clientX);
   };
 
-  // No transition during drag (instant follow). Smooth ease for the intro sweep.
+  // No transition during drag (instant). Fast subtle ease during the hint.
   const sharedTransition = dragging
     ? 'none'
-    : 'clip-path 260ms cubic-bezier(0.4, 0, 0.2, 1), left 260ms cubic-bezier(0.4, 0, 0.2, 1)';
+    : 'clip-path 120ms cubic-bezier(0.4, 0, 0.2, 1), left 120ms cubic-bezier(0.4, 0, 0.2, 1)';
 
   return (
     <div
@@ -587,6 +594,7 @@ const ProjectDetailPage = () => {
   const relatedProjects = projectId ? getRelatedProjects(projectId, 3) : [];
 
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [activeGalleryId, setActiveGalleryId] = useState<string | null>(null);
 
   const getCategoryLabel = (category: string) => {
     const map: Record<string, string> = {
@@ -856,16 +864,57 @@ const ProjectDetailPage = () => {
         )}
 
         {/* ============================================================= */}
-        {/* 5. PROCESS - BENTO                                              */}
+        {/* 5. PROCESS - BENTO (with related-project gallery switcher)     */}
         {/* ============================================================= */}
-        {derived.bentoImages.length > 0 && (
-          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-10 md:pt-12">
-            <BentoGrid
-              images={derived.bentoImages}
-              onOpen={(i) => setLightboxIndex(i)}
-            />
-          </section>
-        )}
+        {derived.bentoImages.length > 0 && (() => {
+          // Galleries: current project first (default active), then related.
+          const galleries = [
+            { id: project.id, label: project.title, images: derived.bentoImages },
+            ...relatedProjects.map((rp) => {
+              const src = (rp.processImages && rp.processImages.length > 0)
+                ? rp.processImages
+                : rp.images.map((s) => ({ src: s } as ProcessImage));
+              const tiles: ProcessImage[] = [];
+              for (let i = 0; i < 8; i++) tiles.push(src[i % src.length]);
+              return { id: rp.id, label: rp.title, images: tiles };
+            }),
+          ];
+          const activeId = activeGalleryId ?? project.id;
+          const active = galleries.find((g) => g.id === activeId) ?? galleries[0];
+          return (
+            <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-10 md:pt-12">
+              {galleries.length > 1 && (
+                <div className="flex flex-wrap justify-center gap-3 mb-8 md:mb-10">
+                  {galleries.map((g) => {
+                    const isActive = g.id === active.id;
+                    return (
+                      <button
+                        key={g.id}
+                        type="button"
+                        onClick={() => setActiveGalleryId(g.id)}
+                        className={`w-[180px] md:w-[200px] truncate text-center px-4 py-2.5 rounded-full border text-xs md:text-[13px] tracking-[0.12em] uppercase font-sans transition-colors ${
+                          isActive
+                            ? 'bg-foreground text-background border-foreground'
+                            : 'bg-transparent text-foreground border-foreground/20 hover:border-foreground/50 hover:bg-foreground/[0.04]'
+                        }`}
+                        aria-pressed={isActive}
+                        title={g.label}
+                      >
+                        {g.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+              <BentoGrid
+                key={active.id}
+                images={active.images}
+                onOpen={(i) => setLightboxIndex(i)}
+              />
+            </section>
+          );
+        })()}
+
 
         {/* ============================================================= */}
         {/* 5b. BEFORE & AFTER COMPARISON                                   */}
@@ -910,19 +959,25 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         <section className="max-w-[1100px] mx-auto px-8 md:px-16 pt-12 md:pt-16 text-center">
           {bigNumbers.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 sm:gap-16 mb-16 max-w-3xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 sm:gap-12 mb-16 max-w-3xl mx-auto text-left">
               {bigNumbers.slice(0, 2).map((n, i) => (
                 <div key={i}>
-                  <p className="font-display text-6xl md:text-7xl font-semibold text-foreground leading-none tracking-tight">
-                    {n.value}
-                  </p>
-                  <p className="mt-4 text-xs tracking-[0.18em] uppercase text-muted-foreground">
+                  <p className="text-xs md:text-[13px] tracking-[0.22em] uppercase text-muted-foreground mb-4">
                     {n.label}
                   </p>
+                  <p className="font-display text-6xl md:text-7xl font-semibold text-foreground leading-[0.95] tracking-tight">
+                    {n.value}
+                  </p>
+                  {n.description && (
+                    <p className="mt-5 text-sm md:text-[15px] text-muted-foreground leading-relaxed">
+                      {n.description}
+                    </p>
+                  )}
                 </div>
               ))}
             </div>
           )}
+
 
           {project.quote && (
             <figure className="my-16 max-w-3xl mx-auto">
