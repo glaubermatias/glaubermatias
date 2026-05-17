@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, X, Copy, Check } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import PageLayout from '@/components/PageLayout';
 import { getProjectById, getRelatedProjects, ProjectData, ProcessImage } from '@/data/projects';
