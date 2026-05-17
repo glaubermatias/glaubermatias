@@ -972,7 +972,7 @@ const ProjectDetailPage = () => {
                     <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
                       {block.label}
                     </h3>
-                    <p className="md:col-span-7 text-base md:text-lg text-muted-foreground leading-relaxed">
+                    <p className="md:col-span-7 text-sm md:text-base text-muted-foreground leading-relaxed">
                       {block.body}
                     </p>
                   </div>
@@ -1063,7 +1063,7 @@ const ProjectDetailPage = () => {
             <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
               Trade-offs &amp; Constraints
             </h3>
-            <p className="md:col-span-7 text-base md:text-lg text-muted-foreground leading-relaxed">
+            <p className="md:col-span-7 text-sm md:text-base text-muted-foreground leading-relaxed">
               {derived.tradeoffs}
             </p>
           </div>
