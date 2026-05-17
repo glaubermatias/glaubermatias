@@ -1130,46 +1130,36 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-16 md:pt-20">
           <div
-            className="relative w-full rounded-2xl overflow-hidden isolate border"
+            className="relative w-full rounded-md overflow-hidden isolate border"
             style={{
-              background: '#f8f6f5',
+              background: '#efefef',
               borderColor: 'rgba(255,255,255,0.6)',
             }}
           >
-            {/* Subtle liquid glass highlight */}
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                backdropFilter: 'blur(20px) saturate(160%)',
-                WebkitBackdropFilter: 'blur(20px) saturate(160%)',
-                background:
-                  'linear-gradient(135deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.08) 100%)',
-              }}
-              aria-hidden="true"
-            />
             {/* Soft top-edge light reflection */}
             <div
               className="absolute top-0 left-0 right-0 h-px pointer-events-none"
-              style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent)' }}
+              style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent)' }}
               aria-hidden="true"
             />
-            <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 md:px-12 py-10 md:py-14">
-              <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold text-foreground mb-3 md:mb-4 leading-tight">
+            <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 md:px-12 py-7 md:py-9">
+              <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold text-foreground mb-2 md:mb-3 leading-tight">
                 This project is under NDA
               </h2>
-              <p className="text-muted-foreground text-base md:text-lg max-w-xl mb-6 md:mb-8 leading-relaxed">
+              <p className="text-muted-foreground text-base md:text-lg max-w-xl mb-5 md:mb-6 leading-relaxed">
                 Thank you for showing interest in my work. If you'd like to learn more about this project, please reach out!
               </p>
               <button
                 type="button"
                 onClick={handleCopyEmail}
                 aria-live="polite"
-                className="inline-flex items-center gap-2.5 px-6 md:px-7 py-3 md:py-3.5 rounded-full border font-medium text-sm md:text-[15px] transition-colors duration-300 text-foreground hover:bg-white/60"
+                className="inline-flex items-center gap-2.5 px-6 md:px-7 py-3 md:py-3.5 rounded-full border font-medium text-sm md:text-[15px] transition-colors duration-300 text-foreground hover:bg-white"
                 style={{
                   backdropFilter: 'blur(16px) saturate(180%)',
                   WebkitBackdropFilter: 'blur(16px) saturate(180%)',
-                  background: 'rgba(255,255,255,0.35)',
-                  borderColor: 'rgba(0,0,0,0.08)',
+                  background: 'rgba(255,255,255,0.7)',
+                  borderColor: 'rgba(255,255,255,0.8)',
+                  boxShadow: '0 1px 2px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.9)',
                 }}
               >
                 {emailCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
