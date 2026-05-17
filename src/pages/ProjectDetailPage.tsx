@@ -457,10 +457,10 @@ const LiquidGlassDots = ({
 }) => {
   if (total <= 1) return null;
   return (
-    <div className="flex justify-center mt-6">
+    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
       <div
-        className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/5 px-3 py-2 shadow-[0_4px_24px_-12px_rgba(0,0,0,0.25)]"
-        style={{ backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' }}
+        className="pointer-events-auto inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-2 py-1"
+        style={{ backdropFilter: 'blur(14px) saturate(160%)', WebkitBackdropFilter: 'blur(14px) saturate(160%)' }}
         role="tablist"
         aria-label="Carousel pagination"
       >
@@ -474,13 +474,13 @@ const LiquidGlassDots = ({
               aria-selected={active}
               aria-label={`Slide ${i + 1} of ${total}`}
               onClick={() => onSelect(i)}
-              className="group relative grid place-items-center w-5 h-5 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40"
+              className="group relative grid place-items-center w-4 h-4 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
             >
               <span
                 className={`block rounded-full transition-all duration-300 ${
                   active
-                    ? 'w-2.5 h-2.5 bg-foreground'
-                    : 'w-1.5 h-1.5 bg-foreground/30 group-hover:bg-foreground/60'
+                    ? 'w-2 h-2 bg-white'
+                    : 'w-1.5 h-1.5 bg-white/40 group-hover:bg-white/70'
                 }`}
               />
             </button>
