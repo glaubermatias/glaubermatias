@@ -46,7 +46,7 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="flex justify-center md:justify-start"
           >
-            <Link to="/about-me" className="block group">
+            <Link to="/about" className="block group">
               <img
                 src={glauberPortrait}
                 alt="Glauber Matias"

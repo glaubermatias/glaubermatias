@@ -66,14 +66,14 @@ const Navigation = () => {
   const navLinks = isHomePage
     ? [
         { href: '#work', label: 'Work' },
-        { href: '/experience', label: 'CV' },
-        { href: '/about-me', label: 'About' },
+        { href: '/cv', label: 'CV' },
+        { href: '/about', label: 'About' },
         { href: '#contact', label: 'Contact' },
       ]
     : [
         { href: '/work', label: 'Work' },
-        { href: '/experience', label: 'CV' },
-        { href: '/about-me', label: 'About' },
+        { href: '/cv', label: 'CV' },
+        { href: '/about', label: 'About' },
         { href: '#contact', label: 'Contact' },
       ];
 
