@@ -64,7 +64,7 @@ const AboutSection = () => {
               </p>
 
               <Link
-                to="/about-me"
+                to="/about"
                 className="inline-flex items-center gap-2 px-5 py-2.5 border-2 border-primary text-primary font-normal rounded-full hover:bg-primary hover:text-primary-foreground transition-all duration-300 group"
               >
                 <span>Who I am beyond the slides</span>

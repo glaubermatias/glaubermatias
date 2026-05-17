@@ -41,8 +41,8 @@ const Footer = () => {
 
   const quickLinks = [
     { href: '#work', label: 'Work' },
-    { href: '/experience', label: 'CV' },
-    { href: '/about-me', label: 'About' },
+    { href: '/cv', label: 'CV' },
+    { href: '/about', label: 'About' },
   ];
 
   return (
@@ -98,7 +98,10 @@ const Footer = () => {
                     <p className="text-white/60 font-sans font-normal mb-4">
                       (from Aug/26)
                     </p>
-                    <p className="font-sans font-normal text-white/90">
+                    <p
+                      className="font-sans font-normal text-white/90"
+                      aria-label="Lisbon local time"
+                    >
                       {lisbonTime}
                     </p>
                   </div>

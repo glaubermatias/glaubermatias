@@ -9,6 +9,59 @@ const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [navTheme, setNavTheme] = useState<'hero' | 'dark' | 'light'>('hero');
   const navRef = useRef<HTMLElement>(null!);
+  const mobileMenuRef = useRef<HTMLDivElement | null>(null);
+  const menuToggleRef = useRef<HTMLButtonElement | null>(null);
+  const lastFocusedRef = useRef<HTMLElement | null>(null);
+
+  // Mobile menu: Esc to close, focus trap, restore focus on close
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    lastFocusedRef.current = (document.activeElement as HTMLElement) ?? null;
+
+    const getFocusable = () => {
+      const root = mobileMenuRef.current;
+      if (!root) return [] as HTMLElement[];
+      return Array.from(
+        root.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      );
+    };
+
+    // Focus the first link inside the menu
+    const t = window.setTimeout(() => {
+      const items = getFocusable();
+      items[0]?.focus();
+    }, 50);
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        setIsMobileMenuOpen(false);
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const items = getFocusable();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      window.clearTimeout(t);
+      // Restore focus to the toggle that opened the menu
+      (lastFocusedRef.current ?? menuToggleRef.current)?.focus?.();
+    };
+  }, [isMobileMenuOpen]);
 
   const isHomePage = location.pathname === '/';
 
@@ -66,14 +119,14 @@ const Navigation = () => {
   const navLinks = isHomePage
     ? [
         { href: '#work', label: 'Work' },
-        { href: '/experience', label: 'CV' },
-        { href: '/about-me', label: 'About' },
+        { href: '/cv', label: 'CV' },
+        { href: '/about', label: 'About' },
         { href: '#contact', label: 'Contact' },
       ]
     : [
         { href: '/work', label: 'Work' },
-        { href: '/experience', label: 'CV' },
-        { href: '/about-me', label: 'About' },
+        { href: '/cv', label: 'CV' },
+        { href: '/about', label: 'About' },
         { href: '#contact', label: 'Contact' },
       ];
 
@@ -161,6 +214,7 @@ const Navigation = () => {
             <a
               href={logoHref}
               onClick={(e) => handleLinkClick(e, logoHref)}
+              aria-label="Home — Glauber Matias"
               className={`font-display text-xl font-medium transition-colors duration-300 ${
                 isLightText ? 'text-white' : 'text-primary'
               }`}
@@ -189,11 +243,14 @@ const Navigation = () => {
 
             {/* Mobile Menu Button */}
             <button
+              ref={menuToggleRef}
               className={`md:hidden p-2 transition-colors duration-300 ${
                 isLightText ? 'text-white' : 'text-foreground'
               }`}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle menu"
+              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-nav"
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -203,6 +260,11 @@ const Navigation = () => {
           <AnimatePresence>
             {isMobileMenuOpen && (
               <motion.div
+                ref={mobileMenuRef}
+                id="mobile-nav"
+                role="dialog"
+                aria-modal="true"
+                aria-label="Site navigation"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}

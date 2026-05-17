@@ -110,10 +110,10 @@ const Lightbox = ({
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.25 }}
-        className="w-[90vw] max-w-[1400px] flex flex-col items-center gap-4"
+        className="w-[92vw] max-w-[1320px] px-4 md:px-10 lg:px-16 py-6 md:py-10 flex flex-col items-center gap-4"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="w-full aspect-[16/9] bg-black/40 rounded-lg overflow-hidden flex items-center justify-center">
+        <div className="w-full aspect-[16/9] bg-black/40 rounded-md overflow-hidden flex items-center justify-center">
           <img
             src={current.src}
             alt={current.caption || ''}
@@ -276,13 +276,15 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
   const [pos, setPos] = useState(50); // %
   const [dragging, setDragging] = useState(false);
   const [hinted, setHinted] = useState(false);
+  const [showTip, setShowTip] = useState(false);
   const hintedRef = useRef(false);
   const draggingRef = useRef(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const handleRef = useRef<HTMLButtonElement | null>(null);
 
-  // When the section scrolls into view, trigger only the handle pulse
-  // (same effect that plays after the user finishes dragging). No divider
-  // vibration — the pulse alone hints interactivity.
+  // When the section scrolls into view, trigger the handle pulse and a brief
+  // "Drag to compare" tooltip — same effect that plays after the user finishes
+  // dragging. Tooltip fades after 2s.
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -293,6 +295,8 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
           if (hintedRef.current) return;
           hintedRef.current = true;
           setHinted(true);
+          setShowTip(true);
+          window.setTimeout(() => setShowTip(false), 2000);
           obs.disconnect();
         });
       },
@@ -333,8 +337,26 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
 
   const startDrag = (clientX: number) => {
     setHinted(true);
+    setShowTip(false);
     setDragging(true);
     updateFromClientX(clientX);
+  };
+
+  const onHandleKeyDown = (e: React.KeyboardEvent) => {
+    const step = e.shiftKey ? 10 : 4;
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      setPos((p) => Math.max(0, p - step));
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      setPos((p) => Math.min(100, p + step));
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      setPos(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      setPos(100);
+    }
   };
 
   // No transition during drag (instant). Fast subtle ease during the hint.
@@ -379,12 +401,37 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
         style={{ left: `${pos}%`, transition: sharedTransition }}
       >
         <div className="absolute top-0 bottom-0 -translate-x-1/2 w-[3px] bg-white shadow-[0_0_12px_rgba(0,0,0,0.45)]" />
+
+        {/* Tooltip — shows once on first viewport entry */}
+        <AnimatePresence>
+          {showTip && (
+            <motion.div
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.25 }}
+              className="absolute top-1/2 -translate-y-[230%] left-1/2 -translate-x-1/2 z-30 pointer-events-none whitespace-nowrap rounded-full bg-foreground text-background text-[11px] tracking-[0.18em] uppercase px-3 py-1.5 shadow-lg"
+              role="status"
+            >
+              Drag to compare
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <button
+          ref={handleRef}
           type="button"
-          aria-label="Drag to compare before and after"
+          role="slider"
+          aria-label="Before and after comparison — drag to compare"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(pos)}
+          aria-valuetext={`${Math.round(pos)}% before, ${100 - Math.round(pos)}% after`}
+          tabIndex={0}
+          onKeyDown={onHandleKeyDown}
           onMouseDown={(e) => { e.stopPropagation(); startDrag(e.clientX); }}
           onTouchStart={(e) => { e.stopPropagation(); startDrag(e.touches[0].clientX); }}
-          className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white text-foreground shadow-lg flex items-center justify-center cursor-ew-resize"
+          className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white text-foreground shadow-lg flex items-center justify-center cursor-ew-resize focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2"
           style={hinted && !dragging ? { animation: 'ba-handle-pulse 1600ms ease-out 1' } : undefined}
         >
           <ChevronLeft className="w-4 h-4 -mr-1" strokeWidth={2} />
@@ -392,6 +439,54 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
         </button>
       </div>
       <style>{`@keyframes ba-handle-pulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.7), 0 10px 25px rgba(0,0,0,0.18);} 70% { box-shadow: 0 0 0 14px rgba(255,255,255,0), 0 10px 25px rgba(0,0,0,0.18);} 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0), 0 10px 25px rgba(0,0,0,0.18);} }`}</style>
+    </div>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/* Liquid-glass carousel pagination                                    */
+/* ------------------------------------------------------------------ */
+const LiquidGlassDots = ({
+  total,
+  idx,
+  onSelect,
+}: {
+  total: number;
+  idx: number;
+  onSelect: (i: number) => void;
+}) => {
+  if (total <= 1) return null;
+  return (
+    <div className="flex justify-center mt-6">
+      <div
+        className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/5 px-3 py-2 shadow-[0_4px_24px_-12px_rgba(0,0,0,0.25)]"
+        style={{ backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' }}
+        role="tablist"
+        aria-label="Carousel pagination"
+      >
+        {Array.from({ length: total }).map((_, i) => {
+          const active = i === idx;
+          return (
+            <button
+              key={i}
+              type="button"
+              role="tab"
+              aria-selected={active}
+              aria-label={`Slide ${i + 1} of ${total}`}
+              onClick={() => onSelect(i)}
+              className="group relative grid place-items-center w-5 h-5 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40"
+            >
+              <span
+                className={`block rounded-full transition-all duration-300 ${
+                  active
+                    ? 'w-2.5 h-2.5 bg-foreground'
+                    : 'w-1.5 h-1.5 bg-foreground/30 group-hover:bg-foreground/60'
+                }`}
+              />
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 };
@@ -495,20 +590,7 @@ const CenterStageCarousel = ({ images }: { images: string[] }) => {
         )}
       </div>
 
-      {total > 1 && (
-        <div className="flex justify-center gap-2 mt-6">
-          {images.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setIdx(i)}
-              aria-label={`Go to ${i + 1}`}
-              className={`h-[2px] rounded-full transition-all duration-300 ${
-                i === idx ? 'bg-foreground w-8' : 'bg-foreground/25 w-4 hover:bg-foreground/50'
-              }`}
-            />
-          ))}
-        </div>
-      )}
+      <LiquidGlassDots total={total} idx={idx} onSelect={setIdx} />
     </div>
   );
 };
@@ -560,20 +642,7 @@ const HeroCarousel = ({ images, title }: { images: string[]; title: string }) =>
         )}
       </div>
 
-      {total > 1 && (
-        <div className="flex justify-center gap-2 mt-5">
-          {images.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setIdx(i)}
-              aria-label={`Go to ${i + 1}`}
-              className={`h-[2px] rounded-full transition-all duration-300 ${
-                i === idx ? 'bg-foreground w-8' : 'bg-foreground/25 w-4 hover:bg-foreground/50'
-              }`}
-            />
-          ))}
-        </div>
-      )}
+      <LiquidGlassDots total={total} idx={idx} onSelect={setIdx} />
     </div>
   );
 };
@@ -886,7 +955,7 @@ const ProjectDetailPage = () => {
                         key={g.id}
                         type="button"
                         onClick={() => setActiveGalleryId(g.id)}
-                        className={`relative w-[180px] md:w-[200px] truncate text-center px-4 py-2.5 rounded-full text-xs md:text-[13px] tracking-[0.12em] uppercase font-sans transition-colors ${
+                        className={`relative inline-flex items-center justify-center min-w-[180px] md:min-w-[200px] max-w-[180px] md:max-w-[200px] hover:max-w-[520px] focus-visible:max-w-[520px] overflow-hidden whitespace-nowrap text-center px-4 py-2.5 rounded-full text-xs md:text-[13px] tracking-[0.12em] uppercase font-sans transition-[max-width,color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                           isActive
                             ? 'text-background'
                             : 'text-foreground hover:text-foreground'
@@ -901,7 +970,7 @@ const ProjectDetailPage = () => {
                             transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                           />
                         )}
-                        <span className="relative z-10">{g.label}</span>
+                        <span className="relative z-10 truncate">{g.label}</span>
                       </button>
                     );
                   })}
