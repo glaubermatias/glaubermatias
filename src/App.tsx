@@ -9,8 +9,6 @@ import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 
 // Lazy-load secondary routes to keep the initial bundle small
-const CaseStudiesPage = lazy(() => import("./pages/CaseStudiesPage"));
-const CaseStudyDetail = lazy(() => import("./pages/CaseStudyDetail"));
 const WorkPage = lazy(() => import("./pages/WorkPage"));
 const ProjectDetailPage = lazy(() => import("./pages/ProjectDetailPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
