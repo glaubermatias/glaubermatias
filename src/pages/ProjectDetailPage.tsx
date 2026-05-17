@@ -444,6 +444,54 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
 };
 
 /* ------------------------------------------------------------------ */
+/* Liquid-glass carousel pagination                                    */
+/* ------------------------------------------------------------------ */
+const LiquidGlassDots = ({
+  total,
+  idx,
+  onSelect,
+}: {
+  total: number;
+  idx: number;
+  onSelect: (i: number) => void;
+}) => {
+  if (total <= 1) return null;
+  return (
+    <div className="flex justify-center mt-6">
+      <div
+        className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/5 px-3 py-2 shadow-[0_4px_24px_-12px_rgba(0,0,0,0.25)]"
+        style={{ backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' }}
+        role="tablist"
+        aria-label="Carousel pagination"
+      >
+        {Array.from({ length: total }).map((_, i) => {
+          const active = i === idx;
+          return (
+            <button
+              key={i}
+              type="button"
+              role="tab"
+              aria-selected={active}
+              aria-label={`Slide ${i + 1} of ${total}`}
+              onClick={() => onSelect(i)}
+              className="group relative grid place-items-center w-5 h-5 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40"
+            >
+              <span
+                className={`block rounded-full transition-all duration-300 ${
+                  active
+                    ? 'w-2.5 h-2.5 bg-foreground'
+                    : 'w-1.5 h-1.5 bg-foreground/30 group-hover:bg-foreground/60'
+                }`}
+              />
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+/* ------------------------------------------------------------------ */
 /* Center-stage carousel (live event)                                  */
 /* ------------------------------------------------------------------ */
 const CenterStageCarousel = ({ images }: { images: string[] }) => {
