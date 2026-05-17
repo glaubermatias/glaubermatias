@@ -1096,6 +1096,13 @@ const ProjectDetailPage = () => {
         {relatedProjects.length > 0 && (
           <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-20 md:pt-24">
             <div className="border-t border-foreground/10 pt-12 md:pt-14">
+              <Link
+                to="/work"
+                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Back to all projects
+              </Link>
               <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground mb-10">
                 Related work
               </h3>
@@ -1110,25 +1117,24 @@ const ProjectDetailPage = () => {
       </main>
 
       {/* Lightbox */}
-      <AnimatePresence>
-        {lightboxIndex !== null && (
-          <Lightbox
-            images={derived.processImages}
-            index={lightboxIndex}
-            onClose={() => setLightboxIndex(null)}
-            onPrev={() =>
-              setLightboxIndex((i) =>
-                i === null ? null : (i - 1 + derived.processImages.length) % derived.processImages.length,
-              )
-            }
-            onNext={() =>
-              setLightboxIndex((i) =>
-                i === null ? null : (i + 1) % derived.processImages.length,
-              )
-            }
-          />
-        )}
-      </AnimatePresence>
+      {lightbox && (
+        <Lightbox
+          images={lightbox.images}
+          index={lightbox.index}
+          title={lightbox.title}
+          onClose={() => setLightbox(null)}
+          onPrev={() =>
+            setLightbox((l) =>
+              l ? { ...l, index: (l.index - 1 + l.images.length) % l.images.length } : l,
+            )
+          }
+          onNext={() =>
+            setLightbox((l) =>
+              l ? { ...l, index: (l.index + 1) % l.images.length } : l,
+            )
+          }
+        />
+      )}
     </PageLayout>
   );
 };
