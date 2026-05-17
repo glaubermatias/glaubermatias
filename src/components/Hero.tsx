@@ -91,12 +91,13 @@ const Hero = () => {
               className="font-display text-white font-semibold text-[1.75rem] sm:text-[2rem] md:text-[2.25rem] lg:text-[2.5rem] xl:text-[2.75rem]"
               style={{ lineHeight: 1.2 }}
             >
-              Designer of visual stories that amplify the impact of{'\u00A0'}
+              <span className="md:hidden">Designer of visual stories that amplify the impact of</span>
+              <span className="hidden md:inline">Designer of visual stories that amplify the impact of{'\u00A0'}</span>
               <Link
                 to="/work"
-                className="relative inline-flex cursor-pointer align-baseline"
+                className="relative cursor-pointer align-baseline block mx-auto md:inline-flex md:mx-0 max-w-full"
                 style={{
-                  height: '1.2em',
+                  height: '1.45em',
                   lineHeight: 1.2,
                   verticalAlign: 'baseline',
                   overflow: 'hidden',
@@ -106,8 +107,8 @@ const Hero = () => {
                 {/* Invisible spacer = widest word, reserves inline width so layout doesn't jump */}
                 <span
                   aria-hidden="true"
-                  className="invisible whitespace-nowrap"
-                  style={{ lineHeight: 1.2 }}
+                  className="invisible whitespace-nowrap block md:inline"
+                  style={{ lineHeight: 1.2, maxWidth: '100%' }}
                 >
                   {widestWord}
                 </span>
@@ -124,7 +125,7 @@ const Hero = () => {
                     style={{
                       color: '#e85102',
                       lineHeight: 1.2,
-                      height: '1.2em',
+                      height: '1.45em',
                     }}
                   >
                     {activeWord}
