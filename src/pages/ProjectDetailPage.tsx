@@ -852,8 +852,8 @@ const ProjectDetailPage = () => {
             {(project.company || project.client)} <span className="mx-2">•</span> {project.year} <span className="mx-2">•</span> {getCategoryLabel(project.category)}
           </p>
 
-          {/* Meaningful title - gray, full content width */}
-          <h2 className="font-display text-3xl md:text-5xl lg:text-6xl font-normal mt-6 leading-tight text-[#b7b7b7]">
+          {/* Meaningful title - darker gray, slightly smaller */}
+          <h2 className="font-display text-2xl md:text-4xl lg:text-5xl font-normal mt-6 leading-tight text-[#7a7a7a]">
             {derived.meaningfulTitle}
           </h2>
 
