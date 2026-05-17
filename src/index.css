@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @font-face {
-  font-family: 'Exposure';
-  src: url('/fonts/ExposureTrial-10.otf') format('opentype');
+  font-family: 'Eighties Comeback';
+  src: url('/fonts/EightiesComeback-Medium.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
   font-display: block;
@@ -162,7 +162,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Exposure', 'Inter', sans-serif;
+    font-family: 'Eighties Comeback', 'Inter', sans-serif;
   }
 }
 
