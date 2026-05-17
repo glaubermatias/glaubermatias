@@ -126,7 +126,7 @@ const Lightbox = ({
       </button>
 
       <div
-        className="w-[92vw] max-w-[1320px] px-4 md:px-10 lg:px-16 pt-24 md:pt-28 pb-8 md:pb-12 flex flex-col items-center gap-4"
+        className="w-[92vw] max-w-[1320px] px-4 md:px-10 lg:px-16 pt-24 md:pt-28 pb-16 md:pb-24 flex flex-col items-center gap-4"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="w-full aspect-[16/9] bg-black/40 rounded-md overflow-hidden flex items-center justify-center">
