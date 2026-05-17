@@ -54,6 +54,10 @@ const WorkExperienceSection = () => {
   };
   return <section id="experience" className="lg:py-[20px] py-0">
       <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
+        <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold mb-8">
+          CV
+        </h2>
+
         {/* Timeline */}
         <div className="relative">
           {/* Vertical line */}
