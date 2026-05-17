@@ -594,6 +594,7 @@ const ProjectDetailPage = () => {
   const relatedProjects = projectId ? getRelatedProjects(projectId, 3) : [];
 
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [activeGalleryId, setActiveGalleryId] = useState<string | null>(null);
 
   const getCategoryLabel = (category: string) => {
     const map: Record<string, string> = {
