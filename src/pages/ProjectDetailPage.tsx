@@ -289,7 +289,6 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
   const [pos, setPos] = useState(50); // %
   const [dragging, setDragging] = useState(false);
   const [hinted, setHinted] = useState(false);
-  const [showTip, setShowTip] = useState(false);
   const hintedRef = useRef(false);
   const draggingRef = useRef(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
