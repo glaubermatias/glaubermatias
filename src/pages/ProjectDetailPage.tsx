@@ -307,8 +307,6 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
           if (hintedRef.current) return;
           hintedRef.current = true;
           setHinted(true);
-          setShowTip(true);
-          window.setTimeout(() => setShowTip(false), 2000);
           obs.disconnect();
         });
       },
