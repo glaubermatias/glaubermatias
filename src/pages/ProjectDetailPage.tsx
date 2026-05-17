@@ -855,8 +855,8 @@ const ProjectDetailPage = () => {
             {(project.company || project.client)} <span className="mx-2">•</span> {project.year} <span className="mx-2">•</span> {getCategoryLabel(project.category)}
           </p>
 
-          {/* Meaningful title - gray, full content width */}
-          <h2 className="font-display text-3xl md:text-5xl lg:text-6xl font-normal mt-6 leading-tight text-[#b7b7b7]">
+          {/* Meaningful title - muted, accessible contrast */}
+          <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-normal mt-6 leading-tight text-muted-foreground">
             {derived.meaningfulTitle}
           </h2>
 
@@ -877,19 +877,21 @@ const ProjectDetailPage = () => {
             className="mt-16 border-t border-b border-foreground/[0.08]"
           >
             <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-12 items-start py-10 md:py-12">
-              {/* Metadata - left, 50% */}
+              {/* Metadata - left, 50% — empty / placeholder values are hidden */}
               <dl className="md:col-span-2 flex flex-col gap-4">
                 {[
                   { label: 'Role', value: derived.role },
                   { label: 'Stakeholders', value: derived.stakeholders },
                   { label: 'Tools', value: derived.tools },
                   { label: 'Duration', value: derived.duration },
-                ].map((m) => (
-                  <div key={m.label} className="text-sm md:text-[15px] leading-snug text-foreground">
-                    <dt className="inline font-semibold">{m.label}:</dt>{' '}
-                    <dd className="inline text-muted-foreground">{m.value}</dd>
-                  </div>
-                ))}
+                ]
+                  .filter((m) => m.value && m.value.trim() !== '' && m.value.trim() !== '—')
+                  .map((m) => (
+                    <div key={m.label} className="text-sm md:text-[15px] leading-snug text-foreground">
+                      <dt className="inline font-semibold">{m.label}:</dt>{' '}
+                      <dd className="inline text-muted-foreground">{m.value}</dd>
+                    </div>
+                  ))}
               </dl>
 
               {/* Big numbers — two slots, 25% each. */}
@@ -914,22 +916,26 @@ const ProjectDetailPage = () => {
         </section>
 
         {/* ============================================================= */}
-        {/* 3. INITIAL CAROUSEL                                            */}
+        {/* 3. FIRST CAROUSEL — "Final delivery"                           */}
         {/* ============================================================= */}
-        <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-12 md:pt-14">
+        <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-16 md:pt-20">
+          <p className="text-[11px] tracking-[0.24em] uppercase text-muted-foreground mb-4 text-center">
+            Final delivery
+          </p>
           <HeroCarousel images={derived.heroCarousel} title={project.title} />
         </section>
 
         {/* ============================================================= */}
-        {/* 4. NARRATIVE (Context, Problem, Strategy) - 30/70 asymmetric  */}
+        {/* 4. NARRATIVE — Context, Problem, Strategy, Trade-offs (one flow) */}
         {/* ============================================================= */}
-        {(derived.context || derived.challenge || derived.strategy) && (
-          <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
-            <div className="space-y-0">
+        {(derived.context || derived.challenge || derived.strategy || derived.tradeoffs) && (
+          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-16 md:pt-20">
+            <div className="max-w-[845px]">
               {[
                 { label: 'Context', body: derived.context },
                 { label: 'Problem', body: derived.challenge },
                 { label: 'Strategy', body: derived.strategy },
+                { label: 'Trade-offs & Constraints', body: derived.tradeoffs },
               ]
                 .filter((b) => b.body)
                 .map((block, i) => (
@@ -950,38 +956,43 @@ const ProjectDetailPage = () => {
         )}
 
         {/* ============================================================= */}
-        {/* 5. PROCESS - BENTO (with related-project gallery switcher)     */}
+        {/* 5. BEFORE & AFTER — payoff to "Strategy"                        */}
         {/* ============================================================= */}
-        {derived.bentoImages.length > 0 && (() => {
-          // Galleries: current project first (default active), then related.
-          const galleries = [
-            { id: project.id, label: project.title, images: derived.bentoImages },
-            ...relatedProjects.map((rp) => {
-              const src = (rp.processImages && rp.processImages.length > 0)
-                ? rp.processImages
-                : rp.images.map((s) => ({ src: s } as ProcessImage));
-              const tiles: ProcessImage[] = [];
-              for (let i = 0; i < 8; i++) tiles.push(src[i % src.length]);
-              return { id: rp.id, label: rp.title, images: tiles };
-            }),
-          ];
-          const activeId = activeGalleryId ?? project.id;
-          const active = galleries.find((g) => g.id === activeId) ?? galleries[0];
-          return (
-            <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-10 md:pt-12">
-              {galleries.length > 1 && (
+        {derived.beforeAfter && (
+          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-16 md:pt-20">
+            <p className="text-[11px] tracking-[0.24em] uppercase text-muted-foreground mb-4 text-center">
+              The shift
+            </p>
+            <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground text-center mb-8 md:mb-10">
+              Before and After
+            </h3>
+            <BeforeAfterSlider
+              before={derived.beforeAfter.before}
+              after={derived.beforeAfter.after}
+            />
+          </section>
+        )}
+
+        {/* ============================================================= */}
+        {/* 6. PROCESS — BENTO (with related-project gallery switcher)     */}
+        {/* ============================================================= */}
+        {derived.bentoImages.length > 0 && (
+          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-16 md:pt-20">
+            {galleries.length > 1 && (
+              <>
+                <p className="text-[11px] tracking-[0.24em] uppercase text-muted-foreground mb-4 text-center">
+                  Explore similar work
+                </p>
                 <div className="flex flex-wrap justify-center gap-3 mb-8 md:mb-10">
                   {galleries.map((g) => {
-                    const isActive = g.id === active.id;
+                    const isActive = g.id === activeGallery.id;
                     return (
                       <button
                         key={g.id}
                         type="button"
                         onClick={() => setActiveGalleryId(g.id)}
-                        className={`relative inline-flex items-center justify-center min-w-[180px] md:min-w-[200px] max-w-[180px] md:max-w-[200px] hover:max-w-[520px] focus-visible:max-w-[520px] overflow-hidden whitespace-nowrap text-center px-4 py-2.5 rounded-full text-xs md:text-[13px] tracking-[0.12em] uppercase font-sans transition-[max-width,color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                          isActive
-                            ? 'text-background'
-                            : 'text-foreground hover:text-foreground'
+                        className={`relative inline-flex items-center justify-center max-w-[280px] overflow-hidden whitespace-nowrap text-ellipsis text-center px-4 py-2.5 rounded-full text-xs md:text-[13px] tracking-[0.12em] uppercase font-sans transition-colors duration-300 ${
+                          isActive ? 'text-background' : 'text-foreground/80 hover:text-foreground'
                         }`}
                         aria-pressed={isActive}
                         title={g.label}
@@ -998,80 +1009,41 @@ const ProjectDetailPage = () => {
                     );
                   })}
                 </div>
-              )}
-              <BentoGrid
-                key={active.id}
-                images={active.images}
-                onOpen={(i) => setLightboxIndex(i)}
-              />
-            </section>
-          );
-        })()}
-
-
-        {/* ============================================================= */}
-        {/* 5b. BEFORE & AFTER COMPARISON                                   */}
-        {/* ============================================================= */}
-        {derived.beforeAfter && (
-          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-16 md:pt-20">
-            <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground text-center mb-8 md:mb-10">
-              Before and After
-            </h3>
-            <BeforeAfterSlider
-              before={derived.beforeAfter.before}
-              after={derived.beforeAfter.after}
-            />
+              </>
+            )}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeGallery.id}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <BentoGrid
+                  images={activeGallery.images}
+                  onOpen={(i) => setLightboxIndex(i)}
+                />
+              </motion.div>
+            </AnimatePresence>
           </section>
         )}
 
         {/* ============================================================= */}
-        {/* 6. TRADE-OFFS & CONSTRAINTS - same layout as narrative         */}
-        {/* ============================================================= */}
-        <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
-          <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10">
-            <h3 className="md:col-span-3 font-display text-xl md:text-2xl font-semibold text-foreground">
-              Trade-offs &amp; Constraints
-            </h3>
-            <p className="md:col-span-7 text-base md:text-lg text-muted-foreground leading-relaxed">
-              {derived.tradeoffs}
-            </p>
-          </div>
-        </section>
-
-        {/* ============================================================= */}
-        {/* 7. SECOND CAROUSEL (same layout as the first)                  */}
+        {/* 7. SECOND CAROUSEL — "In the room"                             */}
         {/* ============================================================= */}
         {derived.liveImages.length > 0 && (
-          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-14 md:pt-16">
+          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-16 md:pt-20">
+            <p className="text-[11px] tracking-[0.24em] uppercase text-muted-foreground mb-4 text-center">
+              In the room
+            </p>
             <HeroCarousel images={derived.liveImages} title={project.title} />
           </section>
         )}
 
         {/* ============================================================= */}
-        {/* 8. CLOSING - IMPACT                                            */}
+        {/* 8. CLOSING — quote + reflection (big numbers live up top only) */}
         {/* ============================================================= */}
-        <section className="max-w-[1100px] mx-auto px-8 md:px-16 pt-12 md:pt-16 text-center">
-          {bigNumbers.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 sm:gap-12 mb-16 max-w-3xl mx-auto text-left">
-              {bigNumbers.slice(0, 2).map((n, i) => (
-                <div key={i}>
-                  <p className="text-xs md:text-[13px] tracking-[0.22em] uppercase text-muted-foreground mb-4">
-                    {n.label}
-                  </p>
-                  <p className="font-display text-6xl md:text-7xl font-semibold text-foreground leading-[0.95] tracking-tight">
-                    {n.value}
-                  </p>
-                  {n.description && (
-                    <p className="mt-5 text-sm md:text-[15px] text-muted-foreground leading-relaxed">
-                      {n.description}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-
-
+        <section className="max-w-[1100px] mx-auto px-8 md:px-16 pt-16 md:pt-20 text-center">
           {project.quote && (
             <figure className="my-16 max-w-3xl mx-auto">
               <span className="font-display text-7xl text-primary leading-none block mb-2">"</span>
