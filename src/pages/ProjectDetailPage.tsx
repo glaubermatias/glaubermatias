@@ -276,13 +276,15 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
   const [pos, setPos] = useState(50); // %
   const [dragging, setDragging] = useState(false);
   const [hinted, setHinted] = useState(false);
+  const [showTip, setShowTip] = useState(false);
   const hintedRef = useRef(false);
   const draggingRef = useRef(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const handleRef = useRef<HTMLButtonElement | null>(null);
 
-  // When the section scrolls into view, trigger only the handle pulse
-  // (same effect that plays after the user finishes dragging). No divider
-  // vibration — the pulse alone hints interactivity.
+  // When the section scrolls into view, trigger the handle pulse and a brief
+  // "Drag to compare" tooltip — same effect that plays after the user finishes
+  // dragging. Tooltip fades after 2s.
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -293,6 +295,8 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
           if (hintedRef.current) return;
           hintedRef.current = true;
           setHinted(true);
+          setShowTip(true);
+          window.setTimeout(() => setShowTip(false), 2000);
           obs.disconnect();
         });
       },
@@ -333,8 +337,26 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
 
   const startDrag = (clientX: number) => {
     setHinted(true);
+    setShowTip(false);
     setDragging(true);
     updateFromClientX(clientX);
+  };
+
+  const onHandleKeyDown = (e: React.KeyboardEvent) => {
+    const step = e.shiftKey ? 10 : 4;
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      setPos((p) => Math.max(0, p - step));
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      setPos((p) => Math.min(100, p + step));
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      setPos(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      setPos(100);
+    }
   };
 
   // No transition during drag (instant). Fast subtle ease during the hint.
@@ -379,12 +401,37 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
         style={{ left: `${pos}%`, transition: sharedTransition }}
       >
         <div className="absolute top-0 bottom-0 -translate-x-1/2 w-[3px] bg-white shadow-[0_0_12px_rgba(0,0,0,0.45)]" />
+
+        {/* Tooltip — shows once on first viewport entry */}
+        <AnimatePresence>
+          {showTip && (
+            <motion.div
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.25 }}
+              className="absolute top-1/2 -translate-y-[230%] left-1/2 -translate-x-1/2 z-30 pointer-events-none whitespace-nowrap rounded-full bg-foreground text-background text-[11px] tracking-[0.18em] uppercase px-3 py-1.5 shadow-lg"
+              role="status"
+            >
+              Drag to compare
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <button
+          ref={handleRef}
           type="button"
-          aria-label="Drag to compare before and after"
+          role="slider"
+          aria-label="Before and after comparison — drag to compare"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(pos)}
+          aria-valuetext={`${Math.round(pos)}% before, ${100 - Math.round(pos)}% after`}
+          tabIndex={0}
+          onKeyDown={onHandleKeyDown}
           onMouseDown={(e) => { e.stopPropagation(); startDrag(e.clientX); }}
           onTouchStart={(e) => { e.stopPropagation(); startDrag(e.touches[0].clientX); }}
-          className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white text-foreground shadow-lg flex items-center justify-center cursor-ew-resize"
+          className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white text-foreground shadow-lg flex items-center justify-center cursor-ew-resize focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2"
           style={hinted && !dragging ? { animation: 'ba-handle-pulse 1600ms ease-out 1' } : undefined}
         >
           <ChevronLeft className="w-4 h-4 -mr-1" strokeWidth={2} />
