@@ -571,7 +571,7 @@ const CenterStageCarousel = ({ images }: { images: string[] }) => {
 
   return (
     <div className="relative w-full">
-      <div className="relative h-[55vh] md:h-[68vh] overflow-hidden">
+      <div className="relative h-[55vh] md:h-[68vh] overflow-hidden" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
         {images.map((src, i) => {
           const p = slidePos(i);
           return (
@@ -641,7 +641,7 @@ const HeroCarousel = ({ images, title }: { images: string[]; title: string }) =>
 
   return (
     <div className="relative w-full">
-      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-md bg-muted">
+      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-md bg-muted" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
         <AnimatePresence mode="wait">
           <motion.img
             key={idx}
