@@ -1,20 +1,30 @@
-# Igualar altura do header de CV no mobile
+## Problem
 
-## Diagnóstico
+No mobile, o carrossel de palavras do Hero está cortando palavras maiores (ex: "presentations", "internal comms", "pitch decks"). Duas causas combinadas em `src/components/Hero.tsx`:
 
-No `PageHeader`, quando existe `rightSlot` e `flushRight` é falso (caso da página CV), o slot é renderizado como uma **segunda coluna empilhada** no mobile, com seu próprio `pt-32 md:pt-36 pb-12 md:pb-16`. Isso soma cerca de 200px de altura extra abaixo do título/subtítulo, deixando o header de CV muito mais alto do que Work (sem rightSlot) e About (rightSlot com `flushRight`, posicionado em absolute).
+1. O `<span>` que envolve o carrossel tem `height: 1.2em` + `overflow: hidden` (necessário para a animação de slide). Isso corta descendentes (p, g) verticalmente.
+2. A palavra ativa é posicionada com `absolute … left-1/2 -translate-x-1/2` dentro de um spacer invisível com a largura da palavra mais longa ("presentations"). Em telas estreitas, esse spacer pode ser mais largo que a linha disponível, causando quebra ruim e a sensação de corte horizontal.
 
-## Mudança
+## Fix (apenas mobile)
 
-Em `src/components/PageHeader.tsx`, no bloco do `rightSlot` (não-flush):
+Editar somente `src/components/Hero.tsx`:
 
-- No mobile, render do slot **sem** padding vertical próprio e alinhado ao final da coluna esquerda (sem criar uma nova "linha" de altura).
-- No desktop (`md+`), manter o comportamento atual (coluna lateral com seu próprio padding).
+1. Renderizar o bloco do carrossel como **`block` centralizado em mobile** e `inline-flex` em md+:
+   - Em mobile: o `<Link>` do carrossel passa a ocupar uma linha própria abaixo do texto "amplify the impact of", centralizado, com largura igual à largura da palavra mais longa (sem ultrapassar a viewport).
+   - Em md+: mantém o comportamento atual inline com o resto da frase.
 
-Tecnicamente: trocar `pt-32 md:pt-36 pb-12 md:pb-16` por `pt-0 pb-8 md:pt-36 md:pb-16` (ou equivalente) e ajustar `items-end`/`justify-end` para que no mobile o botão fique imediatamente abaixo do subtítulo, dentro da mesma altura mínima de 420px.
+2. Aumentar a altura do clipping para não cortar descendentes:
+   - Trocar `height: 1.2em` por `height: 1.45em` (e o spacer e o `<motion.span>` correspondentes) somente onde necessário. Mantém `overflow: hidden` para que a animação de slide continue funcionando, mas com folga vertical suficiente para "p", "g".
 
-Resultado: altura do header de CV no mobile passa a bater com Work e About, e o botão "Read my CV" continua visível.
+3. Garantir que o spacer (palavra mais larga) tenha `max-width: 100%` em mobile para nunca ultrapassar a largura disponível, e que a frase anterior ("...amplify the impact of") não force quebra estranha.
+
+4. Em mobile, remover o `\u00A0` final após "of" quando o carrossel vai para linha separada, para evitar espaço extra visual.
+
+## Resultado esperado
+
+- Mobile: "Designer of visual stories that amplify the impact of" em uma/duas linhas, e logo abaixo, centralizado, a palavra do carrossel aparecendo por completo (sem corte de topo/base e sem corte lateral), alternando suavemente.
+- Desktop (md+): inalterado.
 
 ## Arquivos
 
-- `src/components/PageHeader.tsx`
+- `src/components/Hero.tsx` — única alteração.
