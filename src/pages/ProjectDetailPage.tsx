@@ -126,7 +126,7 @@ const Lightbox = ({
       </button>
 
       <div
-        className="w-[92vw] max-w-[1320px] px-4 md:px-10 lg:px-16 pt-24 md:pt-28 pb-16 md:pb-24 flex flex-col items-center gap-4"
+        className="w-[92vw] max-w-[1320px] px-4 md:px-10 lg:px-16 pt-36 md:pt-44 pb-16 md:pb-24 flex flex-col items-center gap-4"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="w-full aspect-[16/9] bg-black/40 rounded-md overflow-hidden flex items-center justify-center">
@@ -635,7 +635,7 @@ const HeroCarousel = ({ images, title }: { images: string[]; title: string }) =>
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.25 }}
             className="absolute inset-0 h-full w-full object-cover"
           />
         </AnimatePresence>
@@ -853,7 +853,7 @@ const ProjectDetailPage = () => {
           </p>
 
           {/* Meaningful title - darker gray, slightly smaller */}
-          <h2 className="font-display text-2xl md:text-4xl lg:text-5xl font-normal mt-6 leading-tight text-[#7a7a7a]">
+          <h2 className="font-display text-xl md:text-3xl lg:text-4xl font-normal mt-6 leading-tight text-[#5a5a5a]">
             {derived.meaningfulTitle}
           </h2>
 
