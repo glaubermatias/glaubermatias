@@ -9,6 +9,59 @@ const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [navTheme, setNavTheme] = useState<'hero' | 'dark' | 'light'>('hero');
   const navRef = useRef<HTMLElement>(null!);
+  const mobileMenuRef = useRef<HTMLDivElement | null>(null);
+  const menuToggleRef = useRef<HTMLButtonElement | null>(null);
+  const lastFocusedRef = useRef<HTMLElement | null>(null);
+
+  // Mobile menu: Esc to close, focus trap, restore focus on close
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    lastFocusedRef.current = (document.activeElement as HTMLElement) ?? null;
+
+    const getFocusable = () => {
+      const root = mobileMenuRef.current;
+      if (!root) return [] as HTMLElement[];
+      return Array.from(
+        root.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      );
+    };
+
+    // Focus the first link inside the menu
+    const t = window.setTimeout(() => {
+      const items = getFocusable();
+      items[0]?.focus();
+    }, 50);
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        setIsMobileMenuOpen(false);
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const items = getFocusable();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      window.clearTimeout(t);
+      // Restore focus to the toggle that opened the menu
+      (lastFocusedRef.current ?? menuToggleRef.current)?.focus?.();
+    };
+  }, [isMobileMenuOpen]);
 
   const isHomePage = location.pathname === '/';
 
