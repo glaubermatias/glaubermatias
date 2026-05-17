@@ -214,6 +214,7 @@ const Navigation = () => {
             <a
               href={logoHref}
               onClick={(e) => handleLinkClick(e, logoHref)}
+              aria-label="Home — Glauber Matias"
               className={`font-display text-xl font-medium transition-colors duration-300 ${
                 isLightText ? 'text-white' : 'text-primary'
               }`}
@@ -242,11 +243,14 @@ const Navigation = () => {
 
             {/* Mobile Menu Button */}
             <button
+              ref={menuToggleRef}
               className={`md:hidden p-2 transition-colors duration-300 ${
                 isLightText ? 'text-white' : 'text-foreground'
               }`}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle menu"
+              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-nav"
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
