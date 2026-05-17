@@ -95,7 +95,7 @@ const Hero = () => {
               <span className="hidden md:inline">Designer of visual stories that amplify the impact of{'\u00A0'}</span>
               <Link
                 to="/work"
-                className="relative cursor-pointer align-baseline block mx-auto md:inline-flex md:mx-0 max-w-full"
+                className="cursor-pointer flex justify-center md:justify-start md:inline-flex max-w-full align-baseline"
                 style={{
                   height: '1.45em',
                   lineHeight: 1.2,
@@ -104,33 +104,38 @@ const Hero = () => {
                 }}
                 aria-live="polite"
               >
-                {/* Invisible spacer = widest word, reserves inline width so layout doesn't jump */}
+                {/* Inner wrapper sized to the widest word; absolute word fills it and aligns inside */}
                 <span
-                  aria-hidden="true"
-                  className="invisible whitespace-nowrap block md:inline"
-                  style={{ lineHeight: 1.2, maxWidth: '100%' }}
+                  className="relative inline-block max-w-full"
+                  style={{ height: '1.45em', lineHeight: 1.2 }}
                 >
-                  {widestWord}
-                </span>
-
-                {/* Only the active word is ever rendered. Old word slides up & out, new word slides up & in. */}
-                <AnimatePresence mode="popLayout" initial={false}>
-                  <motion.span
-                    key={activeWord}
-                    initial={{ y: '100%' }}
-                    animate={{ y: '0%' }}
-                    exit={{ y: '-100%' }}
-                    transition={{ duration: ANIM, ease: [0.65, 0, 0.35, 1] }}
-                    className="absolute top-0 whitespace-nowrap left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0"
-                    style={{
-                      color: '#e85102',
-                      lineHeight: 1.2,
-                      height: '1.45em',
-                    }}
+                  {/* Invisible spacer = widest word, reserves inline width so layout doesn't jump */}
+                  <span
+                    aria-hidden="true"
+                    className="invisible whitespace-nowrap"
+                    style={{ lineHeight: 1.2 }}
                   >
-                    {activeWord}
-                  </motion.span>
-                </AnimatePresence>
+                    {widestWord}
+                  </span>
+
+                  {/* Only the active word is ever rendered. Old word slides up & out, new word slides up & in. */}
+                  <AnimatePresence mode="popLayout" initial={false}>
+                    <motion.span
+                      key={activeWord}
+                      initial={{ y: '100%' }}
+                      animate={{ y: '0%' }}
+                      exit={{ y: '-100%' }}
+                      transition={{ duration: ANIM, ease: [0.65, 0, 0.35, 1] }}
+                      className="absolute inset-0 whitespace-nowrap text-center md:text-left"
+                      style={{
+                        color: '#e85102',
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      {activeWord}
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
               </Link>
             </motion.h1>
           </div>
