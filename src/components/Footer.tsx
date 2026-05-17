@@ -98,7 +98,10 @@ const Footer = () => {
                     <p className="text-white/60 font-sans font-normal mb-4">
                       (from Aug/26)
                     </p>
-                    <p className="font-sans font-normal text-white/90">
+                    <p
+                      className="font-sans font-normal text-white/90"
+                      aria-label="Lisbon local time"
+                    >
                       {lisbonTime}
                     </p>
                   </div>
