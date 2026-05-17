@@ -579,14 +579,16 @@ const CenterStageCarousel = ({ images }: { images: string[] }) => {
           <>
             <button
               onClick={prev}
-              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full border border-foreground/20 bg-background/70 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
+              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full border border-white/20 bg-white/10 backdrop-blur flex items-center justify-center text-white/90 hover:text-white hover:bg-white/20 transition-colors"
+              style={{ backdropFilter: 'blur(14px) saturate(160%)', WebkitBackdropFilter: 'blur(14px) saturate(160%)' }}
               aria-label="Previous"
             >
               <ChevronLeft className="w-4 h-4" strokeWidth={1.5} />
             </button>
             <button
               onClick={next}
-              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full border border-foreground/20 bg-background/70 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
+              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full border border-white/20 bg-white/10 backdrop-blur flex items-center justify-center text-white/90 hover:text-white hover:bg-white/20 transition-colors"
+              style={{ backdropFilter: 'blur(14px) saturate(160%)', WebkitBackdropFilter: 'blur(14px) saturate(160%)' }}
               aria-label="Next"
             >
               <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
