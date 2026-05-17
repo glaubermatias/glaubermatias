@@ -876,6 +876,9 @@ const ProjectDetailPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-12 items-start py-10 md:py-12">
               {/* Metadata - left, 50% */}
               <dl className="md:col-span-2 flex flex-col gap-4">
+                <p className="text-xs md:text-[13px] tracking-[0.22em] uppercase text-muted-foreground mb-0">
+                  Overview
+                </p>
                 {[
                   { label: 'Role', value: derived.role },
                   { label: 'Stakeholders', value: derived.stakeholders },
