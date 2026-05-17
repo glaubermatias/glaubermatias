@@ -117,28 +117,40 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
                   <>
                     <button
                       onClick={(e) => handleNav(e, 'prev')}
-                      className="absolute left-0 top-0 bottom-0 w-16 flex items-center justify-start pl-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full flex items-center justify-center border border-white/20 bg-white/10 text-white/90 hover:text-white hover:bg-white/20 transition-colors"
+                      style={{ backdropFilter: 'blur(14px) saturate(160%)', WebkitBackdropFilter: 'blur(14px) saturate(160%)' }}
                       aria-label="Previous image"
                     >
-                      <ChevronLeft className="w-5 h-5 text-white/80 hover:text-white transition-colors" />
+                      <ChevronLeft className="w-4 h-4" />
                     </button>
                     <button
                       onClick={(e) => handleNav(e, 'next')}
-                      className="absolute right-0 top-0 bottom-0 w-16 flex items-center justify-end pr-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full flex items-center justify-center border border-white/20 bg-white/10 text-white/90 hover:text-white hover:bg-white/20 transition-colors"
+                      style={{ backdropFilter: 'blur(14px) saturate(160%)', WebkitBackdropFilter: 'blur(14px) saturate(160%)' }}
                       aria-label="Next image"
                     >
-                      <ChevronRight className="w-5 h-5 text-white/80 hover:text-white transition-colors" />
+                      <ChevronRight className="w-4 h-4" />
                     </button>
 
-                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-                      {project.images.map((_, idx) => (
-                        <div
-                          key={idx}
-                          className={`h-1.5 rounded-full transition-all duration-300 ${
-                            idx === currentImageIndex ? 'bg-white w-4' : 'bg-white/40 w-1.5'
-                          }`}
-                        />
-                      ))}
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20">
+                      <div
+                        className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-2 py-1"
+                        style={{ backdropFilter: 'blur(14px) saturate(160%)', WebkitBackdropFilter: 'blur(14px) saturate(160%)' }}
+                        role="tablist"
+                        aria-label="Carousel pagination"
+                      >
+                        {project.images.map((_, idx) => {
+                          const active = idx === currentImageIndex;
+                          return (
+                            <span
+                              key={idx}
+                              className={`block rounded-full transition-all duration-300 ${
+                                active ? 'w-2 h-2 bg-white' : 'w-1.5 h-1.5 bg-white/40'
+                              }`}
+                            />
+                          );
+                        })}
+                      </div>
                     </div>
                   </>
                 )}
