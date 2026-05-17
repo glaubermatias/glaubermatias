@@ -88,13 +88,21 @@ const Lightbox = ({
       exit={{ opacity: 0 }}
       onClick={onClose}
     >
-      <button
-        onClick={(e) => { e.stopPropagation(); onClose(); }}
-        className="absolute top-6 right-6 text-white/80 hover:text-white p-2"
-        aria-label="Close"
-      >
-        <X className="w-6 h-6" />
-      </button>
+      <div className="absolute top-6 right-6 flex items-center gap-4 text-white/80">
+        <span
+          className="text-xs tracking-[0.18em] uppercase tabular-nums"
+          aria-live="polite"
+        >
+          {index + 1} / {images.length}
+        </span>
+        <button
+          onClick={(e) => { e.stopPropagation(); onClose(); }}
+          className="hover:text-white p-2"
+          aria-label="Close"
+        >
+          <X className="w-6 h-6" />
+        </button>
+      </div>
       <button
         onClick={(e) => { e.stopPropagation(); onPrev(); }}
         className="absolute left-4 md:left-8 text-white/80 hover:text-white p-3"
