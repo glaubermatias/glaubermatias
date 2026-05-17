@@ -49,7 +49,8 @@ const Hero = () => {
             <Link
               to="/about"
               aria-label="About Glauber"
-              className="relative block group focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded-[38%]"
+              className="relative block group focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 overflow-hidden"
+              style={{ borderRadius: '38%' }}
             >
               <img
                 src={glauberPortrait}
@@ -58,15 +59,17 @@ const Hero = () => {
                 fetchPriority="high"
                 decoding="sync"
                 className="w-44 h-44 md:w-52 md:h-52 lg:w-60 lg:h-60 object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
-                style={{ borderRadius: '38%' }}
               />
-              <span
+              {/* Hover overlay: gradient fade + "About me" label, all within the photo frame */}
+              <div
                 aria-hidden="true"
-                className="pointer-events-none absolute left-1/2 -translate-x-1/2 -bottom-3 translate-y-full whitespace-nowrap rounded-full bg-white/10 border border-white/20 px-3 py-1 text-xs tracking-[0.18em] uppercase text-white opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300"
-                style={{ backdropFilter: 'blur(14px) saturate(160%)', WebkitBackdropFilter: 'blur(14px) saturate(160%)' }}
+                className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center pb-5 pt-12 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300"
+                style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%)' }}
               >
-                About me →
-              </span>
+                <span className="text-xs tracking-[0.22em] uppercase text-white font-sans">
+                  About me
+                </span>
+              </div>
             </Link>
           </motion.div>
 

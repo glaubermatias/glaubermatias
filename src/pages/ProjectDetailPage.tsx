@@ -126,7 +126,7 @@ const Lightbox = ({
       </button>
 
       <div
-        className="w-[92vw] max-w-[1320px] px-4 md:px-10 lg:px-16 pt-24 md:pt-28 pb-8 md:pb-12 flex flex-col items-center gap-4"
+        className="w-[92vw] max-w-[1320px] px-4 md:px-10 lg:px-16 pt-24 md:pt-28 pb-16 md:pb-24 flex flex-col items-center gap-4"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="w-full aspect-[16/9] bg-black/40 rounded-md overflow-hidden flex items-center justify-center">
@@ -852,8 +852,8 @@ const ProjectDetailPage = () => {
             {(project.company || project.client)} <span className="mx-2">•</span> {project.year} <span className="mx-2">•</span> {getCategoryLabel(project.category)}
           </p>
 
-          {/* Meaningful title - gray, full content width */}
-          <h2 className="font-display text-3xl md:text-5xl lg:text-6xl font-normal mt-6 leading-tight text-[#b7b7b7]">
+          {/* Meaningful title - darker gray, slightly smaller */}
+          <h2 className="font-display text-2xl md:text-4xl lg:text-5xl font-normal mt-6 leading-tight text-[#7a7a7a]">
             {derived.meaningfulTitle}
           </h2>
 
@@ -876,6 +876,9 @@ const ProjectDetailPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-12 items-start py-10 md:py-12">
               {/* Metadata - left, 50% */}
               <dl className="md:col-span-2 flex flex-col gap-4">
+                <p className="text-xs md:text-[13px] tracking-[0.22em] uppercase text-muted-foreground mb-0">
+                  Overview
+                </p>
                 {[
                   { label: 'Role', value: derived.role },
                   { label: 'Stakeholders', value: derived.stakeholders },
