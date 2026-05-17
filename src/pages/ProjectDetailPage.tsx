@@ -108,33 +108,34 @@ const Lightbox = ({
         </button>
       </div>
 
-      <button
-        onClick={(e) => { e.stopPropagation(); onPrev(); }}
-        className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full flex items-center justify-center border border-white/20 bg-white/10 text-white/90 hover:text-white hover:bg-white/20 transition-colors"
-        style={{ backdropFilter: 'blur(14px) saturate(160%)', WebkitBackdropFilter: 'blur(14px) saturate(160%)' }}
-        aria-label="Previous"
-      >
-        <ChevronLeft className="w-5 h-5" />
-      </button>
-      <button
-        onClick={(e) => { e.stopPropagation(); onNext(); }}
-        className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full flex items-center justify-center border border-white/20 bg-white/10 text-white/90 hover:text-white hover:bg-white/20 transition-colors"
-        style={{ backdropFilter: 'blur(14px) saturate(160%)', WebkitBackdropFilter: 'blur(14px) saturate(160%)' }}
-        aria-label="Next"
-      >
-        <ChevronRight className="w-5 h-5" />
-      </button>
-
       <div
         className="w-[92vw] max-w-[1320px] px-4 md:px-10 lg:px-16 pt-36 md:pt-44 pb-16 md:pb-24 flex flex-col items-center gap-4"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="w-full aspect-[16/9] bg-black/40 rounded-md overflow-hidden flex items-center justify-center">
-          <img
-            src={current.src}
-            alt={current.caption || ''}
-            className="w-full h-full object-cover"
-          />
+        <div className="relative w-full aspect-[16/9]">
+          <div className="absolute inset-0 bg-black/40 rounded-md overflow-hidden flex items-center justify-center">
+            <img
+              src={current.src}
+              alt={current.caption || ''}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <button
+            onClick={(e) => { e.stopPropagation(); onPrev(); }}
+            className="absolute left-2 md:-left-14 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full flex items-center justify-center border border-white/20 bg-white/10 text-white/90 hover:text-white hover:bg-white/20 transition-colors"
+            style={{ backdropFilter: 'blur(14px) saturate(160%)', WebkitBackdropFilter: 'blur(14px) saturate(160%)' }}
+            aria-label="Previous"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            onClick={(e) => { e.stopPropagation(); onNext(); }}
+            className="absolute right-2 md:-right-14 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full flex items-center justify-center border border-white/20 bg-white/10 text-white/90 hover:text-white hover:bg-white/20 transition-colors"
+            style={{ backdropFilter: 'blur(14px) saturate(160%)', WebkitBackdropFilter: 'blur(14px) saturate(160%)' }}
+            aria-label="Next"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
         </div>
         {current.caption && (
           <p className="text-white/80 text-sm md:text-base text-center max-w-2xl px-4">
@@ -515,6 +516,14 @@ const CenterStageCarousel = ({ images }: { images: string[] }) => {
   const total = images.length;
   const prev = () => setIdx((i) => (i - 1 + total) % total);
   const next = () => setIdx((i) => (i + 1) % total);
+  const touchX = useRef<number | null>(null);
+  const onTouchStart = (e: React.TouchEvent) => { touchX.current = e.touches[0].clientX; };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchX.current == null || total <= 1) return;
+    const dx = e.changedTouches[0].clientX - touchX.current;
+    touchX.current = null;
+    if (Math.abs(dx) > 40) (dx < 0 ? next : prev)();
+  };
 
   if (total === 0) return null;
 
@@ -562,7 +571,7 @@ const CenterStageCarousel = ({ images }: { images: string[] }) => {
 
   return (
     <div className="relative w-full">
-      <div className="relative h-[55vh] md:h-[68vh] overflow-hidden">
+      <div className="relative h-[55vh] md:h-[68vh] overflow-hidden" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
         {images.map((src, i) => {
           const p = slidePos(i);
           return (
@@ -621,12 +630,18 @@ const HeroCarousel = ({ images, title }: { images: string[]; title: string }) =>
   const total = images.length;
   const prev = () => setIdx((i) => (i - 1 + total) % total);
   const next = () => setIdx((i) => (i + 1) % total);
-
-  if (total === 0) return null;
+  const touchX = useRef<number | null>(null);
+  const onTouchStart = (e: React.TouchEvent) => { touchX.current = e.touches[0].clientX; };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchX.current == null || total <= 1) return;
+    const dx = e.changedTouches[0].clientX - touchX.current;
+    touchX.current = null;
+    if (Math.abs(dx) > 40) (dx < 0 ? next : prev)();
+  };
 
   return (
     <div className="relative w-full">
-      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-md bg-muted">
+      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-md bg-muted" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
         <AnimatePresence mode="wait">
           <motion.img
             key={idx}
@@ -853,7 +868,7 @@ const ProjectDetailPage = () => {
           </p>
 
           {/* Meaningful title - darker gray, slightly smaller */}
-          <h2 className="font-display text-xl md:text-3xl lg:text-4xl font-normal mt-6 leading-tight text-[#5a5a5a]">
+          <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-normal mt-6 leading-tight text-[#5a5a5a]">
             {derived.meaningfulTitle}
           </h2>
 

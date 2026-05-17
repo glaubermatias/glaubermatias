@@ -21,7 +21,7 @@ const PageHeader = ({ children, rightSlot, flushRight = false }: PageHeaderProps
       style={{ minHeight: '420px' }}
     >
       {flushRight && rightSlot && (
-        <div className="absolute inset-y-0 right-0 z-0 flex h-full items-stretch justify-end">
+        <div className="absolute inset-y-0 inset-x-0 md:inset-x-auto md:right-0 z-0 flex h-full items-stretch justify-center md:justify-end">
           {rightSlot}
         </div>
       )}

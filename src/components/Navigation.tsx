@@ -271,7 +271,7 @@ const Navigation = () => {
                 transition={{ duration: 0.3 }}
                 className="md:hidden overflow-hidden"
               >
-                <div className="flex flex-col gap-4 py-6">
+                <div className="flex flex-col items-end gap-4 py-6 text-right">
                   {navLinks.map((link) => (
                     <a
                       key={link.href}

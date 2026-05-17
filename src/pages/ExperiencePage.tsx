@@ -41,10 +41,8 @@ const ExperiencePage = () => {
       <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">
         Work experience
       </h1>
-      <p className="text-base md:text-lg text-white/70 max-w-2xl leading-relaxed">
-        A journey through my professional career — designing executive narratives,
-        investor materials, and brand systems for some of the most demanding companies
-        in the world.
+      <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-xl">
+        A journey through my professional career.
       </p>
     </PageHeader>
   );
