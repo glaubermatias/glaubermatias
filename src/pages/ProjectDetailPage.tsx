@@ -1085,21 +1085,21 @@ const ProjectDetailPage = () => {
         )}
       </main>
 
-      {/* Lightbox */}
+      {/* Lightbox — sources from the active gallery so switched galleries open the right image */}
       <AnimatePresence>
         {lightboxIndex !== null && (
           <Lightbox
-            images={derived.processImages}
+            images={activeGallery.images}
             index={lightboxIndex}
             onClose={() => setLightboxIndex(null)}
             onPrev={() =>
               setLightboxIndex((i) =>
-                i === null ? null : (i - 1 + derived.processImages.length) % derived.processImages.length,
+                i === null ? null : (i - 1 + activeGallery.images.length) % activeGallery.images.length,
               )
             }
             onNext={() =>
               setLightboxIndex((i) =>
-                i === null ? null : (i + 1) % derived.processImages.length,
+                i === null ? null : (i + 1) % activeGallery.images.length,
               )
             }
           />
