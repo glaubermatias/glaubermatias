@@ -998,7 +998,7 @@ const ProjectDetailPage = () => {
               <BentoGrid
                 key={active.id}
                 images={active.images}
-                onOpen={(i) => setLightboxIndex(i)}
+                onOpen={(i) => setLightbox({ images: active.images, title: active.label, index: i })}
               />
             </section>
           );
