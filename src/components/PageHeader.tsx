@@ -40,7 +40,7 @@ const PageHeader = ({ children, rightSlot, flushRight = false }: PageHeaderProps
 
           {rightSlot && !flushRight && (
             <div
-              className={`md:col-span-4 ${flushRight ? 'self-stretch flex items-stretch justify-end' : 'flex items-end justify-end pt-32 md:pt-36 pb-12 md:pb-16'}`}
+              className={`md:col-span-4 ${flushRight ? 'self-stretch flex items-stretch justify-end' : 'flex items-start md:items-end justify-end pt-0 pb-8 md:pt-36 md:pb-16'}`}
             >
               {rightSlot}
             </div>
