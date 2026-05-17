@@ -280,8 +280,9 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
   const draggingRef = useRef(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Tiny lateral "vibration" once the user scrolls the section into view.
-  // Very subtle, narrow range, quick — just enough to hint interactivity.
+  // When the section scrolls into view, trigger only the handle pulse
+  // (same effect that plays after the user finishes dragging). No divider
+  // vibration — the pulse alone hints interactivity.
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -289,16 +290,9 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
       (entries) => {
         entries.forEach((e) => {
           if (!e.isIntersecting) return;
-          if (hintedRef.current || draggingRef.current) return;
+          if (hintedRef.current) return;
           hintedRef.current = true;
           setHinted(true);
-          // ±1.5% nudge, ~90ms steps, returns to 50%.
-          const keyframes = [50, 51.5, 48.5, 51, 49, 50];
-          keyframes.forEach((v, i) => {
-            setTimeout(() => {
-              if (!draggingRef.current) setPos(v);
-            }, i * 90);
-          });
           obs.disconnect();
         });
       },
@@ -892,15 +886,22 @@ const ProjectDetailPage = () => {
                         key={g.id}
                         type="button"
                         onClick={() => setActiveGalleryId(g.id)}
-                        className={`w-[180px] md:w-[200px] truncate text-center px-4 py-2.5 rounded-full border text-xs md:text-[13px] tracking-[0.12em] uppercase font-sans transition-colors ${
+                        className={`relative w-[180px] md:w-[200px] truncate text-center px-4 py-2.5 rounded-full text-xs md:text-[13px] tracking-[0.12em] uppercase font-sans transition-colors ${
                           isActive
-                            ? 'bg-foreground text-background border-foreground'
-                            : 'bg-transparent text-foreground border-foreground/20 hover:border-foreground/50 hover:bg-foreground/[0.04]'
+                            ? 'text-background'
+                            : 'text-foreground hover:text-foreground'
                         }`}
                         aria-pressed={isActive}
                         title={g.label}
                       >
-                        {g.label}
+                        {isActive && (
+                          <motion.span
+                            layoutId="activeGalleryPill"
+                            className="absolute inset-0 bg-foreground rounded-full"
+                            transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                          />
+                        )}
+                        <span className="relative z-10">{g.label}</span>
                       </button>
                     );
                   })}
