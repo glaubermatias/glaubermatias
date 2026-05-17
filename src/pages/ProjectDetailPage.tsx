@@ -276,32 +276,39 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
   const [pos, setPos] = useState(50); // %
   const [dragging, setDragging] = useState(false);
   const [hinted, setHinted] = useState(false);
+  const hintedRef = useRef(false);
+  const draggingRef = useRef(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Sweep the divider once when the section enters the viewport,
-  // a subtle horizontal nudge to hint that it's interactive.
+  // Tiny lateral "vibration" once the user scrolls the section into view.
+  // Very subtle, narrow range, quick — just enough to hint interactivity.
   useEffect(() => {
     const el = containerRef.current;
-    if (!el || hinted) return;
+    if (!el) return;
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting && !hinted && !dragging) {
-            setHinted(true);
-            const keyframes = [50, 56, 44, 52, 48, 50];
-            keyframes.forEach((v, i) => {
-              setTimeout(() => {
-                setPos((cur) => (dragging ? cur : v));
-              }, i * 260);
-            });
-          }
+          if (!e.isIntersecting) return;
+          if (hintedRef.current || draggingRef.current) return;
+          hintedRef.current = true;
+          setHinted(true);
+          // ±1.5% nudge, ~90ms steps, returns to 50%.
+          const keyframes = [50, 51.5, 48.5, 51, 49, 50];
+          keyframes.forEach((v, i) => {
+            setTimeout(() => {
+              if (!draggingRef.current) setPos(v);
+            }, i * 90);
+          });
+          obs.disconnect();
         });
       },
-      { threshold: 0.4 },
+      { threshold: 0.6 },
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, [hinted, dragging]);
+  }, []);
+
+  useEffect(() => { draggingRef.current = dragging; }, [dragging]);
 
   const updateFromClientX = (clientX: number) => {
     const el = containerRef.current;
