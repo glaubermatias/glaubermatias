@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Eighties Comeback", "Inter", "sans-serif"],
+        display: ["Exposure", "Inter", "sans-serif"],
         sans: ["Fira Sans", "Inter", "sans-serif"],
       },
       colors: {
