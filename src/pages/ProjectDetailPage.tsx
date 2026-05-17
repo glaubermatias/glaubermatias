@@ -347,7 +347,6 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
 
   const startDrag = (clientX: number) => {
     setHinted(true);
-    setShowTip(false);
     setDragging(true);
     updateFromClientX(clientX);
   };
