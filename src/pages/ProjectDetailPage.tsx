@@ -67,9 +67,14 @@ const Lightbox = ({
     };
     window.addEventListener('keydown', onKey);
     document.body.style.overflow = 'hidden';
+    // Hide site navigation while the lightbox is open
+    const header = document.querySelector('header') as HTMLElement | null;
+    const prevVisibility = header?.style.visibility ?? '';
+    if (header) header.style.visibility = 'hidden';
     return () => {
       window.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
+      if (header) header.style.visibility = prevVisibility;
     };
   }, [onClose, onPrev, onNext]);
 
