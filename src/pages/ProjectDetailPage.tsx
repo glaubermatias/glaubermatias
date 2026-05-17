@@ -886,15 +886,22 @@ const ProjectDetailPage = () => {
                         key={g.id}
                         type="button"
                         onClick={() => setActiveGalleryId(g.id)}
-                        className={`w-[180px] md:w-[200px] truncate text-center px-4 py-2.5 rounded-full border text-xs md:text-[13px] tracking-[0.12em] uppercase font-sans transition-colors ${
+                        className={`relative w-[180px] md:w-[200px] truncate text-center px-4 py-2.5 rounded-full text-xs md:text-[13px] tracking-[0.12em] uppercase font-sans transition-colors ${
                           isActive
-                            ? 'bg-foreground text-background border-foreground'
-                            : 'bg-transparent text-foreground border-foreground/20 hover:border-foreground/50 hover:bg-foreground/[0.04]'
+                            ? 'text-background'
+                            : 'text-foreground hover:text-foreground'
                         }`}
                         aria-pressed={isActive}
                         title={g.label}
                       >
-                        {g.label}
+                        {isActive && (
+                          <motion.span
+                            layoutId="activeGalleryPill"
+                            className="absolute inset-0 bg-foreground rounded-full"
+                            transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                          />
+                        )}
+                        <span className="relative z-10">{g.label}</span>
                       </button>
                     );
                   })}
