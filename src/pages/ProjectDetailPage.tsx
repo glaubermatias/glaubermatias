@@ -676,7 +676,7 @@ const ProjectDetailPage = () => {
   const project = projectId ? getProjectById(projectId) : null;
   const relatedProjects = projectId ? getRelatedProjects(projectId, 3) : [];
 
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [lightbox, setLightbox] = useState<{ images: ProcessImage[]; title: string; index: number } | null>(null);
   const [activeGalleryId, setActiveGalleryId] = useState<string | null>(null);
 
   const getCategoryLabel = (category: string) => {
