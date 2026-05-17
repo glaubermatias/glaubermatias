@@ -970,7 +970,7 @@ const ProjectDetailPage = () => {
                             transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                           />
                         )}
-                        <span className="relative z-10">{g.label}</span>
+                        <span className="relative z-10 truncate">{g.label}</span>
                       </button>
                     );
                   })}
