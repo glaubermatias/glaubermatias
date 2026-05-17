@@ -411,21 +411,7 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
       >
         <div className="absolute top-0 bottom-0 -translate-x-1/2 w-[3px] bg-white shadow-[0_0_12px_rgba(0,0,0,0.45)]" />
 
-        {/* Tooltip — shows once on first viewport entry */}
-        <AnimatePresence>
-          {showTip && (
-            <motion.div
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.25 }}
-              className="absolute top-1/2 -translate-y-[230%] left-1/2 -translate-x-1/2 z-30 pointer-events-none whitespace-nowrap rounded-full bg-foreground text-background text-[11px] tracking-[0.18em] uppercase px-3 py-1.5 shadow-lg"
-              role="status"
-            >
-              Drag to compare
-            </motion.div>
-          )}
-        </AnimatePresence>
+
 
         <button
           ref={handleRef}
