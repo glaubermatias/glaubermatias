@@ -959,19 +959,25 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         <section className="max-w-[1100px] mx-auto px-8 md:px-16 pt-12 md:pt-16 text-center">
           {bigNumbers.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 sm:gap-16 mb-16 max-w-3xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 sm:gap-12 mb-16 max-w-3xl mx-auto text-left">
               {bigNumbers.slice(0, 2).map((n, i) => (
                 <div key={i}>
-                  <p className="font-display text-6xl md:text-7xl font-semibold text-foreground leading-none tracking-tight">
-                    {n.value}
-                  </p>
-                  <p className="mt-4 text-xs tracking-[0.18em] uppercase text-muted-foreground">
+                  <p className="text-xs md:text-[13px] tracking-[0.22em] uppercase text-muted-foreground mb-4">
                     {n.label}
                   </p>
+                  <p className="font-display text-6xl md:text-7xl font-semibold text-foreground leading-[0.95] tracking-tight">
+                    {n.value}
+                  </p>
+                  {n.description && (
+                    <p className="mt-5 text-sm md:text-[15px] text-muted-foreground leading-relaxed">
+                      {n.description}
+                    </p>
+                  )}
                 </div>
               ))}
             </div>
           )}
+
 
           {project.quote && (
             <figure className="my-16 max-w-3xl mx-auto">
