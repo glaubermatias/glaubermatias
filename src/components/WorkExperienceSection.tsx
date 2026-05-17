@@ -54,26 +54,6 @@ const WorkExperienceSection = () => {
   };
   return <section id="experience" className="lg:py-[20px] py-0">
       <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
-        {/* Header - Left aligned */}
-        <motion.div className="text-left mb-8" initial={{
-        opacity: 0,
-        y: 30
-      }} whileInView={{
-        opacity: 1,
-        y: 0
-      }} viewport={{
-        once: true
-      }} transition={{
-        duration: 0.8
-      }}>
-          <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold mb-3">
-            CV
-          </h2>
-          <p className="text-base md:text-lg max-w-2xl text-[#78726d]">
-            {t.experience.subtitle}
-          </p>
-        </motion.div>
-
         {/* Timeline */}
         <div className="relative">
           {/* Vertical line */}
@@ -149,9 +129,10 @@ const WorkExperienceSection = () => {
                   duration: 0.4,
                   ease: 'easeInOut'
                 }} className="overflow-hidden">
-                        <ul className="mt-4 space-y-2">
-                          {exp.expandedDetails.map((detail, idx) => <li key={idx} className="text-muted-foreground text-sm">
-                              • {detail}
+                        <ul className="mt-4 space-y-2.5">
+                          {exp.expandedDetails.map((detail, idx) => <li key={idx} className="flex gap-3 text-muted-foreground text-sm leading-relaxed">
+                              <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                              <span>{detail}</span>
                             </li>)}
                         </ul>
                       </motion.div>}
