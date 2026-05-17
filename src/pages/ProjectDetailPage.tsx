@@ -789,6 +789,24 @@ const ProjectDetailPage = () => {
 
   const bigNumbers = project.bigNumbers || [];
 
+  // Galleries: current project first, then related. Lifted here so the
+  // lightbox can read from the active gallery (not always the current project).
+  const galleries = useMemo(() => {
+    const own = { id: project.id, label: project.title, images: derived.bentoImages };
+    const others = relatedProjects.map((rp) => {
+      const src = (rp.processImages && rp.processImages.length > 0)
+        ? rp.processImages
+        : rp.images.map((s) => ({ src: s } as ProcessImage));
+      const tiles: ProcessImage[] = [];
+      for (let i = 0; i < 8; i++) tiles.push(src[i % src.length]);
+      return { id: rp.id, label: rp.title, images: tiles };
+    });
+    return [own, ...others];
+  }, [project.id, project.title, derived.bentoImages, relatedProjects]);
+
+  const activeGallery =
+    galleries.find((g) => g.id === (activeGalleryId ?? project.id)) ?? galleries[0];
+
   return (
     <PageLayout>
       {/* ============================================================= */}
