@@ -46,7 +46,11 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="flex justify-center md:justify-start"
           >
-            <Link to="/about" className="block group">
+            <Link
+              to="/about"
+              aria-label="About Glauber"
+              className="relative block group focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded-[38%]"
+            >
               <img
                 src={glauberPortrait}
                 alt="Glauber Matias"
@@ -56,6 +60,13 @@ const Hero = () => {
                 className="w-44 h-44 md:w-52 md:h-52 lg:w-60 lg:h-60 object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
                 style={{ borderRadius: '38%' }}
               />
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute left-1/2 -translate-x-1/2 -bottom-3 translate-y-full whitespace-nowrap rounded-full bg-white/10 border border-white/20 px-3 py-1 text-xs tracking-[0.18em] uppercase text-white opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300"
+                style={{ backdropFilter: 'blur(14px) saturate(160%)', WebkitBackdropFilter: 'blur(14px) saturate(160%)' }}
+              >
+                About me →
+              </span>
             </Link>
           </motion.div>
 
