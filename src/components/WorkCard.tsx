@@ -109,7 +109,7 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
                   className="w-full h-full object-cover absolute inset-0 pointer-events-none"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5 }}
+                  transition={{ duration: 0.3 }}
                   draggable={false}
                 />
 

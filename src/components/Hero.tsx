@@ -64,7 +64,7 @@ const Hero = () => {
               <div
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center pb-5 pt-12 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300"
-                style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%)' }}
+                style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0) 100%)' }}
               >
                 <span className="text-xs tracking-[0.22em] uppercase text-white font-sans">
                   About me
