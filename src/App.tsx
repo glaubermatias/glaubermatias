@@ -8,12 +8,32 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 
+// Recover from stale chunks after a deploy: if a dynamic import fails
+// (old hashed file removed), force a one-time reload to fetch the new index.html.
+const lazyWithReload = <T extends { default: React.ComponentType<any> }>(
+  importer: () => Promise<T>,
+) =>
+  lazy(async () => {
+    try {
+      return await importer();
+    } catch (err) {
+      const KEY = "lov:chunk-reload";
+      if (typeof window !== "undefined" && !sessionStorage.getItem(KEY)) {
+        sessionStorage.setItem(KEY, "1");
+        window.location.reload();
+        // Return a never-resolving promise while the reload happens
+        return new Promise<T>(() => {});
+      }
+      throw err;
+    }
+  });
+
 // Lazy-load secondary routes to keep the initial bundle small
-const WorkPage = lazy(() => import("./pages/WorkPage"));
-const ProjectDetailPage = lazy(() => import("./pages/ProjectDetailPage"));
-const AboutPage = lazy(() => import("./pages/AboutPage"));
-const ExperiencePage = lazy(() => import("./pages/ExperiencePage"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+const WorkPage = lazyWithReload(() => import("./pages/WorkPage"));
+const ProjectDetailPage = lazyWithReload(() => import("./pages/ProjectDetailPage"));
+const AboutPage = lazyWithReload(() => import("./pages/AboutPage"));
+const ExperiencePage = lazyWithReload(() => import("./pages/ExperiencePage"));
+const NotFound = lazyWithReload(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
