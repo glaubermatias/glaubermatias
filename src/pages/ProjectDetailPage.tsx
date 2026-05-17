@@ -49,12 +49,14 @@ const RelatedProjectCard = ({ project }: { project: ProjectData }) => {
 const Lightbox = ({
   images,
   index,
+  title,
   onClose,
   onPrev,
   onNext,
 }: {
   images: ProcessImage[];
   index: number;
+  title?: string;
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
@@ -69,53 +71,62 @@ const Lightbox = ({
     document.body.style.overflow = 'hidden';
     // Hide site navigation while the lightbox is open
     const header = document.querySelector('header') as HTMLElement | null;
-    const prevVisibility = header?.style.visibility ?? '';
-    if (header) header.style.visibility = 'hidden';
+    const prevDisplay = header?.style.display ?? '';
+    if (header) header.style.display = 'none';
     return () => {
       window.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
-      if (header) header.style.visibility = prevVisibility;
+      if (header) header.style.display = prevDisplay;
     };
   }, [onClose, onPrev, onNext]);
 
   const current = images[index];
 
   return (
-    <motion.div
+    <div
       className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
       onClick={onClose}
     >
-      <button
-        onClick={(e) => { e.stopPropagation(); onClose(); }}
-        className="absolute top-6 right-6 text-white/80 hover:text-white p-2"
-        aria-label="Close"
-      >
-        <X className="w-6 h-6" />
-      </button>
+      {/* Top bar — title + counter (left) and close (right) */}
+      <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between gap-4 px-6 md:px-10 pt-6 pb-4 pointer-events-none">
+        <div className="min-w-0 flex items-center gap-3 text-white/80 pointer-events-auto" onClick={(e) => e.stopPropagation()}>
+          {title && (
+            <span className="font-display text-sm md:text-base text-white/90 truncate max-w-[60vw]">
+              {title}
+            </span>
+          )}
+          <span className="text-xs md:text-sm tabular-nums text-white/60 tracking-[0.18em] uppercase">
+            {index + 1} / {images.length}
+          </span>
+        </div>
+        <button
+          onClick={(e) => { e.stopPropagation(); onClose(); }}
+          className="pointer-events-auto text-white/80 hover:text-white p-2"
+          aria-label="Close"
+        >
+          <X className="w-6 h-6" />
+        </button>
+      </div>
+
       <button
         onClick={(e) => { e.stopPropagation(); onPrev(); }}
-        className="absolute left-4 md:left-8 text-white/80 hover:text-white p-3"
+        className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full flex items-center justify-center border border-white/20 bg-white/10 text-white/90 hover:text-white hover:bg-white/20 transition-colors"
+        style={{ backdropFilter: 'blur(14px) saturate(160%)', WebkitBackdropFilter: 'blur(14px) saturate(160%)' }}
         aria-label="Previous"
       >
-        <ChevronLeft className="w-7 h-7" />
+        <ChevronLeft className="w-5 h-5" />
       </button>
       <button
         onClick={(e) => { e.stopPropagation(); onNext(); }}
-        className="absolute right-4 md:right-8 text-white/80 hover:text-white p-3"
+        className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full flex items-center justify-center border border-white/20 bg-white/10 text-white/90 hover:text-white hover:bg-white/20 transition-colors"
+        style={{ backdropFilter: 'blur(14px) saturate(160%)', WebkitBackdropFilter: 'blur(14px) saturate(160%)' }}
         aria-label="Next"
       >
-        <ChevronRight className="w-7 h-7" />
+        <ChevronRight className="w-5 h-5" />
       </button>
 
-      <motion.div
-        key={index}
-        initial={{ opacity: 0, scale: 0.98 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.25 }}
-        className="w-[92vw] max-w-[1320px] px-4 md:px-10 lg:px-16 py-6 md:py-10 flex flex-col items-center gap-4"
+      <div
+        className="w-[92vw] max-w-[1320px] px-4 md:px-10 lg:px-16 pt-24 md:pt-28 pb-8 md:pb-12 flex flex-col items-center gap-4"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="w-full aspect-[16/9] bg-black/40 rounded-md overflow-hidden flex items-center justify-center">
@@ -130,8 +141,8 @@ const Lightbox = ({
             {current.caption}
           </p>
         )}
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 };
 
@@ -579,14 +590,16 @@ const CenterStageCarousel = ({ images }: { images: string[] }) => {
           <>
             <button
               onClick={prev}
-              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full border border-foreground/20 bg-background/70 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
+              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full border border-white/20 bg-white/10 backdrop-blur flex items-center justify-center text-white/90 hover:text-white hover:bg-white/20 transition-colors"
+              style={{ backdropFilter: 'blur(14px) saturate(160%)', WebkitBackdropFilter: 'blur(14px) saturate(160%)' }}
               aria-label="Previous"
             >
               <ChevronLeft className="w-4 h-4" strokeWidth={1.5} />
             </button>
             <button
               onClick={next}
-              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full border border-foreground/20 bg-background/70 backdrop-blur flex items-center justify-center text-foreground hover:bg-background transition-colors"
+              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full border border-white/20 bg-white/10 backdrop-blur flex items-center justify-center text-white/90 hover:text-white hover:bg-white/20 transition-colors"
+              style={{ backdropFilter: 'blur(14px) saturate(160%)', WebkitBackdropFilter: 'blur(14px) saturate(160%)' }}
               aria-label="Next"
             >
               <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
@@ -631,17 +644,19 @@ const HeroCarousel = ({ images, title }: { images: string[]; title: string }) =>
           <>
             <button
               onClick={prev}
-              className="absolute left-3 md:left-5 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center text-white/90 hover:text-white transition-colors"
+              className="absolute left-3 md:left-5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full flex items-center justify-center border border-white/20 bg-white/10 text-white/90 hover:text-white hover:bg-white/20 transition-colors"
+              style={{ backdropFilter: 'blur(14px) saturate(160%)', WebkitBackdropFilter: 'blur(14px) saturate(160%)' }}
               aria-label="Previous"
             >
-              <ChevronLeft className="w-5 h-5" strokeWidth={1.25} />
+              <ChevronLeft className="w-4 h-4" strokeWidth={1.5} />
             </button>
             <button
               onClick={next}
-              className="absolute right-3 md:right-5 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center text-white/90 hover:text-white transition-colors"
+              className="absolute right-3 md:right-5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full flex items-center justify-center border border-white/20 bg-white/10 text-white/90 hover:text-white hover:bg-white/20 transition-colors"
+              style={{ backdropFilter: 'blur(14px) saturate(160%)', WebkitBackdropFilter: 'blur(14px) saturate(160%)' }}
               aria-label="Next"
             >
-              <ChevronRight className="w-5 h-5" strokeWidth={1.25} />
+              <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
             </button>
           </>
         )}
@@ -661,7 +676,7 @@ const ProjectDetailPage = () => {
   const project = projectId ? getProjectById(projectId) : null;
   const relatedProjects = projectId ? getRelatedProjects(projectId, 3) : [];
 
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [lightbox, setLightbox] = useState<{ images: ProcessImage[]; title: string; index: number } | null>(null);
   const [activeGalleryId, setActiveGalleryId] = useState<string | null>(null);
 
   const getCategoryLabel = (category: string) => {
@@ -960,13 +975,12 @@ const ProjectDetailPage = () => {
                         key={g.id}
                         type="button"
                         onClick={() => setActiveGalleryId(g.id)}
-                        className={`relative inline-flex items-center justify-center min-w-[180px] md:min-w-[200px] max-w-[180px] md:max-w-[200px] hover:max-w-[520px] focus-visible:max-w-[520px] overflow-hidden whitespace-nowrap text-center px-4 py-2.5 rounded-full text-xs md:text-[13px] tracking-[0.12em] uppercase font-sans transition-[max-width,color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                        className={`relative inline-flex items-center justify-center text-center px-4 py-2.5 rounded-full text-xs md:text-[13px] tracking-[0.12em] uppercase font-sans transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                           isActive
                             ? 'text-background'
                             : 'text-foreground hover:text-foreground'
                         }`}
                         aria-pressed={isActive}
-                        title={g.label}
                       >
                         {isActive && (
                           <motion.span
@@ -975,7 +989,7 @@ const ProjectDetailPage = () => {
                             transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                           />
                         )}
-                        <span className="relative z-10 truncate">{g.label}</span>
+                        <span className="relative z-10 break-words">{g.label}</span>
                       </button>
                     );
                   })}
@@ -984,7 +998,7 @@ const ProjectDetailPage = () => {
               <BentoGrid
                 key={active.id}
                 images={active.images}
-                onOpen={(i) => setLightboxIndex(i)}
+                onOpen={(i) => setLightbox({ images: active.images, title: active.label, index: i })}
               />
             </section>
           );
@@ -1082,6 +1096,13 @@ const ProjectDetailPage = () => {
         {relatedProjects.length > 0 && (
           <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-20 md:pt-24">
             <div className="border-t border-foreground/10 pt-12 md:pt-14">
+              <Link
+                to="/work"
+                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Back to all projects
+              </Link>
               <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground mb-10">
                 Related work
               </h3>
@@ -1096,25 +1117,24 @@ const ProjectDetailPage = () => {
       </main>
 
       {/* Lightbox */}
-      <AnimatePresence>
-        {lightboxIndex !== null && (
-          <Lightbox
-            images={derived.processImages}
-            index={lightboxIndex}
-            onClose={() => setLightboxIndex(null)}
-            onPrev={() =>
-              setLightboxIndex((i) =>
-                i === null ? null : (i - 1 + derived.processImages.length) % derived.processImages.length,
-              )
-            }
-            onNext={() =>
-              setLightboxIndex((i) =>
-                i === null ? null : (i + 1) % derived.processImages.length,
-              )
-            }
-          />
-        )}
-      </AnimatePresence>
+      {lightbox && (
+        <Lightbox
+          images={lightbox.images}
+          index={lightbox.index}
+          title={lightbox.title}
+          onClose={() => setLightbox(null)}
+          onPrev={() =>
+            setLightbox((l) =>
+              l ? { ...l, index: (l.index - 1 + l.images.length) % l.images.length } : l,
+            )
+          }
+          onNext={() =>
+            setLightbox((l) =>
+              l ? { ...l, index: (l.index + 1) % l.images.length } : l,
+            )
+          }
+        />
+      )}
     </PageLayout>
   );
 };
