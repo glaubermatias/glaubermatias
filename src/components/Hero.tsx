@@ -120,7 +120,7 @@ const Hero = () => {
                     animate={{ y: '0%' }}
                     exit={{ y: '-100%' }}
                     transition={{ duration: ANIM, ease: [0.65, 0, 0.35, 1] }}
-                    className="absolute left-0 top-0 whitespace-nowrap"
+                    className="absolute top-0 whitespace-nowrap left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0"
                     style={{
                       color: '#e85102',
                       lineHeight: 1.2,
