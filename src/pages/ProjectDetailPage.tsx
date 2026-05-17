@@ -885,13 +885,13 @@ const ProjectDetailPage = () => {
           </p>
 
           {/* Meaningful title - darker gray, slightly smaller */}
-          <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-normal mt-6 leading-tight text-[#5a5a5a]">
+          <h2 className="font-display text-xl md:text-2xl lg:text-3xl font-normal mt-6 leading-tight text-[#5a5a5a]">
             {derived.meaningfulTitle}
           </h2>
 
           {/* TL;DR - full content width */}
           {derived.tldr && (
-            <p className="mt-10 text-lg md:text-xl leading-relaxed text-foreground">
+            <p className="mt-8 text-base md:text-lg leading-relaxed text-foreground">
               {derived.tldr}
             </p>
           )}
@@ -969,7 +969,7 @@ const ProjectDetailPage = () => {
                     key={block.label}
                     className={`grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 ${i > 0 ? 'border-t border-foreground/10' : ''}`}
                   >
-                    <h3 className="md:col-span-3 font-display text-xl md:text-2xl font-semibold text-foreground">
+                    <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
                       {block.label}
                     </h3>
                     <p className="md:col-span-7 text-base md:text-lg text-muted-foreground leading-relaxed">
@@ -1045,7 +1045,7 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {derived.beforeAfter && (
           <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-16 md:pt-20">
-            <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground text-center mb-8 md:mb-10">
+            <h3 className="font-display text-xl md:text-2xl font-semibold text-foreground text-center mb-8 md:mb-10">
               Before and After
             </h3>
             <BeforeAfterSlider
@@ -1060,7 +1060,7 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
           <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10">
-            <h3 className="md:col-span-3 font-display text-xl md:text-2xl font-semibold text-foreground">
+            <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
               Trade-offs &amp; Constraints
             </h3>
             <p className="md:col-span-7 text-base md:text-lg text-muted-foreground leading-relaxed">
@@ -1106,7 +1106,7 @@ const ProjectDetailPage = () => {
           {project.quote && (
             <figure className="my-16 max-w-3xl mx-auto">
               <span className="font-display text-7xl text-primary leading-none block mb-2">"</span>
-              <blockquote className="font-display text-2xl md:text-3xl font-normal text-foreground leading-snug italic">
+              <blockquote className="font-display text-xl md:text-2xl font-normal text-foreground leading-snug italic">
                 {project.quote.text}
               </blockquote>
               {(project.quote.author || project.quote.role) && (
@@ -1119,7 +1119,7 @@ const ProjectDetailPage = () => {
           )}
 
           {derived.closingParagraph && (
-            <p className="text-lg md:text-xl text-foreground leading-relaxed max-w-3xl mx-auto">
+            <p className="text-base md:text-lg text-foreground leading-relaxed max-w-3xl mx-auto">
               {derived.closingParagraph}
             </p>
           )}
@@ -1130,23 +1130,14 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-16 md:pt-20">
           <div
-            className="relative w-full rounded-md overflow-hidden isolate border"
-            style={{
-              background: '#efefef',
-              borderColor: 'rgba(255,255,255,0.6)',
-            }}
+            className="relative w-full rounded-md overflow-hidden isolate"
+            style={{ background: '#f5f5f5' }}
           >
-            {/* Soft top-edge light reflection */}
-            <div
-              className="absolute top-0 left-0 right-0 h-px pointer-events-none"
-              style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent)' }}
-              aria-hidden="true"
-            />
             <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 md:px-12 py-7 md:py-9">
-              <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold text-foreground mb-2 md:mb-3 leading-tight">
+              <h2 className="font-display text-xl md:text-2xl font-semibold text-foreground mb-2 leading-tight">
                 This project is under NDA
               </h2>
-              <p className="text-muted-foreground text-base md:text-lg max-w-xl mb-5 md:mb-6 leading-relaxed">
+              <p className="text-muted-foreground text-sm md:text-base max-w-xl mb-3 md:mb-4 leading-relaxed">
                 Thank you for showing interest in my work. If you'd like to learn more about this project, please reach out!
               </p>
               <button
