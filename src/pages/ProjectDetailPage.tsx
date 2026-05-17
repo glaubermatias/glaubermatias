@@ -964,13 +964,12 @@ const ProjectDetailPage = () => {
                         key={g.id}
                         type="button"
                         onClick={() => setActiveGalleryId(g.id)}
-                        className={`relative inline-flex items-center justify-center min-w-[180px] md:min-w-[200px] max-w-[180px] md:max-w-[200px] hover:max-w-[520px] focus-visible:max-w-[520px] overflow-hidden whitespace-nowrap text-center px-4 py-2.5 rounded-full text-xs md:text-[13px] tracking-[0.12em] uppercase font-sans transition-[max-width,color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                        className={`relative inline-flex items-center justify-center text-center px-4 py-2.5 rounded-full text-xs md:text-[13px] tracking-[0.12em] uppercase font-sans transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                           isActive
                             ? 'text-background'
                             : 'text-foreground hover:text-foreground'
                         }`}
                         aria-pressed={isActive}
-                        title={g.label}
                       >
                         {isActive && (
                           <motion.span
@@ -979,7 +978,7 @@ const ProjectDetailPage = () => {
                             transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                           />
                         )}
-                        <span className="relative z-10 truncate">{g.label}</span>
+                        <span className="relative z-10 break-words">{g.label}</span>
                       </button>
                     );
                   })}
