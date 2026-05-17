@@ -864,16 +864,57 @@ const ProjectDetailPage = () => {
         )}
 
         {/* ============================================================= */}
-        {/* 5. PROCESS - BENTO                                              */}
+        {/* 5. PROCESS - BENTO (with related-project gallery switcher)     */}
         {/* ============================================================= */}
-        {derived.bentoImages.length > 0 && (
-          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-10 md:pt-12">
-            <BentoGrid
-              images={derived.bentoImages}
-              onOpen={(i) => setLightboxIndex(i)}
-            />
-          </section>
-        )}
+        {derived.bentoImages.length > 0 && (() => {
+          // Galleries: current project first (default active), then related.
+          const galleries = [
+            { id: project.id, label: project.title, images: derived.bentoImages },
+            ...relatedProjects.map((rp) => {
+              const src = (rp.processImages && rp.processImages.length > 0)
+                ? rp.processImages
+                : rp.images.map((s) => ({ src: s } as ProcessImage));
+              const tiles: ProcessImage[] = [];
+              for (let i = 0; i < 8; i++) tiles.push(src[i % src.length]);
+              return { id: rp.id, label: rp.title, images: tiles };
+            }),
+          ];
+          const activeId = activeGalleryId ?? project.id;
+          const active = galleries.find((g) => g.id === activeId) ?? galleries[0];
+          return (
+            <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-10 md:pt-12">
+              {galleries.length > 1 && (
+                <div className="flex flex-wrap justify-center gap-3 mb-8 md:mb-10">
+                  {galleries.map((g) => {
+                    const isActive = g.id === active.id;
+                    return (
+                      <button
+                        key={g.id}
+                        type="button"
+                        onClick={() => setActiveGalleryId(g.id)}
+                        className={`w-[180px] md:w-[200px] truncate text-center px-4 py-2.5 rounded-full border text-xs md:text-[13px] tracking-[0.12em] uppercase font-sans transition-colors ${
+                          isActive
+                            ? 'bg-foreground text-background border-foreground'
+                            : 'bg-transparent text-foreground border-foreground/20 hover:border-foreground/50 hover:bg-foreground/[0.04]'
+                        }`}
+                        aria-pressed={isActive}
+                        title={g.label}
+                      >
+                        {g.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+              <BentoGrid
+                key={active.id}
+                images={active.images}
+                onOpen={(i) => setLightboxIndex(i)}
+              />
+            </section>
+          );
+        })()}
+
 
         {/* ============================================================= */}
         {/* 5b. BEFORE & AFTER COMPARISON                                   */}
