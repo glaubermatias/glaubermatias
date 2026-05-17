@@ -640,9 +640,9 @@ const HeroCarousel = ({ images, title }: { images: string[]; title: string }) =>
             </button>
           </>
         )}
-      </div>
 
-      <LiquidGlassDots total={total} idx={idx} onSelect={setIdx} />
+        <LiquidGlassDots total={total} idx={idx} onSelect={setIdx} />
+      </div>
     </div>
   );
 };
