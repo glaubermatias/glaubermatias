@@ -1129,49 +1129,47 @@ const ProjectDetailPage = () => {
         {/* 8b. NDA / CONTACT BLOCK                                        */}
         {/* ============================================================= */}
         <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-16 md:pt-20">
-          <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden isolate">
+          <div
+            className="relative w-full rounded-2xl overflow-hidden isolate border"
+            style={{
+              background: '#f8f6f5',
+              borderColor: 'rgba(255,255,255,0.6)',
+            }}
+          >
+            {/* Subtle liquid glass highlight */}
             <div
-              className="absolute inset-0"
+              className="absolute inset-0 pointer-events-none"
               style={{
+                backdropFilter: 'blur(20px) saturate(160%)',
+                WebkitBackdropFilter: 'blur(20px) saturate(160%)',
                 background:
-                  'radial-gradient(120% 120% at 0% 0%, hsl(20 96% 56%) 0%, hsl(20 96% 46%) 35%, hsl(15 80% 28%) 70%, hsl(0 0% 8%) 100%)',
+                  'linear-gradient(135deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.08) 100%)',
               }}
               aria-hidden="true"
             />
+            {/* Soft top-edge light reflection */}
             <div
-              className="absolute -top-24 -right-24 w-[55%] h-[55%] rounded-full opacity-60"
-              style={{ background: 'radial-gradient(circle, hsl(40 100% 70% / 0.55), transparent 70%)' }}
+              className="absolute top-0 left-0 right-0 h-px pointer-events-none"
+              style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent)' }}
               aria-hidden="true"
             />
-            <div
-              className="absolute -bottom-32 -left-16 w-[60%] h-[60%] rounded-full opacity-50"
-              style={{ background: 'radial-gradient(circle, hsl(20 100% 50% / 0.5), transparent 70%)' }}
-              aria-hidden="true"
-            />
-            <div
-              className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 md:px-12 border border-white/20"
-              style={{
-                backdropFilter: 'blur(28px) saturate(180%)',
-                WebkitBackdropFilter: 'blur(28px) saturate(180%)',
-                background:
-                  'linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 100%)',
-              }}
-            >
-              <h2 className="font-display text-3xl md:text-5xl lg:text-6xl font-semibold text-white mb-4 md:mb-6 leading-tight">
-                This Project is Under NDA
+            <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 md:px-12 py-10 md:py-14">
+              <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold text-foreground mb-3 md:mb-4 leading-tight">
+                This project is under NDA
               </h2>
-              <p className="text-white/85 text-base md:text-lg max-w-xl mb-8 md:mb-10 leading-relaxed">
+              <p className="text-muted-foreground text-base md:text-lg max-w-xl mb-6 md:mb-8 leading-relaxed">
                 Thank you for showing interest in my work. If you'd like to learn more about this project, please reach out!
               </p>
               <button
                 type="button"
                 onClick={handleCopyEmail}
                 aria-live="polite"
-                className="inline-flex items-center gap-2.5 px-6 md:px-7 py-3 md:py-3.5 rounded-full border border-white/30 text-white font-medium text-sm md:text-[15px] hover:bg-white/25 transition-colors duration-300"
+                className="inline-flex items-center gap-2.5 px-6 md:px-7 py-3 md:py-3.5 rounded-full border font-medium text-sm md:text-[15px] transition-colors duration-300 text-foreground hover:bg-white/60"
                 style={{
                   backdropFilter: 'blur(16px) saturate(180%)',
                   WebkitBackdropFilter: 'blur(16px) saturate(180%)',
-                  background: 'rgba(255,255,255,0.14)',
+                  background: 'rgba(255,255,255,0.35)',
+                  borderColor: 'rgba(0,0,0,0.08)',
                 }}
               >
                 {emailCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
