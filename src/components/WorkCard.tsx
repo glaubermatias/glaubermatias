@@ -144,10 +144,14 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
                           return (
                             <span
                               key={idx}
-                              className={`block rounded-full transition-all duration-300 ${
-                                active ? 'w-2 h-2 bg-white' : 'w-1.5 h-1.5 bg-white/40'
-                              }`}
-                            />
+                              className="flex items-center justify-center w-2 h-2"
+                            >
+                              <span
+                                className={`block rounded-full transition-all duration-300 ${
+                                  active ? 'w-2 h-2 bg-white' : 'w-1.5 h-1.5 bg-white/40'
+                                }`}
+                              />
+                            </span>
                           );
                         })}
                       </div>
