@@ -590,20 +590,7 @@ const CenterStageCarousel = ({ images }: { images: string[] }) => {
         )}
       </div>
 
-      {total > 1 && (
-        <div className="flex justify-center gap-2 mt-6">
-          {images.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setIdx(i)}
-              aria-label={`Go to ${i + 1}`}
-              className={`h-[2px] rounded-full transition-all duration-300 ${
-                i === idx ? 'bg-foreground w-8' : 'bg-foreground/25 w-4 hover:bg-foreground/50'
-              }`}
-            />
-          ))}
-        </div>
-      )}
+      <LiquidGlassDots total={total} idx={idx} onSelect={setIdx} />
     </div>
   );
 };
