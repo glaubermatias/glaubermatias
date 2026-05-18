@@ -109,7 +109,7 @@ const Lightbox = ({
       </div>
 
       <div
-        className="w-[92vw] max-w-[1320px] px-4 md:px-10 lg:px-16 pt-36 md:pt-44 pb-16 md:pb-24 flex flex-col items-center gap-4"
+        className="w-[92vw] max-w-[1320px] px-4 md:px-10 lg:px-16 pt-36 md:pt-44 pb-28 md:pb-40 flex flex-col items-center gap-4"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="relative w-full aspect-[16/9]">
@@ -1128,7 +1128,7 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 8b. NDA / CONTACT BLOCK                                        */}
         {/* ============================================================= */}
-        <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-16 md:pt-20">
+        <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-16 md:pt-20">
           <div
             className="relative w-full rounded-md overflow-hidden isolate"
             style={{ background: '#f5f5f5' }}
