@@ -109,7 +109,7 @@ const Lightbox = ({
       </div>
 
       <div
-        className="w-[92vw] max-w-[1180px] px-6 md:px-14 lg:px-20 pt-52 md:pt-64 pb-28 md:pb-40 flex flex-col items-center gap-4"
+        className="w-[92vw] max-w-[1240px] px-5 md:px-12 lg:px-16 pt-40 md:pt-52 pb-28 md:pb-40 flex flex-col items-center gap-4"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="relative w-full aspect-[16/9]">
