@@ -946,10 +946,17 @@ const ProjectDetailPage = () => {
         </section>
 
         {/* ============================================================= */}
-        {/* 3. INITIAL CAROUSEL                                            */}
+        {/* 3. INITIAL VISUAL — Before/After if available, else carousel  */}
         {/* ============================================================= */}
         <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-12 md:pt-14">
-          <HeroCarousel images={derived.heroCarousel} title={project.title} />
+          {derived.beforeAfter ? (
+            <BeforeAfterSlider
+              before={derived.beforeAfter.before}
+              after={derived.beforeAfter.after}
+            />
+          ) : (
+            <HeroCarousel images={derived.heroCarousel} title={project.title} />
+          )}
         </section>
 
         {/* ============================================================= */}
@@ -1040,20 +1047,6 @@ const ProjectDetailPage = () => {
         })()}
 
 
-        {/* ============================================================= */}
-        {/* 5b. BEFORE & AFTER COMPARISON                                   */}
-        {/* ============================================================= */}
-        {derived.beforeAfter && (
-          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-16 md:pt-20">
-            <h3 className="font-display text-xl md:text-2xl font-semibold text-foreground text-center mb-8 md:mb-10">
-              Before and After
-            </h3>
-            <BeforeAfterSlider
-              before={derived.beforeAfter.before}
-              after={derived.beforeAfter.after}
-            />
-          </section>
-        )}
 
         {/* ============================================================= */}
         {/* 6. TRADE-OFFS & CONSTRAINTS - same layout as narrative         */}
@@ -1082,25 +1075,8 @@ const ProjectDetailPage = () => {
         {/* 8. CLOSING - IMPACT                                            */}
         {/* ============================================================= */}
         <section className="max-w-[1100px] mx-auto px-8 md:px-16 pt-12 md:pt-16 text-center">
-          {bigNumbers.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 sm:gap-12 mb-16 max-w-3xl mx-auto text-left">
-              {bigNumbers.slice(0, 2).map((n, i) => (
-                <div key={i}>
-                  <p className="text-xs md:text-[13px] tracking-[0.22em] uppercase text-muted-foreground mb-4">
-                    {n.label}
-                  </p>
-                  <p className="font-display text-6xl md:text-7xl font-semibold text-foreground leading-[0.95] tracking-tight">
-                    {n.value}
-                  </p>
-                  {n.description && (
-                    <p className="mt-5 text-sm md:text-[15px] text-muted-foreground leading-relaxed">
-                      {n.description}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
+
+
 
 
           {project.quote && (
