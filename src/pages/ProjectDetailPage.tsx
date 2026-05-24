@@ -895,7 +895,7 @@ const ProjectDetailPage = () => {
           </h2>
 
           {/* TL;DR - full content width */}
-          <p className="mt-8 font-sans text-base md:text-lg leading-relaxed text-muted-foreground">
+          <p className="mt-8 font-sans text-base md:text-lg leading-relaxed text-foreground">
             {derived.tldr}
           </p>
 
@@ -998,7 +998,7 @@ const ProjectDetailPage = () => {
           // Bento selector pills are project-owned labels. They never read
           // from related projects, title, category, or card fields.
           const galleries = derived.bentoGalleries;
-          const activeId = activeGalleryId ?? project.id;
+          const activeId = activeGalleryId ?? galleries[0]?.id;
           const active = galleries.find((g) => g.id === activeId) ?? galleries[0];
           return (
             <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-10 md:pt-12">
@@ -1045,8 +1045,8 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 6. TRADE-OFFS & CONSTRAINTS - always rendered                  */}
         {/* ============================================================= */}
-        <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
-          <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10">
+        <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-10 md:pt-12">
+          <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-6 md:py-8">
             <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
               Trade-offs &amp; Constraints
             </h3>
@@ -1089,7 +1089,7 @@ const ProjectDetailPage = () => {
             </figure>
           )}
 
-          <p className="font-sans text-base md:text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
+          <p className="font-sans text-base md:text-lg text-foreground leading-relaxed max-w-3xl mx-auto">
             {derived.closingParagraph}
           </p>
 
