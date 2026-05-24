@@ -1081,11 +1081,10 @@ const ProjectDetailPage = () => {
             </figure>
           )}
 
-          {derived.closingParagraph && (
-            <p className="text-base md:text-lg text-foreground leading-relaxed max-w-3xl mx-auto">
-              {derived.closingParagraph}
-            </p>
-          )}
+          <p className="text-base md:text-lg text-foreground leading-relaxed max-w-3xl mx-auto">
+            {derived.closingParagraph}
+          </p>
+
         </section>
 
         {/* ============================================================= */}
