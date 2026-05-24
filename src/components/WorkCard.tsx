@@ -58,11 +58,8 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
 
   const tagLabel = `WORK ${String(index + 1).padStart(2, '0')}/${String(totalCount).padStart(2, '0')}`;
 
-  // Combined paragraph: prefer challenge + solution joined; fallback to description
-  const combinedParagraph =
-    project.challenge && project.solution
-      ? `${project.challenge} ${project.solution}`
-      : project.description;
+  // Card paragraph uses only the project description (single source).
+  const combinedParagraph = project.description;
 
   return (
     <motion.article
