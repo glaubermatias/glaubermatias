@@ -1049,7 +1049,7 @@ const ProjectDetailPage = () => {
             <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
               Trade-offs &amp; Constraints
             </h3>
-            <p className="md:col-span-7 text-sm md:text-base text-muted-foreground leading-relaxed">
+            <p className="md:col-span-7 font-sans text-sm md:text-base text-muted-foreground leading-relaxed">
               {derived.tradeoffs}
             </p>
           </div>
@@ -1088,7 +1088,7 @@ const ProjectDetailPage = () => {
             </figure>
           )}
 
-          <p className="text-base md:text-lg text-foreground leading-relaxed max-w-3xl mx-auto">
+          <p className="font-sans text-base md:text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
             {derived.closingParagraph}
           </p>
 
