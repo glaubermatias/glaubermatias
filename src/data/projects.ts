@@ -60,7 +60,7 @@ export interface ProjectData {
 }
 
 
-export const projects: ProjectData[] = [
+const _projectsRaw: ProjectData[] = [
   {
     id: 'leadership-academy',
     title: 'High Performance Teams',
