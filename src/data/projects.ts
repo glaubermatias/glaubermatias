@@ -11,6 +11,12 @@ export interface ProcessImage {
   caption?: string;
 }
 
+export interface BentoGallery {
+  id: string;
+  label: string;
+  images?: ProcessImage[];
+}
+
 export interface Quote {
   text: string;
   author?: string;
@@ -41,6 +47,8 @@ export interface ProjectData {
   headerTitle?: string;
   /** Label shown in the bento gallery selector. Independent from `title`. */
   galleryLabel?: string;
+  /** Independent bento selector pills. Never sourced from related projects. */
+  bentoGalleries?: BentoGallery[];
   tldr?: string;
   meaningfulTitle?: string;
   context?: string;
