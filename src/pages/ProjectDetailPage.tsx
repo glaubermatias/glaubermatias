@@ -43,11 +43,6 @@ const RelatedProjectCard = ({ project }: { project: ProjectData }) => {
         />
       </div>
       <div className="p-5 space-y-1.5">
-        {project.cardCategory && (
-          <p className="text-[11px] tracking-[0.22em] uppercase text-muted-foreground/80 font-sans">
-            {project.cardCategory}
-          </p>
-        )}
         <h4 className="font-display text-xl font-semibold text-foreground">
           {project.headerTitle}
         </h4>
