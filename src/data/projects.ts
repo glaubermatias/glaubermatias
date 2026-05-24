@@ -11,6 +11,12 @@ export interface ProcessImage {
   caption?: string;
 }
 
+export interface BentoGallery {
+  id: string;
+  label: string;
+  images?: ProcessImage[];
+}
+
 export interface Quote {
   text: string;
   author?: string;
@@ -41,6 +47,8 @@ export interface ProjectData {
   headerTitle?: string;
   /** Label shown in the bento gallery selector. Independent from `title`. */
   galleryLabel?: string;
+  /** Independent bento selector pills. Never sourced from related projects. */
+  bentoGalleries?: BentoGallery[];
   tldr?: string;
   meaningfulTitle?: string;
   context?: string;
@@ -67,15 +75,23 @@ const _projectsRaw: ProjectData[] = [
     headerTitle: 'Leadership Academy',
     galleryLabel: 'High Performance Teams',
     cardDescription: 'Transforming dense narratives into sharp visual frameworks for 260+ leaders',
-    description: 'The Leadership Academy is QuintoAndar\'s bet to strengthen its senior leadership team. My role was to translate around 40 pages of dense text per edition into sharp visual frameworks so 260+ leaders could truly absorb and cascade the core messages to their teams. The result? An average NPS of 4.6/5.',
+    description: 'Leadership development materials for senior executives.',
     category: 'executive-decks',
     company: 'QUINTOANDAR',
     cardCategory: 'Executive Decks',
     duration: '3 weeks per edition',
     role: 'Lead Presentation Designer',
-    context: '',
+    meaningfulTitle: 'Comprehensive leadership development program for executive training',
+    tldr: 'The Leadership Academy is QuintoAndar\'s bet to strengthen its senior leadership team. My role was to translate around 40 pages of dense text per edition into sharp visual frameworks so 260+ leaders could truly absorb and cascade the core messages to their teams. The result? An average NPS of 4.6/5.',
+    context: 'QuintoAndar needed each Leadership Academy edition to work as a high-stakes learning moment for senior leaders, not just as another internal deck. The material had to preserve strategic nuance while making the message simple enough to be remembered, discussed, and cascaded across teams.',
     problem: 'Topics like "Hiring", "Equity", "AI", and "High Performance Teams" are notoriously dense. The risk here was that if the message failed to land, it would not resonate with our top management, leaving them ill-equipped to guide their teams. I needed to turn these heavy narratives into engaging visual frameworks, tailored to both the specific subject and the distinct delivery styles of our C-level speakers.',
-    strategy: '',
+    strategy: 'I translated dense source material into a modular presentation system: clear narrative arcs, sharp visual frameworks, reusable hierarchy rules, and custom slide structures for each speaker. Instead of decorating text, the work focused on making abstract leadership ideas concrete, memorable, and easy to retell.',
+    bentoGalleries: [
+      { id: 'hiring', label: 'Hiring' },
+      { id: 'equity', label: 'Equity' },
+      { id: 'ai', label: 'AI' },
+      { id: 'high-performance-teams', label: 'High Performance Teams' },
+    ],
     images: [
       'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop',
@@ -92,9 +108,9 @@ const _projectsRaw: ProjectData[] = [
       { value: '~21%', label: 'Content clarity', description: 'Average share of open-ended feedback praising the content and its clear structure.' },
       { value: '100+', label: 'Slide layouts', description: 'Reusable layouts shipped into the production system.' },
     ],
-    overview: 'The Leadership Academy is QuintoAndar\'s bet to strengthen its senior leadership team. My role was to translate around 40 pages of dense text per edition into sharp visual frameworks so 260+ leaders could truly absorb and cascade the core messages to their teams. The result? An average NPS of 4.6/5.',
-    challenge: 'Creating engaging and impactful materials that could effectively communicate complex leadership concepts while maintaining consistency across various training modules.',
-    solution: 'Developed a modular presentation system with clear visual hierarchies, interactive elements, and a cohesive design language that adapts to different leadership topics.',
+    overview: 'Leadership Academy overview kept as legacy metadata only.',
+    challenge: 'Legacy challenge kept only for archive compatibility.',
+    solution: 'Legacy solution kept only for archive compatibility.',
     closingParagraph: 'The real win here went beyond surviving tight deadlines or making information look good. The true value was unlocking the full potential of these strategic initiatives, making their messages clear and impactful. By stepping into the shoes of both the L&D team and the C-level speakers, I turned a potential bottleneck of heavy text into a clear path for action. When it comes down to it, great presentation design clears the noise so that the leaders don\'t have to guess their next step to keep moving forward. They know it.',
     results: ['Successfully deployed across 5 leadership cohorts', 'Increased participant engagement by 40%', 'Became the standard template for all leadership programs'],
   },
@@ -457,20 +473,48 @@ const _projectsRaw: ProjectData[] = [
   },
 ];
 
-/**
- * Backfill new dedicated fields from legacy ones at module load.
- * After this normalization, the project detail page reads ONLY from
- * the dedicated fields with no cross-block fallbacks. Visual Edits
- * therefore mutate one specific field and never bleed into another block.
- */
-const normalizedProjects: ProjectData[] = _projectsRaw.map((p) => ({
-  ...p,
-  headerTitle: p.headerTitle ?? p.title,
-  galleryLabel: p.galleryLabel ?? p.title,
-  meaningfulTitle: p.meaningfulTitle ?? p.cardDescription ?? '',
-  tldr: p.tldr ?? p.overview ?? '',
-  problem: p.problem ?? p.challenge ?? '',
-}));
+const EDITORIAL_PLACEHOLDERS = {
+  meaningfulTitle: 'Strategic presentation system built to make complex work clear, memorable, and easy to act on.',
+  tldr: 'A concise project summary will live here, written in the same editorial tone and visual system as the rest of the portfolio.',
+  context: 'Context placeholder: describe the business moment, audience, and conditions that shaped this project.',
+  problem: 'Problem placeholder: describe the core communication challenge, risk, or friction the work needed to solve.',
+  strategy: 'Strategy placeholder: describe the narrative, design system, and production choices that guided the solution.',
+  tradeoffs: 'Trade-offs placeholder: describe the constraints, compromises, and decisions that shaped the final direction.',
+  closingParagraph: 'Closing placeholder: summarize the impact of the project and the final takeaway for the audience.',
+};
+
+const makeProcessTiles = (p: ProjectData): ProcessImage[] => {
+  const source = p.processImages && p.processImages.length > 0
+    ? p.processImages
+    : p.images.map((src) => ({ src }));
+
+  if (source.length === 0) return [];
+
+  return Array.from({ length: 8 }, (_, index) => source[index % source.length]);
+};
+
+const normalizedProjects: ProjectData[] = _projectsRaw.map((p) => {
+  const galleryLabel = p.galleryLabel ?? p.headerTitle ?? p.title;
+
+  return {
+    ...p,
+    headerTitle: p.headerTitle ?? p.title,
+    galleryLabel,
+    meaningfulTitle: p.meaningfulTitle ?? EDITORIAL_PLACEHOLDERS.meaningfulTitle,
+    tldr: p.tldr ?? EDITORIAL_PLACEHOLDERS.tldr,
+    context: p.context ?? EDITORIAL_PLACEHOLDERS.context,
+    problem: p.problem ?? EDITORIAL_PLACEHOLDERS.problem,
+    strategy: p.strategy ?? EDITORIAL_PLACEHOLDERS.strategy,
+    tradeoffs: p.tradeoffs ?? EDITORIAL_PLACEHOLDERS.tradeoffs,
+    closingParagraph: p.closingParagraph ?? EDITORIAL_PLACEHOLDERS.closingParagraph,
+    bentoGalleries: p.bentoGalleries && p.bentoGalleries.length > 0
+      ? p.bentoGalleries.map((gallery) => ({
+        ...gallery,
+        images: gallery.images && gallery.images.length > 0 ? gallery.images : makeProcessTiles(p),
+      }))
+      : [{ id: `${p.id}-gallery`, label: galleryLabel, images: makeProcessTiles(p) }],
+  };
+});
 
 export const projects: ProjectData[] = normalizedProjects;
 
@@ -482,8 +526,11 @@ export const getProjectById = (id: string): ProjectData | undefined => {
 export const getRelatedProjects = (projectId: string, limit: number = 3): ProjectData[] => {
   const currentProject = getProjectById(projectId);
   if (!currentProject) return [];
-  return normalizedProjects
+  const sameCategory = normalizedProjects
     .filter(p => p.category === currentProject.category && p.id !== projectId)
+    .filter(p => Boolean(p.headerTitle && p.meaningfulTitle && p.tldr));
+
+  return sameCategory
     .slice(0, limit);
 };
 

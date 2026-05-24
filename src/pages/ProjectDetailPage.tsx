@@ -6,6 +6,24 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import PageLayout from '@/components/PageLayout';
 import { getProjectById, getRelatedProjects, ProjectData, ProcessImage } from '@/data/projects';
 
+const EDITORIAL_PLACEHOLDERS = {
+  meaningfulTitle: 'Strategic presentation system built to make complex work clear, memorable, and easy to act on.',
+  tldr: 'A concise project summary will live here, written in the same editorial tone and visual system as the rest of the portfolio.',
+  context: 'Context placeholder: describe the business moment, audience, and conditions that shaped this project.',
+  problem: 'Problem placeholder: describe the core communication challenge, risk, or friction the work needed to solve.',
+  strategy: 'Strategy placeholder: describe the narrative, design system, and production choices that guided the solution.',
+  tradeoffs: 'Trade-offs placeholder: describe the constraints, compromises, and decisions that shaped the final direction.',
+  closingParagraph: 'Closing placeholder: summarize the impact of the project and the final takeaway for the audience.',
+};
+
+const withPlaceholder = (value: string | undefined, key: keyof typeof EDITORIAL_PLACEHOLDERS) =>
+  value && value.trim().length > 0 ? value : EDITORIAL_PLACEHOLDERS[key];
+
+const makeEightTiles = (images: ProcessImage[]) => {
+  if (images.length === 0) return [];
+  return Array.from({ length: 8 }, (_, index) => images[index % images.length]);
+};
+
 /* ------------------------------------------------------------------ */
 /* Related project card (footer)                                       */
 /* ------------------------------------------------------------------ */
@@ -31,13 +49,14 @@ const RelatedProjectCard = ({ project }: { project: ProjectData }) => {
           </p>
         )}
         <h4 className="font-display text-xl font-semibold text-foreground">
-          {project.title}
+          {project.headerTitle}
         </h4>
-        {(project.cardDescription || project.description) && (
-          <p className="font-sans text-sm text-muted-foreground leading-snug line-clamp-2">
-            {project.cardDescription || project.description}
-          </p>
-        )}
+        <p className="font-display text-base text-muted-foreground leading-snug line-clamp-2">
+          {project.meaningfulTitle}
+        </p>
+        <p className="font-sans text-sm text-muted-foreground leading-snug line-clamp-2">
+          {project.tldr}
+        </p>
       </div>
     </Link>
   );
@@ -738,14 +757,14 @@ const ProjectDetailPage = () => {
     // No cross-block fallbacks — this is what guarantees that editing one
     // text in Visual Edits never affects another block on the page.
     const headerTitle = project.headerTitle ?? project.title;
-    const galleryLabel = project.galleryLabel ?? project.title;
-    const meaningfulTitle = project.meaningfulTitle ?? '';
-    const tldr = project.tldr ?? '';
-    const context = project.context ?? '';
-    const problem = project.problem ?? '';
-    const strategy = project.strategy ?? '';
-    const tradeoffs = project.tradeoffs ?? '';
-    const closingParagraph = project.closingParagraph ?? '';
+    const galleryLabel = project.galleryLabel ?? headerTitle;
+    const meaningfulTitle = withPlaceholder(project.meaningfulTitle, 'meaningfulTitle');
+    const tldr = withPlaceholder(project.tldr, 'tldr');
+    const context = withPlaceholder(project.context, 'context');
+    const problem = withPlaceholder(project.problem, 'problem');
+    const strategy = withPlaceholder(project.strategy, 'strategy');
+    const tradeoffs = withPlaceholder(project.tradeoffs, 'tradeoffs');
+    const closingParagraph = withPlaceholder(project.closingParagraph, 'closingParagraph');
     const skills = project.skills && project.skills.length > 0
       ? project.skills
       : [];
@@ -754,14 +773,13 @@ const ProjectDetailPage = () => {
     const tools = project.tools ?? '';
     const duration = project.duration ?? '';
 
-    // Bento always shows 8 tiles; if fewer source images exist, cycle through them.
-    const bentoImages: ProcessImage[] = (() => {
-      if (processImages.length === 0) return [];
-      const target = 8;
-      const out: ProcessImage[] = [];
-      for (let i = 0; i < target; i++) out.push(processImages[i % processImages.length]);
-      return out;
-    })();
+    const bentoGalleries = project.bentoGalleries && project.bentoGalleries.length > 0
+      ? project.bentoGalleries.map((gallery) => ({
+        id: gallery.id,
+        label: gallery.label,
+        images: makeEightTiles(gallery.images && gallery.images.length > 0 ? gallery.images : processImages),
+      }))
+      : [{ id: `${project.id}-gallery`, label: galleryLabel, images: makeEightTiles(processImages) }];
     // Before / After: explicit field wins; otherwise fall back to first vs.
     // last process image when at least 2 are available.
     let beforeAfter: { before: string; after: string } | null = null;
@@ -777,7 +795,7 @@ const ProjectDetailPage = () => {
       headerImage,
       heroCarousel,
       processImages,
-      bentoImages,
+      bentoGalleries,
       beforeAfter,
       liveImages,
       headerTitle,
@@ -876,11 +894,9 @@ const ProjectDetailPage = () => {
           </h2>
 
           {/* TL;DR - full content width */}
-          {derived.tldr && (
-            <p className="mt-8 text-base md:text-lg leading-relaxed text-foreground">
-              {derived.tldr}
-            </p>
-          )}
+          <p className="mt-8 font-sans text-base md:text-lg leading-relaxed text-muted-foreground">
+            {derived.tldr}
+          </p>
 
           {/* Metadata + Big Numbers — 50 / 25 / 25, framed by hairlines.
               Floats up on viewport entry. */}
@@ -952,23 +968,24 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
           <div className="space-y-0">
-            {[
-              { label: 'Context', body: derived.context },
-              { label: 'Problem', body: derived.problem },
-              { label: 'Strategy', body: derived.strategy },
-            ].map((block, i) => (
-              <div
-                key={block.label}
-                className={`grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 ${i > 0 ? 'border-t border-foreground/10' : ''}`}
-              >
-                <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
-                  {block.label}
-                </h3>
-                <p className="md:col-span-7 text-sm md:text-base text-muted-foreground leading-relaxed">
-                  {block.body}
-                </p>
-              </div>
-            ))}
+            <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10">
+              <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">Context</h3>
+              <p className="md:col-span-7 font-sans text-sm md:text-base text-muted-foreground leading-relaxed">
+                {derived.context}
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 border-t border-foreground/10">
+              <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">Problem</h3>
+              <p className="md:col-span-7 font-sans text-sm md:text-base text-muted-foreground leading-relaxed">
+                {derived.problem}
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 border-t border-foreground/10">
+              <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">Strategy</h3>
+              <p className="md:col-span-7 font-sans text-sm md:text-base text-muted-foreground leading-relaxed">
+                {derived.strategy}
+              </p>
+            </div>
           </div>
         </section>
 
@@ -976,19 +993,10 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 5. PROCESS - BENTO (with related-project gallery switcher)     */}
         {/* ============================================================= */}
-        {derived.bentoImages.length > 0 && (() => {
-          // Galleries: current project first (default active), then related.
-          const galleries = [
-            { id: project.id, label: derived.galleryLabel, images: derived.bentoImages },
-            ...relatedProjects.map((rp) => {
-              const src = (rp.processImages && rp.processImages.length > 0)
-                ? rp.processImages
-                : rp.images.map((s) => ({ src: s } as ProcessImage));
-              const tiles: ProcessImage[] = [];
-              for (let i = 0; i < 8; i++) tiles.push(src[i % src.length]);
-              return { id: rp.id, label: rp.title, images: tiles };
-            }),
-          ];
+        {derived.bentoGalleries.length > 0 && (() => {
+          // Bento selector pills are project-owned labels. They never read
+          // from related projects, title, category, or card fields.
+          const galleries = derived.bentoGalleries;
           const activeId = activeGalleryId ?? project.id;
           const active = galleries.find((g) => g.id === activeId) ?? galleries[0];
           return (
@@ -1041,7 +1049,7 @@ const ProjectDetailPage = () => {
             <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
               Trade-offs &amp; Constraints
             </h3>
-            <p className="md:col-span-7 text-sm md:text-base text-muted-foreground leading-relaxed">
+            <p className="md:col-span-7 font-sans text-sm md:text-base text-muted-foreground leading-relaxed">
               {derived.tradeoffs}
             </p>
           </div>
@@ -1080,7 +1088,7 @@ const ProjectDetailPage = () => {
             </figure>
           )}
 
-          <p className="text-base md:text-lg text-foreground leading-relaxed max-w-3xl mx-auto">
+          <p className="font-sans text-base md:text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
             {derived.closingParagraph}
           </p>
 

@@ -58,10 +58,10 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
 
   const tagLabel = `WORK ${String(index + 1).padStart(2, '0')}/${String(totalCount).padStart(2, '0')}`;
 
-  // Cards share ONLY the meaningful title and TL;DR with the project page.
-  // Single source of truth: the project's own dedicated fields.
-  const cardTitle = project.meaningfulTitle || project.title;
-  const cardParagraph = project.tldr || '';
+  // Cards read only the three dedicated project-page fields.
+  const cardHeaderTitle = project.headerTitle ?? '';
+  const cardMeaningfulTitle = project.meaningfulTitle ?? '';
+  const cardParagraph = project.tldr ?? '';
 
 
   return (
@@ -89,15 +89,20 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
                 )}
               </div>
 
-              {/* Meaningful title — same source as the project page H2 */}
-              <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground leading-tight">
-                {cardTitle}
+              {/* Header title — same source as the project page H1 */}
+              <h3 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-foreground leading-[0.98]">
+                {cardHeaderTitle}
               </h3>
+
+              {/* Meaningful title — same source as the project page H2 */}
+              <p className="mt-3 font-display text-2xl md:text-3xl lg:text-4xl font-normal text-muted-foreground leading-tight">
+                {cardMeaningfulTitle}
+              </p>
 
               {/* TL;DR — same source as the project page TL;DR.
                   This is intentionally the ONLY text shared between the
                   card and the detail page. */}
-              <p className="mt-8 text-base text-muted-foreground leading-relaxed max-w-xl">
+              <p className="mt-8 font-sans text-base text-muted-foreground leading-relaxed max-w-xl">
                 {cardParagraph}
               </p>
 
