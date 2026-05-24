@@ -6,6 +6,24 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import PageLayout from '@/components/PageLayout';
 import { getProjectById, getRelatedProjects, ProjectData, ProcessImage } from '@/data/projects';
 
+const EDITORIAL_PLACEHOLDERS = {
+  meaningfulTitle: 'Strategic presentation system built to make complex work clear, memorable, and easy to act on.',
+  tldr: 'A concise project summary will live here, written in the same editorial tone and visual system as the rest of the portfolio.',
+  context: 'Context placeholder: describe the business moment, audience, and conditions that shaped this project.',
+  problem: 'Problem placeholder: describe the core communication challenge, risk, or friction the work needed to solve.',
+  strategy: 'Strategy placeholder: describe the narrative, design system, and production choices that guided the solution.',
+  tradeoffs: 'Trade-offs placeholder: describe the constraints, compromises, and decisions that shaped the final direction.',
+  closingParagraph: 'Closing placeholder: summarize the impact of the project and the final takeaway for the audience.',
+};
+
+const withPlaceholder = (value: string | undefined, key: keyof typeof EDITORIAL_PLACEHOLDERS) =>
+  value && value.trim().length > 0 ? value : EDITORIAL_PLACEHOLDERS[key];
+
+const makeEightTiles = (images: ProcessImage[]) => {
+  if (images.length === 0) return [];
+  return Array.from({ length: 8 }, (_, index) => images[index % images.length]);
+};
+
 /* ------------------------------------------------------------------ */
 /* Related project card (footer)                                       */
 /* ------------------------------------------------------------------ */
