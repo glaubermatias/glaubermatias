@@ -1,9 +1,54 @@
-## Ajuste
+## Diagnóstico
 
-Reduzir o padding superior do lightbox para algo intermediário entre o original (`pt-36 md:pt-44`) e o atual exagerado (`pt-52 md:pt-64`).
+O problema não parece ser um erro de runtime, e sim de modelagem/renderização dos dados: a página de projeto usa vários fallbacks que reaproveitam o mesmo campo em blocos diferentes.
 
-Arquivo: `src/pages/ProjectDetailPage.tsx`, linha 112.
+Exemplos encontrados:
+- `description` pode aparecer no card, no título de apoio e no TL;DR.
+- `overview` é usado como TL;DR e também como `Context` quando `context` não existe.
+- `solution` aparece como `Strategy` quando `strategy` não existe.
+- Na listagem de Work, `challenge + solution` são combinados automaticamente em um parágrafo de card.
+- Alguns campos como `role`, `stakeholders` e `tools` estão semanticamente parecidos, o que facilita o Visual Edits trocar um pelo outro quando o texto é editado por seleção.
 
-- `pt-52 md:pt-64` → `pt-40 md:pt-52`
-- `pb-28 md:pb-40` mantido
-- Largura volta levemente: `max-w-[1180px]` → `max-w-[1240px]`, `px-6 md:px-14 lg:px-20` → `px-5 md:px-12 lg:px-16` (acompanha a redução do topo, mantendo 16:9 confortável).
+Isso cria blocos visualmente diferentes, mas conectados ao mesmo campo de origem. Quando um texto é atualizado em um lugar, outro bloco que usa o mesmo fallback também muda ou volta para conteúdo antigo.
+
+## Plano de correção
+
+1. Separar os campos por função visual
+   - Criar campos explícitos para cada bloco da página de projeto, por exemplo:
+     - texto curto do card/listagem
+     - subtítulo/meaningful title
+     - TL;DR do overview
+     - contexto
+     - problema
+     - estratégia
+     - trade-offs
+     - fechamento
+   - Manter `description` apenas como fallback legado, não como fonte compartilhada principal de vários blocos.
+
+2. Remover fallbacks que causam mistura
+   - Parar de usar `overview` automaticamente como `Context`.
+   - Parar de usar `description` automaticamente como `meaningfulTitle` e `tldr` quando houver campos específicos.
+   - Parar de usar `solution` como `Strategy` quando o projeto não tiver estratégia real.
+   - Evitar `results.join(' ')` como parágrafo final, porque isso transforma bullets em texto corrido e pode confundir edições.
+
+3. Atualizar a renderização da página de detalhe
+   - Renderizar cada seção apenas a partir do seu campo correspondente.
+   - Só mostrar uma seção quando o campo dela existir.
+   - Garantir que o bloco de Overview, Narrative e Closing não compartilhem a mesma string de dados.
+
+4. Corrigir a listagem de Work
+   - Fazer os cards usarem `cardDescription` e/ou um campo específico de resumo de card.
+   - Remover a combinação automática `challenge + solution`, que pode fazer textos internos da página aparecerem no card.
+
+5. Normalizar os dados existentes
+   - Ajustar os projetos atuais em `projects.ts` para preencher campos independentes onde necessário.
+   - Para o projeto Leadership Academy, preservar os textos reais já atualizados e garantir que cada bloco tenha sua própria fonte.
+
+6. Validar a correção
+   - Conferir no código que nenhum bloco principal renderiza a mesma string por fallback indevido.
+   - Verificar que `description`, `overview`, `context`, `strategy` e `closingParagraph` aparecem em locais independentes.
+   - Revisar a página `/leadership-academy` para confirmar que os textos não estão duplicando nem vazando entre seções.
+
+## Resultado esperado
+
+Depois da correção, o Visual Edits/chat terá alvos mais estáveis: editar um texto em um bloco não deverá alterar outro bloco da página, porque cada seção terá uma fonte de conteúdo própria e independente.

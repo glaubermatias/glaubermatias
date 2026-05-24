@@ -734,22 +734,13 @@ const ProjectDetailPage = () => {
     const liveImages = project.liveImages && project.liveImages.length > 0
       ? project.liveImages
       : project.images;
-    const meaningfulTitle =
-      project.meaningfulTitle ||
-      project.cardDescription ||
-      project.description;
-    const tldr = project.tldr || project.overview || project.description;
-    const context = project.context || project.overview || '';
+    const meaningfulTitle = project.meaningfulTitle || project.cardDescription || '';
+    const tldr = project.tldr || project.overview || '';
+    const context = project.context || '';
     const challenge = project.challenge || '';
-    const strategy = project.strategy || project.solution || '';
-    const tradeoffs =
-      project.tradeoffs ||
-      'Tight delivery windows meant prioritizing clarity over visual experimentation in some areas. Reusable systems were favored over bespoke one-offs to keep the work scalable across future iterations.';
-    const closingParagraph =
-      project.closingParagraph ||
-      (project.results && project.results.length > 0
-        ? project.results.join(' ')
-        : '');
+    const strategy = project.strategy || '';
+    const tradeoffs = project.tradeoffs || '';
+    const closingParagraph = project.closingParagraph || '';
     const skills = project.skills && project.skills.length > 0
       ? project.skills
       : ['Visual Design', 'Storytelling', 'Information Architecture'];
