@@ -3,24 +3,22 @@ import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import PageLayout from '@/components/PageLayout';
 import PageHeader from '@/components/PageHeader';
-import glauberAboutHeader from '@/assets/glauber-about-header.jpg';
-import smileIcon from '@/assets/smile-icon.png';
-import beyond01 from '@/assets/beyond-work/01.jpeg';
-import beyond02 from '@/assets/beyond-work/02.jpeg';
-import beyond03 from '@/assets/beyond-work/03.jpeg';
-import beyond04 from '@/assets/beyond-work/04.jpg';
-import beyond05 from '@/assets/beyond-work/05.jpeg';
-import beyond06 from '@/assets/beyond-work/06.jpeg';
-import beyond07 from '@/assets/beyond-work/07.jpeg';
-import beyond08 from '@/assets/beyond-work/08.jpg';
-import beyond09 from '@/assets/beyond-work/09.jpg';
-import beyond10 from '@/assets/beyond-work/10.jpeg';
-import japaneseFood from '@/assets/fun-facts/japanese-food.png';
-import taylorSwift from '@/assets/fun-facts/taylor-swift.png';
-import fernandoDeNoronha from '@/assets/fun-facts/fernando-de-noronha.jpg';
-import theOffice from '@/assets/fun-facts/the-office.png';
-import whiteChicks from '@/assets/fun-facts/white-chicks.jpg';
-import openWaterSwimming from '@/assets/fun-facts/open-water-swimming.jpg';
+import { siteImages, beyondWorkImages, funFactImages } from '@/config/images';
+
+const glauberAboutHeader = siteImages.about.header;
+const smileIcon = siteImages.about.smileIcon;
+const [
+  beyond01, beyond02, beyond03, beyond04, beyond05,
+  beyond06, beyond07, beyond08, beyond09, beyond10,
+] = beyondWorkImages;
+const {
+  japaneseFood,
+  taylorSwift,
+  fernandoDeNoronha,
+  theOffice,
+  whiteChicks,
+  openWaterSwimming,
+} = funFactImages;
 
 // Inject <link rel="preload" as="image"> as early as possible (module eval time)
 // so the browser starts fetching the hero assets in parallel with the JS chunk.
