@@ -37,9 +37,15 @@ export interface ProjectData {
   results?: string[];
   /** Optional richer fields used by the project detail page */
   headerImage?: string;
+  /** Header H1. Independent from `title` so the bento label and header don't share text. */
+  headerTitle?: string;
+  /** Label shown in the bento gallery selector. Independent from `title`. */
+  galleryLabel?: string;
   tldr?: string;
   meaningfulTitle?: string;
   context?: string;
+  /** Problem block on the detail page. Independent from `challenge`. */
+  problem?: string;
   strategy?: string;
   processImages?: ProcessImage[];
   tradeoffs?: string;
@@ -52,6 +58,7 @@ export interface ProjectData {
   tools?: string;
   beforeAfter?: { before: string; after: string };
 }
+
 
 export const projects: ProjectData[] = [
   {
