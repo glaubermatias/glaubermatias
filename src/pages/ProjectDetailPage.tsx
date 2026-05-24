@@ -914,17 +914,22 @@ const ProjectDetailPage = () => {
                 <p className="text-xs md:text-[13px] tracking-[0.22em] uppercase text-muted-foreground mb-0">
                   Overview
                 </p>
-                {[
-                  { label: 'Role', value: derived.role },
-                  { label: 'Stakeholders', value: derived.stakeholders },
-                  { label: 'Tools', value: derived.tools },
-                  { label: 'Duration', value: derived.duration },
-                ].map((m) => (
-                  <div key={m.label} className="text-sm md:text-[15px] leading-snug text-foreground">
-                    <dt className="inline font-semibold">{m.label}:</dt>{' '}
-                    <dd className="inline text-muted-foreground">{m.value}</dd>
-                  </div>
-                ))}
+                <div className="text-sm md:text-[15px] leading-snug text-foreground">
+                  <dt className="inline font-semibold">Role:</dt>{' '}
+                  <dd className="inline text-muted-foreground">{derived.role}</dd>
+                </div>
+                <div className="text-sm md:text-[15px] leading-snug text-foreground">
+                  <dt className="inline font-semibold">Stakeholders:</dt>{' '}
+                  <dd className="inline text-muted-foreground">{derived.stakeholders}</dd>
+                </div>
+                <div className="text-sm md:text-[15px] leading-snug text-foreground">
+                  <dt className="inline font-semibold">Tools:</dt>{' '}
+                  <dd className="inline text-muted-foreground">{derived.tools}</dd>
+                </div>
+                <div className="text-sm md:text-[15px] leading-snug text-foreground">
+                  <dt className="inline font-semibold">Duration:</dt>{' '}
+                  <dd className="inline text-muted-foreground">{derived.duration}</dd>
+                </div>
               </dl>
 
               {/* Big numbers — two slots, 25% each. */}
