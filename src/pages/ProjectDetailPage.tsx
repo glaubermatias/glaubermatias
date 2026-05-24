@@ -980,7 +980,7 @@ const ProjectDetailPage = () => {
         {derived.bentoImages.length > 0 && (() => {
           // Galleries: current project first (default active), then related.
           const galleries = [
-            { id: project.id, label: project.title, images: derived.bentoImages },
+            { id: project.id, label: derived.galleryLabel, images: derived.bentoImages },
             ...relatedProjects.map((rp) => {
               const src = (rp.processImages && rp.processImages.length > 0)
                 ? rp.processImages
