@@ -64,7 +64,10 @@ const _projectsRaw: ProjectData[] = [
   {
     id: 'leadership-academy',
     title: 'High Performance Teams',
+    headerTitle: 'Leadership Academy',
+    galleryLabel: 'High Performance Teams',
     cardDescription: 'Transforming dense narratives into sharp visual frameworks for 260+ leaders',
+
     description: 'The Leadership Academy is QuintoAndar\'s bet to strengthen its senior leadership team. My role was to translate around 40 pages of dense text per edition into sharp visual frameworks so 260+ leaders could truly absorb and cascade the core messages to their teams. The result? An average NPS of 4.6/5.',
     category: 'executive-decks',
     company: 'QUINTOANDAR',
