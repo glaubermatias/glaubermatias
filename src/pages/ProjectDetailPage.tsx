@@ -734,34 +734,26 @@ const ProjectDetailPage = () => {
     const liveImages = project.liveImages && project.liveImages.length > 0
       ? project.liveImages
       : project.images;
-    const meaningfulTitle = project.meaningfulTitle || project.cardDescription || '';
-    const tldr = project.tldr || project.overview || '';
-    const context = project.context || '';
-    const challenge = project.challenge || '';
-    const strategy = project.strategy || '';
-    const tradeoffs = project.tradeoffs || '';
-    const closingParagraph = project.closingParagraph || '';
+    // STRICT: every editorial field reads ONLY its own dedicated source.
+    // No cross-block fallbacks — this is what guarantees that editing one
+    // text in Visual Edits never affects another block on the page.
+    const headerTitle = project.headerTitle ?? project.title;
+    const galleryLabel = project.galleryLabel ?? project.title;
+    const meaningfulTitle = project.meaningfulTitle ?? '';
+    const tldr = project.tldr ?? '';
+    const context = project.context ?? '';
+    const problem = project.problem ?? '';
+    const strategy = project.strategy ?? '';
+    const tradeoffs = project.tradeoffs ?? '';
+    const closingParagraph = project.closingParagraph ?? '';
     const skills = project.skills && project.skills.length > 0
       ? project.skills
-      : ['Visual Design', 'Storytelling', 'Information Architecture'];
-    const role = project.role || 'Lead Designer';
-    const stakeholdersByCategory: Record<string, string> = {
-      'executive-decks': 'Executive leadership, C-suite',
-      'tech-events': 'Engineering leadership, Event ops',
-      'hr-initiatives': 'People team, Program leads',
-      'templates': 'Design ops, Internal teams',
-      'side-projects': 'Self-initiated',
-    };
-    const stakeholders =
-      project.stakeholders ||
-      stakeholdersByCategory[project.category] ||
-      'Cross-functional stakeholders';
-    const tools =
-      project.tools ||
-      (project.category === 'tech-events'
-        ? 'Figma, Keynote, Notion'
-        : 'Figma, Keynote, PowerPoint');
-    const duration = project.duration || '—';
+      : [];
+    const role = project.role ?? '';
+    const stakeholders = project.stakeholders ?? '';
+    const tools = project.tools ?? '';
+    const duration = project.duration ?? '';
+
     // Bento always shows 8 tiles; if fewer source images exist, cycle through them.
     const bentoImages: ProcessImage[] = (() => {
       if (processImages.length === 0) return [];
