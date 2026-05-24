@@ -95,10 +95,11 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
 
           <div className="p-6 space-y-3 flex-1 flex flex-col">
             <h3 className="font-display text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
-              {project.title}
+              {project.meaningfulTitle || project.title}
             </h3>
 
-            <p className="text-sm flex-1 text-[#676f79]">{project.description}</p>
+            <p className="text-sm flex-1 text-[#676f79]">{project.tldr || ''}</p>
+
 
             <div className="pt-2 mt-auto">
               <span className="inline-flex items-center px-3 py-1 rounded-full bg-accent text-accent-foreground text-xs font-normal">
