@@ -947,32 +947,31 @@ const ProjectDetailPage = () => {
 
         {/* ============================================================= */}
         {/* 4. NARRATIVE (Context, Problem, Strategy) - 30/70 asymmetric  */}
+        {/* Always render all three blocks. Each block reads only its own */}
+        {/* dedicated field, so editing one never affects another.        */}
         {/* ============================================================= */}
-        {(derived.context || derived.challenge || derived.strategy) && (
-          <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
-            <div className="space-y-0">
-              {[
-                { label: 'Context', body: derived.context },
-                { label: 'Problem', body: derived.challenge },
-                { label: 'Strategy', body: derived.strategy },
-              ]
-                .filter((b) => b.body)
-                .map((block, i) => (
-                  <div
-                    key={block.label}
-                    className={`grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 ${i > 0 ? 'border-t border-foreground/10' : ''}`}
-                  >
-                    <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
-                      {block.label}
-                    </h3>
-                    <p className="md:col-span-7 text-sm md:text-base text-muted-foreground leading-relaxed">
-                      {block.body}
-                    </p>
-                  </div>
-                ))}
-            </div>
-          </section>
-        )}
+        <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
+          <div className="space-y-0">
+            {[
+              { label: 'Context', body: derived.context },
+              { label: 'Problem', body: derived.problem },
+              { label: 'Strategy', body: derived.strategy },
+            ].map((block, i) => (
+              <div
+                key={block.label}
+                className={`grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 ${i > 0 ? 'border-t border-foreground/10' : ''}`}
+              >
+                <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
+                  {block.label}
+                </h3>
+                <p className="md:col-span-7 text-sm md:text-base text-muted-foreground leading-relaxed">
+                  {block.body}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
 
         {/* ============================================================= */}
         {/* 5. PROCESS - BENTO (with related-project gallery switcher)     */}
