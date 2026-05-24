@@ -454,6 +454,22 @@ const _projectsRaw: ProjectData[] = [
   },
 ];
 
+/**
+ * Backfill new dedicated fields from legacy ones at module load.
+ * After this normalization, the project detail page reads ONLY from
+ * the dedicated fields with no cross-block fallbacks. Visual Edits
+ * therefore mutate one specific field and never bleed into another block.
+ */
+export const projects: ProjectData[] = _projectsRaw.map((p) => ({
+  ...p,
+  headerTitle: p.headerTitle ?? p.title,
+  galleryLabel: p.galleryLabel ?? p.title,
+  meaningfulTitle: p.meaningfulTitle ?? p.cardDescription ?? '',
+  tldr: p.tldr ?? p.overview ?? '',
+  problem: p.problem ?? p.challenge ?? '',
+}));
+
+
 export const getProjectById = (id: string): ProjectData | undefined => {
   return projects.find(project => project.id === id);
 };
