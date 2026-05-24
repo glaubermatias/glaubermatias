@@ -90,12 +90,12 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
               </div>
 
               {/* Header title — same source as the project page H1 */}
-              <h3 className="font-display text-4xl md:text-[3.35rem] lg:text-[3.75rem] font-semibold text-foreground leading-[0.98]">
+              <h3 className="font-display text-3xl md:text-[2.85rem] lg:text-[3.25rem] font-semibold text-foreground leading-[0.98]">
                 {cardHeaderTitle}
               </h3>
 
               {/* Meaningful title — same source as the project page H2 */}
-              <p className="mt-3 font-display text-2xl md:text-[2rem] lg:text-[2.35rem] font-normal text-secondary leading-tight">
+              <p className="mt-3 font-display text-xl md:text-[1.7rem] lg:text-[2rem] font-normal text-secondary leading-tight">
                 {cardMeaningfulTitle}
               </p>
 

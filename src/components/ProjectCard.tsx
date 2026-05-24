@@ -94,11 +94,11 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           </div>
 
           <div className="p-6 space-y-3 flex-1 flex flex-col">
-            <h3 className="font-display text-[1.6rem] font-semibold text-foreground group-hover:text-primary transition-colors duration-300 leading-tight">
+            <h3 className="font-display text-[1.35rem] font-semibold text-foreground group-hover:text-primary transition-colors duration-300 leading-tight">
               {project.headerTitle ?? ''}
             </h3>
 
-            <p className="font-display text-[1.18rem] leading-tight text-secondary">
+            <p className="font-display text-[1.05rem] leading-tight text-secondary">
               {project.meaningfulTitle ?? ''}
             </p>
 
