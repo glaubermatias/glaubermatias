@@ -780,10 +780,12 @@ const ProjectDetailPage = () => {
       bentoImages,
       beforeAfter,
       liveImages,
+      headerTitle,
+      galleryLabel,
       meaningfulTitle,
       tldr,
       context,
-      challenge,
+      problem,
       strategy,
       tradeoffs,
       closingParagraph,
@@ -793,6 +795,7 @@ const ProjectDetailPage = () => {
       tools,
       duration,
     };
+
   }, [project]);
 
   if (!project || !derived) {
