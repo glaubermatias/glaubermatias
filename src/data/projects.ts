@@ -473,20 +473,48 @@ const _projectsRaw: ProjectData[] = [
   },
 ];
 
-/**
- * Backfill new dedicated fields from legacy ones at module load.
- * After this normalization, the project detail page reads ONLY from
- * the dedicated fields with no cross-block fallbacks. Visual Edits
- * therefore mutate one specific field and never bleed into another block.
- */
-const normalizedProjects: ProjectData[] = _projectsRaw.map((p) => ({
-  ...p,
-  headerTitle: p.headerTitle ?? p.title,
-  galleryLabel: p.galleryLabel ?? p.title,
-  meaningfulTitle: p.meaningfulTitle ?? p.cardDescription ?? '',
-  tldr: p.tldr ?? p.overview ?? '',
-  problem: p.problem ?? p.challenge ?? '',
-}));
+const EDITORIAL_PLACEHOLDERS = {
+  meaningfulTitle: 'Strategic presentation system built to make complex work clear, memorable, and easy to act on.',
+  tldr: 'A concise project summary will live here, written in the same editorial tone and visual system as the rest of the portfolio.',
+  context: 'Context placeholder: describe the business moment, audience, and conditions that shaped this project.',
+  problem: 'Problem placeholder: describe the core communication challenge, risk, or friction the work needed to solve.',
+  strategy: 'Strategy placeholder: describe the narrative, design system, and production choices that guided the solution.',
+  tradeoffs: 'Trade-offs placeholder: describe the constraints, compromises, and decisions that shaped the final direction.',
+  closingParagraph: 'Closing placeholder: summarize the impact of the project and the final takeaway for the audience.',
+};
+
+const makeProcessTiles = (p: ProjectData): ProcessImage[] => {
+  const source = p.processImages && p.processImages.length > 0
+    ? p.processImages
+    : p.images.map((src) => ({ src }));
+
+  if (source.length === 0) return [];
+
+  return Array.from({ length: 8 }, (_, index) => source[index % source.length]);
+};
+
+const normalizedProjects: ProjectData[] = _projectsRaw.map((p) => {
+  const galleryLabel = p.galleryLabel ?? p.headerTitle ?? p.title;
+
+  return {
+    ...p,
+    headerTitle: p.headerTitle ?? p.title,
+    galleryLabel,
+    meaningfulTitle: p.meaningfulTitle ?? EDITORIAL_PLACEHOLDERS.meaningfulTitle,
+    tldr: p.tldr ?? EDITORIAL_PLACEHOLDERS.tldr,
+    context: p.context ?? EDITORIAL_PLACEHOLDERS.context,
+    problem: p.problem ?? EDITORIAL_PLACEHOLDERS.problem,
+    strategy: p.strategy ?? EDITORIAL_PLACEHOLDERS.strategy,
+    tradeoffs: p.tradeoffs ?? EDITORIAL_PLACEHOLDERS.tradeoffs,
+    closingParagraph: p.closingParagraph ?? EDITORIAL_PLACEHOLDERS.closingParagraph,
+    bentoGalleries: p.bentoGalleries && p.bentoGalleries.length > 0
+      ? p.bentoGalleries.map((gallery) => ({
+        ...gallery,
+        images: gallery.images && gallery.images.length > 0 ? gallery.images : makeProcessTiles(p),
+      }))
+      : [{ id: `${p.id}-gallery`, label: galleryLabel, images: makeProcessTiles(p) }],
+  };
+});
 
 export const projects: ProjectData[] = normalizedProjects;
 
@@ -498,8 +526,11 @@ export const getProjectById = (id: string): ProjectData | undefined => {
 export const getRelatedProjects = (projectId: string, limit: number = 3): ProjectData[] => {
   const currentProject = getProjectById(projectId);
   if (!currentProject) return [];
-  return normalizedProjects
+  const sameCategory = normalizedProjects
     .filter(p => p.category === currentProject.category && p.id !== projectId)
+    .filter(p => Boolean(p.headerTitle && p.meaningfulTitle && p.tldr));
+
+  return sameCategory
     .slice(0, limit);
 };
 
