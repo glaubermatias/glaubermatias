@@ -49,13 +49,14 @@ const RelatedProjectCard = ({ project }: { project: ProjectData }) => {
           </p>
         )}
         <h4 className="font-display text-xl font-semibold text-foreground">
-          {project.title}
+          {project.headerTitle}
         </h4>
-        {(project.cardDescription || project.description) && (
-          <p className="font-sans text-sm text-muted-foreground leading-snug line-clamp-2">
-            {project.cardDescription || project.description}
-          </p>
-        )}
+        <p className="font-display text-base text-muted-foreground leading-snug line-clamp-2">
+          {project.meaningfulTitle}
+        </p>
+        <p className="font-sans text-sm text-muted-foreground leading-snug line-clamp-2">
+          {project.tldr}
+        </p>
       </div>
     </Link>
   );
