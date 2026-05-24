@@ -2,7 +2,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import glauberPortrait from '@/assets/glauber-portrait.png';
+import { siteImages } from '@/config/images';
+
+const glauberPortrait = siteImages.hero.portrait;
 
 const WORDS = [
   'presentations',
