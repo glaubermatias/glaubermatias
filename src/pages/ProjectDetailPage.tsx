@@ -994,19 +994,10 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 5. PROCESS - BENTO (with related-project gallery switcher)     */}
         {/* ============================================================= */}
-        {derived.bentoImages.length > 0 && (() => {
-          // Galleries: current project first (default active), then related.
-          const galleries = [
-            { id: project.id, label: derived.galleryLabel, images: derived.bentoImages },
-            ...relatedProjects.map((rp) => {
-              const src = (rp.processImages && rp.processImages.length > 0)
-                ? rp.processImages
-                : rp.images.map((s) => ({ src: s } as ProcessImage));
-              const tiles: ProcessImage[] = [];
-              for (let i = 0; i < 8; i++) tiles.push(src[i % src.length]);
-              return { id: rp.id, label: rp.title, images: tiles };
-            }),
-          ];
+        {derived.bentoGalleries.length > 0 && (() => {
+          // Bento selector pills are project-owned labels. They never read
+          // from related projects, title, category, or card fields.
+          const galleries = derived.bentoGalleries;
           const activeId = activeGalleryId ?? project.id;
           const active = galleries.find((g) => g.id === activeId) ?? galleries[0];
           return (
