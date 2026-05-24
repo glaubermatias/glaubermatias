@@ -67,13 +67,15 @@ const _projectsRaw: ProjectData[] = [
     headerTitle: 'Leadership Academy',
     galleryLabel: 'High Performance Teams',
     cardDescription: 'Transforming dense narratives into sharp visual frameworks for 260+ leaders',
-
     description: 'The Leadership Academy is QuintoAndar\'s bet to strengthen its senior leadership team. My role was to translate around 40 pages of dense text per edition into sharp visual frameworks so 260+ leaders could truly absorb and cascade the core messages to their teams. The result? An average NPS of 4.6/5.',
     category: 'executive-decks',
     company: 'QUINTOANDAR',
     cardCategory: 'Executive Decks',
     duration: '3 weeks per edition',
     role: 'Lead Presentation Designer',
+    context: '',
+    problem: 'Topics like "Hiring", "Equity", "AI", and "High Performance Teams" are notoriously dense. The risk here was that if the message failed to land, it would not resonate with our top management, leaving them ill-equipped to guide their teams. I needed to turn these heavy narratives into engaging visual frameworks, tailored to both the specific subject and the distinct delivery styles of our C-level speakers.',
+    strategy: '',
     images: [
       'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop',
@@ -98,7 +100,8 @@ const _projectsRaw: ProjectData[] = [
   },
   {
     id: 'pitch-decks',
-    title: 'Pitch Decks',
+    title: 'Hiring',
+    headerTitle: 'Hiring',
     cardDescription: 'Strategic investor pitch decks to communicate value and secure funding',
     description: 'Strategic investor pitch decks designed to communicate value propositions and secure funding for innovative ventures.',
     category: 'executive-decks',
