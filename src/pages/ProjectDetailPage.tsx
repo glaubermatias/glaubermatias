@@ -734,22 +734,13 @@ const ProjectDetailPage = () => {
     const liveImages = project.liveImages && project.liveImages.length > 0
       ? project.liveImages
       : project.images;
-    const meaningfulTitle =
-      project.meaningfulTitle ||
-      project.cardDescription ||
-      project.description;
-    const tldr = project.tldr || project.overview || project.description;
-    const context = project.context || project.overview || '';
+    const meaningfulTitle = project.meaningfulTitle || project.cardDescription || '';
+    const tldr = project.tldr || project.overview || '';
+    const context = project.context || '';
     const challenge = project.challenge || '';
-    const strategy = project.strategy || project.solution || '';
-    const tradeoffs =
-      project.tradeoffs ||
-      'Tight delivery windows meant prioritizing clarity over visual experimentation in some areas. Reusable systems were favored over bespoke one-offs to keep the work scalable across future iterations.';
-    const closingParagraph =
-      project.closingParagraph ||
-      (project.results && project.results.length > 0
-        ? project.results.join(' ')
-        : '');
+    const strategy = project.strategy || '';
+    const tradeoffs = project.tradeoffs || '';
+    const closingParagraph = project.closingParagraph || '';
     const skills = project.skills && project.skills.length > 0
       ? project.skills
       : ['Visual Design', 'Storytelling', 'Information Architecture'];
@@ -1051,16 +1042,18 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 6. TRADE-OFFS & CONSTRAINTS - same layout as narrative         */}
         {/* ============================================================= */}
-        <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
-          <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10">
-            <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
-              Trade-offs &amp; Constraints
-            </h3>
-            <p className="md:col-span-7 text-sm md:text-base text-muted-foreground leading-relaxed">
-              {derived.tradeoffs}
-            </p>
-          </div>
-        </section>
+        {derived.tradeoffs && (
+          <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
+            <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10">
+              <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
+                Trade-offs &amp; Constraints
+              </h3>
+              <p className="md:col-span-7 text-sm md:text-base text-muted-foreground leading-relaxed">
+                {derived.tradeoffs}
+              </p>
+            </div>
+          </section>
+        )}
 
         {/* ============================================================= */}
         {/* 7. SECOND CAROUSEL (same layout as the first)                  */}
