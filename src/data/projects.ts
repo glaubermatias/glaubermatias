@@ -1,3 +1,5 @@
+import { projectImages } from '@/config/images';
+
 export type ProjectCategory = 'all' | 'executive-decks' | 'templates' | 'tech-events' | 'hr-initiatives' | 'side-projects';
 
 export interface BigNumber {
