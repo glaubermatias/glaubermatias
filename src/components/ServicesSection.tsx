@@ -9,7 +9,7 @@ interface Service {
 }
 const services: Service[] = [{
   id: 'pitch-decks',
-  title: 'Pitch Decks',
+  title: 'Hiring',
   description: 'High-impact pitch decks for C-suite, investors and boards, aligning strategy, data and storytelling to secure buy-in and support key decisions.'
 }, {
   id: 'keynotes',
