@@ -460,7 +460,7 @@ const _projectsRaw: ProjectData[] = [
  * the dedicated fields with no cross-block fallbacks. Visual Edits
  * therefore mutate one specific field and never bleed into another block.
  */
-export const projects: ProjectData[] = _projectsRaw.map((p) => ({
+const normalizedProjects: ProjectData[] = _projectsRaw.map((p) => ({
   ...p,
   headerTitle: p.headerTitle ?? p.title,
   galleryLabel: p.galleryLabel ?? p.title,
@@ -469,19 +469,21 @@ export const projects: ProjectData[] = _projectsRaw.map((p) => ({
   problem: p.problem ?? p.challenge ?? '',
 }));
 
+export const projects: ProjectData[] = normalizedProjects;
+
 
 export const getProjectById = (id: string): ProjectData | undefined => {
-  return projects.find(project => project.id === id);
+  return normalizedProjects.find(project => project.id === id);
 };
 
 export const getRelatedProjects = (projectId: string, limit: number = 3): ProjectData[] => {
   const currentProject = getProjectById(projectId);
   if (!currentProject) return [];
-  return projects
+  return normalizedProjects
     .filter(p => p.category === currentProject.category && p.id !== projectId)
     .slice(0, limit);
 };
 
 export const getFeaturedProjects = (limit: number = 6): ProjectData[] => {
-  return projects.filter(p => p.featured).slice(0, limit);
+  return normalizedProjects.filter(p => p.featured).slice(0, limit);
 };
