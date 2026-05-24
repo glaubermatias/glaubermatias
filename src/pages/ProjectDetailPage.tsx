@@ -836,7 +836,7 @@ const ProjectDetailPage = () => {
           src={derived.headerImage}
           alt=""
           loading="eager"
-          fetchPriority="high"
+          fetchpriority="high"
           decoding="sync"
           className="absolute inset-0 h-full w-full object-cover"
         />
