@@ -58,8 +58,11 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
 
   const tagLabel = `WORK ${String(index + 1).padStart(2, '0')}/${String(totalCount).padStart(2, '0')}`;
 
-  // Card paragraph uses only the project description (single source).
-  const combinedParagraph = project.description;
+  // Cards share ONLY the meaningful title and TL;DR with the project page.
+  // Single source of truth: the project's own dedicated fields.
+  const cardTitle = project.meaningfulTitle || project.title;
+  const cardParagraph = project.tldr || '';
+
 
   return (
     <motion.article
@@ -86,23 +89,18 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
                 )}
               </div>
 
-              {/* Short name */}
+              {/* Meaningful title — same source as the project page H2 */}
               <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground leading-tight">
-                {project.title}
+                {cardTitle}
               </h3>
 
-              {/* Descriptive subtitle */}
-              <p
-                className="font-display text-2xl md:text-3xl lg:text-4xl font-normal mt-2 leading-snug"
-                style={{ color: '#b7b7b7' }}
-              >
-                {project.cardDescription || project.description}
+              {/* TL;DR — same source as the project page TL;DR.
+                  This is intentionally the ONLY text shared between the
+                  card and the detail page. */}
+              <p className="mt-8 text-base text-muted-foreground leading-relaxed max-w-xl">
+                {cardParagraph}
               </p>
 
-              {/* Single combined paragraph */}
-              <p className="mt-8 text-base text-muted-foreground leading-relaxed max-w-xl">
-                {combinedParagraph}
-              </p>
 
               {/* CTA */}
               <div className="mt-8 inline-flex items-center gap-2 text-foreground text-sm font-normal group-hover:gap-3 transition-all duration-300">

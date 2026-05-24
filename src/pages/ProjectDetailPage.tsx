@@ -734,34 +734,26 @@ const ProjectDetailPage = () => {
     const liveImages = project.liveImages && project.liveImages.length > 0
       ? project.liveImages
       : project.images;
-    const meaningfulTitle = project.meaningfulTitle || project.cardDescription || '';
-    const tldr = project.tldr || project.overview || '';
-    const context = project.context || '';
-    const challenge = project.challenge || '';
-    const strategy = project.strategy || '';
-    const tradeoffs = project.tradeoffs || '';
-    const closingParagraph = project.closingParagraph || '';
+    // STRICT: every editorial field reads ONLY its own dedicated source.
+    // No cross-block fallbacks — this is what guarantees that editing one
+    // text in Visual Edits never affects another block on the page.
+    const headerTitle = project.headerTitle ?? project.title;
+    const galleryLabel = project.galleryLabel ?? project.title;
+    const meaningfulTitle = project.meaningfulTitle ?? '';
+    const tldr = project.tldr ?? '';
+    const context = project.context ?? '';
+    const problem = project.problem ?? '';
+    const strategy = project.strategy ?? '';
+    const tradeoffs = project.tradeoffs ?? '';
+    const closingParagraph = project.closingParagraph ?? '';
     const skills = project.skills && project.skills.length > 0
       ? project.skills
-      : ['Visual Design', 'Storytelling', 'Information Architecture'];
-    const role = project.role || 'Lead Designer';
-    const stakeholdersByCategory: Record<string, string> = {
-      'executive-decks': 'Executive leadership, C-suite',
-      'tech-events': 'Engineering leadership, Event ops',
-      'hr-initiatives': 'People team, Program leads',
-      'templates': 'Design ops, Internal teams',
-      'side-projects': 'Self-initiated',
-    };
-    const stakeholders =
-      project.stakeholders ||
-      stakeholdersByCategory[project.category] ||
-      'Cross-functional stakeholders';
-    const tools =
-      project.tools ||
-      (project.category === 'tech-events'
-        ? 'Figma, Keynote, Notion'
-        : 'Figma, Keynote, PowerPoint');
-    const duration = project.duration || '—';
+      : [];
+    const role = project.role ?? '';
+    const stakeholders = project.stakeholders ?? '';
+    const tools = project.tools ?? '';
+    const duration = project.duration ?? '';
+
     // Bento always shows 8 tiles; if fewer source images exist, cycle through them.
     const bentoImages: ProcessImage[] = (() => {
       if (processImages.length === 0) return [];
@@ -788,10 +780,12 @@ const ProjectDetailPage = () => {
       bentoImages,
       beforeAfter,
       liveImages,
+      headerTitle,
+      galleryLabel,
       meaningfulTitle,
       tldr,
       context,
-      challenge,
+      problem,
       strategy,
       tradeoffs,
       closingParagraph,
@@ -801,6 +795,7 @@ const ProjectDetailPage = () => {
       tools,
       duration,
     };
+
   }, [project]);
 
   if (!project || !derived) {
@@ -860,8 +855,9 @@ const ProjectDetailPage = () => {
             transition={{ duration: 0.7 }}
             className="font-display text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight"
           >
-            {project.title}
+            {derived.headerTitle}
           </motion.h1>
+
         </div>
       </header>
 
@@ -952,32 +948,31 @@ const ProjectDetailPage = () => {
 
         {/* ============================================================= */}
         {/* 4. NARRATIVE (Context, Problem, Strategy) - 30/70 asymmetric  */}
+        {/* Always render all three blocks. Each block reads only its own */}
+        {/* dedicated field, so editing one never affects another.        */}
         {/* ============================================================= */}
-        {(derived.context || derived.challenge || derived.strategy) && (
-          <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
-            <div className="space-y-0">
-              {[
-                { label: 'Context', body: derived.context },
-                { label: 'Problem', body: derived.challenge },
-                { label: 'Strategy', body: derived.strategy },
-              ]
-                .filter((b) => b.body)
-                .map((block, i) => (
-                  <div
-                    key={block.label}
-                    className={`grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 ${i > 0 ? 'border-t border-foreground/10' : ''}`}
-                  >
-                    <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
-                      {block.label}
-                    </h3>
-                    <p className="md:col-span-7 text-sm md:text-base text-muted-foreground leading-relaxed">
-                      {block.body}
-                    </p>
-                  </div>
-                ))}
-            </div>
-          </section>
-        )}
+        <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
+          <div className="space-y-0">
+            {[
+              { label: 'Context', body: derived.context },
+              { label: 'Problem', body: derived.problem },
+              { label: 'Strategy', body: derived.strategy },
+            ].map((block, i) => (
+              <div
+                key={block.label}
+                className={`grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 ${i > 0 ? 'border-t border-foreground/10' : ''}`}
+              >
+                <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
+                  {block.label}
+                </h3>
+                <p className="md:col-span-7 text-sm md:text-base text-muted-foreground leading-relaxed">
+                  {block.body}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
 
         {/* ============================================================= */}
         {/* 5. PROCESS - BENTO (with related-project gallery switcher)     */}
@@ -985,7 +980,7 @@ const ProjectDetailPage = () => {
         {derived.bentoImages.length > 0 && (() => {
           // Galleries: current project first (default active), then related.
           const galleries = [
-            { id: project.id, label: project.title, images: derived.bentoImages },
+            { id: project.id, label: derived.galleryLabel, images: derived.bentoImages },
             ...relatedProjects.map((rp) => {
               const src = (rp.processImages && rp.processImages.length > 0)
                 ? rp.processImages
@@ -1040,20 +1035,19 @@ const ProjectDetailPage = () => {
 
 
         {/* ============================================================= */}
-        {/* 6. TRADE-OFFS & CONSTRAINTS - same layout as narrative         */}
+        {/* 6. TRADE-OFFS & CONSTRAINTS - always rendered                  */}
         {/* ============================================================= */}
-        {derived.tradeoffs && (
-          <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
-            <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10">
-              <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
-                Trade-offs &amp; Constraints
-              </h3>
-              <p className="md:col-span-7 text-sm md:text-base text-muted-foreground leading-relaxed">
-                {derived.tradeoffs}
-              </p>
-            </div>
-          </section>
-        )}
+        <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
+          <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10">
+            <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
+              Trade-offs &amp; Constraints
+            </h3>
+            <p className="md:col-span-7 text-sm md:text-base text-muted-foreground leading-relaxed">
+              {derived.tradeoffs}
+            </p>
+          </div>
+        </section>
+
 
         {/* ============================================================= */}
         {/* 7. SECOND CAROUSEL (same layout as the first)                  */}
@@ -1087,11 +1081,10 @@ const ProjectDetailPage = () => {
             </figure>
           )}
 
-          {derived.closingParagraph && (
-            <p className="text-base md:text-lg text-foreground leading-relaxed max-w-3xl mx-auto">
-              {derived.closingParagraph}
-            </p>
-          )}
+          <p className="text-base md:text-lg text-foreground leading-relaxed max-w-3xl mx-auto">
+            {derived.closingParagraph}
+          </p>
+
         </section>
 
         {/* ============================================================= */}

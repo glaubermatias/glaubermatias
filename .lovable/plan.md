@@ -1,54 +1,95 @@
 ## Diagnóstico
 
-O problema não parece ser um erro de runtime, e sim de modelagem/renderização dos dados: a página de projeto usa vários fallbacks que reaproveitam o mesmo campo em blocos diferentes.
+O bug ainda existe porque a correção anterior removeu alguns fallbacks, mas não eliminou todas as fontes compartilhadas. Hoje ainda há campos com dupla função:
 
-Exemplos encontrados:
-- `description` pode aparecer no card, no título de apoio e no TL;DR.
-- `overview` é usado como TL;DR e também como `Context` quando `context` não existe.
-- `solution` aparece como `Strategy` quando `strategy` não existe.
-- Na listagem de Work, `challenge + solution` são combinados automaticamente em um parágrafo de card.
-- Alguns campos como `role`, `stakeholders` e `tools` estão semanticamente parecidos, o que facilita o Visual Edits trocar um pelo outro quando o texto é editado por seleção.
+- `project.title` aparece no header e também no seletor do bento grid.
+- `meaningfulTitle` ainda cai em `cardDescription`, então um texto de card pode preencher o título significativo.
+- `tldr` ainda cai em `overview`, então o bloco de TL;DR pode compartilhar texto com outro campo legado.
+- `role`, `stakeholders`, `tools` e `duration` ainda usam defaults por categoria quando faltam dados, o que permite textos genéricos aparecerem no lugar de textos reais.
+- Os cards ainda usam `title`, `cardDescription` e `description`, quando o comportamento desejado agora é: cards devem puxar somente o título significativo e o TL;DR da página do projeto.
+- A página esconde seções vazias, mas o comportamento desejado é manter todos os blocos estruturais visíveis por padrão.
 
-Isso cria blocos visualmente diferentes, mas conectados ao mesmo campo de origem. Quando um texto é atualizado em um lugar, outro bloco que usa o mesmo fallback também muda ou volta para conteúdo antigo.
+## Solução definitiva
 
-## Plano de correção
+### 1. Criar uma fonte de verdade explícita para a página de projeto
 
-1. Separar os campos por função visual
-   - Criar campos explícitos para cada bloco da página de projeto, por exemplo:
-     - texto curto do card/listagem
-     - subtítulo/meaningful title
-     - TL;DR do overview
-     - contexto
-     - problema
-     - estratégia
-     - trade-offs
-     - fechamento
-   - Manter `description` apenas como fallback legado, não como fonte compartilhada principal de vários blocos.
+Vou reorganizar o modelo de dados para separar, por função visual, todos os textos que aparecem na página:
 
-2. Remover fallbacks que causam mistura
-   - Parar de usar `overview` automaticamente como `Context`.
-   - Parar de usar `description` automaticamente como `meaningfulTitle` e `tldr` quando houver campos específicos.
-   - Parar de usar `solution` como `Strategy` quando o projeto não tiver estratégia real.
-   - Evitar `results.join(' ')` como parágrafo final, porque isso transforma bullets em texto corrido e pode confundir edições.
+- `headerTitle`
+- `tagline` / metadados do topo
+- `meaningfulTitle`
+- `tldr`
+- `metadata`: role, stakeholders, tools, duration
+- `bigNumbers`
+- `context`
+- `problem`
+- `strategy`
+- `tradeoffs`
+- `closingParagraph`
+- `galleryLabel` para o bento grid, separado do título do header
 
-3. Atualizar a renderização da página de detalhe
-   - Renderizar cada seção apenas a partir do seu campo correspondente.
-   - Só mostrar uma seção quando o campo dela existir.
-   - Garantir que o bloco de Overview, Narrative e Closing não compartilhem a mesma string de dados.
+O ponto central: cada bloco visual vai ler apenas o seu próprio campo. Nada de `|| cardDescription`, `|| overview`, `|| description`, `|| category default` para texto editorial.
 
-4. Corrigir a listagem de Work
-   - Fazer os cards usarem `cardDescription` e/ou um campo específico de resumo de card.
-   - Remover a combinação automática `challenge + solution`, que pode fazer textos internos da página aparecerem no card.
+### 2. Migrar os dados existentes para campos independentes
 
-5. Normalizar os dados existentes
-   - Ajustar os projetos atuais em `projects.ts` para preencher campos independentes onde necessário.
-   - Para o projeto Leadership Academy, preservar os textos reais já atualizados e garantir que cada bloco tenha sua própria fonte.
+Vou normalizar `src/data/projects.ts` para que todos os projetos tenham os campos explícitos acima preenchidos. Isso preserva os blocos em todas as páginas, sem depender de fallbacks automáticos.
 
-6. Validar a correção
-   - Conferir no código que nenhum bloco principal renderiza a mesma string por fallback indevido.
-   - Verificar que `description`, `overview`, `context`, `strategy` e `closingParagraph` aparecem em locais independentes.
-   - Revisar a página `/leadership-academy` para confirmar que os textos não estão duplicando nem vazando entre seções.
+Para o projeto atual:
+
+- `headerTitle`: `Leadership Academy`
+- `meaningfulTitle`: `High Performance Teams` ou o texto significativo que já estiver definido como subtítulo visual
+- `tldr`: texto resumido da página
+- `galleryLabel`: um texto próprio para o bento, sem reutilizar o título do header automaticamente
+
+Assim, se você alterar `headerTitle`, o bento não muda junto. Se alterar `galleryLabel`, o header não muda junto.
+
+### 3. Ajustar a página de detalhe para renderizar blocos fixos
+
+Em `ProjectDetailPage.tsx`, vou remover a renderização condicional dos blocos editoriais principais. A página sempre renderizará:
+
+- Header
+- Taglines
+- Título significativo
+- TL;DR
+- Metadados e big numbers
+- Context
+- Problem
+- Strategy
+- Trade-offs & Constraints
+- Texto final de conclusão
+
+Se algum campo estiver vazio em algum projeto futuro, o bloco continua existindo estruturalmente, mas sem puxar texto de outro lugar.
+
+### 4. Corrigir cards da landing e da página Work
+
+Vou atualizar os cards para seguirem sua regra:
+
+- O título do card vem de `meaningfulTitle`.
+- O parágrafo do card vem de `tldr`.
+- O card não usa mais `description`, `cardDescription`, `challenge`, `solution` ou `title` como fallback editorial.
+
+Assim, o conteúdo da página do projeto vira a fonte da verdade também para a landing e para `/work`.
+
+### 5. Remover defaults editoriais por categoria
+
+Vou manter defaults seguros apenas para imagens/layout quando necessário. Para textos, vou remover defaults como:
+
+- `Executive leadership, C-suite`
+- `Figma, Keynote, PowerPoint`
+- `Lead Designer`
+- `—`
+
+Esses valores devem vir do projeto, não da categoria.
+
+### 6. Validar no código
+
+Depois da implementação, vou verificar que:
+
+- `headerTitle`, `meaningfulTitle`, `tldr`, `context`, `problem`, `strategy`, `tradeoffs` e `closingParagraph` não usam fallbacks entre si.
+- O bento grid não usa mais `project.title` como label padrão editorial.
+- Os cards usam apenas `meaningfulTitle` e `tldr` para conteúdo textual principal.
+- Todos os blocos principais da página continuam renderizados por padrão.
 
 ## Resultado esperado
 
-Depois da correção, o Visual Edits/chat terá alvos mais estáveis: editar um texto em um bloco não deverá alterar outro bloco da página, porque cada seção terá uma fonte de conteúdo própria e independente.
+Editar o header para `Leadership Academy` não poderá mais alterar o bento, card, categoria, TL;DR ou qualquer outro bloco. Cada texto terá uma fonte independente, e o único conteúdo intencionalmente repetido entre página e cards será o TL;DR, junto com o título significativo conforme solicitado.

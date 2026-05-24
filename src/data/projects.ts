@@ -37,9 +37,15 @@ export interface ProjectData {
   results?: string[];
   /** Optional richer fields used by the project detail page */
   headerImage?: string;
+  /** Header H1. Independent from `title` so the bento label and header don't share text. */
+  headerTitle?: string;
+  /** Label shown in the bento gallery selector. Independent from `title`. */
+  galleryLabel?: string;
   tldr?: string;
   meaningfulTitle?: string;
   context?: string;
+  /** Problem block on the detail page. Independent from `challenge`. */
+  problem?: string;
   strategy?: string;
   processImages?: ProcessImage[];
   tradeoffs?: string;
@@ -53,11 +59,15 @@ export interface ProjectData {
   beforeAfter?: { before: string; after: string };
 }
 
-export const projects: ProjectData[] = [
+
+const _projectsRaw: ProjectData[] = [
   {
     id: 'leadership-academy',
     title: 'High Performance Teams',
+    headerTitle: 'Leadership Academy',
+    galleryLabel: 'High Performance Teams',
     cardDescription: 'Transforming dense narratives into sharp visual frameworks for 260+ leaders',
+
     description: 'The Leadership Academy is QuintoAndar\'s bet to strengthen its senior leadership team. My role was to translate around 40 pages of dense text per edition into sharp visual frameworks so 260+ leaders could truly absorb and cascade the core messages to their teams. The result? An average NPS of 4.6/5.',
     category: 'executive-decks',
     company: 'QUINTOANDAR',
@@ -443,6 +453,22 @@ export const projects: ProjectData[] = [
     ],
   },
 ];
+
+/**
+ * Backfill new dedicated fields from legacy ones at module load.
+ * After this normalization, the project detail page reads ONLY from
+ * the dedicated fields with no cross-block fallbacks. Visual Edits
+ * therefore mutate one specific field and never bleed into another block.
+ */
+export const projects: ProjectData[] = _projectsRaw.map((p) => ({
+  ...p,
+  headerTitle: p.headerTitle ?? p.title,
+  galleryLabel: p.galleryLabel ?? p.title,
+  meaningfulTitle: p.meaningfulTitle ?? p.cardDescription ?? '',
+  tldr: p.tldr ?? p.overview ?? '',
+  problem: p.problem ?? p.challenge ?? '',
+}));
+
 
 export const getProjectById = (id: string): ProjectData | undefined => {
   return projects.find(project => project.id === id);
