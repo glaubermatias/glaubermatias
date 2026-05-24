@@ -3,14 +3,16 @@ import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import PageLayout from '@/components/PageLayout';
 import PageHeader from '@/components/PageHeader';
-import { siteImages, beyondWorkImages, funFactImages } from '@/config/images';
+import { siteImages, aboutImages } from '@/config/images';
 
 const glauberAboutHeader = siteImages.about.header;
 const smileIcon = siteImages.about.smileIcon;
+
 const [
   beyond01, beyond02, beyond03, beyond04, beyond05,
   beyond06, beyond07, beyond08, beyond09, beyond10,
-] = beyondWorkImages;
+] = aboutImages.beyondWork;
+
 const {
   japaneseFood,
   taylorSwift,
@@ -18,7 +20,7 @@ const {
   theOffice,
   whiteChicks,
   openWaterSwimming,
-} = funFactImages;
+} = aboutImages.funFacts;
 
 // Inject <link rel="preload" as="image"> as early as possible (module eval time)
 // so the browser starts fetching the hero assets in parallel with the JS chunk.

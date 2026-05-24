@@ -21,23 +21,24 @@ import glauberAboutHeader from '@/assets/glauber-about-header.jpg';
 import smileIcon from '@/assets/smile-icon.png';
 import gradientBg from '@/assets/gradient-bg.png';
 
-import beyond01 from '@/assets/beyond-work/01.jpeg';
-import beyond02 from '@/assets/beyond-work/02.jpeg';
-import beyond03 from '@/assets/beyond-work/03.jpeg';
-import beyond04 from '@/assets/beyond-work/04.jpg';
-import beyond05 from '@/assets/beyond-work/05.jpeg';
-import beyond06 from '@/assets/beyond-work/06.jpeg';
-import beyond07 from '@/assets/beyond-work/07.jpeg';
-import beyond08 from '@/assets/beyond-work/08.jpg';
-import beyond09 from '@/assets/beyond-work/09.jpg';
-import beyond10 from '@/assets/beyond-work/10.jpeg';
+/* about ── single folder for "About" page imagery */
+import beyond01 from '@/assets/about/01.jpeg';
+import beyond02 from '@/assets/about/02.jpeg';
+import beyond03 from '@/assets/about/03.jpeg';
+import beyond04 from '@/assets/about/04.jpg';
+import beyond05 from '@/assets/about/05.jpeg';
+import beyond06 from '@/assets/about/06.jpeg';
+import beyond07 from '@/assets/about/07.jpeg';
+import beyond08 from '@/assets/about/08.jpg';
+import beyond09 from '@/assets/about/09.jpg';
+import beyond10 from '@/assets/about/10.jpeg';
 
-import japaneseFood from '@/assets/fun-facts/japanese-food.png';
-import taylorSwift from '@/assets/fun-facts/taylor-swift.png';
-import fernandoDeNoronha from '@/assets/fun-facts/fernando-de-noronha.jpg';
-import theOffice from '@/assets/fun-facts/the-office.png';
-import whiteChicks from '@/assets/fun-facts/white-chicks.jpg';
-import openWaterSwimming from '@/assets/fun-facts/open-water-swimming.jpg';
+import japaneseFood from '@/assets/about/japanese-food.png';
+import taylorSwift from '@/assets/about/taylor-swift.png';
+import fernandoDeNoronha from '@/assets/about/fernando-de-noronha.jpg';
+import theOffice from '@/assets/about/the-office.png';
+import whiteChicks from '@/assets/about/white-chicks.jpg';
+import openWaterSwimming from '@/assets/about/open-water-swimming.jpg';
 
 // ────────────────────────────────────────────────────────────────────────────
 // Site-wide images (Home, About, etc.)
@@ -57,18 +58,20 @@ export const siteImages = {
   },
 } as const;
 
-export const beyondWorkImages: readonly string[] = [
-  beyond01, beyond02, beyond03, beyond04, beyond05,
-  beyond06, beyond07, beyond08, beyond09, beyond10,
-];
-
-export const funFactImages = {
-  japaneseFood,
-  taylorSwift,
-  fernandoDeNoronha,
-  theOffice,
-  whiteChicks,
-  openWaterSwimming,
+/* aboutImages ── groups all imagery shown on the About page */
+export const aboutImages = {
+  beyondWork: [
+    beyond01, beyond02, beyond03, beyond04, beyond05,
+    beyond06, beyond07, beyond08, beyond09, beyond10,
+  ] as const,
+  funFacts: {
+    japaneseFood,
+    taylorSwift,
+    fernandoDeNoronha,
+    theOffice,
+    whiteChicks,
+    openWaterSwimming,
+  } as const,
 } as const;
 
 // ────────────────────────────────────────────────────────────────────────────
