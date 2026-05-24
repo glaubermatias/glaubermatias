@@ -1,3 +1,5 @@
+import { projectImages } from '@/config/images';
+
 export type ProjectCategory = 'all' | 'executive-decks' | 'templates' | 'tech-events' | 'hr-initiatives' | 'side-projects';
 
 export interface BigNumber {
@@ -86,53 +88,8 @@ const _projectsRaw: ProjectData[] = [
     context: 'QuintoAndar believes its people are the true engine driving the company forward. Preparing the leadership team to tackle complex challenges is a crucial strategy to keep the entire organization moving in the same direction. To make this happen, every Academy edition kicked off with the L&D team handing over a 20 to 40-page document detailing a core theme tied to the company\'s momentum.',
     problem: 'Topics like "Hiring", "Equity", "AI", and "High Performance Teams" are notoriously dense. The risk here was that if the message failed to land, it would not resonate with our top management, leaving them ill-equipped to guide their teams. I needed to turn these heavy narratives into engaging visual frameworks, tailored to both the specific subject and the distinct delivery styles of our C-level speakers.',
     strategy: 'Instead of jumping straight into design software, I started by decoding the brief into a clear vision of the core message and the reason why the audience should care about it. After structuring the information hierarchy, I translated these abstract concepts into concrete visual assets, ensuring they matched the natural cadence of the speakers. This turned the presentation into a powerful stage tool rather than mere background decoration.',
-    bentoGalleries: [
-      {
-        id: 'high-performance-teams',
-        label: 'High Performance Teams',
-        images: [
-          { src: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&auto=format&fit=crop' },
-        ],
-      },
-      {
-        id: 'artificial-intelligence',
-        label: 'Artificial Intelligence',
-        images: [
-          { src: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1676299081847-824916de030a?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1684369175833-4b445ad6bfb5?w=1200&auto=format&fit=crop' },
-        ],
-      },
-      {
-        id: 'equity',
-        label: 'Equity',
-        images: [
-          { src: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&auto=format&fit=crop' },
-        ],
-      },
-      {
-        id: 'hiring',
-        label: 'Hiring',
-        images: [
-          { src: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1560264280-88b68371db39?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1556761175-4b46a572b786?w=1200&auto=format&fit=crop' },
-        ],
-      },
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop',
-    ],
+    bentoGalleries: projectImages['leadership-academy'].bentoGalleries,
+    images: projectImages['leadership-academy'].images,
     year: '2024',
     client: 'QUINTOANDAR',
     featured: true,
@@ -161,11 +118,7 @@ const _projectsRaw: ProjectData[] = [
     company: 'Various Startups',
     cardCategory: 'Executive Decks',
     duration: '2 Months',
-    images: [
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop',
-    ],
+    images: projectImages['pitch-decks'].images,
     year: '2024',
     client: 'Various Startups',
     featured: true,
@@ -190,11 +143,7 @@ const _projectsRaw: ProjectData[] = [
     description: 'Engaging company-wide and leadership meeting presentations that align teams and communicate strategic vision.',
     category: 'executive-decks',
     cardCategory: 'Executive Decks',
-    images: [
-      'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1531498860502-7c67cf02f657?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop',
-    ],
+    images: projectImages['all-hands-and-leadership-meetings'].images,
     year: '2024',
     client: 'Enterprise Company',
     bigNumbers: [
@@ -218,11 +167,7 @@ const _projectsRaw: ProjectData[] = [
     company: 'Global Corporation',
     cardCategory: 'Executive Decks',
     duration: '4 Months',
-    images: [
-      'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&auto=format&fit=crop',
-    ],
+    images: projectImages['summit'].images,
     year: '2024',
     client: 'Global Corporation',
     featured: true,
@@ -248,11 +193,7 @@ const _projectsRaw: ProjectData[] = [
     company: 'Enterprise Client',
     cardCategory: 'Templates',
     duration: '6 Months',
-    images: [
-      'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1531498860502-7c67cf02f657?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop',
-    ],
+    images: projectImages['templates-library'].images,
     year: '2024',
     client: 'Enterprise Client',
     featured: true,
@@ -275,11 +216,7 @@ const _projectsRaw: ProjectData[] = [
     description: 'Purpose-built presentation templates for specific use cases including sales, proposals, and reports.',
     category: 'templates',
     cardCategory: 'Templates',
-    images: [
-      'https://images.unsplash.com/photo-1531498860502-7c67cf02f657?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&auto=format&fit=crop',
-    ],
+    images: projectImages['presentation-templates'].images,
     year: '2024',
     client: 'Various Clients',
     bigNumbers: [
@@ -298,11 +235,7 @@ const _projectsRaw: ProjectData[] = [
     description: 'Educational materials and workshop presentations teaching effective presentation design and delivery techniques.',
     category: 'templates',
     cardCategory: 'Templates',
-    images: [
-      'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&auto=format&fit=crop',
-    ],
+    images: projectImages['presentation-masterclasses'].images,
     year: '2023',
     client: 'Corporate Training',
     bigNumbers: [
@@ -324,11 +257,7 @@ const _projectsRaw: ProjectData[] = [
     company: 'Tech Community',
     cardCategory: 'Tech Events',
     duration: 'Ongoing',
-    images: [
-      'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&auto=format&fit=crop',
-    ],
+    images: projectImages['tech-meetups'].images,
     year: '2024',
     client: 'Tech Community',
     featured: true,
@@ -351,11 +280,7 @@ const _projectsRaw: ProjectData[] = [
     description: 'Conference-grade presentations for major technology events featuring cinematic visuals and compelling narratives.',
     category: 'tech-events',
     cardCategory: 'Tech Events',
-    images: [
-      'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop',
-    ],
+    images: projectImages['tech-conference'].images,
     year: '2024',
     client: 'Major Tech Conference',
     bigNumbers: [
@@ -377,11 +302,7 @@ const _projectsRaw: ProjectData[] = [
     company: 'Tech Company HR',
     cardCategory: 'HR Initiatives',
     duration: '2 Months',
-    images: [
-      'https://images.unsplash.com/photo-1531498860502-7c67cf02f657?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&auto=format&fit=crop',
-    ],
+    images: projectImages['tech-interns-onboarding'].images,
     year: '2024',
     client: 'Tech Company HR',
     featured: true,
@@ -404,11 +325,7 @@ const _projectsRaw: ProjectData[] = [
     description: 'Professional newsletter design and templates for external technology and people communications.',
     category: 'hr-initiatives',
     cardCategory: 'HR Initiatives',
-    images: [
-      'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop',
-    ],
+    images: projectImages['tech-newsletter'].images,
     year: '2024',
     client: 'People & Technology Team',
     bigNumbers: [
@@ -430,11 +347,7 @@ const _projectsRaw: ProjectData[] = [
     company: 'Personal Project',
     cardCategory: 'Side Projects',
     duration: '1 Month',
-    images: [
-      'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop',
-    ],
+    images: projectImages['ALDI-case-study'].images,
     year: '2024',
     client: 'Personal Project',
     featured: true,
@@ -457,11 +370,7 @@ const _projectsRaw: ProjectData[] = [
     description: 'Dashboard design and data visualization project for location marketing analytics platform.',
     category: 'side-projects',
     cardCategory: 'Side Projects',
-    images: [
-      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&auto=format&fit=crop',
-    ],
+    images: projectImages['Uberall-dashboard'].images,
     year: '2023',
     client: 'Personal Project',
     bigNumbers: [
@@ -480,11 +389,7 @@ const _projectsRaw: ProjectData[] = [
     description: 'Print and digital booklet design showcasing creative layout techniques and typography exploration.',
     category: 'side-projects',
     cardCategory: 'Side Projects',
-    images: [
-      'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop',
-    ],
+    images: projectImages['booklet'].images,
     year: '2023',
     client: 'Personal Project',
     bigNumbers: [
@@ -499,11 +404,7 @@ const _projectsRaw: ProjectData[] = [
     description: 'Beautifully designed travel itinerary presentation combining practical information with visual storytelling.',
     category: 'side-projects',
     cardCategory: 'Side Projects',
-    images: [
-      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&auto=format&fit=crop',
-    ],
+    images: projectImages['ny-trip-itinerary'].images,
     year: '2023',
     client: 'Personal Project',
     bigNumbers: [

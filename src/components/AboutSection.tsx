@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import glauberPhoto from '@/assets/glauber-photo.jpg';
+import { siteImages } from '@/config/images';
+
+const glauberPhoto = siteImages.about.sectionPhoto;
 import AnimatedCounter from '@/components/AnimatedCounter';
 
 const AboutSection = () => {
