@@ -51,11 +51,8 @@ const RelatedProjectCard = ({ project }: { project: ProjectData }) => {
         <h4 className="font-display text-xl font-semibold text-foreground">
           {project.headerTitle}
         </h4>
-        <p className="font-display text-base text-muted-foreground leading-snug line-clamp-2">
+        <p className="font-display text-base text-secondary leading-snug line-clamp-2">
           {project.meaningfulTitle}
-        </p>
-        <p className="font-sans text-sm text-muted-foreground leading-snug line-clamp-2">
-          {project.tldr}
         </p>
       </div>
     </Link>
@@ -713,6 +710,10 @@ const ProjectDetailPage = () => {
   const [lightbox, setLightbox] = useState<{ images: ProcessImage[]; title: string; index: number } | null>(null);
   const [activeGalleryId, setActiveGalleryId] = useState<string | null>(null);
   const [emailCopied, setEmailCopied] = useState(false);
+
+  useEffect(() => {
+    setActiveGalleryId(null);
+  }, [projectId]);
 
   const handleCopyEmail = async () => {
     const email = 'glauber.matias.ismart@gmail.com';
