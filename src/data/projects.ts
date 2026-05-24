@@ -88,53 +88,8 @@ const _projectsRaw: ProjectData[] = [
     context: 'QuintoAndar believes its people are the true engine driving the company forward. Preparing the leadership team to tackle complex challenges is a crucial strategy to keep the entire organization moving in the same direction. To make this happen, every Academy edition kicked off with the L&D team handing over a 20 to 40-page document detailing a core theme tied to the company\'s momentum.',
     problem: 'Topics like "Hiring", "Equity", "AI", and "High Performance Teams" are notoriously dense. The risk here was that if the message failed to land, it would not resonate with our top management, leaving them ill-equipped to guide their teams. I needed to turn these heavy narratives into engaging visual frameworks, tailored to both the specific subject and the distinct delivery styles of our C-level speakers.',
     strategy: 'Instead of jumping straight into design software, I started by decoding the brief into a clear vision of the core message and the reason why the audience should care about it. After structuring the information hierarchy, I translated these abstract concepts into concrete visual assets, ensuring they matched the natural cadence of the speakers. This turned the presentation into a powerful stage tool rather than mere background decoration.',
-    bentoGalleries: [
-      {
-        id: 'high-performance-teams',
-        label: 'High Performance Teams',
-        images: [
-          { src: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&auto=format&fit=crop' },
-        ],
-      },
-      {
-        id: 'artificial-intelligence',
-        label: 'Artificial Intelligence',
-        images: [
-          { src: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1676299081847-824916de030a?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1684369175833-4b445ad6bfb5?w=1200&auto=format&fit=crop' },
-        ],
-      },
-      {
-        id: 'equity',
-        label: 'Equity',
-        images: [
-          { src: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&auto=format&fit=crop' },
-        ],
-      },
-      {
-        id: 'hiring',
-        label: 'Hiring',
-        images: [
-          { src: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1560264280-88b68371db39?w=1200&auto=format&fit=crop' },
-          { src: 'https://images.unsplash.com/photo-1556761175-4b46a572b786?w=1200&auto=format&fit=crop' },
-        ],
-      },
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop',
-    ],
+    bentoGalleries: projectImages['leadership-academy'].bentoGalleries,
+    images: projectImages['leadership-academy'].images,
     year: '2024',
     client: 'QUINTOANDAR',
     featured: true,
