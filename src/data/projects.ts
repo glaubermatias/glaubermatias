@@ -154,6 +154,7 @@ const _projectsRaw: ProjectData[] = [
     id: 'pitch-decks',
     title: 'Hiring',
     headerTitle: 'Hiring',
+    meaningfulTitle: 'Turning recruiting strategy into a sharper executive narrative.',
     cardDescription: 'Strategic investor pitch decks to communicate value and secure funding',
     description: 'Strategic investor pitch decks designed to communicate value propositions and secure funding for innovative ventures.',
     category: 'executive-decks',
@@ -184,6 +185,8 @@ const _projectsRaw: ProjectData[] = [
   {
     id: 'all-hands-and-leadership-meetings',
     title: 'All Hands & Leadership Meetings',
+    headerTitle: 'All Hands & Leadership Meetings',
+    meaningfulTitle: 'Aligning company-wide updates with clear, executive-ready storytelling.',
     description: 'Engaging company-wide and leadership meeting presentations that align teams and communicate strategic vision.',
     category: 'executive-decks',
     cardCategory: 'Executive Decks',
@@ -207,6 +210,8 @@ const _projectsRaw: ProjectData[] = [
   {
     id: 'summit',
     title: 'Summit',
+    headerTitle: 'Summit',
+    meaningfulTitle: 'Building high-impact keynote systems for large-scale corporate stages.',
     cardDescription: 'High-impact keynote presentations for major corporate summit events',
     description: 'High-impact keynote and session presentations for major corporate summit events with thousands of attendees.',
     category: 'executive-decks',
