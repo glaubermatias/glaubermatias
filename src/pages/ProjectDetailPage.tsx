@@ -757,14 +757,14 @@ const ProjectDetailPage = () => {
     // No cross-block fallbacks — this is what guarantees that editing one
     // text in Visual Edits never affects another block on the page.
     const headerTitle = project.headerTitle ?? project.title;
-    const galleryLabel = project.galleryLabel ?? project.title;
-    const meaningfulTitle = project.meaningfulTitle ?? '';
-    const tldr = project.tldr ?? '';
-    const context = project.context ?? '';
-    const problem = project.problem ?? '';
-    const strategy = project.strategy ?? '';
-    const tradeoffs = project.tradeoffs ?? '';
-    const closingParagraph = project.closingParagraph ?? '';
+    const galleryLabel = project.galleryLabel ?? headerTitle;
+    const meaningfulTitle = withPlaceholder(project.meaningfulTitle, 'meaningfulTitle');
+    const tldr = withPlaceholder(project.tldr, 'tldr');
+    const context = withPlaceholder(project.context, 'context');
+    const problem = withPlaceholder(project.problem, 'problem');
+    const strategy = withPlaceholder(project.strategy, 'strategy');
+    const tradeoffs = withPlaceholder(project.tradeoffs, 'tradeoffs');
+    const closingParagraph = withPlaceholder(project.closingParagraph, 'closingParagraph');
     const skills = project.skills && project.skills.length > 0
       ? project.skills
       : [];
@@ -773,14 +773,13 @@ const ProjectDetailPage = () => {
     const tools = project.tools ?? '';
     const duration = project.duration ?? '';
 
-    // Bento always shows 8 tiles; if fewer source images exist, cycle through them.
-    const bentoImages: ProcessImage[] = (() => {
-      if (processImages.length === 0) return [];
-      const target = 8;
-      const out: ProcessImage[] = [];
-      for (let i = 0; i < target; i++) out.push(processImages[i % processImages.length]);
-      return out;
-    })();
+    const bentoGalleries = project.bentoGalleries && project.bentoGalleries.length > 0
+      ? project.bentoGalleries.map((gallery) => ({
+        id: gallery.id,
+        label: gallery.label,
+        images: makeEightTiles(gallery.images && gallery.images.length > 0 ? gallery.images : processImages),
+      }))
+      : [{ id: `${project.id}-gallery`, label: galleryLabel, images: makeEightTiles(processImages) }];
     // Before / After: explicit field wins; otherwise fall back to first vs.
     // last process image when at least 2 are available.
     let beforeAfter: { before: string; after: string } | null = null;
@@ -796,7 +795,7 @@ const ProjectDetailPage = () => {
       headerImage,
       heroCarousel,
       processImages,
-      bentoImages,
+      bentoGalleries,
       beforeAfter,
       liveImages,
       headerTitle,
