@@ -47,7 +47,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
       className="group h-full"
     >
       <Link to={`/${project.id}`} className="block h-full">
-        <div className="bg-muted rounded-[2rem] overflow-hidden transition-all duration-300 h-full flex flex-col">
+        <div className="bg-muted rounded-[2rem] overflow-hidden transition-all duration-300 h-full flex flex-col group-hover:bg-card-warm">
           <div className="p-5 pb-0">
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl select-none">
               <motion.img
@@ -94,11 +94,11 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           </div>
 
           <div className="p-6 space-y-3 flex-1 flex flex-col">
-            <h3 className="font-display text-2xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300 leading-tight">
+            <h3 className="font-display text-[1.6rem] font-semibold text-foreground group-hover:text-primary transition-colors duration-300 leading-tight">
               {project.headerTitle ?? ''}
             </h3>
 
-            <p className="font-display text-lg leading-tight text-muted-foreground">
+            <p className="font-display text-[1.18rem] leading-tight text-secondary">
               {project.meaningfulTitle ?? ''}
             </p>
 
