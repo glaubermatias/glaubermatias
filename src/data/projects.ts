@@ -56,13 +56,13 @@ export interface ProjectData {
 export const projects: ProjectData[] = [
   {
     id: 'leadership-academy',
-    title: 'Leadership Academy',
+    title: 'Hiring',
     cardDescription: 'Transforming dense narratives into sharp visual frameworks for 260+ leaders',
     description: 'The Leadership Academy is QuintoAndar\'s strategic investment to strengthen its senior leadership team. For four editions, the Learning & Development team crafted deep narratives on critical company priorities. My role was to translate around 40 pages of dense text per edition into sharp visual frameworks so 260+ leaders could truly absorb and cascade the core messages to their teams. The result? An average NPS of 4.6/5.',
     category: 'executive-decks',
     company: 'Corporate Client',
     cardCategory: 'Executive Decks',
-    duration: '3 Months',
+    duration: '3 weeks per edition',
     role: 'C-suite executives, L&D team, Senior leaders',
     images: [
       'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop',
@@ -76,11 +76,11 @@ export const projects: ProjectData[] = [
     tools: 'Figma, Keynote, PowerPoint',
     tradeoffs: 'No sugar coating: getting time on a global executive\'s calendar is no easy task. To keep asynchronous reviews moving, I prioritized the most complex slides right after every sync, giving the speakers more time to digest the most critical content. From time to time, I also had to balance my technical design recommendations with their personal preferences, pointing out visual risks but leaving the final decision to them. At the end of the day, my golden rule is that stage confidence outweighs design purity.',
     bigNumbers: [
-      { value: '4 h', label: 'Event scale', description: 'Of high-level presentation material decoded per edition.' },
+      { value: '4.6/5', label: 'Audience satisfaction', description: 'Average NPS rating sustained across four editions.' },
       { value: '~21%', label: 'Content clarity', description: 'Average share of open-ended feedback praising the content and its clear structure.' },
       { value: '100+', label: 'Slide layouts', description: 'Reusable layouts shipped into the production system.' },
     ],
-    overview: 'Instead of jumping straight into design software, I started by decoding the brief into a clear vision of the core message and the reason why the audience should care about it. After structuring the information hierarchy, I translated these abstract concepts into concrete visual assets, ensuring they matched the natural cadence of the speakers. This turned the presentation into a powerful stage tool rather than mere background decoration.',
+    overview: 'The Leadership Academy is QuintoAndar\'s strategic investment to strengthen its senior leadership team. For four editions, the Learning & Development team crafted deep narratives on critical company priorities. My role was to translate around 40 pages of dense text per edition into sharp visual frameworks so 260+ leaders could truly absorb and cascade the core messages to their teams. The result? An average NPS of 4.6/5.',
     challenge: 'Creating engaging and impactful materials that could effectively communicate complex leadership concepts while maintaining consistency across various training modules.',
     solution: 'Developed a modular presentation system with clear visual hierarchies, interactive elements, and a cohesive design language that adapts to different leadership topics.',
     closingParagraph: 'The real win here went beyond surviving tight deadlines or making information look good. The true value was unlocking the full potential of these strategic initiatives, making their messages clear and impactful. By stepping into the shoes of both the L&D team and the C-level speakers, I turned a potential bottleneck of heavy text into a clear path for action. When it comes down to it, great presentation design clears the noise so that the leaders don\'t have to guess their next step to keep moving forward. They know it.',
