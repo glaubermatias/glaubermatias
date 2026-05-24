@@ -87,10 +87,46 @@ const _projectsRaw: ProjectData[] = [
     problem: 'Topics like "Hiring", "Equity", "AI", and "High Performance Teams" are notoriously dense. The risk here was that if the message failed to land, it would not resonate with our top management, leaving them ill-equipped to guide their teams. I needed to turn these heavy narratives into engaging visual frameworks, tailored to both the specific subject and the distinct delivery styles of our C-level speakers.',
     strategy: 'Instead of jumping straight into design software, I started by decoding the brief into a clear vision of the core message and the reason why the audience should care about it. After structuring the information hierarchy, I translated these abstract concepts into concrete visual assets, ensuring they matched the natural cadence of the speakers. This turned the presentation into a powerful stage tool rather than mere background decoration.',
     bentoGalleries: [
-      { id: 'hiring', label: 'Hiring' },
-      { id: 'equity', label: 'Equity' },
-      { id: 'ai', label: 'AI' },
-      { id: 'high-performance-teams', label: 'High Performance Teams' },
+      {
+        id: 'high-performance-teams',
+        label: 'High Performance Teams',
+        images: [
+          { src: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&auto=format&fit=crop' },
+          { src: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&auto=format&fit=crop' },
+          { src: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&auto=format&fit=crop' },
+          { src: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&auto=format&fit=crop' },
+        ],
+      },
+      {
+        id: 'artificial-intelligence',
+        label: 'Artificial Intelligence',
+        images: [
+          { src: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&auto=format&fit=crop' },
+          { src: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&auto=format&fit=crop' },
+          { src: 'https://images.unsplash.com/photo-1676299081847-824916de030a?w=1200&auto=format&fit=crop' },
+          { src: 'https://images.unsplash.com/photo-1684369175833-4b445ad6bfb5?w=1200&auto=format&fit=crop' },
+        ],
+      },
+      {
+        id: 'equity',
+        label: 'Equity',
+        images: [
+          { src: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1200&auto=format&fit=crop' },
+          { src: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1200&auto=format&fit=crop' },
+          { src: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1200&auto=format&fit=crop' },
+          { src: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&auto=format&fit=crop' },
+        ],
+      },
+      {
+        id: 'hiring',
+        label: 'Hiring',
+        images: [
+          { src: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=1200&auto=format&fit=crop' },
+          { src: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1200&auto=format&fit=crop' },
+          { src: 'https://images.unsplash.com/photo-1560264280-88b68371db39?w=1200&auto=format&fit=crop' },
+          { src: 'https://images.unsplash.com/photo-1556761175-4b46a572b786?w=1200&auto=format&fit=crop' },
+        ],
+      },
     ],
     images: [
       'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop',
@@ -100,8 +136,8 @@ const _projectsRaw: ProjectData[] = [
     year: '2024',
     client: 'QUINTOANDAR',
     featured: true,
-    stakeholders: 'Google Slides, Adobe Illustrator, Figma',
-    tools: 'Figma, Keynote, PowerPoint',
+    stakeholders: 'C-level speakers, L&D team, Executive sponsors',
+    tools: 'Google Slides, Adobe Illustrator, Figma',
     tradeoffs: 'No sugar coating: getting time on a global executive\'s calendar is no easy task. To keep asynchronous reviews moving, I prioritized the most complex slides right after every sync, giving the speakers more time to digest the most critical content. From time to time, I also had to balance my technical design recommendations with their personal preferences, pointing out visual risks but leaving the final decision to them. At the end of the day, my golden rule is that stage confidence outweighs design purity.',
     bigNumbers: [
       { value: '4.6/5', label: 'Audience satisfaction', description: 'Average NPS rating sustained across four editions.' },
