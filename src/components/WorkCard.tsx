@@ -58,8 +58,11 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
 
   const tagLabel = `WORK ${String(index + 1).padStart(2, '0')}/${String(totalCount).padStart(2, '0')}`;
 
-  // Card paragraph uses only the project description (single source).
-  const combinedParagraph = project.description;
+  // Cards share ONLY the meaningful title and TL;DR with the project page.
+  // Single source of truth: the project's own dedicated fields.
+  const cardTitle = project.meaningfulTitle || project.title;
+  const cardParagraph = project.tldr || '';
+
 
   return (
     <motion.article
