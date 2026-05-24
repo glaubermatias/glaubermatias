@@ -1047,20 +1047,6 @@ const ProjectDetailPage = () => {
         })()}
 
 
-        {/* ============================================================= */}
-        {/* 5b. BEFORE & AFTER COMPARISON                                   */}
-        {/* ============================================================= */}
-        {derived.beforeAfter && (
-          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-16 md:pt-20">
-            <h3 className="font-display text-xl md:text-2xl font-semibold text-foreground text-center mb-8 md:mb-10">
-              Before and After
-            </h3>
-            <BeforeAfterSlider
-              before={derived.beforeAfter.before}
-              after={derived.beforeAfter.after}
-            />
-          </section>
-        )}
 
         {/* ============================================================= */}
         {/* 6. TRADE-OFFS & CONSTRAINTS - same layout as narrative         */}
