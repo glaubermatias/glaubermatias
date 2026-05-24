@@ -81,11 +81,11 @@ const _projectsRaw: ProjectData[] = [
     cardCategory: 'Executive Decks',
     duration: '3 weeks per edition',
     role: 'Lead Presentation Designer',
-    meaningfulTitle: 'Comprehensive leadership development program for executive training',
+    meaningfulTitle: 'Transforming dense narratives into sharp visual frameworks for 260+ leaders',
     tldr: 'The Leadership Academy is QuintoAndar\'s bet to strengthen its senior leadership team. My role was to translate around 40 pages of dense text per edition into sharp visual frameworks so 260+ leaders could truly absorb and cascade the core messages to their teams. The result? An average NPS of 4.6/5.',
-    context: 'QuintoAndar needed each Leadership Academy edition to work as a high-stakes learning moment for senior leaders, not just as another internal deck. The material had to preserve strategic nuance while making the message simple enough to be remembered, discussed, and cascaded across teams.',
+    context: 'QuintoAndar believes its people are the true engine driving the company forward. Preparing the leadership team to tackle complex challenges is a crucial strategy to keep the entire organization moving in the same direction. To make this happen, every Academy edition kicked off with the L&D team handing over a 20 to 40-page document detailing a core theme tied to the company\'s momentum.',
     problem: 'Topics like "Hiring", "Equity", "AI", and "High Performance Teams" are notoriously dense. The risk here was that if the message failed to land, it would not resonate with our top management, leaving them ill-equipped to guide their teams. I needed to turn these heavy narratives into engaging visual frameworks, tailored to both the specific subject and the distinct delivery styles of our C-level speakers.',
-    strategy: 'I translated dense source material into a modular presentation system: clear narrative arcs, sharp visual frameworks, reusable hierarchy rules, and custom slide structures for each speaker. Instead of decorating text, the work focused on making abstract leadership ideas concrete, memorable, and easy to retell.',
+    strategy: 'Instead of jumping straight into design software, I started by decoding the brief into a clear vision of the core message and the reason why the audience should care about it. After structuring the information hierarchy, I translated these abstract concepts into concrete visual assets, ensuring they matched the natural cadence of the speakers. This turned the presentation into a powerful stage tool rather than mere background decoration.',
     bentoGalleries: [
       { id: 'hiring', label: 'Hiring' },
       { id: 'equity', label: 'Equity' },
@@ -100,7 +100,7 @@ const _projectsRaw: ProjectData[] = [
     year: '2024',
     client: 'QUINTOANDAR',
     featured: true,
-    stakeholders: 'CHRO, Learning & Development, Executive sponsors',
+    stakeholders: 'Google Slides, Adobe Illustrator, Figma',
     tools: 'Figma, Keynote, PowerPoint',
     tradeoffs: 'No sugar coating: getting time on a global executive\'s calendar is no easy task. To keep asynchronous reviews moving, I prioritized the most complex slides right after every sync, giving the speakers more time to digest the most critical content. From time to time, I also had to balance my technical design recommendations with their personal preferences, pointing out visual risks but leaving the final decision to them. At the end of the day, my golden rule is that stage confidence outweighs design purity.',
     bigNumbers: [
