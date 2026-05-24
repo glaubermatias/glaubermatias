@@ -43,19 +43,11 @@ const RelatedProjectCard = ({ project }: { project: ProjectData }) => {
         />
       </div>
       <div className="p-5 space-y-1.5">
-        {project.cardCategory && (
-          <p className="text-[11px] tracking-[0.22em] uppercase text-muted-foreground/80 font-sans">
-            {project.cardCategory}
-          </p>
-        )}
         <h4 className="font-display text-xl font-semibold text-foreground">
           {project.headerTitle}
         </h4>
-        <p className="font-display text-base text-muted-foreground leading-snug line-clamp-2">
+        <p className="font-display text-base text-secondary leading-snug line-clamp-2">
           {project.meaningfulTitle}
-        </p>
-        <p className="font-sans text-sm text-muted-foreground leading-snug line-clamp-2">
-          {project.tldr}
         </p>
       </div>
     </Link>
@@ -714,6 +706,10 @@ const ProjectDetailPage = () => {
   const [activeGalleryId, setActiveGalleryId] = useState<string | null>(null);
   const [emailCopied, setEmailCopied] = useState(false);
 
+  useEffect(() => {
+    setActiveGalleryId(null);
+  }, [projectId]);
+
   const handleCopyEmail = async () => {
     const email = 'glauber.matias.ismart@gmail.com';
     try {
@@ -894,7 +890,7 @@ const ProjectDetailPage = () => {
           </h2>
 
           {/* TL;DR - full content width */}
-          <p className="mt-8 font-sans text-base md:text-lg leading-relaxed text-muted-foreground">
+          <p className="mt-8 font-sans text-base md:text-lg leading-relaxed text-foreground">
             {derived.tldr}
           </p>
 
@@ -913,17 +909,22 @@ const ProjectDetailPage = () => {
                 <p className="text-xs md:text-[13px] tracking-[0.22em] uppercase text-muted-foreground mb-0">
                   Overview
                 </p>
-                {[
-                  { label: 'Role', value: derived.role },
-                  { label: 'Stakeholders', value: derived.stakeholders },
-                  { label: 'Tools', value: derived.tools },
-                  { label: 'Duration', value: derived.duration },
-                ].map((m) => (
-                  <div key={m.label} className="text-sm md:text-[15px] leading-snug text-foreground">
-                    <dt className="inline font-semibold">{m.label}:</dt>{' '}
-                    <dd className="inline text-muted-foreground">{m.value}</dd>
-                  </div>
-                ))}
+                <div className="text-sm md:text-[15px] leading-snug text-foreground">
+                  <dt className="inline font-semibold">Role:</dt>{' '}
+                  <dd className="inline text-muted-foreground">{derived.role}</dd>
+                </div>
+                <div className="text-sm md:text-[15px] leading-snug text-foreground">
+                  <dt className="inline font-semibold">Stakeholders:</dt>{' '}
+                  <dd className="inline text-muted-foreground">{derived.stakeholders}</dd>
+                </div>
+                <div className="text-sm md:text-[15px] leading-snug text-foreground">
+                  <dt className="inline font-semibold">Tools:</dt>{' '}
+                  <dd className="inline text-muted-foreground">{derived.tools}</dd>
+                </div>
+                <div className="text-sm md:text-[15px] leading-snug text-foreground">
+                  <dt className="inline font-semibold">Duration:</dt>{' '}
+                  <dd className="inline text-muted-foreground">{derived.duration}</dd>
+                </div>
               </dl>
 
               {/* Big numbers — two slots, 25% each. */}
@@ -997,7 +998,7 @@ const ProjectDetailPage = () => {
           // Bento selector pills are project-owned labels. They never read
           // from related projects, title, category, or card fields.
           const galleries = derived.bentoGalleries;
-          const activeId = activeGalleryId ?? project.id;
+          const activeId = activeGalleryId ?? galleries[0]?.id;
           const active = galleries.find((g) => g.id === activeId) ?? galleries[0];
           return (
             <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-10 md:pt-12">
@@ -1044,8 +1045,8 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 6. TRADE-OFFS & CONSTRAINTS - always rendered                  */}
         {/* ============================================================= */}
-        <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
-          <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10">
+        <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-10 md:pt-12">
+          <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-6 md:py-8">
             <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
               Trade-offs &amp; Constraints
             </h3>
@@ -1088,7 +1089,7 @@ const ProjectDetailPage = () => {
             </figure>
           )}
 
-          <p className="font-sans text-base md:text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
+          <p className="font-sans text-base md:text-lg text-foreground leading-relaxed max-w-3xl mx-auto">
             {derived.closingParagraph}
           </p>
 

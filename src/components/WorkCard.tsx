@@ -70,7 +70,7 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.08 }}
-      className="group transition-colors duration-300 hover:bg-[#f8f6f5] border-b border-foreground/10"
+      className="group transition-colors duration-300 hover:bg-card-warm border-b border-foreground/10"
     >
       {/* Inner padding container for content; outer article spans full width for full-bleed hover */}
       <Link to={`/${project.id}`} className="block">
@@ -90,12 +90,12 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
               </div>
 
               {/* Header title — same source as the project page H1 */}
-              <h3 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-foreground leading-[0.98]">
+              <h3 className="font-display text-4xl md:text-[3.35rem] lg:text-[3.75rem] font-semibold text-foreground leading-[0.98]">
                 {cardHeaderTitle}
               </h3>
 
               {/* Meaningful title — same source as the project page H2 */}
-              <p className="mt-3 font-display text-2xl md:text-3xl lg:text-4xl font-normal text-muted-foreground leading-tight">
+              <p className="mt-3 font-display text-2xl md:text-[2rem] lg:text-[2.35rem] font-normal text-secondary leading-tight">
                 {cardMeaningfulTitle}
               </p>
 
