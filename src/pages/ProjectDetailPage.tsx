@@ -894,11 +894,9 @@ const ProjectDetailPage = () => {
           </h2>
 
           {/* TL;DR - full content width */}
-          {derived.tldr && (
-            <p className="mt-8 text-base md:text-lg leading-relaxed text-foreground">
-              {derived.tldr}
-            </p>
-          )}
+          <p className="mt-8 font-sans text-base md:text-lg leading-relaxed text-muted-foreground">
+            {derived.tldr}
+          </p>
 
           {/* Metadata + Big Numbers — 50 / 25 / 25, framed by hairlines.
               Floats up on viewport entry. */}
@@ -970,23 +968,24 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
           <div className="space-y-0">
-            {[
-              { label: 'Context', body: derived.context },
-              { label: 'Problem', body: derived.problem },
-              { label: 'Strategy', body: derived.strategy },
-            ].map((block, i) => (
-              <div
-                key={block.label}
-                className={`grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 ${i > 0 ? 'border-t border-foreground/10' : ''}`}
-              >
-                <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
-                  {block.label}
-                </h3>
-                <p className="md:col-span-7 text-sm md:text-base text-muted-foreground leading-relaxed">
-                  {block.body}
-                </p>
-              </div>
-            ))}
+            <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10">
+              <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">Context</h3>
+              <p className="md:col-span-7 font-sans text-sm md:text-base text-muted-foreground leading-relaxed">
+                {derived.context}
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 border-t border-foreground/10">
+              <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">Problem</h3>
+              <p className="md:col-span-7 font-sans text-sm md:text-base text-muted-foreground leading-relaxed">
+                {derived.problem}
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 border-t border-foreground/10">
+              <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">Strategy</h3>
+              <p className="md:col-span-7 font-sans text-sm md:text-base text-muted-foreground leading-relaxed">
+                {derived.strategy}
+              </p>
+            </div>
           </div>
         </section>
 
