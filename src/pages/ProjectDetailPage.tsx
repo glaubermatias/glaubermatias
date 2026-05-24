@@ -946,10 +946,17 @@ const ProjectDetailPage = () => {
         </section>
 
         {/* ============================================================= */}
-        {/* 3. INITIAL CAROUSEL                                            */}
+        {/* 3. INITIAL VISUAL — Before/After if available, else carousel  */}
         {/* ============================================================= */}
         <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-12 md:pt-14">
-          <HeroCarousel images={derived.heroCarousel} title={project.title} />
+          {derived.beforeAfter ? (
+            <BeforeAfterSlider
+              before={derived.beforeAfter.before}
+              after={derived.beforeAfter.after}
+            />
+          ) : (
+            <HeroCarousel images={derived.heroCarousel} title={project.title} />
+          )}
         </section>
 
         {/* ============================================================= */}
