@@ -855,8 +855,9 @@ const ProjectDetailPage = () => {
             transition={{ duration: 0.7 }}
             className="font-display text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight"
           >
-            {project.title}
+            {derived.headerTitle}
           </motion.h1>
+
         </div>
       </header>
 
