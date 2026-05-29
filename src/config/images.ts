@@ -209,46 +209,43 @@ export const projectImages: Record<string, ProjectImageEntry> = {
       },
     ],
   },
-  'pitch-decks': {
+  'investor-deck': {
     images: [STOCK.exec2, STOCK.exec1, STOCK.pitch1],
-  },
-  'all-hands-and-leadership-meetings': {
-    images: [STOCK.exec3, STOCK.meeting1, STOCK.exec1],
   },
   'summit': {
     images: [STOCK.summit1, STOCK.summit2, STOCK.summit3],
   },
-  'templates-library': {
+  'template-library': {
     images: [STOCK.exec3, STOCK.meeting1, STOCK.exec1],
   },
-  'presentation-templates': {
-    images: [STOCK.meeting1, STOCK.exec2, STOCK.template1],
+  'institutional-deck': {
+    images: [STOCK.exec1, STOCK.exec3, STOCK.template1],
   },
-  'presentation-masterclasses': {
-    images: [STOCK.master1, STOCK.exec3, STOCK.master2],
-  },
-  'tech-meetups': {
+  'tech-talks': {
     images: [STOCK.summit2, STOCK.summit3, STOCK.summit1],
   },
-  'tech-conference': {
-    images: [STOCK.summit3, STOCK.summit1, STOCK.summit2],
-  },
-  'tech-interns-onboarding': {
-    images: [STOCK.meeting1, STOCK.interns1, STOCK.master1],
-  },
-  'tech-newsletter': {
+  'newsletter': {
     images: [STOCK.news1, STOCK.interns1, STOCK.exec3],
   },
-  'ALDI-case-study': {
-    images: [STOCK.aldi1, STOCK.aldi2, STOCK.aldi3],
+  'all-hands': {
+    images: [STOCK.exec3, STOCK.meeting1, STOCK.exec1],
   },
-  'Uberall-dashboard': {
-    images: [STOCK.dash1, STOCK.exec2, STOCK.aldi2],
+  'brilliant-youth': {
+    images: [STOCK.meeting1, STOCK.interns1, STOCK.master1],
+  },
+  'tech-conferences': {
+    images: [STOCK.summit3, STOCK.summit1, STOCK.summit2],
+  },
+  'ny-trip-itinerary': {
+    images: [STOCK.aldi3, STOCK.aldi1, STOCK.aldi2],
   },
   'booklet': {
     images: [STOCK.aldi2, STOCK.aldi1, STOCK.aldi3],
   },
-  'ny-trip-itinerary': {
-    images: [STOCK.aldi3, STOCK.aldi1, STOCK.aldi2],
+  'aldi-case-study': {
+    images: [STOCK.aldi1, STOCK.aldi2, STOCK.aldi3],
+  },
+  'uberall-dashboard': {
+    images: [STOCK.dash1, STOCK.exec2, STOCK.aldi2],
   },
 };
