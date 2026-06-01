@@ -56,7 +56,6 @@ const funFactUrl = (file: string): string =>
 export const siteImages = {
   hero: { portrait: glauberPortrait, photo: glauberHero },
   about: { header: glauberAboutHeader, sectionPhoto: glauberPhoto, smileIcon },
-  shared: { gradientBg },
   homepage: {},
 } as const;
 
