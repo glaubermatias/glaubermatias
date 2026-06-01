@@ -99,7 +99,7 @@ const makeBucket = (): Bucket => ({
 
 const buckets: Record<string, Bucket> = {};
 
-for (const [key, url] of Object.entries(PROJECT_FILES)) {
+for (const key of Object.keys(PROJECT_FILES)) {
   // key example: /public/images/projects/leadership-academy/bento-grid/equity/foo.webp
   const path = key.replace(/^\/public/, '');
   const parts = path.split('/').filter(Boolean); // ['images','projects',id,folder,...]
@@ -108,7 +108,7 @@ for (const [key, url] of Object.entries(PROJECT_FILES)) {
   const folder = parts[3];
   if (!id || !folder) continue;
   const b = (buckets[id] ||= makeBucket());
-  const served = keyToUrl(key, url);
+  const served = keyToUrl(key);
 
   if (folder === 'header') b.header.push(served);
   else if (folder === 'carousel') b.carousel.push(served);
@@ -119,14 +119,14 @@ for (const [key, url] of Object.entries(PROJECT_FILES)) {
   }
 }
 
-for (const [key, url] of Object.entries(CARD_FILES)) {
+for (const key of Object.keys(CARD_FILES)) {
   const path = key.replace(/^\/public/, '');
   const parts = path.split('/').filter(Boolean); // ['images','project-cards',id,...]
   if (parts[0] !== 'images' || parts[1] !== 'project-cards') continue;
   const id = parts[2];
   if (!id) continue;
   const b = (buckets[id] ||= makeBucket());
-  b.card.push(keyToUrl(key, url));
+  b.card.push(keyToUrl(key));
 }
 
 // Sort every bucket array deterministically.
