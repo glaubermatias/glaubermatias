@@ -38,13 +38,18 @@ const CARD_FILES = import.meta.glob(
   { eager: true, query: '?url', import: 'default' },
 ) as Record<string, string>;
 
-const ABOUT_FILES = import.meta.glob(
-  '/src/assets/images/about/*.{webp,jpg,jpeg,png,JPG,JPEG,PNG,WEBP}',
+const BEYOND_WORK_FILES = import.meta.glob(
+  '/src/assets/images/about/beyond-work/*.{webp,jpg,jpeg,png,JPG,JPEG,PNG,WEBP}',
   { eager: true, query: '?url', import: 'default' },
 ) as Record<string, string>;
 
-const aboutUrl = (file: string): string =>
-  ABOUT_FILES[`/src/assets/images/about/${file}`] ?? '';
+const FUN_FACTS_FILES = import.meta.glob(
+  '/src/assets/images/about/fun-facts/*.{webp,jpg,jpeg,png,JPG,JPEG,PNG,WEBP}',
+  { eager: true, query: '?url', import: 'default' },
+) as Record<string, string>;
+
+const funFactUrl = (file: string): string =>
+  FUN_FACTS_FILES[`/src/assets/images/about/fun-facts/${file}`] ?? '';
 
 // ────────────────────────────────────────────────────────────────────────────
 // Site-wide images
@@ -56,20 +61,21 @@ export const siteImages = {
   homepage: {},
 } as const;
 
+// Natural sort so "02" comes before "10".
+const naturalSortKeys = (a: [string, string], b: [string, string]) =>
+  a[0].localeCompare(b[0], undefined, { numeric: true, sensitivity: 'base' });
+
 export const aboutImages = {
-  beyondWork: [
-    aboutUrl('01.jpeg'), aboutUrl('02.jpeg'), aboutUrl('03.jpeg'),
-    aboutUrl('04.jpg'),  aboutUrl('05.jpeg'), aboutUrl('06.jpeg'),
-    aboutUrl('07.jpeg'), aboutUrl('08.jpg'),  aboutUrl('09.jpg'),
-    aboutUrl('10.jpeg'),
-  ] as const,
+  beyondWork: Object.entries(BEYOND_WORK_FILES)
+    .sort(naturalSortKeys)
+    .map(([, url]) => url),
   funFacts: {
-    japaneseFood:      aboutUrl('japanese-food.png'),
-    taylorSwift:       aboutUrl('taylor-swift.png'),
-    fernandoDeNoronha: aboutUrl('fernando-de-noronha.jpg'),
-    theOffice:         aboutUrl('the-office.png'),
-    whiteChicks:       aboutUrl('white-chicks.jpg'),
-    openWaterSwimming: aboutUrl('open-water-swimming.jpg'),
+    japaneseFood:      funFactUrl('japanese-food.png'),
+    taylorSwift:       funFactUrl('taylor-swift.png'),
+    fernandoDeNoronha: funFactUrl('fernando-de-noronha.jpg'),
+    theOffice:         funFactUrl('the-office.png'),
+    whiteChicks:       funFactUrl('white-chicks.jpg'),
+    openWaterSwimming: funFactUrl('open-water-swimming.jpg'),
   } as const,
 } as const;
 
