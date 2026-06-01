@@ -1,10 +1,6 @@
 /**
  * Centralized image catalog.
  *
- * Auto-synced with the contents of /public/images/. Whenever you drop
- * new files into a project folder, update the matching `files` array
- * below and they will flow through to every consumer automatically.
- *
  * Folder convention under /public/images/:
  *   homepage/
  *   about/
@@ -13,10 +9,14 @@
  *   projects/<project-id>/before-and-after/
  *   projects/<project-id>/carousel/
  *   projects/<project-id>/bento-grid/<category>/
+ *
+ * STRICT RULE: never map a /public/images/ path unless real files
+ * are actually present in that folder. When a folder is empty, fall
+ * back to the STOCK URLs or local src/assets imports defined below.
  */
 
 // ────────────────────────────────────────────────────────────────────────────
-// Local asset imports (kept as fallbacks — DO NOT DELETE yet)
+// Local asset imports (kept as fallbacks — DO NOT DELETE)
 // ────────────────────────────────────────────────────────────────────────────
 import glauberPortrait from '@/assets/glauber-portrait.png';
 import glauberPhoto from '@/assets/glauber-photo.jpg';
@@ -102,7 +102,9 @@ export const projectPaths = (projectId: string) => ({
     img('projects', projectId, 'bento-grid', category, file),
 });
 
-// Remote stock fallbacks — used only where the public folder is still empty.
+// ────────────────────────────────────────────────────────────────────────────
+// Remote stock fallbacks — used wherever a public/images/ folder is empty.
+// ────────────────────────────────────────────────────────────────────────────
 const STOCK = {
   exec1: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop',
   exec2: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop',
@@ -119,99 +121,117 @@ const STOCK = {
   aldi3: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop',
   dash1: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop',
   pitch1: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop',
+  // Bento fallbacks
+  bento_eq1: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1200&auto=format&fit=crop',
+  bento_eq2: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1200&auto=format&fit=crop',
+  bento_eq3: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1200&auto=format&fit=crop',
+  bento_eq4: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&auto=format&fit=crop',
+  bento_hr1: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=1200&auto=format&fit=crop',
+  bento_hr2: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1200&auto=format&fit=crop',
+  bento_hr3: 'https://images.unsplash.com/photo-1542744095-291d1f67b221?w=1200&auto=format&fit=crop',
+  bento_hr4: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&auto=format&fit=crop',
+  // Before/after generic fallback
+  ba_before: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&auto=format&fit=crop',
+  ba_after:  'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&auto=format&fit=crop',
 };
 
 // ────────────────────────────────────────────────────────────────────────────
-// File listings synced with /public/images/projects/<id>/...
-// Update these arrays whenever you add or remove files.
+// Leadership Academy — only folders with real .webp files are mapped.
+//   header/                     → 1 file  ✅
+//   carousel/                   → 10 files ✅
+//   bento-grid/high-performance-teams/ → 12 files ✅
+//   bento-grid/artificial-intelligence/ → 8 files ✅
+//   bento-grid/equity/          → EMPTY → STOCK fallback
+//   bento-grid/hiring/          → EMPTY → STOCK fallback
+//   project-cards/              → EMPTY → STOCK fallback (no card override)
+//   before-and-after/           → EMPTY → STOCK fallback
 // ────────────────────────────────────────────────────────────────────────────
+const LA = projectPaths('leadership-academy');
 
-const LEADERSHIP = {
-  header: 'Leadership-academy-Header.webp',
-  carousel: [
-    '01.webp','02.webp','03.webp','04.webp','05.webp',
-    '06.webp','07.webp','08.webp','09.webp','10.webp',
-  ],
-  bento: {
-    'high-performance-teams': [
-      '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (01).webp',
-      '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (02).webp',
-      '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (03).webp',
-      '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (04).webp',
-      '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (05).webp',
-      '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (06).webp',
-      '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (07).webp',
-      '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (08).webp',
-      '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (09).webp',
-      '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (10).webp',
-      '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (11).webp',
-      '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (12).webp',
-    ],
-    'artificial-intelligence': [
-      'Portfolio_Glauber-Matias_-Leadership-Academy_AI-_1_.webp',
-      'Portfolio_Glauber-Matias_-Leadership-Academy_AI-_2_.webp',
-      'Portfolio_Glauber-Matias_-Leadership-Academy_AI-_3_.webp',
-      'Portfolio_Glauber-Matias_-Leadership-Academy_AI-_4_.webp',
-      'Portfolio_Glauber-Matias_-Leadership-Academy_AI-_5_.webp',
-      'Portfolio_Glauber-Matias_-Leadership-Academy_AI-_6_.webp',
-      'Portfolio_Glauber-Matias_-Leadership-Academy_AI-_7_.webp',
-      'Portfolio_Glauber-Matias_-Leadership-Academy_AI-_8_.webp',
-    ],
-    'equity': [] as string[],
-    'hiring': [] as string[],
-  },
-};
+const LA_HEADER = LA.header('Leadership-academy-Header.webp');
 
-const leadershipPaths = projectPaths('leadership-academy');
-const leadershipCarousel = LEADERSHIP.carousel.map(leadershipPaths.carousel);
+const LA_CAROUSEL = [
+  '01.webp','02.webp','03.webp','04.webp','05.webp',
+  '06.webp','07.webp','08.webp','09.webp','10.webp',
+].map(LA.carousel);
+
+const LA_HPT = [
+  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (01).webp',
+  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (02).webp',
+  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (03).webp',
+  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (04).webp',
+  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (05).webp',
+  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (06).webp',
+  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (07).webp',
+  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (08).webp',
+  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (09).webp',
+  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (10).webp',
+  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (11).webp',
+  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (12).webp',
+].map((f) => LA.bento('high-performance-teams', f));
+
+const LA_AI = [
+  'Portfolio_Glauber-Matias_-Leadership-Academy_AI-_1_.webp',
+  'Portfolio_Glauber-Matias_-Leadership-Academy_AI-_2_.webp',
+  'Portfolio_Glauber-Matias_-Leadership-Academy_AI-_3_.webp',
+  'Portfolio_Glauber-Matias_-Leadership-Academy_AI-_4_.webp',
+  'Portfolio_Glauber-Matias_-Leadership-Academy_AI-_5_.webp',
+  'Portfolio_Glauber-Matias_-Leadership-Academy_AI-_6_.webp',
+  'Portfolio_Glauber-Matias_-Leadership-Academy_AI-_7_.webp',
+  'Portfolio_Glauber-Matias_-Leadership-Academy_AI-_8_.webp',
+].map((f) => LA.bento('artificial-intelligence', f));
 
 export const projectImages: Record<string, ProjectImageEntry> = {
   'leadership-academy': {
-    card: leadershipPaths.header(LEADERSHIP.header),
-    header: leadershipPaths.header(LEADERSHIP.header),
-    images: leadershipCarousel,
+    // Header ONLY from header folder. Never from carousel.
+    header: LA_HEADER,
+    // No card override — let consumers fall back to header/carousel[0].
+    // No before/after — folder empty, restore STOCK fallback.
+    beforeAfter: { before: STOCK.ba_before, after: STOCK.ba_after },
+    images: LA_CAROUSEL,
     bentoGalleries: [
       {
         id: 'high-performance-teams',
         label: 'High Performance Teams',
-        images: LEADERSHIP.bento['high-performance-teams'].map(
-          (f) => ({ src: leadershipPaths.bento('high-performance-teams', f) }),
-        ),
+        images: LA_HPT.map((src) => ({ src })),
       },
       {
         id: 'artificial-intelligence',
         label: 'Artificial Intelligence',
-        images: LEADERSHIP.bento['artificial-intelligence'].map(
-          (f) => ({ src: leadershipPaths.bento('artificial-intelligence', f) }),
-        ),
+        images: LA_AI.map((src) => ({ src })),
       },
       {
         id: 'equity',
         label: 'Equity',
-        // Folder empty — fall back to carousel so the gallery never breaks.
-        images: leadershipCarousel.map((src) => ({ src })),
+        images: [
+          { src: STOCK.bento_eq1 }, { src: STOCK.bento_eq2 },
+          { src: STOCK.bento_eq3 }, { src: STOCK.bento_eq4 },
+        ],
       },
       {
         id: 'hiring',
         label: 'Hiring',
-        images: leadershipCarousel.map((src) => ({ src })),
+        images: [
+          { src: STOCK.bento_hr1 }, { src: STOCK.bento_hr2 },
+          { src: STOCK.bento_hr3 }, { src: STOCK.bento_hr4 },
+        ],
       },
     ],
   },
 
-  // The folders below currently only hold .gitkeep placeholders.
-  // Stock fallbacks keep the UI alive until real files are dropped in.
-  'investor-deck':       { images: [STOCK.exec2, STOCK.exec1, STOCK.pitch1] },
-  'summit':              { images: [STOCK.summit1, STOCK.summit2, STOCK.summit3] },
-  'template-library':    { images: [STOCK.exec3, STOCK.meeting1, STOCK.exec1] },
-  'institutional-deck':  { images: [STOCK.exec1, STOCK.exec3, STOCK.template1] },
-  'tech-talks':          { images: [STOCK.summit2, STOCK.summit3, STOCK.summit1] },
-  'newsletter':          { images: [STOCK.news1, STOCK.interns1, STOCK.exec3] },
-  'all-hands':           { images: [STOCK.exec3, STOCK.meeting1, STOCK.exec1] },
-  'brilliant-youth':     { images: [STOCK.meeting1, STOCK.interns1, STOCK.exec2] },
-  'tech-conferences':    { images: [STOCK.summit3, STOCK.summit1, STOCK.summit2] },
-  'ny-trip-itinerary':   { images: [STOCK.aldi3, STOCK.aldi1, STOCK.aldi2] },
-  'booklet':             { images: [STOCK.aldi2, STOCK.aldi1, STOCK.aldi3] },
-  'aldi-case-study':     { images: [STOCK.aldi1, STOCK.aldi2, STOCK.aldi3] },
-  'uberall-dashboard':   { images: [STOCK.dash1, STOCK.exec2, STOCK.aldi2] },
+  // All other projects: /public/images/ folders are still empty — keep
+  // STOCK fallbacks until real .webp files are dropped in.
+  'investor-deck':      { images: [STOCK.exec2, STOCK.exec1, STOCK.pitch1] },
+  'summit':             { images: [STOCK.summit1, STOCK.summit2, STOCK.summit3] },
+  'template-library':   { images: [STOCK.exec3, STOCK.meeting1, STOCK.exec1] },
+  'institutional-deck': { images: [STOCK.exec1, STOCK.exec3, STOCK.template1] },
+  'tech-talks':         { images: [STOCK.summit2, STOCK.summit3, STOCK.summit1] },
+  'newsletter':         { images: [STOCK.news1, STOCK.interns1, STOCK.exec3] },
+  'all-hands':          { images: [STOCK.exec3, STOCK.meeting1, STOCK.exec1] },
+  'brilliant-youth':    { images: [STOCK.meeting1, STOCK.interns1, STOCK.exec2] },
+  'tech-conferences':   { images: [STOCK.summit3, STOCK.summit1, STOCK.summit2] },
+  'ny-trip-itinerary':  { images: [STOCK.aldi3, STOCK.aldi1, STOCK.aldi2] },
+  'booklet':            { images: [STOCK.aldi2, STOCK.aldi1, STOCK.aldi3] },
+  'aldi-case-study':    { images: [STOCK.aldi1, STOCK.aldi2, STOCK.aldi3] },
+  'uberall-dashboard':  { images: [STOCK.dash1, STOCK.exec2, STOCK.aldi2] },
 };
