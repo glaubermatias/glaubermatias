@@ -296,9 +296,9 @@ const makeProcessTiles = (p: ProjectData): ProcessImage[] => {
     ? p.processImages
     : p.images.map((src) => ({ src }));
 
-  if (source.length === 0) return [];
-
-  return Array.from({ length: 8 }, (_, index) => source[index % source.length]);
+  // Render exactly as many tiles as there are source images — no padding,
+  // no truncation. The bento grid layout adapts to the actual count.
+  return source;
 };
 
 const normalizedProjects: ProjectData[] = _projectsRaw.map((p) => {
