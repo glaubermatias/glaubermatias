@@ -129,6 +129,7 @@ const Lightbox = ({
             <img
               src={current.src}
               alt={current.caption || ''}
+              decoding="async"
               className="w-full h-full object-cover"
             />
           </div>
@@ -403,12 +404,16 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
       <img
         src={after}
         alt="After"
+        loading="lazy"
+        decoding="async"
         className="absolute inset-0 h-full w-full object-cover pointer-events-none"
         draggable={false}
       />
       <img
         src={before}
         alt="Before"
+        loading="lazy"
+        decoding="async"
         className="absolute inset-0 h-full w-full object-cover pointer-events-none"
         style={{
           clipPath: `inset(0 ${100 - pos}% 0 0)`,
@@ -602,7 +607,7 @@ const CenterStageCarousel = ({ images }: { images: string[] }) => {
               }}
               transition={{ type: 'spring', stiffness: 220, damping: 32, mass: 0.9 }}
             >
-              <img src={src} alt="" className="h-full w-full object-cover" draggable={false} />
+              <img src={src} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" draggable={false} />
             </motion.div>
           );
         })}
@@ -851,6 +856,7 @@ const ProjectDetailPage = () => {
           src={derived.headerImage}
           alt=""
           loading="eager"
+          fetchPriority="high"
           decoding="sync"
           className="absolute inset-0 h-full w-full object-cover"
         />
