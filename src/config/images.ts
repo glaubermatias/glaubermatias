@@ -21,7 +21,6 @@ import glauberPhoto from '@/assets/glauber-photo.jpg';
 import glauberHero from '@/assets/glauber-hero.jpg';
 import glauberAboutHeader from '@/assets/glauber-about-header.jpg';
 import smileIcon from '@/assets/smile-icon.png';
-import gradientBg from '@/assets/gradient-bg.png';
 
 // ────────────────────────────────────────────────────────────────────────────
 // AUTO-DISCOVERY — Vite glob over src/assets/images
