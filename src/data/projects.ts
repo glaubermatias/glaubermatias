@@ -32,6 +32,8 @@ export interface ProjectData {
   cardDescription?: string;
   category: ProjectCategory;
   images: string[];
+  /** Optional override for card carousels. Falls back to `images` when omitted. */
+  cardImages?: string[];
   year: string;
   client: string;
   company?: string;
