@@ -86,7 +86,7 @@ const _projectsRaw: ProjectData[] = [
     duration: '3 weeks per edition',
     role: 'Lead Presentation Designer',
     meaningfulTitle: 'Transforming dense narratives into sharp visual frameworks for 260+ leaders',
-    tldr: 'The Leadership Academy is QuintoAndar\'s bet to strengthen its senior leadership team. My role was to translate around 40 pages of dense text per edition into sharp visual frameworks so 260+ leaders could truly absorb and cascade the core messages to their teams. The result? An average NPS of 4.6/5.',
+    tldr: 'The Leadership Academy is QuintoAndar\'s bet to strengthen its senior leadership team. My role was to translate around 40 pages of dense text per edition into sharp visual frameworks so 260+ leaders could absorb and cascade the core messages to their teams. The result? An average NPS of 4.6/5.',
     context: 'QuintoAndar believes its people are the true engine driving the company forward. Preparing the leadership team to tackle complex challenges is a crucial strategy to keep the entire organization moving in the same direction. To make this happen, every Academy edition kicked off with the L&D team handing over a 20 to 40-page document detailing a core theme tied to the company\'s momentum.',
     problem: 'Topics like "Hiring", "Equity", "AI", and "High Performance Teams" are notoriously dense. The risk here was that if the message failed to land, it would not resonate with our top management, leaving them ill-equipped to guide their teams. I needed to turn these heavy narratives into engaging visual frameworks, tailored to both the specific subject and the distinct delivery styles of our C-level speakers.',
     strategy: 'Instead of jumping straight into design software, I started by decoding the brief into a clear vision of the core message and the reason why the audience should care about it. After structuring the information hierarchy, I translated these abstract concepts into concrete visual assets, ensuring they matched the natural cadence of the speakers. This turned the presentation into a powerful stage tool rather than mere background decoration.',
@@ -97,7 +97,7 @@ const _projectsRaw: ProjectData[] = [
     year: '2025',
     client: 'QuintoAndar',
     featured: true,
-    stakeholders: 'C-level speakers, L&D team, Executive sponsors',
+    stakeholders: 'C-level speakers, L&D team, 260+ senior leaders',
     tools: 'Google Slides, Adobe Illustrator, Figma',
     tradeoffs: 'No sugar coating: getting time on a global executive\'s calendar is no easy task. To keep asynchronous reviews moving, I prioritized the most complex slides right after every sync, giving the speakers more time to digest the most critical content. From time to time, I also had to balance my technical design recommendations with their personal preferences, pointing out visual risks but leaving the final decision to them. At the end of the day, my golden rule is that stage confidence outweighs design purity.',
     bigNumbers: [
@@ -108,7 +108,7 @@ const _projectsRaw: ProjectData[] = [
     overview: 'Leadership Academy overview kept as legacy metadata only.',
     challenge: 'Legacy challenge kept only for archive compatibility.',
     solution: 'Legacy solution kept only for archive compatibility.',
-    closingParagraph: 'The real win here went beyond surviving tight deadlines or making information look good. The true value was unlocking the full potential of these strategic initiatives, making their messages clear and impactful. By stepping into the shoes of both the L&D team and the C-level speakers, I turned a potential bottleneck of heavy text into a clear path for action. When it comes down to it, great presentation design clears the noise so that the leaders don\'t have to guess their next step to keep moving forward. They know it.',
+    closingParagraph: 'The true value was unlocking the full potential of these strategic initiatives, making their messages clear and impactful. By stepping into the shoes of both the L&D team and the C-level speakers, I turned a potential bottleneck of heavy text into a clear path for action. When it comes down to it, great presentation design clears the noise so that the leaders don\'t have to guess their next step to keep moving forward. They know it.',
     results: ['Successfully deployed across 5 leadership cohorts', 'Increased participant engagement by 40%', 'Became the standard template for all leadership programs'],
   },
   {
