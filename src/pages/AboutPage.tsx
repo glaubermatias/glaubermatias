@@ -284,6 +284,7 @@ const AboutPage = () => {
                         src={fact.image}
                         alt={fact.title}
                         loading="lazy"
+                        decoding="async"
                         className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-[filter] duration-500"
                       />
                     )}
