@@ -24,24 +24,24 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
   const startAutoPlay = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
-      setCurrentImageIndex((p) => (p + 1) % project.images.length);
+      setCurrentImageIndex((p) => (p + 1) % cardImages.length);
     }, 4000);
-  }, [project.images.length]);
+  }, [cardImages.length]);
 
   useEffect(() => {
-    if (autoPlay && project.images.length > 1) startAutoPlay();
+    if (autoPlay && cardImages.length > 1) startAutoPlay();
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [autoPlay, startAutoPlay, project.images.length]);
+  }, [autoPlay, startAutoPlay, cardImages.length]);
 
   const goTo = (direction: 'prev' | 'next') => {
     setAutoPlay(false);
     if (intervalRef.current) clearInterval(intervalRef.current);
     setCurrentImageIndex((p) =>
       direction === 'next'
-        ? (p + 1) % project.images.length
-        : (p - 1 + project.images.length) % project.images.length,
+        ? (p + 1) % cardImages.length
+        : (p - 1 + cardImages.length) % cardImages.length,
     );
   };
 
@@ -55,7 +55,7 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
     touchStartX.current = e.touches[0].clientX;
   };
   const onTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current == null || project.images.length <= 1) return;
+    if (touchStartX.current == null || cardImages.length <= 1) return;
     const dx = e.changedTouches[0].clientX - touchStartX.current;
     touchStartX.current = null;
     if (Math.abs(dx) > 40) goTo(dx < 0 ? 'next' : 'prev');
@@ -128,7 +128,7 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
               >
                 <motion.img
                   key={currentImageIndex}
-                  src={project.images[currentImageIndex]}
+                  src={cardImages[currentImageIndex]}
                   alt={`${project.title} – ${currentImageIndex + 1}`}
                   className="w-full h-full object-cover absolute inset-0 pointer-events-none"
                   initial={{ opacity: 0 }}
@@ -137,7 +137,7 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
                   draggable={false}
                 />
 
-                {project.images.length > 1 && (
+                {cardImages.length > 1 && (
                   <>
                     <button
                       onClick={(e) => handleNav(e, 'prev')}
@@ -163,7 +163,7 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
                         role="tablist"
                         aria-label="Carousel pagination"
                       >
-                        {project.images.map((_, idx) => {
+                        {cardImages.map((_, idx) => {
                           const active = idx === currentImageIndex;
                           return (
                             <span
