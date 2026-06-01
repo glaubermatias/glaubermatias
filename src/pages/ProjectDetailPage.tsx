@@ -606,7 +606,7 @@ const CenterStageCarousel = ({ images }: { images: string[] }) => {
               }}
               transition={{ type: 'spring', stiffness: 220, damping: 32, mass: 0.9 }}
             >
-              <img src={src} alt="" className="h-full w-full object-cover" draggable={false} />
+              <img src={src} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" draggable={false} />
             </motion.div>
           );
         })}
