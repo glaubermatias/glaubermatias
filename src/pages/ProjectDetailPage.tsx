@@ -19,10 +19,11 @@ const EDITORIAL_PLACEHOLDERS = {
 const withPlaceholder = (value: string | undefined, key: keyof typeof EDITORIAL_PLACEHOLDERS) =>
   value && value.trim().length > 0 ? value : EDITORIAL_PLACEHOLDERS[key];
 
-const makeEightTiles = (images: ProcessImage[]) => {
-  if (images.length === 0) return [];
-  return Array.from({ length: 8 }, (_, index) => images[index % images.length]);
-};
+/**
+ * Pass-through: render exactly as many tiles as provided. The bento grid
+ * layout below adapts dynamically to the array length (no hard-coded slots).
+ */
+const makeEightTiles = (images: ProcessImage[]) => images;
 
 /* ------------------------------------------------------------------ */
 /* Related project card (footer)                                       */
