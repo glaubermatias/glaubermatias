@@ -32,6 +32,8 @@ export interface ProjectData {
   cardDescription?: string;
   category: ProjectCategory;
   images: string[];
+  /** Optional override for card carousels. Falls back to `images` when omitted. */
+  cardImages?: string[];
   year: string;
   client: string;
   company?: string;
@@ -90,6 +92,8 @@ const _projectsRaw: ProjectData[] = [
     strategy: 'Instead of jumping straight into design software, I started by decoding the brief into a clear vision of the core message and the reason why the audience should care about it. After structuring the information hierarchy, I translated these abstract concepts into concrete visual assets, ensuring they matched the natural cadence of the speakers. This turned the presentation into a powerful stage tool rather than mere background decoration.',
     bentoGalleries: projectImages['leadership-academy'].bentoGalleries,
     images: projectImages['leadership-academy'].images,
+    cardImages: projectImages['leadership-academy'].cardImages,
+    beforeAfter: projectImages['leadership-academy'].beforeAfter,
     year: '2025',
     client: 'QuintoAndar',
     featured: true,
@@ -292,9 +296,9 @@ const makeProcessTiles = (p: ProjectData): ProcessImage[] => {
     ? p.processImages
     : p.images.map((src) => ({ src }));
 
-  if (source.length === 0) return [];
-
-  return Array.from({ length: 8 }, (_, index) => source[index % source.length]);
+  // Render exactly as many tiles as there are source images — no padding,
+  // no truncation. The bento grid layout adapts to the actual count.
+  return source;
 };
 
 const normalizedProjects: ProjectData[] = _projectsRaw.map((p) => {

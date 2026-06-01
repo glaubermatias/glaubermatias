@@ -83,6 +83,8 @@ export const aboutImages = {
 // ────────────────────────────────────────────────────────────────────────────
 export interface ProjectImageEntry {
   card?: string;
+  /** Card carousel images (e.g. WorkCard/ProjectCard). Falls back to `images` when omitted. */
+  cardImages?: string[];
   header?: string;
   beforeAfter?: { before: string; after: string };
   images: string[];
@@ -185,8 +187,10 @@ export const projectImages: Record<string, ProjectImageEntry> = {
   'leadership-academy': {
     // Header ONLY from header folder. Never from carousel.
     header: LA_HEADER,
-    // No card override — let consumers fall back to header/carousel[0].
-    // No before/after — folder empty, restore STOCK fallback.
+    // project-cards/leadership-academy/ folder is EMPTY → use STOCK fallbacks
+    // so the card carousel does NOT borrow the gallery carousel images.
+    cardImages: [STOCK.exec1, STOCK.exec2, STOCK.exec3, STOCK.meeting1],
+    // before-and-after/ folder is EMPTY → use STOCK fallbacks.
     beforeAfter: { before: STOCK.ba_before, after: STOCK.ba_after },
     images: LA_CAROUSEL,
     bentoGalleries: [
