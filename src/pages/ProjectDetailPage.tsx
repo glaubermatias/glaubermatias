@@ -403,12 +403,16 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
       <img
         src={after}
         alt="After"
+        loading="lazy"
+        decoding="async"
         className="absolute inset-0 h-full w-full object-cover pointer-events-none"
         draggable={false}
       />
       <img
         src={before}
         alt="Before"
+        loading="lazy"
+        decoding="async"
         className="absolute inset-0 h-full w-full object-cover pointer-events-none"
         style={{
           clipPath: `inset(0 ${100 - pos}% 0 0)`,
