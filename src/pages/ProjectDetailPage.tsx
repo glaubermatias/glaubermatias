@@ -5,6 +5,7 @@ import { ArrowLeft, ChevronLeft, ChevronRight, X, Copy, Check } from 'lucide-rea
 import { useLanguage } from '@/contexts/LanguageContext';
 import PageLayout from '@/components/PageLayout';
 import { getProjectById, getRelatedProjects, ProjectData, ProcessImage } from '@/data/projects';
+import SmartImage from '@/components/SmartImage';
 
 const EDITORIAL_PLACEHOLDERS = {
   meaningfulTitle: 'Strategic presentation system built to make complex work clear, memorable, and easy to act on.',
@@ -276,7 +277,7 @@ const BentoGrid = ({
           onClick={() => onOpen(i)}
           className="group relative overflow-hidden rounded-md bg-muted"
         >
-          <img
+          <SmartImage
             src={img.src}
             alt={img.caption || ''}
             loading="lazy"
@@ -607,7 +608,7 @@ const CenterStageCarousel = ({ images }: { images: string[] }) => {
               }}
               transition={{ type: 'spring', stiffness: 220, damping: 32, mass: 0.9 }}
             >
-              <img src={src} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" draggable={false} />
+              <SmartImage src={src} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" draggable={false} />
             </motion.div>
           );
         })}
@@ -659,11 +660,14 @@ const HeroCarousel = ({ images, title }: { images: string[]; title: string }) =>
   return (
     <div className="relative w-full">
       <div className="relative aspect-[16/9] w-full overflow-hidden rounded-md bg-muted" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+        <div className="absolute inset-0 animate-pulse bg-muted" aria-hidden />
         <AnimatePresence mode="wait">
           <motion.img
             key={idx}
             src={images[idx]}
             alt={`${title} – ${idx + 1}`}
+            loading="lazy"
+            decoding="async"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
