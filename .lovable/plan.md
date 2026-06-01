@@ -1,95 +1,78 @@
-## Diagnóstico
+# Plan: Fix production 404s and slow image UX
 
-O bug ainda existe porque a correção anterior removeu alguns fallbacks, mas não eliminou todas as fontes compartilhadas. Hoje ainda há campos com dupla função:
+## Issue 1 — Diagnosis: why prod 404s, but preview works
 
-- `project.title` aparece no header e também no seletor do bento grid.
-- `meaningfulTitle` ainda cai em `cardDescription`, então um texto de card pode preencher o título significativo.
-- `tldr` ainda cai em `overview`, então o bloco de TL;DR pode compartilhar texto com outro campo legado.
-- `role`, `stakeholders`, `tools` e `duration` ainda usam defaults por categoria quando faltam dados, o que permite textos genéricos aparecerem no lugar de textos reais.
-- Os cards ainda usam `title`, `cardDescription` e `description`, quando o comportamento desejado agora é: cards devem puxar somente o título significativo e o TL;DR da página do projeto.
-- A página esconde seções vazias, mas o comportamento desejado é manter todos os blocos estruturais visíveis por padrão.
+The current `src/config/images.ts` uses:
 
-## Solução definitiva
+```ts
+import.meta.glob('/public/images/projects/**/*.{webp,jpg,...}', { eager: true })
+```
 
-### 1. Criar uma fonte de verdade explícita para a página de projeto
+and then derives runtime URLs by hand:
 
-Vou reorganizar o modelo de dados para separar, por função visual, todos os textos que aparecem na página:
+```ts
+'/' + key.replace(/^\/public\//, '').split('/').map(encodeURIComponent).join('/')
+```
 
-- `headerTitle`
-- `tagline` / metadados do topo
-- `meaningfulTitle`
-- `tldr`
-- `metadata`: role, stakeholders, tools, duration
-- `bigNumbers`
-- `context`
-- `problem`
-- `strategy`
-- `tradeoffs`
-- `closingParagraph`
-- `galleryLabel` para o bento grid, separado do título do header
+Three things conspire to break this in the published build:
 
-O ponto central: cada bloco visual vai ler apenas o seu próprio campo. Nada de `|| cardDescription`, `|| overview`, `|| description`, `|| category default` para texto editorial.
+1. `**/public` is not part of Vite's module graph.** Globbing into `/public` is explicitly discouraged by Vite. In dev the filesystem scan happens to work, so the preview iframe is fine. In the production build the glob can return an **empty record** (or a partial one, depending on Vite/Rollup version), so `buckets[id].bento['high-performance-teams']` ends up empty and the registry silently falls back to stock — except for categories where we *do* keep a synthetic entry, and there we end up emitting URLs that were never copied into `dist/` with the right casing.
+2. **Double/Won't-match encoding.** Filenames like `Portfolio_Glauber Matias Leadership Academy_High Performance Teams (01).webp` get `encodeURIComponent`'d per segment. That's correct for a browser request, but if the file on disk in `dist/images/...` keeps the literal spaces/parentheses, the static host still serves it; if any deploy step normalizes filenames (lowercasing, stripping parens) the encoded URL no longer matches. We have no guarantee of byte-for-byte filename preservation through `/public` in production.
+3. **No build-time failure signal.** Because we wrap everything in stock fallbacks, a missing asset never throws — it just 404s at runtime in the new tab.
 
-### 2. Migrar os dados existentes para campos independentes
+Net effect: preview = dev server reads disk directly, looks fine. Published build = glob/URL pair doesn't line up with what actually shipped → 404.
 
-Vou normalizar `src/data/projects.ts` para que todos os projetos tenham os campos explícitos acima preenchidos. Isso preserva os blocos em todas as páginas, sem depender de fallbacks automáticos.
+## Issue 1 — Fix: put the images inside the module graph
 
-Para o projeto atual:
+Stop globbing `/public`. Move the project image tree to `src/assets/projects/...` (mirroring the same `header / carousel / before-and-after / bento-grid/<category>` structure) and rewrite the discovery to:
 
-- `headerTitle`: `Leadership Academy`
-- `meaningfulTitle`: `High Performance Teams` ou o texto significativo que já estiver definido como subtítulo visual
-- `tldr`: texto resumido da página
-- `galleryLabel`: um texto próprio para o bento, sem reutilizar o título do header automaticamente
+```ts
+const FILES = import.meta.glob(
+  '/src/assets/projects/**/*.{webp,jpg,jpeg,png}',
+  { eager: true, query: '?url', import: 'default' }
+) as Record<string, string>;
+```
 
-Assim, se você alterar `headerTitle`, o bento não muda junto. Se alterar `galleryLabel`, o header não muda junto.
+Why this fixes prod:
 
-### 3. Ajustar a página de detalhe para renderizar blocos fixos
+- Every asset is now a real module. Rollup hashes it, copies it to `dist/assets/`, and the value Vite hands us is the **final, deploy-safe URL** — no hand-rolled `encodeURIComponent`, no `/public/` stripping, no filename drift.
+- Missing folders return `{}` deterministically in both dev and build, so the stock-fallback branch behaves identically in both environments.
+- Card images get the same treatment under `src/assets/project-cards/...`.
 
-Em `ProjectDetailPage.tsx`, vou remover a renderização condicional dos blocos editoriais principais. A página sempre renderizará:
+Keep the existing bucketing logic (`header`, `carousel`, `beforeAfter`, `bento[category]`, `card`) and the `BENTO_META` ordering — only the source of the URL changes. Stock Unsplash fallbacks stay untouched.
 
-- Header
-- Taglines
-- Título significativo
-- TL;DR
-- Metadados e big numbers
-- Context
-- Problem
-- Strategy
-- Trade-offs & Constraints
-- Texto final de conclusão
+Cleanup:
 
-Se algum campo estiver vazio em algum projeto futuro, o bloco continua existindo estruturalmente, mas sem puxar texto de outro lugar.
+- `Delete the ENTIRE \`/public/images `tree. Migrate` /public/images/about `and` /public/images/homepage `to` src/assets/images `as well to maintain structural consistency.`
+- Remove the `img()` + `keyToUrl()` helpers and the `projectPaths()` export if nothing else consumes them.
 
-### 4. Corrigir cards da landing e da página Work
+## Issue 2 — Fix: instant skeletons, non-blocking text
 
-Vou atualizar os cards para seguirem sua regra:
+Typography is already independent (fonts loaded via CSS, no JS gate). The work is purely on the image pipeline.
 
-- O título do card vem de `meaningfulTitle`.
-- O parágrafo do card vem de `tldr`.
-- O card não usa mais `description`, `cardDescription`, `challenge`, `solution` ou `title` como fallback editorial.
+1. **Reserve layout up front.** Every bento tile and carousel slide already has a fixed aspect-ratio container — confirm and standardize via `aspect-[w/h]` so the skeleton has real dimensions on first paint (no CLS, skeleton visible at t=0).
+2. **Harden `SmartImage`:**
+  - Render the `animate-pulse` skeleton as a sibling that fills the parent (parent must be `relative` — assert in the component or wrap defensively).
+  - Use `onLoad` AND `onError` to clear the skeleton (already done) and add a `useEffect` that flips `loaded` to true synchronously if `img.complete` is already truthy (covers cache hits where `onLoad` may not fire).
+  - Add `decoding="async"` by default; allow override.
+3. **Loading strategy:**
+  - Hero / first header image: `loading="eager"`, `fetchpriority="high"`, plus a `<link rel="preload" as="image">` in `index.html` for the LCP candidate per project page (or via a `<Helmet>`-style head update on `ProjectDetailPage`).
+  - Bento / carousel / below-the-fold: `loading="lazy"`, `decoding="async"`, `fetchpriority="low"`.
+4. **Bundle hygiene:** because images now flow through Rollup, they'll be content-hashed and long-cached automatically; no extra config needed. Optionally add `vite-imagetools` later for AVIF/WebP variants, but it is **not** required to ship this fix.
+5. **Typography guarantee:** no change. All `<img>` work is below the fold or wrapped in `SmartImage`, which never blocks render. Fonts continue to load via the existing CSS pipeline with `font-display: swap` (verify in `index.css`; flag if missing — independent fix).
 
-Assim, o conteúdo da página do projeto vira a fonte da verdade também para a landing e para `/work`.
+## Step-by-step execution order
 
-### 5. Remover defaults editoriais por categoria
+1. `Create mirrors for the ENTIRE image architecture in \`src/assets/images `(including projects, project-cards, homepage, and about). Move all existing files from` /public/images `to` src/assets/images`.`
+2. Rewrite the two `import.meta.glob` calls in `src/config/images.ts` to target `/src/assets/...` with `{ eager: true, query: '?url', import: 'default' }`. Remove `img()`, `keyToUrl()`, and the `/public/` strip logic. Keep bucketing, sorting, `BENTO_META`, and stock fallbacks intact.
+3. `Delete the now-empty \`/public/images `directory completely. Update all imports and glob logic across the entire app to target the new` src/assets/images `paths.`
+4. Harden `SmartImage` with the `img.complete` effect and default `decoding="async"`; assert the parent is `relative`.
+5. Audit `ProjectDetailPage`, `WorkCard`, `ProjectCard` consumers: confirm every image container has an aspect-ratio class so the skeleton has real dimensions; confirm eager/lazy attribution matches the above-the-fold rule.
+6. Add an LCP `<link rel="preload">` for the active project header image on `ProjectDetailPage` (route-level, via a small effect that injects/removes the tag).
+7. Verify in a production build: `bun run build && bun run preview`, open `/leadership-academy` in a fresh tab, confirm HPT + Equity tiles return 200s, and that skeletons appear before each image paints.
 
-Vou manter defaults seguros apenas para imagens/layout quando necessário. Para textos, vou remover defaults como:
+## Out of scope (call out, don't do now)
 
-- `Executive leadership, C-suite`
-- `Figma, Keynote, PowerPoint`
-- `Lead Designer`
-- `—`
-
-Esses valores devem vir do projeto, não da categoria.
-
-### 6. Validar no código
-
-Depois da implementação, vou verificar que:
-
-- `headerTitle`, `meaningfulTitle`, `tldr`, `context`, `problem`, `strategy`, `tradeoffs` e `closingParagraph` não usam fallbacks entre si.
-- O bento grid não usa mais `project.title` como label padrão editorial.
-- Os cards usam apenas `meaningfulTitle` e `tldr` para conteúdo textual principal.
-- Todos os blocos principais da página continuam renderizados por padrão.
-
-## Resultado esperado
-
-Editar o header para `Leadership Academy` não poderá mais alterar o bento, card, categoria, TL;DR ou qualquer outro bloco. Cada texto terá uma fonte independente, e o único conteúdo intencionalmente repetido entre página e cards será o TL;DR, junto com o título significativo conforme solicitado.
+- AVIF/WebP responsive variants via `vite-imagetools`.
+- A CDN image transformer.
+- Refactoring `aboutImages` / `siteImages` (those don't exhibit the bug).

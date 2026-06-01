@@ -1,4 +1,4 @@
-import { useState, type ImgHTMLAttributes } from 'react';
+import { useEffect, useRef, useState, type ImgHTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
 interface SmartImageProps extends ImgHTMLAttributes<HTMLImageElement> {
@@ -9,10 +9,8 @@ interface SmartImageProps extends ImgHTMLAttributes<HTMLImageElement> {
 /**
  * <img> wrapper that paints an instant skeleton (pulse) while the real
  * image decodes in the background, then fades it in. Designed for use
- * inside an absolutely-positioned parent (bento tiles, carousel slides).
- *
- * Typography is never blocked — the skeleton is purely visual and never
- * waits on font loading.
+ * inside a `relative` parent (bento tiles, carousel slides). Typography
+ * is never blocked — the skeleton is purely visual.
  */
 export const SmartImage = ({
   className,
@@ -20,9 +18,18 @@ export const SmartImage = ({
   onLoad,
   onError,
   style,
+  decoding = 'async',
   ...rest
 }: SmartImageProps) => {
   const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement | null>(null);
+
+  // Cache hits don't always fire onLoad — flip immediately if the
+  // underlying <img> is already complete on mount.
+  useEffect(() => {
+    const el = imgRef.current;
+    if (el && el.complete && el.naturalWidth > 0) setLoaded(true);
+  }, []);
 
   return (
     <>
@@ -37,12 +44,13 @@ export const SmartImage = ({
       )}
       <img
         {...rest}
+        ref={imgRef}
+        decoding={decoding}
         onLoad={(e) => {
           setLoaded(true);
           onLoad?.(e);
         }}
         onError={(e) => {
-          // Hide the skeleton even on error so the alt/empty box shows.
           setLoaded(true);
           onError?.(e);
         }}
