@@ -129,6 +129,7 @@ const Lightbox = ({
             <img
               src={current.src}
               alt={current.caption || ''}
+              decoding="async"
               className="w-full h-full object-cover"
             />
           </div>
