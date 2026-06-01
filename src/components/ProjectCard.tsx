@@ -12,6 +12,9 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ project, index }: ProjectCardProps) => {
   const { t } = useLanguage();
+  const cardImages = project.cardImages && project.cardImages.length > 0
+    ? project.cardImages
+    : project.images;
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const nextImage = (e: React.MouseEvent) => {
