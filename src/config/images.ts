@@ -1,14 +1,16 @@
 /**
- * Centralized image catalog — AUTO-DISCOVERED from /public/images/.
+ * Centralized image catalog — AUTO-DISCOVERED from src/assets/images/.
  *
  * Drop a `.webp` (or .jpg/.jpeg/.png) inside any of these folders and it
  * will be picked up at build time. NO manual array updates required.
+ * Because everything flows through Vite's module graph, the URLs are
+ * hashed, copied to dist/assets, and guaranteed to work in production.
  *
- *   public/images/project-cards/<project-id>/
- *   public/images/projects/<project-id>/header/
- *   public/images/projects/<project-id>/before-and-after/
- *   public/images/projects/<project-id>/carousel/
- *   public/images/projects/<project-id>/bento-grid/<category>/
+ *   src/assets/images/project-cards/<project-id>/
+ *   src/assets/images/projects/<project-id>/header/
+ *   src/assets/images/projects/<project-id>/before-and-after/
+ *   src/assets/images/projects/<project-id>/carousel/
+ *   src/assets/images/projects/<project-id>/bento-grid/<category>/
  *
  * When a folder is empty, the STOCK fallbacks defined below are used so
  * the UI never breaks.
@@ -22,10 +24,27 @@ import smileIcon from '@/assets/smile-icon.png';
 import gradientBg from '@/assets/gradient-bg.png';
 
 // ────────────────────────────────────────────────────────────────────────────
-// Path helper — encodes each segment so spaces/brackets survive at runtime.
+// AUTO-DISCOVERY — Vite glob over src/assets/images
 // ────────────────────────────────────────────────────────────────────────────
-const img = (...segments: string[]) =>
-  '/' + ['images', ...segments].map(encodeURIComponent).join('/');
+// Eager + ?url means each file is registered as a module, hashed by Rollup,
+// and the value Vite hands back is the final deploy-safe URL.
+const PROJECT_FILES = import.meta.glob(
+  '/src/assets/images/projects/**/*.{webp,jpg,jpeg,png,JPG,JPEG,PNG,WEBP}',
+  { eager: true, query: '?url', import: 'default' },
+) as Record<string, string>;
+
+const CARD_FILES = import.meta.glob(
+  '/src/assets/images/project-cards/**/*.{webp,jpg,jpeg,png,JPG,JPEG,PNG,WEBP}',
+  { eager: true, query: '?url', import: 'default' },
+) as Record<string, string>;
+
+const ABOUT_FILES = import.meta.glob(
+  '/src/assets/images/about/*.{webp,jpg,jpeg,png,JPG,JPEG,PNG,WEBP}',
+  { eager: true, query: '?url', import: 'default' },
+) as Record<string, string>;
+
+const aboutUrl = (file: string): string =>
+  ABOUT_FILES[`/src/assets/images/about/${file}`] ?? '';
 
 // ────────────────────────────────────────────────────────────────────────────
 // Site-wide images
@@ -39,47 +58,20 @@ export const siteImages = {
 
 export const aboutImages = {
   beyondWork: [
-    img('about', '01.jpeg'), img('about', '02.jpeg'), img('about', '03.jpeg'),
-    img('about', '04.jpg'),  img('about', '05.jpeg'), img('about', '06.jpeg'),
-    img('about', '07.jpeg'), img('about', '08.jpg'),  img('about', '09.jpg'),
-    img('about', '10.jpeg'),
+    aboutUrl('01.jpeg'), aboutUrl('02.jpeg'), aboutUrl('03.jpeg'),
+    aboutUrl('04.jpg'),  aboutUrl('05.jpeg'), aboutUrl('06.jpeg'),
+    aboutUrl('07.jpeg'), aboutUrl('08.jpg'),  aboutUrl('09.jpg'),
+    aboutUrl('10.jpeg'),
   ] as const,
   funFacts: {
-    japaneseFood:      img('about', 'japanese-food.png'),
-    taylorSwift:       img('about', 'taylor-swift.png'),
-    fernandoDeNoronha: img('about', 'fernando-de-noronha.jpg'),
-    theOffice:         img('about', 'the-office.png'),
-    whiteChicks:       img('about', 'white-chicks.jpg'),
-    openWaterSwimming: img('about', 'open-water-swimming.jpg'),
+    japaneseFood:      aboutUrl('japanese-food.png'),
+    taylorSwift:       aboutUrl('taylor-swift.png'),
+    fernandoDeNoronha: aboutUrl('fernando-de-noronha.jpg'),
+    theOffice:         aboutUrl('the-office.png'),
+    whiteChicks:       aboutUrl('white-chicks.jpg'),
+    openWaterSwimming: aboutUrl('open-water-swimming.jpg'),
   } as const,
 } as const;
-
-// ────────────────────────────────────────────────────────────────────────────
-// AUTO-DISCOVERY — Vite glob over /public/images/projects + /project-cards
-// ────────────────────────────────────────────────────────────────────────────
-// We use eager glob with `?url` so Vite resolves real served URLs in both
-// dev and build. The map keys are absolute project paths like
-//   /public/images/projects/<id>/bento-grid/<cat>/<file>.webp
-// We only need the keys to bucket files by folder; the values are the
-// runtime URLs to feed to <img src>.
-// We only need the keys; we derive the served URL by stripping `/public`.
-// Using `query: '?url'` is intentionally avoided here because Vite warns
-// when /public assets are imported as modules. Eager glob with no query
-// still gives us the key list, which is all we need.
-const PROJECT_FILES = import.meta.glob(
-  '/public/images/projects/**/*.{webp,jpg,jpeg,png,JPG,JPEG,PNG,WEBP}',
-  { eager: true },
-) as Record<string, unknown>;
-
-const CARD_FILES = import.meta.glob(
-  '/public/images/project-cards/**/*.{webp,jpg,jpeg,png,JPG,JPEG,PNG,WEBP}',
-  { eager: true },
-) as Record<string, unknown>;
-
-// Fallback: derive a served URL from the glob key (strip leading /public).
-const keyToUrl = (key: string) =>
-  // /public/images/foo.webp → /images/foo.webp ; segments are already encoded-safe (no spaces) at the path level we glob.
-  '/' + key.replace(/^\/public\//, '').split('/').map(encodeURIComponent).join('/');
 
 // Natural sort so "02" comes before "10".
 const naturalSort = (a: string, b: string) =>
@@ -97,49 +89,71 @@ const makeBucket = (): Bucket => ({
   header: [], carousel: [], beforeAfter: [], bento: {}, card: [],
 });
 
+// Pair each file with its key so we can sort by source filename, then keep URLs.
+const sortedByKey = (entries: Array<[string, string]>) =>
+  entries
+    .sort(([a], [b]) => naturalSort(a, b))
+    .map(([, url]) => url);
+
 const buckets: Record<string, Bucket> = {};
+// Temporary holders so we can sort by source filename, not by hashed URL.
+const tmp: Record<string, {
+  header: Array<[string, string]>;
+  carousel: Array<[string, string]>;
+  beforeAfter: Array<[string, string]>;
+  bento: Record<string, Array<[string, string]>>;
+  card: Array<[string, string]>;
+}> = {};
 
-for (const key of Object.keys(PROJECT_FILES)) {
-  // key example: /public/images/projects/leadership-academy/bento-grid/equity/foo.webp
-  const path = key.replace(/^\/public/, '');
-  const parts = path.split('/').filter(Boolean); // ['images','projects',id,folder,...]
-  if (parts[0] !== 'images' || parts[1] !== 'projects') continue;
-  const id = parts[2];
-  const folder = parts[3];
+const ensureTmp = (id: string) =>
+  (tmp[id] ||= { header: [], carousel: [], beforeAfter: [], bento: {}, card: [] });
+
+for (const [key, url] of Object.entries(PROJECT_FILES)) {
+  // /src/assets/images/projects/<id>/<folder>/...
+  const parts = key.split('/').filter(Boolean);
+  // ['src','assets','images','projects',id,folder,...]
+  if (parts[2] !== 'images' || parts[3] !== 'projects') continue;
+  const id = parts[4];
+  const folder = parts[5];
   if (!id || !folder) continue;
-  const b = (buckets[id] ||= makeBucket());
-  const served = keyToUrl(key);
+  const t = ensureTmp(id);
+  const filename = parts[parts.length - 1];
 
-  if (folder === 'header') b.header.push(served);
-  else if (folder === 'carousel') b.carousel.push(served);
-  else if (folder === 'before-and-after') b.beforeAfter.push(served);
-  else if (folder === 'bento-grid' && parts.length >= 6) {
-    const category = parts[4];
-    (b.bento[category] ||= []).push(served);
+  if (folder === 'header') t.header.push([filename, url]);
+  else if (folder === 'carousel') t.carousel.push([filename, url]);
+  else if (folder === 'before-and-after') t.beforeAfter.push([filename, url]);
+  else if (folder === 'bento-grid' && parts.length >= 8) {
+    const category = parts[6];
+    (t.bento[category] ||= []).push([filename, url]);
   }
 }
 
-for (const key of Object.keys(CARD_FILES)) {
-  const path = key.replace(/^\/public/, '');
-  const parts = path.split('/').filter(Boolean); // ['images','project-cards',id,...]
-  if (parts[0] !== 'images' || parts[1] !== 'project-cards') continue;
-  const id = parts[2];
+for (const [key, url] of Object.entries(CARD_FILES)) {
+  const parts = key.split('/').filter(Boolean);
+  // ['src','assets','images','project-cards',id,...]
+  if (parts[2] !== 'images' || parts[3] !== 'project-cards') continue;
+  const id = parts[4];
   if (!id) continue;
-  const b = (buckets[id] ||= makeBucket());
-  b.card.push(keyToUrl(key));
+  const t = ensureTmp(id);
+  const filename = parts[parts.length - 1];
+  t.card.push([filename, url]);
 }
 
-// Sort every bucket array deterministically.
-for (const b of Object.values(buckets)) {
-  b.header.sort(naturalSort);
-  b.carousel.sort(naturalSort);
-  b.beforeAfter.sort(naturalSort);
-  b.card.sort(naturalSort);
-  for (const k of Object.keys(b.bento)) b.bento[k].sort(naturalSort);
+// Materialize sorted buckets.
+for (const [id, t] of Object.entries(tmp)) {
+  const b = makeBucket();
+  b.header = sortedByKey(t.header);
+  b.carousel = sortedByKey(t.carousel);
+  b.beforeAfter = sortedByKey(t.beforeAfter);
+  b.card = sortedByKey(t.card);
+  for (const [cat, list] of Object.entries(t.bento)) {
+    b.bento[cat] = sortedByKey(list);
+  }
+  buckets[id] = b;
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// STOCK fallbacks — used wherever a /public/images/ folder is empty.
+// STOCK fallbacks — used wherever a folder is empty.
 // ────────────────────────────────────────────────────────────────────────────
 const STOCK = {
   exec1: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop',
@@ -185,19 +199,8 @@ export interface ProjectImageEntry {
   }[];
 }
 
-export const projectPaths = (projectId: string) => ({
-  card:        (file: string) => img('project-cards', projectId, file),
-  header:      (file: string) => img('projects', projectId, 'header', file),
-  beforeAfter: (file: string) => img('projects', projectId, 'before-and-after', file),
-  carousel:    (file: string) => img('projects', projectId, 'carousel', file),
-  bento:       (category: string, file: string) =>
-    img('projects', projectId, 'bento-grid', category, file),
-});
-
 // ────────────────────────────────────────────────────────────────────────────
 // Per-project bento category metadata — controls label + ordering.
-// Categories not listed here still render (auto-discovered) with a
-// prettified label derived from the folder name.
 // ────────────────────────────────────────────────────────────────────────────
 const BENTO_META: Record<string, Array<{ id: string; label: string }>> = {
   'leadership-academy': [
@@ -264,9 +267,6 @@ function buildEntry(id: string): ProjectImageEntry {
     ? { before: b.beforeAfter[0], after: b.beforeAfter[1] }
     : { before: STOCK.ba_before, after: STOCK.ba_after };
 
-  // Build bento galleries from discovered folders; only include categories
-  // that actually have files. Order/label via BENTO_META when available;
-  // unknown categories are appended with a prettified label.
   const meta = BENTO_META[id] ?? [];
   const seen = new Set<string>();
   const galleries: NonNullable<ProjectImageEntry['bentoGalleries']> = [];
@@ -276,7 +276,6 @@ function buildEntry(id: string): ProjectImageEntry {
     if (files && files.length > 0) {
       galleries.push({ id: catId, label, images: files.map((src) => ({ src })) });
     } else if (id === 'leadership-academy') {
-      // Keep STOCK fallback for the LA categories until real files exist.
       const stub = STOCK_BENTO_FALLBACK.find((g) => g.id === catId);
       if (stub) galleries.push(stub);
     }
