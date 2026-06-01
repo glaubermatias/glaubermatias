@@ -93,7 +93,7 @@ const _projectsRaw: ProjectData[] = [
     bentoGalleries: projectImages['leadership-academy'].bentoGalleries,
     images: projectImages['leadership-academy'].images,
     cardImages: projectImages['leadership-academy'].cardImages,
-    after: projectImages['leadership-academy'].beforeAfter,
+    beforeAfter: projectImages['leadership-academy'].beforeAfter,
     year: '2025',
     client: 'QuintoAndar',
     featured: true,
