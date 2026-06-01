@@ -1,78 +1,67 @@
-# Plan: Fix production 404s and slow image UX
+# Cleanup & Reorganize `/src/assets/`
 
-## Issue 1 — Diagnosis: why prod 404s, but preview works
+## Current mess (verified)
 
-The current `src/config/images.ts` uses:
+Stray duplicates at the root of `src/assets/`:
+- `src/assets/about/` — 16 files (10 numbered + 6 named fun facts)
+- `src/assets/beyond-work/` — same 10 numbered files
+- `src/assets/fun-facts/` — same 6 named files
 
-```ts
-import.meta.glob('/public/images/projects/**/*.{webp,jpg,...}', { eager: true })
+Inside `src/assets/images/about/` everything is also flattened into one folder (16 files mixed together). There are **no** `beyond-work/` or `fun-facts/` subfolders yet, and **no** `src/assets/images/project-cards/` directory exists at all — card images are currently being filled in by stock fallbacks via `STOCK_CARDS`.
+
+Only `src/config/images.ts` references these asset paths (via `import.meta.glob`). `AboutPage.tsx` consumes them through the typed `aboutImages` export, and project cards flow through `projectImages[id].cardImages`. So all path changes are contained to `images.ts`.
+
+## Target structure (single source of truth)
+
+```text
+src/assets/images/
+├── about/
+│   ├── beyond-work/        ← 10 numbered photos (01–10)
+│   └── fun-facts/          ← 6 named photos
+├── project-cards/
+│   └── <project-id>/       ← one folder per project (15 total)
+└── projects/
+    └── <project-id>/{header,carousel,before-and-after,bento-grid}/
 ```
 
-and then derives runtime URLs by hand:
+One folder per concept. Homepage and `/work` both read `projectImages[id].cardImages`, which globs `src/assets/images/project-cards/<id>/` — so they automatically share the same source.
 
-```ts
-'/' + key.replace(/^\/public\//, '').split('/').map(encodeURIComponent).join('/')
-```
+## Steps
 
-Three things conspire to break this in the published build:
+1. **Move `about/` images into the proper subfolders**
+   - Move `src/assets/images/about/{01..10}.{jpeg,jpg}` → `src/assets/images/about/beyond-work/`
+   - Move the 6 named files (`japanese-food.png`, `taylor-swift.png`, `fernando-de-noronha.jpg`, `the-office.png`, `white-chicks.jpg`, `open-water-swimming.jpg`) → `src/assets/images/about/fun-facts/`
 
-1. `**/public` is not part of Vite's module graph.** Globbing into `/public` is explicitly discouraged by Vite. In dev the filesystem scan happens to work, so the preview iframe is fine. In the production build the glob can return an **empty record** (or a partial one, depending on Vite/Rollup version), so `buckets[id].bento['high-performance-teams']` ends up empty and the registry silently falls back to stock — except for categories where we *do* keep a synthetic entry, and there we end up emitting URLs that were never copied into `dist/` with the right casing.
-2. **Double/Won't-match encoding.** Filenames like `Portfolio_Glauber Matias Leadership Academy_High Performance Teams (01).webp` get `encodeURIComponent`'d per segment. That's correct for a browser request, but if the file on disk in `dist/images/...` keeps the literal spaces/parentheses, the static host still serves it; if any deploy step normalizes filenames (lowercasing, stripping parens) the encoded URL no longer matches. We have no guarantee of byte-for-byte filename preservation through `/public` in production.
-3. **No build-time failure signal.** Because we wrap everything in stock fallbacks, a missing asset never throws — it just 404s at runtime in the new tab.
+2. **Delete stray duplicate folders** at the root of `src/assets/`:
+   - `src/assets/about/`
+   - `src/assets/beyond-work/`
+   - `src/assets/fun-facts/`
 
-Net effect: preview = dev server reads disk directly, looks fine. Published build = glob/URL pair doesn't line up with what actually shipped → 404.
+3. **Create the 15 empty `project-cards/<id>/` folders** (with `.gitkeep`) so they're ready for uploads and the glob has a stable shape:
+   `aldi-case-study, all-hands, booklet, brilliant-youth, institutional-deck, investor-deck, leadership-academy, newsletter, ny-trip-itinerary, summit, tech-conferences, tech-talks, template-library, uberall-dashboard` (+ any 15th id confirmed against `src/data/projects.ts`).
 
-## Issue 1 — Fix: put the images inside the module graph
+4. **Update `src/config/images.ts`**
+   - Replace the flat `aboutUrl(file)` helper with two narrower globs:
+     - `BEYOND_WORK_FILES` → `/src/assets/images/about/beyond-work/*`
+     - `FUN_FACTS_FILES`   → `/src/assets/images/about/fun-facts/*`
+   - Rebuild `aboutImages.beyondWork` as a naturally-sorted array of `BEYOND_WORK_FILES` URLs (no hand-listed filenames).
+   - Rebuild `aboutImages.funFacts` by looking up the six known filenames in `FUN_FACTS_FILES`.
+   - `CARD_FILES` glob already points to `/src/assets/images/project-cards/**/*`; with the new folders present it just works. Remove `STOCK_CARDS` fallback usage from `buildEntry` so empty card folders fall through to the carousel images (matching the existing `cardImages || images` pattern in `ProjectCard.tsx`), or keep stock as a last-resort fallback — confirm preference (default: keep stock fallback to avoid blank cards during the transition).
 
-Stop globbing `/public`. Move the project image tree to `src/assets/projects/...` (mirroring the same `header / carousel / before-and-after / bento-grid/<category>` structure) and rewrite the discovery to:
+5. **No other component edits required.** `AboutPage.tsx`, `ProjectCard.tsx`, `WorkCard.tsx`, and `WorkSection.tsx` already read through `aboutImages` / `projectImages` — they pick up the new structure automatically.
 
-```ts
-const FILES = import.meta.glob(
-  '/src/assets/projects/**/*.{webp,jpg,jpeg,png}',
-  { eager: true, query: '?url', import: 'default' }
-) as Record<string, string>;
-```
+6. **Verify**
+   - Typecheck passes.
+   - `/about` still renders all 10 Beyond Work photos and 6 fun facts.
+   - Homepage `WorkSection` and `/work` page show identical card images for each project (both sourced from `projectImages[id].cardImages`).
+   - Production build: confirm the new URLs are hashed under `dist/assets/` (proves the glob is part of the module graph and won't 404).
 
-Why this fixes prod:
+## Typography guarantee
 
-- Every asset is now a real module. Rollup hashes it, copies it to `dist/assets/`, and the value Vite hands us is the **final, deploy-safe URL** — no hand-rolled `encodeURIComponent`, no `/public/` stripping, no filename drift.
-- Missing folders return `{}` deterministically in both dev and build, so the stock-fallback branch behaves identically in both environments.
-- Card images get the same treatment under `src/assets/project-cards/...`.
+This is a pure file-move + glob-rewrite. No font loading, no Suspense boundary, no JS gating of text. Skeletons in `SmartImage` continue to be the only image-loading UI, and headings/body render immediately as before.
 
-Keep the existing bucketing logic (`header`, `carousel`, `beforeAfter`, `bento[category]`, `card`) and the `BENTO_META` ordering — only the source of the URL changes. Stock Unsplash fallbacks stay untouched.
+## Out of scope
 
-Cleanup:
-
-- `Delete the ENTIRE \`/public/images `tree. Migrate` /public/images/about `and` /public/images/homepage `to` src/assets/images `as well to maintain structural consistency.`
-- Remove the `img()` + `keyToUrl()` helpers and the `projectPaths()` export if nothing else consumes them.
-
-## Issue 2 — Fix: instant skeletons, non-blocking text
-
-Typography is already independent (fonts loaded via CSS, no JS gate). The work is purely on the image pipeline.
-
-1. **Reserve layout up front.** Every bento tile and carousel slide already has a fixed aspect-ratio container — confirm and standardize via `aspect-[w/h]` so the skeleton has real dimensions on first paint (no CLS, skeleton visible at t=0).
-2. **Harden `SmartImage`:**
-  - Render the `animate-pulse` skeleton as a sibling that fills the parent (parent must be `relative` — assert in the component or wrap defensively).
-  - Use `onLoad` AND `onError` to clear the skeleton (already done) and add a `useEffect` that flips `loaded` to true synchronously if `img.complete` is already truthy (covers cache hits where `onLoad` may not fire).
-  - Add `decoding="async"` by default; allow override.
-3. **Loading strategy:**
-  - Hero / first header image: `loading="eager"`, `fetchpriority="high"`, plus a `<link rel="preload" as="image">` in `index.html` for the LCP candidate per project page (or via a `<Helmet>`-style head update on `ProjectDetailPage`).
-  - Bento / carousel / below-the-fold: `loading="lazy"`, `decoding="async"`, `fetchpriority="low"`.
-4. **Bundle hygiene:** because images now flow through Rollup, they'll be content-hashed and long-cached automatically; no extra config needed. Optionally add `vite-imagetools` later for AVIF/WebP variants, but it is **not** required to ship this fix.
-5. **Typography guarantee:** no change. All `<img>` work is below the fold or wrapped in `SmartImage`, which never blocks render. Fonts continue to load via the existing CSS pipeline with `font-display: swap` (verify in `index.css`; flag if missing — independent fix).
-
-## Step-by-step execution order
-
-1. `Create mirrors for the ENTIRE image architecture in \`src/assets/images `(including projects, project-cards, homepage, and about). Move all existing files from` /public/images `to` src/assets/images`.`
-2. Rewrite the two `import.meta.glob` calls in `src/config/images.ts` to target `/src/assets/...` with `{ eager: true, query: '?url', import: 'default' }`. Remove `img()`, `keyToUrl()`, and the `/public/` strip logic. Keep bucketing, sorting, `BENTO_META`, and stock fallbacks intact.
-3. `Delete the now-empty \`/public/images `directory completely. Update all imports and glob logic across the entire app to target the new` src/assets/images `paths.`
-4. Harden `SmartImage` with the `img.complete` effect and default `decoding="async"`; assert the parent is `relative`.
-5. Audit `ProjectDetailPage`, `WorkCard`, `ProjectCard` consumers: confirm every image container has an aspect-ratio class so the skeleton has real dimensions; confirm eager/lazy attribution matches the above-the-fold rule.
-6. Add an LCP `<link rel="preload">` for the active project header image on `ProjectDetailPage` (route-level, via a small effect that injects/removes the tag).
-7. Verify in a production build: `bun run build && bun run preview`, open `/leadership-academy` in a fresh tab, confirm HPT + Equity tiles return 200s, and that skeletons appear before each image paints.
-
-## Out of scope (call out, don't do now)
-
-- AVIF/WebP responsive variants via `vite-imagetools`.
-- A CDN image transformer.
-- Refactoring `aboutImages` / `siteImages` (those don't exhibit the bug).
+- Re-uploading actual card artwork (folders will be empty until the user drops files in).
+- Touching `glauber-*` root assets or `smile-icon.png` — those stay where they are.
+- AVIF variants / `vite-imagetools` / CDN transforms.
