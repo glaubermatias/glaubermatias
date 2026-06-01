@@ -55,6 +55,8 @@ const CTASection = () => {
               <img
                 src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop"
                 alt="Team collaboration"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover"
               />
             </div>
