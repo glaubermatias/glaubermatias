@@ -176,7 +176,7 @@ const BeyondWorkGallery = () => {
               onClick={() => setActive(idx)}
               className="relative overflow-hidden rounded-md bg-muted ring-1 ring-foreground/10 hover:ring-foreground/40 transition w-full h-full min-h-0 aspect-[3/4] md:aspect-auto"
             >
-              <img src={src} alt={`Thumbnail ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover" />
+              <img src={src} alt={`Thumbnail ${idx + 1}`} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
             </button>
           ))}
       </div>
