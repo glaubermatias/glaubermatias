@@ -157,20 +157,13 @@ const LA_CAROUSEL = [
   '06.webp','07.webp','08.webp','09.webp','10.webp',
 ].map(LA.carousel);
 
-const LA_HPT = [
-  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (01).webp',
-  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (02).webp',
-  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (03).webp',
-  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (04).webp',
-  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (05).webp',
-  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (06).webp',
-  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (07).webp',
-  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (08).webp',
-  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (09).webp',
-  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (10).webp',
-  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (11).webp',
-  '[Portfolio_Glauber Matias] Leadership Academy_High Performance Teams (12).webp',
-].map((f) => LA.bento('high-performance-teams', f));
+const LA_HPT = Array.from({ length: 12 }, (_, i) => {
+  const n = String(i + 1).padStart(2, '0');
+  return LA.bento(
+    'high-performance-teams',
+    `Portfolio_Glauber Matias Leadership Academy_High Performance Teams (${n}).webp`,
+  );
+});
 
 const LA_AI = [
   'Portfolio_Glauber-Matias_-Leadership-Academy_AI-_1_.webp',
