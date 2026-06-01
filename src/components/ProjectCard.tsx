@@ -20,13 +20,13 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
   const nextImage = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setCurrentImageIndex((prev) => (prev + 1) % project.images.length);
+    setCurrentImageIndex((prev) => (prev + 1) % cardImages.length);
   };
 
   const prevImage = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setCurrentImageIndex((prev) => (prev - 1 + project.images.length) % project.images.length);
+    setCurrentImageIndex((prev) => (prev - 1 + cardImages.length) % cardImages.length);
   };
 
   const getCategoryLabel = (category: string) => {
@@ -55,7 +55,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl select-none">
               <motion.img
                 key={currentImageIndex}
-                src={project.images[currentImageIndex]}
+                src={cardImages[currentImageIndex]}
                 alt={`${project.title} - Image ${currentImageIndex + 1}`}
                 className="w-full h-full object-cover pointer-events-none"
                 initial={{ opacity: 0 }}
@@ -64,7 +64,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
                 draggable={false}
               />
 
-              {project.images.length > 1 && (
+              {cardImages.length > 1 && (
                 <>
                   <button
                     onClick={prevImage}
@@ -82,7 +82,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
                   </button>
 
                   <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-                    {project.images.map((_, idx) => (
+                    {cardImages.map((_, idx) => (
                       <div
                         key={idx}
                         className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
