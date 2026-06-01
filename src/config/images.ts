@@ -62,19 +62,24 @@ export const aboutImages = {
 //   /public/images/projects/<id>/bento-grid/<cat>/<file>.webp
 // We only need the keys to bucket files by folder; the values are the
 // runtime URLs to feed to <img src>.
+// We only need the keys; we derive the served URL by stripping `/public`.
+// Using `query: '?url'` is intentionally avoided here because Vite warns
+// when /public assets are imported as modules. Eager glob with no query
+// still gives us the key list, which is all we need.
 const PROJECT_FILES = import.meta.glob(
   '/public/images/projects/**/*.{webp,jpg,jpeg,png,JPG,JPEG,PNG,WEBP}',
-  { eager: true, query: '?url', import: 'default' },
-) as Record<string, string>;
+  { eager: true },
+) as Record<string, unknown>;
 
 const CARD_FILES = import.meta.glob(
   '/public/images/project-cards/**/*.{webp,jpg,jpeg,png,JPG,JPEG,PNG,WEBP}',
-  { eager: true, query: '?url', import: 'default' },
-) as Record<string, string>;
+  { eager: true },
+) as Record<string, unknown>;
 
 // Fallback: derive a served URL from the glob key (strip leading /public).
-const keyToUrl = (key: string, resolved?: string) =>
-  resolved && resolved.length > 0 ? resolved : key.replace(/^\/public/, '');
+const keyToUrl = (key: string) =>
+  // /public/images/foo.webp → /images/foo.webp ; segments are already encoded-safe (no spaces) at the path level we glob.
+  '/' + key.replace(/^\/public\//, '').split('/').map(encodeURIComponent).join('/');
 
 // Natural sort so "02" comes before "10".
 const naturalSort = (a: string, b: string) =>
