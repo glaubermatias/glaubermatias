@@ -44,6 +44,8 @@ const AboutSection = () => {
               <img
                 src={glauberPhoto}
                 alt="Glauber Matias"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover"
                 style={{ objectPosition: 'center 20%' }}
               />
