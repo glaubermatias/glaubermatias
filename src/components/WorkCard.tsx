@@ -11,6 +11,11 @@ interface WorkCardProps {
 }
 
 const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
+  // Cards use `cardImages` when provided (so empty /public/images/project-cards
+  // folders fall back to STOCK), otherwise use the project's main images.
+  const cardImages = project.cardImages && project.cardImages.length > 0
+    ? project.cardImages
+    : project.images;
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
