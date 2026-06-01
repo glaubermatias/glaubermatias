@@ -92,6 +92,8 @@ const _projectsRaw: ProjectData[] = [
     strategy: 'Instead of jumping straight into design software, I started by decoding the brief into a clear vision of the core message and the reason why the audience should care about it. After structuring the information hierarchy, I translated these abstract concepts into concrete visual assets, ensuring they matched the natural cadence of the speakers. This turned the presentation into a powerful stage tool rather than mere background decoration.',
     bentoGalleries: projectImages['leadership-academy'].bentoGalleries,
     images: projectImages['leadership-academy'].images,
+    cardImages: projectImages['leadership-academy'].cardImages,
+    beforeAfter: projectImages['leadership-academy'].beforeAfter,
     year: '2025',
     client: 'QuintoAndar',
     featured: true,
