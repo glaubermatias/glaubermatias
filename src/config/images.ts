@@ -1,4 +1,4 @@
-// Cache flush: 2026-06-02T01:20:00Z — purged ghost files with spaces from leadership-academy bento-grid.
+// Cache flush: 2026-06-02T02:00:00Z — removed artificial-intelligence bento category.
 /**
  * Centralized image catalog — AUTO-DISCOVERED from src/assets/images/.
  *
