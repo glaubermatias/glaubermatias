@@ -225,7 +225,6 @@ export interface ProjectImageEntry {
 const BENTO_META: Record<string, Array<{ id: string; label: string }>> = {
   "leadership-academy": [
     { id: "high-performance-teams", label: "High Performance Teams" },
-    { id: "artificial-intelligence", label: "Artificial Intelligence" },
     { id: "equity", label: "Equity" },
     { id: "hiring", label: "Hiring" },
   ],
