@@ -1,4 +1,4 @@
-// Cache flush: 2026-06-02T02:00:00Z — removed artificial-intelligence bento category.
+// Cache flush: 2026-06-02T03:00:00Z — universal stock bento fallback for empty projects.
 /**
  * Centralized image catalog — AUTO-DISCOVERED from src/assets/images/.
  *
@@ -305,6 +305,22 @@ function buildEntry(id: string): ProjectImageEntry {
       id: catId,
       label: prettify(catId),
       images: files.map((src) => ({ src })),
+    });
+  }
+
+  // Universal fallback: every project must surface at least one bento pill so
+  // the visual editor has selectable categories. When nothing was discovered,
+  // inject a generic placeholder gallery backed by stock imagery.
+  if (galleries.length === 0) {
+    galleries.push({
+      id: "placeholder-category",
+      label: "Placeholder Category",
+      images: [
+        { src: STOCK.bento_eq1 },
+        { src: STOCK.bento_eq2 },
+        { src: STOCK.bento_hr1 },
+        { src: STOCK.bento_hr2 },
+      ],
     });
   }
 
