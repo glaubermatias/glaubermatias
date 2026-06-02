@@ -1,3 +1,4 @@
+// Cache flush: 2026-06-02T00:00:00Z — force Vite to re-run import.meta.glob after GitHub filename rename.
 /**
  * Centralized image catalog — AUTO-DISCOVERED from src/assets/images/.
  *
