@@ -289,7 +289,17 @@ const EDITORIAL_PLACEHOLDERS = {
   strategy: 'Strategy placeholder: describe the narrative, design system, and production choices that guided the solution.',
   tradeoffs: 'Trade-offs placeholder: describe the constraints, compromises, and decisions that shaped the final direction.',
   closingParagraph: 'Closing placeholder: summarize the impact of the project and the final takeaway for the audience.',
+  role: 'Lead Presentation Designer',
+  duration: '3 weeks',
+  stakeholders: 'Cross-functional stakeholders and executive sponsors',
+  tools: 'Figma, Google Slides, Adobe Illustrator',
 };
+
+const PLACEHOLDER_BIG_NUMBERS: BigNumber[] = [
+  { value: '4.6/5', label: 'Audience satisfaction', description: 'Placeholder metric — edit to reflect actual impact.' },
+  { value: '120+', label: 'Slides delivered', description: 'Placeholder metric — edit to reflect actual scope.' },
+  { value: '3x', label: 'Faster turnaround', description: 'Placeholder metric — edit to reflect actual efficiency gain.' },
+];
 
 const makeProcessTiles = (p: ProjectData): ProcessImage[] => {
   const source = p.processImages && p.processImages.length > 0
