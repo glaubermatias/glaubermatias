@@ -1,4 +1,4 @@
-// Cache flush: 2026-06-02T02:00:00Z — removed artificial-intelligence bento category.
+// Cache flush: 2026-06-02T03:00:00Z — universal stock bento fallback for empty projects.
 /**
  * Centralized image catalog — AUTO-DISCOVERED from src/assets/images/.
  *
