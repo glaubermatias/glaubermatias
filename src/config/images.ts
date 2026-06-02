@@ -1,4 +1,4 @@
-// Cache flush: 2026-06-02T01:20:00Z — purged ghost files with spaces from leadership-academy bento-grid.
+// Cache flush: 2026-06-02T02:00:00Z — removed artificial-intelligence bento category.
 /**
  * Centralized image catalog — AUTO-DISCOVERED from src/assets/images/.
  *
@@ -225,7 +225,6 @@ export interface ProjectImageEntry {
 const BENTO_META: Record<string, Array<{ id: string; label: string }>> = {
   "leadership-academy": [
     { id: "high-performance-teams", label: "High Performance Teams" },
-    { id: "artificial-intelligence", label: "Artificial Intelligence" },
     { id: "equity", label: "Equity" },
     { id: "hiring", label: "Hiring" },
   ],

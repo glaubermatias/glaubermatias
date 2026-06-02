@@ -402,34 +402,53 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
       onMouseDown={(e) => startDrag(e.clientX)}
       onTouchStart={(e) => startDrag(e.touches[0].clientX)}
     >
-      <img
-        src={after}
-        alt="After"
-        loading="lazy"
-        decoding="async"
-        className="absolute inset-0 h-full w-full object-cover pointer-events-none"
-        draggable={false}
-      />
-      <img
-        src={before}
-        alt="Before"
-        loading="lazy"
-        decoding="async"
-        className="absolute inset-0 h-full w-full object-cover pointer-events-none"
+      {/* AFTER layer — clipped from the LEFT so it only shows the area not covered by Before.
+          The "After" pill lives inside this clipped wrapper, so sliding the handle all the
+          way to the right (pos = 100) clips this layer to zero width and hides the pill. */}
+      <div
+        className="absolute inset-0 overflow-hidden pointer-events-none"
+        style={{
+          clipPath: `inset(0 0 0 ${pos}%)`,
+          WebkitClipPath: `inset(0 0 0 ${pos}%)`,
+          transition: sharedTransition,
+        }}
+      >
+        <img
+          src={after}
+          alt="After"
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover"
+          draggable={false}
+        />
+        <span className="absolute top-4 right-4 z-10 font-sans text-[10px] tracking-[0.22em] uppercase text-white bg-black/55 backdrop-blur-sm rounded-full px-3 py-1 pointer-events-none">
+          After
+        </span>
+      </div>
+
+      {/* BEFORE layer — clipped from the RIGHT; the "Before" pill is inside, so dragging
+          the handle all the way to the left (pos = 0) hides this layer and its pill. */}
+      <div
+        className="absolute inset-0 overflow-hidden pointer-events-none"
         style={{
           clipPath: `inset(0 ${100 - pos}% 0 0)`,
           WebkitClipPath: `inset(0 ${100 - pos}% 0 0)`,
           transition: sharedTransition,
         }}
-        draggable={false}
-      />
+      >
+        <img
+          src={before}
+          alt="Before"
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover"
+          draggable={false}
+        />
+        <span className="absolute top-4 left-4 z-10 font-sans text-[10px] tracking-[0.22em] uppercase text-white bg-black/55 backdrop-blur-sm rounded-full px-3 py-1 pointer-events-none">
+          Before
+        </span>
+      </div>
 
-      <span className="absolute top-4 left-4 z-10 text-[10px] tracking-[0.22em] uppercase text-white bg-black/45 backdrop-blur-sm rounded px-2 py-1 pointer-events-none">
-        Before
-      </span>
-      <span className="absolute top-4 right-4 z-10 text-[10px] tracking-[0.22em] uppercase text-white bg-black/45 backdrop-blur-sm rounded px-2 py-1 pointer-events-none">
-        After
-      </span>
 
       <div
         className="absolute top-0 bottom-0 z-20"
