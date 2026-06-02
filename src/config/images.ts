@@ -1,4 +1,4 @@
-// Cache flush: 2026-06-02T00:00:00Z — force Vite to re-run import.meta.glob after GitHub filename rename.
+// Cache flush: 2026-06-02T01:20:00Z — purged ghost files with spaces from leadership-academy bento-grid.
 /**
  * Centralized image catalog — AUTO-DISCOVERED from src/assets/images/.
  *
