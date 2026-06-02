@@ -308,6 +308,22 @@ function buildEntry(id: string): ProjectImageEntry {
     });
   }
 
+  // Universal fallback: every project must surface at least one bento pill so
+  // the visual editor has selectable categories. When nothing was discovered,
+  // inject a generic placeholder gallery backed by stock imagery.
+  if (galleries.length === 0) {
+    galleries.push({
+      id: "placeholder-category",
+      label: "Placeholder Category",
+      images: [
+        { src: STOCK.bento_eq1 },
+        { src: STOCK.bento_eq2 },
+        { src: STOCK.bento_hr1 },
+        { src: STOCK.bento_hr2 },
+      ],
+    });
+  }
+
   const entry: ProjectImageEntry = {
     header,
     cardImages,
