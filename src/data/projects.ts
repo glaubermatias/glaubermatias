@@ -325,6 +325,11 @@ const normalizedProjects: ProjectData[] = _projectsRaw.map((p) => {
     strategy: p.strategy ?? EDITORIAL_PLACEHOLDERS.strategy,
     tradeoffs: p.tradeoffs ?? EDITORIAL_PLACEHOLDERS.tradeoffs,
     closingParagraph: p.closingParagraph ?? EDITORIAL_PLACEHOLDERS.closingParagraph,
+    role: p.role ?? EDITORIAL_PLACEHOLDERS.role,
+    duration: p.duration ?? EDITORIAL_PLACEHOLDERS.duration,
+    stakeholders: p.stakeholders ?? EDITORIAL_PLACEHOLDERS.stakeholders,
+    tools: p.tools ?? EDITORIAL_PLACEHOLDERS.tools,
+    bigNumbers: p.bigNumbers && p.bigNumbers.length > 0 ? p.bigNumbers : PLACEHOLDER_BIG_NUMBERS,
     bentoGalleries: p.bentoGalleries && p.bentoGalleries.length > 0
       ? p.bentoGalleries.map((gallery) => ({
         ...gallery,
