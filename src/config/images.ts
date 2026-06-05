@@ -71,7 +71,7 @@ export const aboutImages = {
     .sort(naturalSortKeys)
     .map(([, url]) => url),
   funFacts: {
-    japaneseFood: funFactUrl("japanese-food.png"),
+    japaneseFood: funFactUrl("japanese-food.jpeg"),
     taylorSwift: funFactUrl("taylor-swift.png"),
     fernandoDeNoronha: funFactUrl("fernando-de-noronha.jpg"),
     theOffice: funFactUrl("the-office.png"),
