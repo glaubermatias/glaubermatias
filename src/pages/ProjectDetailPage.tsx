@@ -421,7 +421,7 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
           className="absolute inset-0 h-full w-full object-cover"
           draggable={false}
         />
-        <span className="absolute top-4 right-4 z-10 font-sans text-[10px] tracking-[0.22em] uppercase text-white bg-black/55 backdrop-blur-sm rounded-full px-3 py-1 pointer-events-none">
+        <span className="absolute top-4 right-4 z-10 font-sans text-xs sm:text-sm font-medium tracking-[0.22em] uppercase text-white bg-black/70 backdrop-blur-md rounded-full px-4 py-2 ring-1 ring-white/25 shadow-lg pointer-events-none">
           After
         </span>
       </div>
@@ -442,9 +442,12 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
           loading="lazy"
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover"
+          style={{ filter: 'saturate(0.55) brightness(0.78) contrast(0.95)' }}
           draggable={false}
         />
-        <span className="absolute top-4 left-4 z-10 font-sans text-[10px] tracking-[0.22em] uppercase text-white bg-black/55 backdrop-blur-sm rounded-full px-3 py-1 pointer-events-none">
+        {/* Insulfilm tint — adds contrast between Before and After sides */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/15 to-black/30 pointer-events-none" />
+        <span className="absolute top-4 left-4 z-10 font-sans text-xs sm:text-sm font-medium tracking-[0.22em] uppercase text-white bg-black/70 backdrop-blur-md rounded-full px-4 py-2 ring-1 ring-white/25 shadow-lg pointer-events-none">
           Before
         </span>
       </div>
