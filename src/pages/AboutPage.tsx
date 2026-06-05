@@ -50,7 +50,7 @@ const sections = [
 const funFacts = [
   {
     tag: 'FAVORITE FOOD',
-    title: 'Japanese',
+    title: 'Japanese food',
     desc: 'I just love eating sushi, sashimi, temaki... you name it.',
     image: japaneseFood,
   },
