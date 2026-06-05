@@ -51,16 +51,7 @@ const FUN_FACTS_FILES = import.meta.glob("/src/assets/images/about/fun-facts/*.{
   import: "default",
 }) as Record<string, string>;
 
-// Resolve by basename so swapping extensions (.png → .jpeg/.jpg/.webp) just works.
-const funFactUrl = (basename: string): string => {
-  const want = basename.toLowerCase().replace(/\.(webp|jpe?g|png)$/i, "");
-  for (const [key, url] of Object.entries(FUN_FACTS_FILES)) {
-    const file = key.split("/").pop() ?? "";
-    const stem = file.toLowerCase().replace(/\.(webp|jpe?g|png)$/i, "");
-    if (stem === want) return url;
-  }
-  return "";
-};
+const funFactUrl = (file: string): string => FUN_FACTS_FILES[`/src/assets/images/about/fun-facts/${file}`] ?? "";
 
 // ────────────────────────────────────────────────────────────────────────────
 // Site-wide images
