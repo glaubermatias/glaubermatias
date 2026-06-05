@@ -51,7 +51,18 @@ const FUN_FACTS_FILES = import.meta.glob("/src/assets/images/about/fun-facts/*.{
   import: "default",
 }) as Record<string, string>;
 
-const funFactUrl = (file: string): string => FUN_FACTS_FILES[`/src/assets/images/about/fun-facts/${file}`] ?? "";
+const funFactUrl = (file: string): string => {
+  const exact = FUN_FACTS_FILES[`/src/assets/images/about/fun-facts/${file}`];
+  if (exact) return exact;
+  // Fallback: resolve by basename across any valid extension so swapping
+  // .png → .jpeg (or similar) on disk doesn't require code changes.
+  const base = file.replace(/\.[^.]+$/, "").toLowerCase();
+  for (const [key, url] of Object.entries(FUN_FACTS_FILES)) {
+    const name = key.split("/").pop() ?? "";
+    if (name.replace(/\.[^.]+$/, "").toLowerCase() === base) return url;
+  }
+  return "";
+};
 
 // ────────────────────────────────────────────────────────────────────────────
 // Site-wide images
@@ -71,7 +82,7 @@ export const aboutImages = {
     .sort(naturalSortKeys)
     .map(([, url]) => url),
   funFacts: {
-    japaneseFood: funFactUrl("japanese-food.png"),
+    japaneseFood: funFactUrl("japanese-food.jpeg"),
     taylorSwift: funFactUrl("taylor-swift.png"),
     fernandoDeNoronha: funFactUrl("fernando-de-noronha.jpg"),
     theOffice: funFactUrl("the-office.png"),
