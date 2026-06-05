@@ -467,7 +467,7 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.25 }}
-              className="absolute top-1/2 -translate-y-[230%] left-1/2 -translate-x-1/2 z-30 pointer-events-none whitespace-nowrap rounded-full bg-foreground text-background text-[11px] tracking-[0.18em] uppercase px-3 py-1.5 shadow-lg"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-4 z-30 pointer-events-none whitespace-nowrap rounded-full bg-foreground text-background text-[11px] tracking-[0.18em] uppercase px-3 py-1.5 shadow-lg"
               role="status"
             >
               Drag to compare
