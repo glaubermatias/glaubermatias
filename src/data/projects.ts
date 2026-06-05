@@ -108,7 +108,7 @@ const _projectsRaw: ProjectData[] = [
     overview: 'Leadership Academy overview kept as legacy metadata only.',
     challenge: 'Legacy challenge kept only for archive compatibility.',
     solution: 'Legacy solution kept only for archive compatibility.',
-    closingParagraph: "The real win wasn't just making the slides look good; it was unlocking the full potential of these initiatives and making their messages clear and impactful. That's what great presentation design is about. By clearing the noise, I ensured the leadership team didn't have to guess their next step to keep moving forward. They knew it.",
+    closingParagraph: "The real win wasn't just making the slides look good. It was turning complex information into a clear message that leaders could act on. That's what great presentation design is about. In the end, the question was no longer “What do we do with this?” but “When do we start?”",
     results: ['Successfully deployed across 5 leadership cohorts', 'Increased participant engagement by 40%', 'Became the standard template for all leadership programs'],
   },
   {
