@@ -102,13 +102,13 @@ const _projectsRaw: ProjectData[] = [
     tradeoffs: 'No sugar coating: getting time on a global executive\'s calendar is no easy task. To keep asynchronous reviews moving, I prioritized the most complex slides right after every sync, giving the speakers more time to digest the most critical content. From time to time, I also had to balance my technical design recommendations with their personal preferences, pointing out visual risks but leaving the final decision to them. At the end of the day, my golden rule is that stage confidence outweighs design purity.',
     bigNumbers: [
       { value: '4.6/5', label: 'Audience satisfaction', description: 'Average NPS rating sustained across four editions.' },
-      { value: '~21%', label: 'Content clarity', description: 'Average share of open-ended feedback praising the content and its clear structure.' },
+      { value: '200+', label: 'Leadership feedback', description: 'Written responses praising the content and the clear visual structure.' },
       { value: '100+', label: 'Slide layouts', description: 'Reusable layouts shipped into the production system.' },
     ],
     overview: 'Leadership Academy overview kept as legacy metadata only.',
     challenge: 'Legacy challenge kept only for archive compatibility.',
     solution: 'Legacy solution kept only for archive compatibility.',
-    closingParagraph: 'The true value was unlocking the full potential of these strategic initiatives, making their messages clear and impactful. By stepping into the shoes of both the L&D team and the C-level speakers, I turned a potential bottleneck of heavy text into a clear path for action. When it comes down to it, great presentation design clears the noise so that the leaders don\'t have to guess their next step to keep moving forward. They know it.',
+    closingParagraph: "The real win wasn't just making the slides look good; it was unlocking the full potential of these initiatives and making their messages clear and impactful. That's what great presentation design is about. By clearing the noise, I ensured the leadership team didn't have to guess their next step to keep moving forward. They knew it.",
     results: ['Successfully deployed across 5 leadership cohorts', 'Increased participant engagement by 40%', 'Became the standard template for all leadership programs'],
   },
   {
