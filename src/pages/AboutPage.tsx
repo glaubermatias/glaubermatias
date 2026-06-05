@@ -88,16 +88,16 @@ const funFacts = [
 
 
 const beyondWorkPhotos: { src: string; caption: string }[] = [
-  { src: beyond01, caption: 'Sushi night — my favorite kind of evening.' },
-  { src: beyond02, caption: 'Open water swim, somewhere off the coast.' },
-  { src: beyond03, caption: 'Eras Tour — a night I will never forget.' },
-  { src: beyond04, caption: 'Sunday rewatch with the Dunphys.' },
-  { src: beyond05, caption: 'Wandering through a new city.' },
-  { src: beyond06, caption: 'Golden hour, no filter needed.' },
-  { src: beyond07, caption: 'Cooking experiments at home.' },
-  { src: beyond08, caption: 'Comfort movie picks, on repeat.' },
-  { src: beyond09, caption: 'Friends, food and long conversations.' },
-  { src: beyond10, caption: 'Fernando de Noronha — pure paradise.' },
+  { src: beyond01, caption: 'A good night out (Havana, 2025)' },
+  { src: beyond02, caption: 'Open water swimming (Brazil, 2026)' },
+  { src: beyond03, caption: 'Concerts (Bad Bunny Tour, 2026)' },
+  { src: beyond04, caption: 'My family (Brazil, 2025)' },
+  { src: beyond05, caption: 'Exploring new places (New York, 2024)' },
+  { src: beyond06, caption: 'Hiking (Aiuruoca, 2023)' },
+  { src: beyond07, caption: 'New experiences (Ice Bar, 2021)' },
+  { src: beyond08, caption: 'Laughing with friends (São Paulo, 2025)' },
+  { src: beyond09, caption: 'Happy hour (São Paulo, 2025)' },
+  { src: beyond10, caption: 'Pool and nature (Morro de São Paulo, 2023)' },
 ];
 
 const SideMenu = () => (
