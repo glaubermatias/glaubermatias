@@ -14,7 +14,7 @@ interface ProjectGridCardProps {
  * 16:9 image, glass pills (tools + category) on the top-left of the image,
  * and three text lines below: short title, meaningful title, year • company.
  */
-const ProjectGridCard = ({ project, index = 0 }: ProjectGridCardProps) => {
+const ProjectGridCard = ({ project, index = 0, radiusClass = 'rounded-xl' }: ProjectGridCardProps) => {
   const image =
     (project.cardImages && project.cardImages[0]) || project.images?.[0];
 
@@ -33,7 +33,7 @@ const ProjectGridCard = ({ project, index = 0 }: ProjectGridCardProps) => {
       className="group"
     >
       <Link to={`/${project.id}`} className="block">
-        <div className="relative w-full aspect-video overflow-hidden rounded-xl bg-muted">
+        <div className={`relative w-full aspect-video overflow-hidden bg-muted ${radiusClass}`}>
           {image && (
             <img
               src={image}
@@ -71,7 +71,7 @@ const ProjectGridCard = ({ project, index = 0 }: ProjectGridCardProps) => {
           </p>
           <p className="mt-2 font-sans text-xs md:text-sm text-muted-foreground/80">
             {project.year}
-            <span aria-hidden="true">{'\u2002\u2002•\u2002\u2002'}</span>
+            <span aria-hidden="true">{'\u2002•\u2002'}</span>
             {project.company ?? project.client}
           </p>
         </div>
