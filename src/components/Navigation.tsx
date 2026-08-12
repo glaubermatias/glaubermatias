@@ -107,7 +107,7 @@ const Navigation = () => {
           </div>
 
           {/* Right — hamburger */}
-          <div className="relative">
+          <div className="relative pointer-events-auto">
             <button
               ref={menuToggleRef}
               onClick={() => setIsMobileMenuOpen((o) => !o)}
