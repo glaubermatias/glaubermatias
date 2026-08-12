@@ -56,7 +56,7 @@ const Footer = () => {
         zIndex: 0,
       }}
     >
-      <div className="relative overflow-hidden pt-20 md:pt-32 pb-8 bg-black">
+      <div className="relative overflow-hidden pt-14 md:pt-24 pb-8 bg-black">
         {/* Content */}
         <div className="site-shell relative z-10">
           <div className="pt-2">
