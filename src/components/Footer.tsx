@@ -58,7 +58,7 @@ const Footer = () => {
     >
       <div className="relative overflow-hidden pt-20 md:pt-32 pb-8 bg-black">
         {/* Content */}
-        <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 relative z-10">
+        <div className="site-shell relative z-10">
           <div className="pt-2">
             <div className="grid md:grid-cols-12 gap-12 mb-16">
               {/* Left — Contact */}

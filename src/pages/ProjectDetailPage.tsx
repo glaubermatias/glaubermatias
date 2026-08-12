@@ -873,37 +873,36 @@ const ProjectDetailPage = () => {
       {/* ============================================================= */}
       {/* 1. HEADER (Imersão) - background photo, H1 left aligned        */}
       {/* ============================================================= */}
-      <header
-        data-nav-theme="dark"
-        className="relative w-full overflow-hidden text-white"
-        style={{ minHeight: '420px' }}
-      >
-        <img
-          src={derived.headerImage}
-          alt=""
-          loading="eager"
-          fetchPriority="high"
-          decoding="sync"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
-        <div className="relative z-10 max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 min-h-[420px] flex flex-col justify-end pt-32 md:pt-36 pb-12 md:pb-16">
-          <Link
-            to="/work"
-            className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors text-sm mb-6 w-fit"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Work
-          </Link>
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="font-display text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight"
-          >
-            {derived.headerTitle}
-          </motion.h1>
-
+      <header data-nav-theme="dark" className="bg-background pt-[88px] md:pt-[92px]">
+        <div className="site-shell">
+          <div className="relative overflow-hidden rounded-[2rem] bg-black text-white">
+            <img
+              src={derived.headerImage}
+              alt=""
+              loading="eager"
+              fetchPriority="high"
+              decoding="sync"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
+            <div className="relative z-10 px-6 md:px-14 min-h-[300px] md:min-h-[340px] flex flex-col justify-end pt-14 md:pt-20 pb-12 md:pb-16">
+              <Link
+                to="/work"
+                className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors text-sm mb-6 w-fit"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Back to Work
+              </Link>
+              <motion.h1
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7 }}
+                className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight"
+              >
+                {derived.headerTitle}
+              </motion.h1>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -911,7 +910,7 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 2. OVERVIEW                                                     */}
         {/* ============================================================= */}
-        <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-8 md:pt-10">
+        <section className="site-shell pt-8 md:pt-10">
           {/* Tagline */}
           <p className="text-xs tracking-[0.22em] uppercase text-muted-foreground font-sans">
             {(project.company || project.client)} <span className="mx-2">•</span> {project.year} <span className="mx-2">•</span> {getCategoryLabel(project.category)}
@@ -984,7 +983,7 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 3. INITIAL VISUAL — Before/After if available, else carousel  */}
         {/* ============================================================= */}
-        <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-12 md:pt-14">
+        <section className="site-shell pt-12 md:pt-14">
           {derived.beforeAfter ? (
             <BeforeAfterSlider
               before={derived.beforeAfter.before}
@@ -1034,7 +1033,7 @@ const ProjectDetailPage = () => {
           const activeId = activeGalleryId ?? galleries[0]?.id;
           const active = galleries.find((g) => g.id === activeId) ?? galleries[0];
           return (
-            <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-10 md:pt-12">
+            <section className="site-shell pt-10 md:pt-12">
               {galleries.length > 1 && (
                 <div className="flex flex-wrap justify-center gap-3 mb-8 md:mb-10">
                   {galleries.map((g) => {
@@ -1094,7 +1093,7 @@ const ProjectDetailPage = () => {
         {/* 7. SECOND CAROUSEL (same layout as the first)                  */}
         {/* ============================================================= */}
         {derived.liveImages.length > 0 && (
-          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-14 md:pt-16">
+          <section className="site-shell pt-14 md:pt-16">
             <HeroCarousel images={derived.liveImages} title={project.title} />
           </section>
         )}
@@ -1167,7 +1166,7 @@ const ProjectDetailPage = () => {
         {/* 9. RELATED WORK                                                */}
         {/* ============================================================= */}
         {relatedProjects.length > 0 && (
-          <section className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 pt-20 md:pt-24">
+          <section className="site-shell pt-20 md:pt-24">
             <div className="border-t border-foreground/10 pt-12 md:pt-14">
               <Link
                 to="/work"

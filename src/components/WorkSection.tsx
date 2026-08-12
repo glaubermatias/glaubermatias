@@ -20,7 +20,7 @@ const WorkSection = () => {
   ).filter(Boolean) as typeof projects;
 
   return (
-    <section id="work" className="site-shell pt-16 md:pt-24 pb-8 lg:pb-12">
+    <section id="work" className="site-shell pt-8 md:pt-10 pb-8 lg:pb-12">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
         {featuredProjects.map((project, index) => (
           <ProjectGridCard key={project.id} project={project} index={index} />
