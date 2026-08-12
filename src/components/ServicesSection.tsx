@@ -50,8 +50,9 @@ const ServicesSection = () => {
   };
 
   // Split services into two columns
-  const leftColumn = services.slice(0, 4);
-  const rightColumn = services.slice(4, 8);
+  // Split services into three columns
+  const columns: Service[][] = [[], [], []];
+  services.forEach((s, i) => columns[i % 3].push(s));
   const renderServiceItem = (service: Service, index: number) => <motion.div key={service.id} className="bg-background rounded-[2rem] overflow-hidden" initial={{
     opacity: 0,
     y: 20
@@ -100,7 +101,7 @@ const ServicesSection = () => {
       </AnimatePresence>
     </motion.div>;
   return <section id="skillset" className="py-8 mb-2 lg:py-[26px]">
-      <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
+      <div className="site-shell">
         {/* Services Container with dark background */}
         <div data-nav-theme="dark" className="bg-dark-accent rounded-[2.5rem] p-8 md:p-12">
           {/* Header - Left aligned */}
@@ -123,17 +124,13 @@ const ServicesSection = () => {
             </p>
           </motion.div>
 
-          {/* Two Column Grid */}
-          <div className="grid md:grid-cols-2 gap-4">
-            {/* Left Column */}
-            <div className="space-y-4">
-              {leftColumn.map((service, index) => renderServiceItem(service, index))}
-            </div>
-
-            {/* Right Column */}
-            <div className="space-y-4">
-              {rightColumn.map((service, index) => renderServiceItem(service, index + 4))}
-            </div>
+          {/* Three Column Grid */}
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {columns.map((column, colIndex) => (
+              <div key={colIndex} className="space-y-4">
+                {column.map((service, index) => renderServiceItem(service, colIndex + index * 3))}
+              </div>
+            ))}
           </div>
         </div>
       </div>
