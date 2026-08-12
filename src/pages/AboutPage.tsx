@@ -220,7 +220,7 @@ const AboutPage = () => {
   return (
     <PageLayout header={header}>
       <main className="pt-16 md:pt-24 pb-24">
-        <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
+        <div className="content-shell">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10">
             {/* Left — Content */}
             <div className="lg:col-span-9 space-y-24 min-w-0">
@@ -264,7 +264,7 @@ const AboutPage = () => {
             (max-w 1400px, px 8/16/24) so left/right edges match the GM logo
             and the Contact button. 6 cards in a 3-column grid. */}
         <section id="fun-facts" className="scroll-mt-32 mt-24">
-          <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
+          <div className="content-shell">
             <h2 className="font-display text-3xl md:text-4xl font-semibold mb-8">
               Fun facts
             </h2>
@@ -302,7 +302,7 @@ const AboutPage = () => {
 
         {/* Beyond work — full-width container that mirrors the floating nav. */}
         <section id="beyond-work" className="scroll-mt-32 mt-24">
-          <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
+          <div className="content-shell">
             <h2 className="font-display text-3xl md:text-4xl font-semibold mb-4">
               Beyond work
             </h2>
