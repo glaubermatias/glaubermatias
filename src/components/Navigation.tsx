@@ -3,293 +3,150 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+type NavItem = { href: string; label: string };
+
+const NAV_ITEMS: NavItem[] = [
+  { href: '/work', label: 'Work' },
+  { href: '/cv', label: 'CV' },
+  { href: '/about', label: 'About' },
+  { href: '#contact', label: 'Contact' },
+];
+
 const Navigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [navTheme, setNavTheme] = useState<'hero' | 'dark' | 'light'>('hero');
-  const navRef = useRef<HTMLElement>(null!);
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
   const menuToggleRef = useRef<HTMLButtonElement | null>(null);
-  const lastFocusedRef = useRef<HTMLElement | null>(null);
 
-  // Mobile menu: Esc to close, focus trap, restore focus on close
+  // Close the dropdown on Escape
   useEffect(() => {
     if (!isMobileMenuOpen) return;
-    lastFocusedRef.current = (document.activeElement as HTMLElement) ?? null;
-
-    const getFocusable = () => {
-      const root = mobileMenuRef.current;
-      if (!root) return [] as HTMLElement[];
-      return Array.from(
-        root.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
-        ),
-      );
-    };
-
-    // Focus the first link inside the menu
-    const t = window.setTimeout(() => {
-      const items = getFocusable();
-      items[0]?.focus();
-    }, 50);
-
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        setIsMobileMenuOpen(false);
+      if (e.key === 'Escape') setIsMobileMenuOpen(false);
+    };
+    const onClick = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (
+        mobileMenuRef.current?.contains(target) ||
+        menuToggleRef.current?.contains(target)
+      )
         return;
-      }
-      if (e.key !== 'Tab') return;
-      const items = getFocusable();
-      if (items.length === 0) return;
-      const first = items[0];
-      const last = items[items.length - 1];
-      const active = document.activeElement as HTMLElement | null;
-      if (e.shiftKey && active === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && active === last) {
-        e.preventDefault();
-        first.focus();
-      }
+      setIsMobileMenuOpen(false);
     };
     document.addEventListener('keydown', onKey);
+    document.addEventListener('mousedown', onClick);
     return () => {
       document.removeEventListener('keydown', onKey);
-      window.clearTimeout(t);
-      // Restore focus to the toggle that opened the menu
-      (lastFocusedRef.current ?? menuToggleRef.current)?.focus?.();
+      document.removeEventListener('mousedown', onClick);
     };
   }, [isMobileMenuOpen]);
-
-  const isHomePage = location.pathname === '/';
-
-  useEffect(() => {
-    let rafId = 0;
-
-    const detectTheme = (): 'hero' | 'dark' | 'light' => {
-      const navEl = navRef.current;
-      if (!navEl) return 'light';
-      const rect = navEl.getBoundingClientRect();
-      const x = rect.left + rect.width / 2;
-      const y = rect.top + rect.height / 2;
-      const elements = document.elementsFromPoint(x, y) as HTMLElement[];
-      for (const el of elements) {
-        if (!el) continue;
-        if (el === navEl || navEl.contains(el)) continue;
-        const section = el.closest('section[data-nav-theme], header[data-nav-theme]');
-        if (section) {
-          const theme = section.getAttribute('data-nav-theme');
-          // Any dark surface (hero or subpage header) → fully transparent nav.
-          if (theme === 'dark') return 'hero';
-        }
-      }
-      return 'light';
-    };
-
-    const update = () => {
-      const next = detectTheme();
-      setNavTheme((prev) => (prev !== next ? next : prev));
-    };
-
-    const onChange = () => {
-      if (rafId) return;
-      rafId = window.requestAnimationFrame(() => {
-        rafId = 0;
-        update();
-      });
-    };
-
-    window.addEventListener('scroll', onChange, { passive: true });
-    window.addEventListener('resize', onChange);
-    onChange();
-    const t1 = window.setTimeout(onChange, 80);
-    const t2 = window.setTimeout(onChange, 350);
-
-    return () => {
-      window.removeEventListener('scroll', onChange);
-      window.removeEventListener('resize', onChange);
-      if (rafId) window.cancelAnimationFrame(rafId);
-      window.clearTimeout(t1);
-      window.clearTimeout(t2);
-    };
-  }, []);
-
-  const navLinks = isHomePage
-    ? [
-        { href: '#work', label: 'Work' },
-        { href: '/cv', label: 'CV' },
-        { href: '/about', label: 'About' },
-        { href: '#contact', label: 'Contact' },
-      ]
-    : [
-        { href: '/work', label: 'Work' },
-        { href: '/cv', label: 'CV' },
-        { href: '/about', label: 'About' },
-        { href: '#contact', label: 'Contact' },
-      ];
 
   const handleLinkClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
       e.preventDefault();
       setIsMobileMenuOpen(false);
 
-      const scrollFastToFooter = () => {
-        // Force fast scroll to absolute bottom of the page.
-        window.scrollTo({
-          top: document.body.scrollHeight,
-          behavior: 'smooth',
-        });
-      };
-
+      if (href === '#contact') {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        return;
+      }
       if (href.startsWith('#')) {
         const id = href.slice(1);
-        if (!id) {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else if (id === 'contact') {
-          scrollFastToFooter();
-        } else {
-          document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-        }
+        if (!id) window.scrollTo({ top: 0, behavior: 'smooth' });
+        else document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
         return;
       }
-
-      if (href.startsWith('/#')) {
-        const sectionId = href.slice(2);
-        if (isHomePage) {
-          document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
-        } else {
-          navigate('/');
-          setTimeout(() => {
-            document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
-          }, 350);
-        }
-        return;
-      }
-
-      // Same-page link → scroll to top smoothly instead of re-navigating.
       if (href === location.pathname) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
       }
-
       navigate(href);
     },
-    [isHomePage, navigate, location.pathname],
+    [navigate, location.pathname],
   );
 
-  const logoHref = isHomePage ? '#' : '/';
-
-  const isLightText = navTheme === 'hero' || navTheme === 'dark';
-
-  // Nav bar style: hero = fully transparent, dark = dark glass, light = light glass
-  const navBgStyle: React.CSSProperties =
-    navTheme === 'hero'
-      ? {}
-      : navTheme === 'dark'
-      ? {
-          background: 'rgba(0, 0, 0, 0.6)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-        }
-      : {
-          background: 'rgba(255, 255, 255, 0.75)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-        };
-
-  // For non-hero, add a bottom fade-to-transparent mask
-  const maskStyle: React.CSSProperties = {};
+  const isActive = (href: string) =>
+    href.startsWith('/') && location.pathname.startsWith(href);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50">
-      <nav
-        ref={navRef}
-        className="w-full transition-all duration-500 py-4"
-        style={{ ...navBgStyle, ...maskStyle }}
-      >
-        <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
-          <div className="flex items-center justify-between">
+    <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
+      <nav className="site-shell pt-4 md:pt-5">
+        <div className="flex items-start justify-between gap-3 pointer-events-auto">
+          {/* Left cluster — GM circle + items pill */}
+          <div className="flex items-center gap-2 md:gap-3">
             <a
-              href={logoHref}
-              onClick={(e) => handleLinkClick(e, logoHref)}
+              href="/"
+              onClick={(e) => handleLinkClick(e, '/')}
               aria-label="Home — Glauber Matias"
-              className={`font-display text-xl font-medium transition-colors duration-300 ${
-                isLightText ? 'text-white' : 'text-primary'
-              }`}
+              className="nav-glass flex h-12 w-12 items-center justify-center rounded-full font-display text-base font-medium text-black"
             >
               GM
             </a>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-6">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) => handleLinkClick(e, link.href)}
-                  className={`text-[0.95rem] font-normal transition-colors relative group ${
-                    isLightText
-                      ? 'text-white/80 hover:text-white'
-                      : 'text-foreground/80 hover:text-foreground'
-                  }`}
-                >
-                  {link.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
-                </a>
-              ))}
+            {/* Desktop items pill */}
+            <div className="nav-glass hidden md:flex h-12 items-center gap-1 rounded-full p-1.5">
+              {NAV_ITEMS.map((item) => {
+                const active = isActive(item.href);
+                return (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    onClick={(e) => handleLinkClick(e, item.href)}
+                    aria-current={active ? 'page' : undefined}
+                    className={`rounded-full px-4 py-2 text-sm text-black transition-colors duration-200 ${
+                      active ? 'bg-black/10' : 'hover:bg-black/5'
+                    }`}
+                  >
+                    {item.label}
+                  </a>
+                );
+              })}
             </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              ref={menuToggleRef}
-              className={`md:hidden p-2 transition-colors duration-300 ${
-                isLightText ? 'text-white' : 'text-foreground'
-              }`}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
-              aria-expanded={isMobileMenuOpen}
-              aria-controls="mobile-nav"
-            >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
           </div>
 
-          {/* Mobile Navigation */}
-          <AnimatePresence>
-            {isMobileMenuOpen && (
-              <motion.div
-                ref={mobileMenuRef}
-                id="mobile-nav"
-                role="dialog"
-                aria-modal="true"
-                aria-label="Site navigation"
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
-                className="md:hidden overflow-hidden"
-              >
-                <div className="flex flex-col items-end gap-4 py-6 text-right">
-                  {navLinks.map((link) => (
+          {/* Right — hamburger */}
+          <div className="relative">
+            <button
+              ref={menuToggleRef}
+              onClick={() => setIsMobileMenuOpen((o) => !o)}
+              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="floating-nav-menu"
+              className="nav-glass flex h-12 w-12 items-center justify-center rounded-full text-black"
+            >
+              {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+
+            <AnimatePresence>
+              {isMobileMenuOpen && (
+                <motion.div
+                  ref={mobileMenuRef}
+                  id="floating-nav-menu"
+                  role="dialog"
+                  aria-label="Site navigation"
+                  initial={{ opacity: 0, y: -8, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -8, scale: 0.97 }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
+                  className="absolute right-0 mt-2 w-56 origin-top-right overflow-hidden rounded-3xl bg-white p-2 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.25)] ring-1 ring-black/5"
+                >
+                  {NAV_ITEMS.map((item) => (
                     <a
-                      key={link.href}
-                      href={link.href}
-                      onClick={(e) => handleLinkClick(e, link.href)}
-                      className={`text-lg font-normal transition-colors ${
-                        isLightText
-                          ? 'text-white/80 hover:text-white'
-                          : 'text-foreground/80 hover:text-foreground'
+                      key={item.href}
+                      href={item.href}
+                      onClick={(e) => handleLinkClick(e, item.href)}
+                      className={`block rounded-2xl px-4 py-3 text-sm text-black transition-colors ${
+                        isActive(item.href) ? 'bg-black/10' : 'hover:bg-black/5'
                       }`}
                     >
-                      {link.label}
+                      {item.label}
                     </a>
                   ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </nav>
     </header>
