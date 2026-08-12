@@ -72,9 +72,10 @@ const Navigation = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
       <nav className="site-shell pt-4 md:pt-5">
-        <div className="flex items-start justify-between gap-3 pointer-events-auto">
+        <div className="flex items-start justify-between gap-3 pointer-events-none">
           {/* Left cluster — GM circle + items pill */}
-          <div className="flex items-center gap-2 md:gap-3">
+          <div className="flex items-center gap-2 md:gap-3 pointer-events-auto">
+
             <a
               href="/"
               onClick={(e) => handleLinkClick(e, '/')}
@@ -106,7 +107,7 @@ const Navigation = () => {
           </div>
 
           {/* Right — hamburger */}
-          <div className="relative">
+          <div className="relative pointer-events-auto">
             <button
               ref={menuToggleRef}
               onClick={() => setIsMobileMenuOpen((o) => !o)}

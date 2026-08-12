@@ -5,6 +5,7 @@ import { ArrowLeft, ChevronLeft, ChevronRight, X, Copy, Check } from 'lucide-rea
 import { useLanguage } from '@/contexts/LanguageContext';
 import PageLayout from '@/components/PageLayout';
 import { getProjectById, getRelatedProjects, ProjectData, ProcessImage } from '@/data/projects';
+import ProjectGridCard from '@/components/ProjectGridCard';
 import SmartImage from '@/components/SmartImage';
 
 const EDITORIAL_PLACEHOLDERS = {
@@ -29,33 +30,6 @@ const makeEightTiles = (images: ProcessImage[]) => images;
 /* ------------------------------------------------------------------ */
 /* Related project card (footer)                                       */
 /* ------------------------------------------------------------------ */
-const RelatedProjectCard = ({ project }: { project: ProjectData }) => {
-  return (
-    <Link
-      to={`/${project.id}`}
-      className="group block overflow-hidden rounded-lg border border-foreground/10 bg-background"
-    >
-      <div className="overflow-hidden bg-muted aspect-[16/9]">
-        <img
-          src={project.images[0]}
-          alt={project.title}
-          loading="lazy"
-          decoding="async"
-          className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
-        />
-      </div>
-      <div className="p-5 space-y-1.5">
-        <h4 className="font-display text-xl font-semibold text-foreground">
-          {project.headerTitle}
-        </h4>
-        <p className="font-display text-base text-secondary leading-snug line-clamp-2">
-          {project.meaningfulTitle}
-        </p>
-      </div>
-    </Link>
-  );
-};
-
 /* ------------------------------------------------------------------ */
 /* Lightbox modal (used by Bento gallery)                              */
 /* ------------------------------------------------------------------ */
@@ -910,7 +884,7 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 2. OVERVIEW                                                     */}
         {/* ============================================================= */}
-        <section className="site-shell pt-8 md:pt-10">
+        <section className="content-shell pt-8 md:pt-10">
           {/* Tagline */}
           <p className="text-xs tracking-[0.22em] uppercase text-muted-foreground font-sans">
             {(project.company || project.client)} <span className="mx-2">•</span> {project.year} <span className="mx-2">•</span> {getCategoryLabel(project.category)}
@@ -983,7 +957,7 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 3. INITIAL VISUAL — Before/After if available, else carousel  */}
         {/* ============================================================= */}
-        <section className="site-shell pt-12 md:pt-14">
+        <section className="content-shell pt-12 md:pt-14">
           {derived.beforeAfter ? (
             <BeforeAfterSlider
               before={derived.beforeAfter.before}
@@ -1033,7 +1007,7 @@ const ProjectDetailPage = () => {
           const activeId = activeGalleryId ?? galleries[0]?.id;
           const active = galleries.find((g) => g.id === activeId) ?? galleries[0];
           return (
-            <section className="site-shell pt-10 md:pt-12">
+            <section className="content-shell pt-10 md:pt-12">
               {galleries.length > 1 && (
                 <div className="flex flex-wrap justify-center gap-3 mb-8 md:mb-10">
                   {galleries.map((g) => {
@@ -1093,7 +1067,7 @@ const ProjectDetailPage = () => {
         {/* 7. SECOND CAROUSEL (same layout as the first)                  */}
         {/* ============================================================= */}
         {derived.liveImages.length > 0 && (
-          <section className="site-shell pt-14 md:pt-16">
+          <section className="content-shell pt-14 md:pt-16">
             <HeroCarousel images={derived.liveImages} title={project.title} />
           </section>
         )}
@@ -1166,7 +1140,7 @@ const ProjectDetailPage = () => {
         {/* 9. RELATED WORK                                                */}
         {/* ============================================================= */}
         {relatedProjects.length > 0 && (
-          <section className="site-shell pt-20 md:pt-24">
+          <section className="content-shell pt-20 md:pt-24">
             <div className="border-t border-foreground/10 pt-12 md:pt-14">
               <Link
                 to="/work"
@@ -1179,8 +1153,8 @@ const ProjectDetailPage = () => {
                 Related work
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
-                {relatedProjects.slice(0, 3).map((p) => (
-                  <RelatedProjectCard key={p.id} project={p} />
+                {relatedProjects.slice(0, 3).map((p, i) => (
+                  <ProjectGridCard key={p.id} project={p} index={i} />
                 ))}
               </div>
             </div>
