@@ -31,7 +31,7 @@ const ProjectGridCard = ({ project, index = 0 }: ProjectGridCardProps) => {
       className="group"
     >
       <Link to={`/${project.id}`} className="block">
-        <div className="relative w-full aspect-video overflow-hidden rounded-3xl bg-muted">
+        <div className="relative w-full aspect-video overflow-hidden rounded-xl bg-muted">
           {image && (
             <img
               src={image}
