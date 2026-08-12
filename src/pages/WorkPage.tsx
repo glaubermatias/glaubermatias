@@ -3,7 +3,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import PageLayout from '@/components/PageLayout';
 import PageHeader from '@/components/PageHeader';
-import WorkCard from '@/components/WorkCard';
+import ProjectGridCard from '@/components/ProjectGridCard';
 
 import { projects, ProjectCategory } from '@/data/projects';
 
@@ -65,39 +65,30 @@ const WorkPage = () => {
 
   return (
     <PageLayout header={header}>
-      <main className="pb-16">
-        {/* Projects List — full-bleed cards (same layout as homepage) */}
-        <div className="border-t border-foreground/10">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeCategory}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="[&>article:last-child]:border-b-0"
-            >
-              {filteredProjects.map((project, index) => (
-                <WorkCard
-                  key={project.id}
-                  project={project}
-                  index={index}
-                  totalCount={filteredProjects.length}
-                />
-              ))}
-              {filteredProjects.length === 0 && (
-                <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
-                  <p className="py-20 text-center text-muted-foreground">
-                    No projects in this category yet.
-                  </p>
-                </div>
-              )}
-            </motion.div>
-          </AnimatePresence>
-        </div>
+      <main className="site-shell pt-12 md:pt-16 pb-16">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeCategory}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10"
+          >
+            {filteredProjects.map((project, index) => (
+              <ProjectGridCard key={project.id} project={project} index={index} />
+            ))}
+          </motion.div>
+        </AnimatePresence>
+        {filteredProjects.length === 0 && (
+          <p className="py-20 text-center text-muted-foreground">
+            No projects in this category yet.
+          </p>
+        )}
       </main>
     </PageLayout>
   );
+
 };
 
 export default WorkPage;
