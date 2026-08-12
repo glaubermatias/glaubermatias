@@ -910,7 +910,7 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 2. OVERVIEW                                                     */}
         {/* ============================================================= */}
-        <section className="site-shell pt-8 md:pt-10">
+        <section className="content-shell pt-8 md:pt-10">
           {/* Tagline */}
           <p className="text-xs tracking-[0.22em] uppercase text-muted-foreground font-sans">
             {(project.company || project.client)} <span className="mx-2">•</span> {project.year} <span className="mx-2">•</span> {getCategoryLabel(project.category)}
@@ -983,7 +983,7 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 3. INITIAL VISUAL — Before/After if available, else carousel  */}
         {/* ============================================================= */}
-        <section className="site-shell pt-12 md:pt-14">
+        <section className="content-shell pt-12 md:pt-14">
           {derived.beforeAfter ? (
             <BeforeAfterSlider
               before={derived.beforeAfter.before}
@@ -1033,7 +1033,7 @@ const ProjectDetailPage = () => {
           const activeId = activeGalleryId ?? galleries[0]?.id;
           const active = galleries.find((g) => g.id === activeId) ?? galleries[0];
           return (
-            <section className="site-shell pt-10 md:pt-12">
+            <section className="content-shell pt-10 md:pt-12">
               {galleries.length > 1 && (
                 <div className="flex flex-wrap justify-center gap-3 mb-8 md:mb-10">
                   {galleries.map((g) => {
@@ -1093,7 +1093,7 @@ const ProjectDetailPage = () => {
         {/* 7. SECOND CAROUSEL (same layout as the first)                  */}
         {/* ============================================================= */}
         {derived.liveImages.length > 0 && (
-          <section className="site-shell pt-14 md:pt-16">
+          <section className="content-shell pt-14 md:pt-16">
             <HeroCarousel images={derived.liveImages} title={project.title} />
           </section>
         )}
@@ -1166,7 +1166,7 @@ const ProjectDetailPage = () => {
         {/* 9. RELATED WORK                                                */}
         {/* ============================================================= */}
         {relatedProjects.length > 0 && (
-          <section className="site-shell pt-20 md:pt-24">
+          <section className="content-shell pt-20 md:pt-24">
             <div className="border-t border-foreground/10 pt-12 md:pt-14">
               <Link
                 to="/work"
