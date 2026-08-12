@@ -92,12 +92,10 @@ const Footer = () => {
 
                   {/* Location & Time */}
                   <div className="text-left">
-                    <p className="text-white/90 font-sans font-normal mb-1">
+                    <p className="text-white/90 font-sans font-normal mb-4">
                       Based in Lisbon
                     </p>
-                    <p className="text-white/60 font-sans font-normal mb-4">
-                      (from Aug/26)
-                    </p>
+
                     <p
                       className="font-sans font-normal text-white/90"
                       aria-label="Lisbon local time"
