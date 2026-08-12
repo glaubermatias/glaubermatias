@@ -5,6 +5,8 @@ import { ProjectData } from '@/data/projects';
 interface ProjectGridCardProps {
   project: ProjectData;
   index?: number;
+  /** Tailwind radius class for the image container */
+  radiusClass?: string;
 }
 
 /**
