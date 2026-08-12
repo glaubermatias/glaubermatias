@@ -3,7 +3,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import PageLayout from '@/components/PageLayout';
 import PageHeader from '@/components/PageHeader';
-import WorkCard from '@/components/WorkCard';
+import ProjectGridCard from '@/components/ProjectGridCard';
 
 import { projects, ProjectCategory } from '@/data/projects';
 
