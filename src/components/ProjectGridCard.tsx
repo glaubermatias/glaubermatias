@@ -68,7 +68,8 @@ const ProjectGridCard = ({ project, index = 0 }: ProjectGridCardProps) => {
             {project.meaningfulTitle ?? project.cardDescription}
           </p>
           <p className="mt-2 font-sans text-xs md:text-sm text-muted-foreground/80">
-            {project.year} <span aria-hidden="true">•</span>{' '}
+            {project.year}
+            <span aria-hidden="true">{'\u2002\u2002•\u2002\u2002'}</span>
             {project.company ?? project.client}
           </p>
         </div>
