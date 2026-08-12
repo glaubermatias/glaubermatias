@@ -5,6 +5,7 @@ import { ArrowLeft, ChevronLeft, ChevronRight, X, Copy, Check } from 'lucide-rea
 import { useLanguage } from '@/contexts/LanguageContext';
 import PageLayout from '@/components/PageLayout';
 import { getProjectById, getRelatedProjects, ProjectData, ProcessImage } from '@/data/projects';
+import ProjectGridCard from '@/components/ProjectGridCard';
 import SmartImage from '@/components/SmartImage';
 
 const EDITORIAL_PLACEHOLDERS = {
@@ -29,33 +30,6 @@ const makeEightTiles = (images: ProcessImage[]) => images;
 /* ------------------------------------------------------------------ */
 /* Related project card (footer)                                       */
 /* ------------------------------------------------------------------ */
-const RelatedProjectCard = ({ project }: { project: ProjectData }) => {
-  return (
-    <Link
-      to={`/${project.id}`}
-      className="group block overflow-hidden rounded-lg border border-foreground/10 bg-background"
-    >
-      <div className="overflow-hidden bg-muted aspect-[16/9]">
-        <img
-          src={project.images[0]}
-          alt={project.title}
-          loading="lazy"
-          decoding="async"
-          className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
-        />
-      </div>
-      <div className="p-5 space-y-1.5">
-        <h4 className="font-display text-xl font-semibold text-foreground">
-          {project.headerTitle}
-        </h4>
-        <p className="font-display text-base text-secondary leading-snug line-clamp-2">
-          {project.meaningfulTitle}
-        </p>
-      </div>
-    </Link>
-  );
-};
-
 /* ------------------------------------------------------------------ */
 /* Lightbox modal (used by Bento gallery)                              */
 /* ------------------------------------------------------------------ */
