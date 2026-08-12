@@ -1154,7 +1154,7 @@ const ProjectDetailPage = () => {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
                 {relatedProjects.slice(0, 3).map((p, i) => (
-                  <ProjectGridCard key={p.id} project={p} index={i} />
+                  <ProjectGridCard key={p.id} project={p} index={i} radiusClass="rounded-lg" />
                 ))}
               </div>
             </div>
