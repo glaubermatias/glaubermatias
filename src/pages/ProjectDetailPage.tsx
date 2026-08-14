@@ -815,7 +815,7 @@ const ProjectDetailPage = () => {
       headerImage,
       heroCarousel,
       liveImages,
-      bentoGalleries,
+      bentoGalleries: safeBentoGalleries,
       beforeAfter,
       headerTitle,
       galleryLabel,
