@@ -773,7 +773,7 @@ const ProjectDetailPage = () => {
     const beforeAfter = dynamicAssets !== undefined ? dynamicAssets.beforeAfter : (project.beforeAfter ?? null);
 
     // STRICT Bento Grid: Puxa as galerias diretamente do motor (trazendo as 24 fotos do Summit)
-    let bentoGalleries = dynamicAssets?.bentoGalleries;
+    let bentoGalleries: { id: string; label: string; images?: ProcessImage[] }[] | undefined = dynamicAssets?.bentoGalleries;
     if (!bentoGalleries || bentoGalleries.length === 0) {
       bentoGalleries =
         project.bentoGalleries && project.bentoGalleries.length > 0
