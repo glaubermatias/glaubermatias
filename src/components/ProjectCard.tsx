@@ -57,7 +57,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
                 key={currentImageIndex}
                 src={cardImages[currentImageIndex]}
                 alt={`${project.title} - Image ${currentImageIndex + 1}`}
-                className="w-full h-full object-cover pointer-events-none"
+                className="w-full h-full object-cover pointer-events-none select-none"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}

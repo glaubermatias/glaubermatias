@@ -130,7 +130,7 @@ const WorkCard = ({ project, index, totalCount }: WorkCardProps) => {
                   key={currentImageIndex}
                   src={cardImages[currentImageIndex]}
                   alt={`${project.title} – ${currentImageIndex + 1}`}
-                  className="w-full h-full object-cover absolute inset-0 pointer-events-none"
+                  className="w-full h-full object-cover absolute inset-0 pointer-events-none select-none"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.3 }}

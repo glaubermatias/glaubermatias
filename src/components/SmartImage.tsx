@@ -46,6 +46,7 @@ export const SmartImage = ({
         {...rest}
         ref={imgRef}
         decoding={decoding}
+        draggable={false}
         onLoad={(e) => {
           setLoaded(true);
           onLoad?.(e);
@@ -54,7 +55,7 @@ export const SmartImage = ({
           setLoaded(true);
           onError?.(e);
         }}
-        className={cn(className, !loaded && 'opacity-0')}
+        className={cn(className, 'pointer-events-none select-none', !loaded && 'opacity-0')}
         style={{ transition: 'opacity 220ms ease-out', ...style }}
       />
     </>
