@@ -787,6 +787,14 @@ const ProjectDetailPage = () => {
             ];
     }
 
+    // Normalize so `images` is always present (BentoGallery.images is optional),
+    // keeping a single concrete type for downstream consumers (BentoGrid / lightbox).
+    const safeBentoGalleries = (bentoGalleries ?? []).map((g) => ({
+      id: g.id,
+      label: g.label,
+      images: (g.images ?? []) as ProcessImage[],
+    }));
+
     // Textos editoriais (mantidos como estavam)
     const headerTitle = project.headerTitle ?? project.title;
     const galleryLabel = project.galleryLabel ?? headerTitle;
