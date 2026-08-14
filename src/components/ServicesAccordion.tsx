@@ -114,7 +114,8 @@ const ServicesAccordion = () => {
                           alt={service.title}
                           loading="lazy"
                           decoding="async"
-                          className="w-full h-full object-cover"
+                          draggable={false}
+                          className="w-full h-full object-cover pointer-events-none select-none"
                         />
                       </div>
                     </div>

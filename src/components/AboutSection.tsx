@@ -46,7 +46,8 @@ const AboutSection = () => {
                 alt="Glauber Matias"
                 loading="lazy"
                 decoding="async"
-                className="w-full h-full object-cover"
+                draggable={false}
+                className="w-full h-full object-cover pointer-events-none select-none"
                 style={{ objectPosition: 'center 20%' }}
               />
             </div>

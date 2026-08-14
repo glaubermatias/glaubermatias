@@ -136,7 +136,8 @@ const BeyondWorkGallery = () => {
           alt={`Personal moment ${active + 1}`}
           loading="lazy"
           decoding="async"
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          draggable={false}
+          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
@@ -176,7 +177,7 @@ const BeyondWorkGallery = () => {
               onClick={() => setActive(idx)}
               className="relative overflow-hidden rounded-md bg-muted ring-1 ring-foreground/10 hover:ring-foreground/40 transition w-full h-full min-h-0 aspect-[3/4] md:aspect-auto"
             >
-              <img src={src} alt={`Thumbnail ${idx + 1}`} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
+              <img src={src} alt={`Thumbnail ${idx + 1}`} loading="lazy" decoding="async" draggable={false} className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none" />
             </button>
           ))}
       </div>
@@ -195,7 +196,8 @@ const AboutPage = () => {
           loading="eager"
           fetchPriority="high"
           decoding="sync"
-          className="h-full w-auto max-w-none object-contain object-bottom block"
+          draggable={false}
+          className="h-full w-auto max-w-none object-contain object-bottom block pointer-events-none select-none"
         />
       }
     >
@@ -206,7 +208,8 @@ const AboutPage = () => {
         loading="eager"
         fetchPriority="high"
         decoding="sync"
-        className="w-10 h-10 md:w-12 md:h-12 mb-4 object-contain"
+        draggable={false}
+        className="w-10 h-10 md:w-12 md:h-12 mb-4 object-contain pointer-events-none select-none"
       />
       <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">
         Glauber Matias
@@ -285,7 +288,8 @@ const AboutPage = () => {
                         alt={fact.title}
                         loading="lazy"
                         decoding="async"
-                        className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-[filter] duration-500"
+                        draggable={false}
+                        className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-[filter] duration-500 pointer-events-none select-none"
                       />
                     )}
                     <span className="absolute top-5 left-5 inline-flex items-center px-3 py-1 rounded-full bg-white/90 backdrop-blur text-[0.65rem] tracking-[0.2em] uppercase text-black font-medium">

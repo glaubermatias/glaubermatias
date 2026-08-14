@@ -113,7 +113,8 @@ const Lightbox = ({
               src={current.src}
               alt={current.caption || ""}
               decoding="async"
-              className="w-full h-full object-cover"
+              draggable={false}
+              className="w-full h-full object-cover pointer-events-none select-none"
             />
           </div>
           <button
@@ -394,8 +395,8 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
           alt="After"
           loading="lazy"
           decoding="async"
-          className="absolute inset-0 h-full w-full object-cover"
           draggable={false}
+          className="absolute inset-0 h-full w-full object-cover pointer-events-none select-none"
         />
         <span className="absolute top-4 right-4 z-10 font-sans text-xs sm:text-sm font-medium tracking-[0.22em] uppercase text-white bg-black/70 backdrop-blur-md rounded-full px-4 py-2 ring-1 ring-white/25 shadow-lg pointer-events-none">
           After
@@ -417,9 +418,9 @@ const BeforeAfterSlider = ({ before, after }: { before: string; after: string })
           alt="Before"
           loading="lazy"
           decoding="async"
-          className="absolute inset-0 h-full w-full object-cover"
-          style={{ filter: "saturate(0.55) brightness(0.78) contrast(0.95)" }}
           draggable={false}
+          className="absolute inset-0 h-full w-full object-cover pointer-events-none select-none"
+          style={{ filter: "saturate(0.55) brightness(0.78) contrast(0.95)" }}
         />
         {/* Insulfilm tint — adds contrast between Before and After sides */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/15 to-black/30 pointer-events-none" />
@@ -677,11 +678,12 @@ const HeroCarousel = ({ images, title }: { images: string[]; title: string }) =>
             alt={`${title} – ${idx + 1}`}
             loading="lazy"
             decoding="async"
+            draggable={false}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-cover pointer-events-none select-none"
           />
         </AnimatePresence>
 
@@ -771,7 +773,7 @@ const ProjectDetailPage = () => {
     const beforeAfter = dynamicAssets !== undefined ? dynamicAssets.beforeAfter : (project.beforeAfter ?? null);
 
     // STRICT Bento Grid: Puxa as galerias diretamente do motor (trazendo as 24 fotos do Summit)
-    let bentoGalleries = dynamicAssets?.bentoGalleries;
+    let bentoGalleries: { id: string; label: string; images?: ProcessImage[] }[] | undefined = dynamicAssets?.bentoGalleries;
     if (!bentoGalleries || bentoGalleries.length === 0) {
       bentoGalleries =
         project.bentoGalleries && project.bentoGalleries.length > 0
@@ -784,6 +786,14 @@ const ProjectDetailPage = () => {
               },
             ];
     }
+
+    // Normalize so `images` is always present (BentoGallery.images is optional),
+    // keeping a single concrete type for downstream consumers (BentoGrid / lightbox).
+    const safeBentoGalleries = (bentoGalleries ?? []).map((g) => ({
+      id: g.id,
+      label: g.label,
+      images: (g.images ?? []) as ProcessImage[],
+    }));
 
     // Textos editoriais (mantidos como estavam)
     const headerTitle = project.headerTitle ?? project.title;
@@ -805,7 +815,7 @@ const ProjectDetailPage = () => {
       headerImage,
       heroCarousel,
       liveImages,
-      bentoGalleries,
+      bentoGalleries: safeBentoGalleries,
       beforeAfter,
       headerTitle,
       galleryLabel,
@@ -857,7 +867,8 @@ const ProjectDetailPage = () => {
               loading="eager"
               fetchPriority="high"
               decoding="sync"
-              className="absolute inset-0 h-full w-full object-cover"
+              draggable={false}
+              className="absolute inset-0 h-full w-full object-cover pointer-events-none select-none"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
             <div className="relative z-10 px-6 md:px-14 min-h-[300px] md:min-h-[340px] flex flex-col justify-end pt-14 md:pt-20 pb-12 md:pb-16">

@@ -40,7 +40,8 @@ const ProjectGridCard = ({ project, index = 0, radiusClass = 'rounded-xl' }: Pro
               alt={project.headerTitle ?? project.title}
               loading="lazy"
               decoding="async"
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+              draggable={false}
+              className="absolute inset-0 h-full w-full object-cover pointer-events-none select-none transition-transform duration-700 ease-out group-hover:scale-[1.03]"
             />
           )}
 

@@ -56,7 +56,8 @@ const Hero = () => {
                   loading="eager"
                   fetchPriority="high"
                   decoding="sync"
-                  className="w-44 h-44 md:w-52 md:h-52 lg:w-60 lg:h-60 object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+                  draggable={false}
+                  className="w-44 h-44 md:w-52 md:h-52 lg:w-60 lg:h-60 object-cover pointer-events-none select-none transition-transform duration-700 ease-out group-hover:scale-[1.05]"
                 />
                 <div
                   aria-hidden="true"
