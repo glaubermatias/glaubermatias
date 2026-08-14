@@ -148,8 +148,10 @@ for (const [key, url] of Object.entries(PROJECT_FILES)) {
   if (folder === "header") t.header.push([filename, url]);
   else if (folder === "carousel") t.carousel.push([filename, url]);
   else if (folder === "before-and-after") t.beforeAfter.push([filename, url]);
-  else if (folder === "bento-grid" && parts.length >= 4) {
-    const category = parts[2];
+  else if (folder === "bento-grid") {
+    // Path A (nested): bento-grid/<category>/file
+    // Path B (flat):   bento-grid/file  → single default "gallery" category
+    const category = parts.length >= 4 ? parts[2] : "gallery";
     (t.bento[category] ||= []).push([filename, url]);
   }
 }
@@ -221,7 +223,7 @@ export interface ProjectImageEntry {
   card?: string;
   cardImages?: string[];
   header?: string;
-  beforeAfter?: { before: string; after: string };
+  beforeAfter?: { before: string; after: string } | null;
   images: string[];
   bentoGalleries?: {
     id: string;
@@ -241,7 +243,8 @@ const BENTO_META: Record<string, Array<{ id: string; label: string }>> = {
   ],
 };
 
-const prettify = (id: string) => id.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+const prettify = (id: string) =>
+  id === "gallery" ? "Overview" : id.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
 // Stock fallbacks per-project — used only when the folder is empty.
 const STOCK_FALLBACK: Record<string, string[]> = {
@@ -291,10 +294,10 @@ function buildEntry(id: string): ProjectImageEntry {
   const header = b.header[0];
   const cardImages = b.card.length > 0 ? b.card : (STOCK_CARDS[id] ?? stock);
 
+  // No stock injection: an empty before-and-after folder means the section
+  // is simply hidden on the project page.
   const beforeAfter =
-    b.beforeAfter.length >= 2
-      ? { before: b.beforeAfter[0], after: b.beforeAfter[1] }
-      : { before: STOCK.ba_before, after: STOCK.ba_after };
+    b.beforeAfter.length >= 2 ? { before: b.beforeAfter[0], after: b.beforeAfter[1] } : null;
 
   const meta = BENTO_META[id] ?? [];
   const seen = new Set<string>();

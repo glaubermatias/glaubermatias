@@ -784,15 +784,9 @@ const ProjectDetailPage = () => {
       : [{ id: `${project.id}-gallery`, label: galleryLabel, images: makeEightTiles(processImages) }];
     // Before / After: explicit field wins; otherwise fall back to first vs.
     // last process image when at least 2 are available.
-    let beforeAfter: { before: string; after: string } | null = null;
-    if (project.beforeAfter) {
-      beforeAfter = project.beforeAfter;
-    } else if (processImages.length >= 2) {
-      beforeAfter = {
-        before: processImages[0].src,
-        after: processImages[processImages.length - 1].src,
-      };
-    }
+    // Only explicit before/after assets count. When absent, the whole
+    // Before & After section is hidden (no stock, no derived fallback).
+    const beforeAfter = project.beforeAfter ?? null;
     return {
       headerImage,
       heroCarousel,
@@ -957,16 +951,14 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 3. INITIAL VISUAL — Before/After if available, else carousel  */}
         {/* ============================================================= */}
-        <section className="content-shell pt-12 md:pt-14">
-          {derived.beforeAfter ? (
+        {derived.beforeAfter && (
+          <section className="content-shell pt-12 md:pt-14">
             <BeforeAfterSlider
               before={derived.beforeAfter.before}
               after={derived.beforeAfter.after}
             />
-          ) : (
-            <HeroCarousel images={derived.heroCarousel} title={project.title} />
-          )}
-        </section>
+          </section>
+        )}
 
         {/* ============================================================= */}
         {/* 4. NARRATIVE (Context, Problem, Strategy) - 30/70 asymmetric  */}
