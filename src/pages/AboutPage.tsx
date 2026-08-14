@@ -136,7 +136,8 @@ const BeyondWorkGallery = () => {
           alt={`Personal moment ${active + 1}`}
           loading="lazy"
           decoding="async"
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          draggable={false}
+          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
