@@ -8,10 +8,9 @@ import AnimatedCounter from '@/components/AnimatedCounter';
 
 const AboutSection = () => {
   const stats = [
-    { number: 7, suffix: '+', label: 'Years of experience' },
-    { number: 500, suffix: '+', label: 'Presentations designed' },
-    { number: 50, suffix: '+', label: 'Global clients' },
-    { number: 10, suffix: 'M+', label: 'Audience reached' },
+    { number: 300, suffix: '+', label: 'Presentations designed' },
+    { number: 50, suffix: '+', label: 'Global events' },
+    { number: 10, suffix: 'K+', label: 'Audience reached' },
   ];
 
   return (
