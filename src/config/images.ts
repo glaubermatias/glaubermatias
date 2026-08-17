@@ -108,6 +108,7 @@ interface Bucket {
   beforeAfter: string[];
   bento: Record<string, string[]>;
   card: string[];
+  tools: string[];
 }
 
 const makeBucket = (): Bucket => ({
@@ -116,6 +117,7 @@ const makeBucket = (): Bucket => ({
   beforeAfter: [],
   bento: {},
   card: [],
+  tools: [],
 });
 
 // Pair each file with its key so we can sort by source filename, then keep URLs.
@@ -132,10 +134,11 @@ const tmp: Record<
     beforeAfter: Array<[string, string]>;
     bento: Record<string, Array<[string, string]>>;
     card: Array<[string, string]>;
+    tools: Array<[string, string]>;
   }
 > = {};
 
-const ensureTmp = (id: string) => (tmp[id] ||= { header: [], carousel: [], beforeAfter: [], bento: {}, card: [] });
+const ensureTmp = (id: string) => (tmp[id] ||= { header: [], carousel: [], beforeAfter: [], bento: {}, card: [], tools: [] });
 
 for (const [key, url] of Object.entries(PROJECT_FILES)) {
   // Radar inteligente: acha onde a palavra '/projects/' começa, ignorando o tamanho do caminho
@@ -180,6 +183,17 @@ for (const [key, url] of Object.entries(CARD_FILES)) {
   t.card.push([filename, url]);
 }
 
+// Tool logos (software icons) shown on project cards.
+for (const [key, url] of Object.entries(TOOL_FILES)) {
+  const projectsIndex = key.indexOf("/projects/");
+  if (projectsIndex === -1) continue;
+  const parts = key.substring(projectsIndex + "/projects/".length).split("/");
+  const id = parts[0];
+  const filename = parts[parts.length - 1];
+  if (!id || parts[1] !== "tools" || !filename) continue;
+  ensureTmp(id).tools.push([filename, url]);
+}
+
 // Materialize sorted buckets.
 for (const [id, t] of Object.entries(tmp)) {
   const b = makeBucket();
@@ -187,6 +201,7 @@ for (const [id, t] of Object.entries(tmp)) {
   b.carousel = sortedByKey(t.carousel);
   b.beforeAfter = sortedByKey(t.beforeAfter);
   b.card = sortedByKey(t.card);
+  b.tools = sortedByKey(t.tools);
   for (const [cat, list] of Object.entries(t.bento)) {
     b.bento[cat] = sortedByKey(list);
   }
