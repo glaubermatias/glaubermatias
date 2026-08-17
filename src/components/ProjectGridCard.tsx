@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ProjectData } from '@/data/projects';
+import { projectImages } from '@/config/images';
 
 interface ProjectGridCardProps {
   project: ProjectData;
@@ -15,14 +16,14 @@ interface ProjectGridCardProps {
  * and three text lines below: short title, meaningful title, year • company.
  */
 const ProjectGridCard = ({ project, index = 0, radiusClass = 'rounded-xl' }: ProjectGridCardProps) => {
+  const assets = projectImages[project.id];
   const image =
-    (project.cardImages && project.cardImages[0]) || project.images?.[0];
+    (assets?.cardImages && assets.cardImages[0]) ||
+    (project.cardImages && project.cardImages[0]) ||
+    project.images?.[0];
 
-  const tools = (project.tools ?? '')
-    .split(',')
-    .map((t) => t.trim())
-    .filter(Boolean)
-    .slice(0, 3);
+  const toolLogos = assets?.toolLogos ?? [];
+
 
   return (
     <motion.article
