@@ -1,4 +1,4 @@
-// Cache flush: 2026-06-02T03:00:00Z — universal stock bento fallback for empty projects.
+// Cache flush: 2026-08-17T02:00:00Z — strict card/header/carousel sourcing + tool logos.
 /**
  * Centralized image catalog — AUTO-DISCOVERED from src/assets/images/.
  *
@@ -288,10 +288,6 @@ const STOCK_FALLBACK: Record<string, string[]> = {
   "leadership-academy": [STOCK.exec1, STOCK.exec2, STOCK.exec3, STOCK.meeting1],
 };
 
-const STOCK_CARDS: Record<string, string[]> = {
-  "leadership-academy": [STOCK.exec1, STOCK.exec2, STOCK.exec3, STOCK.meeting1],
-};
-
 const STOCK_BENTO_FALLBACK: { id: string; label: string; images: { src: string }[] }[] = [
   {
     id: "equity",
@@ -312,7 +308,6 @@ const ALL_PROJECT_IDS = Array.from(new Set([...Object.keys(buckets), ...Object.k
 
 function buildEntry(id: string): ProjectImageEntry {
   const b = buckets[id] ?? makeBucket();
-  const stock = STOCK_FALLBACK[id] ?? [STOCK.exec1, STOCK.exec2, STOCK.exec3];
 
   // STRICT: carousel comes only from <id>/carousel. Empty folder = no carousel.
   const carousel = b.carousel;
