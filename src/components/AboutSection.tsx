@@ -77,7 +77,7 @@ const AboutSection = () => {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-4 border-t border-border">
+            <div className="grid grid-cols-3 gap-6 pt-4 border-t border-border">
               {stats.map((stat, index) => (
                 <motion.div
                   key={stat.label}
