@@ -40,6 +40,14 @@ const CARD_FILES = import.meta.glob("/src/assets/images/project-cards/**/*.{webp
   import: "default",
 }) as Record<string, string>;
 
+// Tool logos: /src/assets/images/projects/<id>/tools/*.{svg,png,webp,jpg}
+const TOOL_FILES = import.meta.glob("/src/assets/images/projects/**/tools/*.{svg,png,webp,jpg,jpeg,SVG,PNG,WEBP,JPG}", {
+  eager: true,
+  query: "?url",
+  import: "default",
+}) as Record<string, string>;
+
+
 const BEYOND_WORK_FILES = import.meta.glob(
   "/src/assets/images/about/beyond-work/*.{webp,jpg,jpeg,png,JPG,JPEG,PNG,WEBP}",
   { eager: true, query: "?url", import: "default" },
