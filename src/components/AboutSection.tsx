@@ -8,10 +8,9 @@ import AnimatedCounter from '@/components/AnimatedCounter';
 
 const AboutSection = () => {
   const stats = [
-    { number: 7, suffix: '+', label: 'Years of experience' },
-    { number: 500, suffix: '+', label: 'Presentations designed' },
-    { number: 50, suffix: '+', label: 'Global clients' },
-    { number: 10, suffix: 'M+', label: 'Audience reached' },
+    { number: 300, suffix: '+', label: 'Presentations designed' },
+    { number: 50, suffix: '+', label: 'Global events' },
+    { number: 10, suffix: 'K+', label: 'Audience reached' },
   ];
 
   return (
@@ -78,7 +77,7 @@ const AboutSection = () => {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-4 border-t border-border">
+            <div className="grid grid-cols-3 gap-6 pt-4 border-t border-border">
               {stats.map((stat, index) => (
                 <motion.div
                   key={stat.label}

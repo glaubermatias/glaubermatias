@@ -1,4 +1,4 @@
-// Cache flush: 2026-06-02T03:00:00Z — universal stock bento fallback for empty projects.
+// Cache flush: 2026-08-17T02:00:00Z — strict card/header/carousel sourcing + tool logos.
 /**
  * Centralized image catalog — AUTO-DISCOVERED from src/assets/images/.
  *
@@ -39,6 +39,14 @@ const CARD_FILES = import.meta.glob("/src/assets/images/project-cards/**/*.{webp
   query: "?url",
   import: "default",
 }) as Record<string, string>;
+
+// Tool logos: /src/assets/images/projects/<id>/tools/*.{svg,png,webp,jpg}
+const TOOL_FILES = import.meta.glob("/src/assets/images/projects/**/tools/*.{svg,png,webp,jpg,jpeg,SVG,PNG,WEBP,JPG}", {
+  eager: true,
+  query: "?url",
+  import: "default",
+}) as Record<string, string>;
+
 
 const BEYOND_WORK_FILES = import.meta.glob(
   "/src/assets/images/about/beyond-work/*.{webp,jpg,jpeg,png,JPG,JPEG,PNG,WEBP}",
@@ -100,6 +108,7 @@ interface Bucket {
   beforeAfter: string[];
   bento: Record<string, string[]>;
   card: string[];
+  tools: string[];
 }
 
 const makeBucket = (): Bucket => ({
@@ -108,6 +117,7 @@ const makeBucket = (): Bucket => ({
   beforeAfter: [],
   bento: {},
   card: [],
+  tools: [],
 });
 
 // Pair each file with its key so we can sort by source filename, then keep URLs.
@@ -124,10 +134,11 @@ const tmp: Record<
     beforeAfter: Array<[string, string]>;
     bento: Record<string, Array<[string, string]>>;
     card: Array<[string, string]>;
+    tools: Array<[string, string]>;
   }
 > = {};
 
-const ensureTmp = (id: string) => (tmp[id] ||= { header: [], carousel: [], beforeAfter: [], bento: {}, card: [] });
+const ensureTmp = (id: string) => (tmp[id] ||= { header: [], carousel: [], beforeAfter: [], bento: {}, card: [], tools: [] });
 
 for (const [key, url] of Object.entries(PROJECT_FILES)) {
   // Radar inteligente: acha onde a palavra '/projects/' começa, ignorando o tamanho do caminho
@@ -172,6 +183,17 @@ for (const [key, url] of Object.entries(CARD_FILES)) {
   t.card.push([filename, url]);
 }
 
+// Tool logos (software icons) shown on project cards.
+for (const [key, url] of Object.entries(TOOL_FILES)) {
+  const projectsIndex = key.indexOf("/projects/");
+  if (projectsIndex === -1) continue;
+  const parts = key.substring(projectsIndex + "/projects/".length).split("/");
+  const id = parts[0];
+  const filename = parts[parts.length - 1];
+  if (!id || parts[1] !== "tools" || !filename) continue;
+  ensureTmp(id).tools.push([filename, url]);
+}
+
 // Materialize sorted buckets.
 for (const [id, t] of Object.entries(tmp)) {
   const b = makeBucket();
@@ -179,6 +201,7 @@ for (const [id, t] of Object.entries(tmp)) {
   b.carousel = sortedByKey(t.carousel);
   b.beforeAfter = sortedByKey(t.beforeAfter);
   b.card = sortedByKey(t.card);
+  b.tools = sortedByKey(t.tools);
   for (const [cat, list] of Object.entries(t.bento)) {
     b.bento[cat] = sortedByKey(list);
   }
@@ -225,6 +248,7 @@ export interface ProjectImageEntry {
   header?: string;
   beforeAfter?: { before: string; after: string } | null;
   images: string[];
+  toolLogos: string[];
   bentoGalleries?: {
     id: string;
     label: string;
@@ -264,10 +288,6 @@ const STOCK_FALLBACK: Record<string, string[]> = {
   "leadership-academy": [STOCK.exec1, STOCK.exec2, STOCK.exec3, STOCK.meeting1],
 };
 
-const STOCK_CARDS: Record<string, string[]> = {
-  "leadership-academy": [STOCK.exec1, STOCK.exec2, STOCK.exec3, STOCK.meeting1],
-};
-
 const STOCK_BENTO_FALLBACK: { id: string; label: string; images: { src: string }[] }[] = [
   {
     id: "equity",
@@ -288,11 +308,13 @@ const ALL_PROJECT_IDS = Array.from(new Set([...Object.keys(buckets), ...Object.k
 
 function buildEntry(id: string): ProjectImageEntry {
   const b = buckets[id] ?? makeBucket();
-  const stock = STOCK_FALLBACK[id] ?? [STOCK.exec1, STOCK.exec2, STOCK.exec3];
 
-  const carousel = b.carousel.length > 0 ? b.carousel : stock;
+  // STRICT: carousel comes only from <id>/carousel. Empty folder = no carousel.
+  const carousel = b.carousel;
+  // STRICT: header comes only from <id>/header.
   const header = b.header[0];
-  const cardImages = b.card.length > 0 ? b.card : (STOCK_CARDS[id] ?? stock);
+  // STRICT: card covers come only from project-cards/<id>.
+  const cardImages = b.card;
 
   // No stock injection: an empty before-and-after folder means the section
   // is simply hidden on the project page.
@@ -343,6 +365,7 @@ function buildEntry(id: string): ProjectImageEntry {
     cardImages,
     beforeAfter,
     images: carousel,
+    toolLogos: b.tools,
   };
   if (galleries.length > 0) entry.bentoGalleries = galleries;
   return entry;

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ProjectData } from '@/data/projects';
+import { projectImages } from '@/config/images';
 
 interface ProjectGridCardProps {
   project: ProjectData;
@@ -15,14 +16,14 @@ interface ProjectGridCardProps {
  * and three text lines below: short title, meaningful title, year • company.
  */
 const ProjectGridCard = ({ project, index = 0, radiusClass = 'rounded-xl' }: ProjectGridCardProps) => {
+  const assets = projectImages[project.id];
   const image =
-    (project.cardImages && project.cardImages[0]) || project.images?.[0];
+    (assets?.cardImages && assets.cardImages[0]) ||
+    (project.cardImages && project.cardImages[0]) ||
+    project.images?.[0];
 
-  const tools = (project.tools ?? '')
-    .split(',')
-    .map((t) => t.trim())
-    .filter(Boolean)
-    .slice(0, 3);
+  const toolLogos = assets?.toolLogos ?? [];
+
 
   return (
     <motion.article
@@ -47,16 +48,24 @@ const ProjectGridCard = ({ project, index = 0, radiusClass = 'rounded-xl' }: Pro
 
           {/* Glass pills */}
           <div className="absolute left-4 top-4 z-10 flex flex-wrap items-center gap-2">
-            {tools.length > 0 && (
+            {toolLogos.length > 0 && (
               <span className="glass-pill">
-                {tools.map((tool, i) => (
-                  <span key={tool} className="flex items-center gap-2">
-                    {i > 0 && <span aria-hidden="true" className="opacity-50">·</span>}
-                    {tool}
-                  </span>
-                ))}
+                <span className="flex items-center gap-1.5">
+                  {toolLogos.map((logo) => (
+                    <img
+                      key={logo}
+                      src={logo}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      draggable={false}
+                      className="w-4 h-4 object-contain pointer-events-none select-none"
+                    />
+                  ))}
+                </span>
               </span>
             )}
+
             {project.cardCategory && (
               <span className="glass-pill">{project.cardCategory}</span>
             )}

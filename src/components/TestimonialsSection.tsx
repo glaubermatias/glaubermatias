@@ -4,21 +4,25 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const testimonials = [
   {
-    quote: 'Glauber transformed our pitch deck from a basic PowerPoint into a visual masterpiece. We closed our Series A within weeks.',
-    author: 'Sarah Chen',
-    role: 'CEO, TechVenture',
+    quote:
+      'Glauber really raised the bar for our materials, and it is impressive to see how the level of quality and professionalism has changed. You can see how much technical design knowledge he applies. This brings real value to our company by conveying professionalism and increasing our team\u2019s productivity.',
+    author: 'Chief of Staff',
+    role: 'QuintoAndar',
   },
   {
-    quote: 'The attention to detail and strategic thinking Glauber brings to every slide is remarkable. Truly a presentation designer at the top of his craft.',
-    author: 'Marcus Rodriguez',
-    role: 'VP Marketing, GlobalCorp',
+    quote:
+      'Glauber is one of the most creative and dedicated people I\u2019ve ever worked with. He was a key player in communicating the projects and deliveries of the board of directors and vice-president. A person we can count on, who will connect the dots to help tell the story in the best possible way, high-spirited, optimistic and super reliable.',
+    author: 'Planning & Analytics Head',
+    role: 'Itaú Unibanco',
   },
   {
-    quote: 'Working with Glauber was a game-changer for our annual conference. The keynote visuals were absolutely stunning.',
-    author: 'Elena Vasquez',
-    role: 'Event Director, Innovation Summit',
+    quote:
+      'He possesses proven, high-level skills in presentation design, making our communications professional, clear, and easy to digest. His relationship with deadlines is exemplary: he always delivers with consistency, even under immense pressure. He absorbs complex feedback from the executive team and translates it into clear, objective, and actionable outcomes.',
+    author: 'Learning & Development Leader',
+    role: 'QuintoAndar',
   },
 ];
+
 
 const TestimonialsSection = () => {
   const [current, setCurrent] = useState(0);

@@ -7,11 +7,11 @@ import ProjectGridCard from './ProjectGridCard';
 // Homepage showcase order requested by Glauber.
 const FEATURED_IDS = [
   'leadership-academy',
-  'investor-deck',
   'summit',
-  'template-library',
+  'investor-deck',
   'institutional-deck',
-  'tech-talks',
+  'template-library',
+  'design-masterclasses',
 ];
 
 const WorkSection = () => {
