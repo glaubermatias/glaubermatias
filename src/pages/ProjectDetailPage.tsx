@@ -766,8 +766,10 @@ const ProjectDetailPage = () => {
     const dynamicAssets = projectImages[projectId];
 
     const headerImage = dynamicAssets?.header || project.headerImage || project.images[0];
-    const heroCarousel = (dynamicAssets?.images || project.images).slice(0, 4);
-    const liveImages = dynamicAssets?.images?.length > 0 ? dynamicAssets.images : project.liveImages || project.images;
+    // STRICT: carousels only exist when the project's carousel folder has files.
+    const carouselImages = dynamicAssets ? (dynamicAssets.images ?? []) : (project.liveImages ?? []);
+    const heroCarousel = carouselImages.slice(0, 4);
+    const liveImages = carouselImages;
 
     // STRICT Before & After: Se o motor diz que a pasta tá vazia, FORÇAMOS a esconder.
     const beforeAfter = dynamicAssets !== undefined ? dynamicAssets.beforeAfter : (project.beforeAfter ?? null);
@@ -899,7 +901,7 @@ const ProjectDetailPage = () => {
         <section className="content-shell pt-8 md:pt-10">
           {/* Tagline */}
           <p className="text-xs tracking-[0.22em] uppercase text-muted-foreground font-sans">
-            {project.company || project.client} <span className="mx-2">•</span> {project.year}{" "}
+            {project.year} <span className="mx-2">•</span> {project.company || project.client}{" "}
             <span className="mx-2">•</span> {getCategoryLabel(project.category)}
           </p>
 
