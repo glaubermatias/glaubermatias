@@ -248,6 +248,7 @@ export interface ProjectImageEntry {
   header?: string;
   beforeAfter?: { before: string; after: string } | null;
   images: string[];
+  toolLogos: string[];
   bentoGalleries?: {
     id: string;
     label: string;
@@ -313,9 +314,12 @@ function buildEntry(id: string): ProjectImageEntry {
   const b = buckets[id] ?? makeBucket();
   const stock = STOCK_FALLBACK[id] ?? [STOCK.exec1, STOCK.exec2, STOCK.exec3];
 
-  const carousel = b.carousel.length > 0 ? b.carousel : stock;
+  // STRICT: carousel comes only from <id>/carousel. Empty folder = no carousel.
+  const carousel = b.carousel;
+  // STRICT: header comes only from <id>/header.
   const header = b.header[0];
-  const cardImages = b.card.length > 0 ? b.card : (STOCK_CARDS[id] ?? stock);
+  // STRICT: card covers come only from project-cards/<id>.
+  const cardImages = b.card;
 
   // No stock injection: an empty before-and-after folder means the section
   // is simply hidden on the project page.
@@ -366,6 +370,7 @@ function buildEntry(id: string): ProjectImageEntry {
     cardImages,
     beforeAfter,
     images: carousel,
+    toolLogos: b.tools,
   };
   if (galleries.length > 0) entry.bentoGalleries = galleries;
   return entry;
