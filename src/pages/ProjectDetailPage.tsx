@@ -1072,8 +1072,10 @@ const ProjectDetailPage = () => {
             {bentoBlock}
             {narrativeBlock}
             {/* Divider standing in for the bento grid's original position */}
-            <section className="content-shell pt-10 md:pt-12">
-              <hr className="border-t border-foreground/10" />
+            <section className="content-shell">
+              <div className="py-8 md:py-10">
+                <hr className="border-t border-foreground/10" />
+              </div>
             </section>
           </>
         )}
@@ -1100,8 +1102,10 @@ const ProjectDetailPage = () => {
             <HeroCarousel images={derived.liveImages} title={project.title} />
           </section>
         ) : (
-          <section className="content-shell pt-14 md:pt-16">
-            <hr className="border-t border-foreground/10" />
+          <section className="content-shell">
+            <div className="py-8 md:py-10">
+              <hr className="border-t border-foreground/10" />
+            </div>
           </section>
         )}
 
