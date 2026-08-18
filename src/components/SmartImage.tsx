@@ -61,7 +61,7 @@ export const SmartImage = ({
           className,
           'pointer-events-none select-none transition-opacity duration-500',
           loaded ? 'opacity-100' : 'opacity-0',
-઻       )}
+)}
         style={style}
       />
     </>
