@@ -265,6 +265,17 @@ const BENTO_META: Record<string, Array<{ id: string; label: string }>> = {
     { id: "equity", label: "Equity" },
     { id: "hiring", label: "Hiring" },
   ],
+  "design-masterclasses": [
+    { id: "impactful-presentations", label: "Impactful presentations" },
+    { id: "data-visualization", label: "Data visualization" },
+  ],
+  "template-library": [
+    { id: "bullet-points", label: "Bullet points" },
+    { id: "timeline", label: "Timeline" },
+    { id: "charts", label: "Charts" },
+    { id: "frameworks", label: "Frameworks" },
+    { id: "org-charts", label: "Org charts" },
+  ],
 };
 
 const prettify = (id: string) =>

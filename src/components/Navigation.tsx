@@ -86,7 +86,7 @@ const Navigation = () => {
             </a>
 
             {/* Desktop items pill */}
-            <div className="nav-glass hidden md:flex h-14 items-center gap-1 rounded-full px-1.5 py-1.5">
+            <div className="nav-glass hidden md:flex h-14 items-stretch gap-1 rounded-full p-1.5">
               {NAV_ITEMS.map((item) => {
                 const active = isActive(item.href);
                 return (
@@ -95,7 +95,7 @@ const Navigation = () => {
                     href={item.href}
                     onClick={(e) => handleLinkClick(e, item.href)}
                     aria-current={active ? 'page' : undefined}
-                    className={`my-1 flex items-center rounded-full px-4 py-1.5 text-base text-black transition-colors duration-200 ${
+                    className={`flex items-center rounded-full px-4 text-base leading-none text-black transition-colors duration-200 ${
                       active ? 'bg-black/10' : 'hover:bg-black/5'
                     }`}
                   >
