@@ -8,9 +8,9 @@ interface SmartImageProps extends ImgHTMLAttributes<HTMLImageElement> {
 
 /**
  * <img> wrapper that paints an instant skeleton (pulse) while the real
- * image decodes in the background, then fades it in. Designed for use
- * inside a `relative` parent (bento tiles, carousel slides). Typography
- * is never blocked — the skeleton is purely visual.
+ * image decodes in the background, then fades it in. The native "broken
+ * image" icon is never visible: on error the <img> stays hidden and the
+ * skeleton remains in place.
  */
 export const SmartImage = ({
   className,
@@ -21,15 +21,17 @@ export const SmartImage = ({
   decoding = 'async',
   ...rest
 }: SmartImageProps) => {
-  const [loaded, setLoaded] = useState(false);
+  const [status, setStatus] = useState<'loading' | 'loaded' | 'error'>('loading');
   const imgRef = useRef<HTMLImageElement | null>(null);
 
   // Cache hits don't always fire onLoad — flip immediately if the
   // underlying <img> is already complete on mount.
   useEffect(() => {
     const el = imgRef.current;
-    if (el && el.complete && el.naturalWidth > 0) setLoaded(true);
-  }, []);
+    if (el && el.complete && el.naturalWidth > 0) setStatus('loaded');
+  }, [rest.src]);
+
+  const loaded = status === 'loaded';
 
   return (
     <>
@@ -48,15 +50,19 @@ export const SmartImage = ({
         decoding={decoding}
         draggable={false}
         onLoad={(e) => {
-          setLoaded(true);
+          setStatus('loaded');
           onLoad?.(e);
         }}
         onError={(e) => {
-          setLoaded(true);
+          setStatus('error');
           onError?.(e);
         }}
-        className={cn(className, 'pointer-events-none select-none', !loaded && 'opacity-0')}
-        style={{ transition: 'opacity 220ms ease-out', ...style }}
+        className={cn(
+          className,
+          'pointer-events-none select-none transition-opacity duration-500',
+          loaded ? 'opacity-100' : 'opacity-0',
+઻       )}
+        style={style}
       />
     </>
   );
