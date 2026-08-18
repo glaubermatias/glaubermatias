@@ -22,7 +22,6 @@ export const SmartImage = ({
   ...rest
 }: SmartImageProps) => {
   const [loaded, setLoaded] = useState(false);
-  const [failed, setFailed] = useState(false);
   const imgRef = useRef<HTMLImageElement | null>(null);
 
   // Cache hits don't always fire onLoad — flip immediately if the
@@ -34,7 +33,7 @@ export const SmartImage = ({
 
   return (
     <>
-      {(!loaded || failed) && (
+      {!loaded && (
         <div
           aria-hidden
           className={cn(
@@ -53,16 +52,11 @@ export const SmartImage = ({
           onLoad?.(e);
         }}
         onError={(e) => {
-          // Never reveal the browser's native broken-image icon.
-          setFailed(true);
+          setLoaded(true);
           onError?.(e);
         }}
-        className={cn(
-          className,
-          'pointer-events-none select-none transition-opacity duration-500',
-          loaded && !failed ? 'opacity-100' : 'opacity-0',
-        )}
-        style={style}
+        className={cn(className, 'pointer-events-none select-none', !loaded && 'opacity-0')}
+        style={{ transition: 'opacity 220ms ease-out', ...style }}
       />
     </>
   );
