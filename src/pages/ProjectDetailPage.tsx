@@ -862,7 +862,7 @@ const ProjectDetailPage = () => {
         {/* Always render all three blocks. Each block reads only its own */}
         {/* dedicated field, so editing one never affects another.        */}
         {/* ============================================================= */}
-        <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
+        <section className="content-shell pt-14 md:pt-16">
           <div className="space-y-0">
             <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10">
               <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">Context</h3>
@@ -956,7 +956,7 @@ const ProjectDetailPage = () => {
               draggable={false}
               className="absolute inset-0 h-full w-full object-cover pointer-events-none select-none"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
+            <div className="absolute inset-0 bg-black/60" />
             <div className="relative z-10 px-6 md:px-14 min-h-[300px] md:min-h-[340px] flex flex-col justify-end pt-14 md:pt-20 pb-12 md:pb-16">
               <Link
                 to="/work"
@@ -1072,8 +1072,10 @@ const ProjectDetailPage = () => {
             {bentoBlock}
             {narrativeBlock}
             {/* Divider standing in for the bento grid's original position */}
-            <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-10 md:pt-12">
-              <hr className="border-t border-foreground/10" />
+            <section className="content-shell">
+              <div className="py-8 md:py-10">
+                <hr className="border-t border-foreground/10" />
+              </div>
             </section>
           </>
         )}
@@ -1081,7 +1083,7 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 6. TRADE-OFFS & CONSTRAINTS - always rendered                  */}
         {/* ============================================================= */}
-        <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-10 md:pt-12">
+        <section className="content-shell pt-10 md:pt-12">
           <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-6 md:py-8">
             <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
               Trade-offs &amp; Constraints
@@ -1100,15 +1102,17 @@ const ProjectDetailPage = () => {
             <HeroCarousel images={derived.liveImages} title={project.title} />
           </section>
         ) : (
-          <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
-            <hr className="border-t border-foreground/10" />
+          <section className="content-shell">
+            <div className="py-8 md:py-10">
+              <hr className="border-t border-foreground/10" />
+            </div>
           </section>
         )}
 
         {/* ============================================================= */}
         {/* 8. CLOSING - IMPACT                                            */}
         {/* ============================================================= */}
-        <section className="max-w-[1100px] mx-auto px-8 md:px-16 pt-12 md:pt-16 text-center">
+        <section className="content-shell pt-12 md:pt-16 text-center">
           {project.quote && (
             <figure className="my-16 max-w-3xl mx-auto">
               <span className="font-display text-7xl text-primary leading-none block mb-2">"</span>
@@ -1133,7 +1137,7 @@ const ProjectDetailPage = () => {
         {/* 8b. NDA / CONTACT BLOCK                                        */}
         {/* ============================================================= */}
         {project.isNDA === true && (
-        <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-16 md:pt-20">
+        <section className="content-shell pt-16 md:pt-20">
           <div className="relative w-full rounded-md overflow-hidden isolate" style={{ background: "#f5f5f5" }}>
             <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 md:px-12 py-7 md:py-9">
               <h2 className="font-display text-xl md:text-2xl font-semibold text-foreground mb-2 leading-tight">
