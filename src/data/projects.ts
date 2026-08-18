@@ -40,6 +40,7 @@ export interface ProjectData {
   cardCategory?: string;
   duration?: string;
   featured?: boolean;
+  isNDA?: boolean;
   bigNumbers?: BigNumber[];
   overview?: string;
   challenge?: string;
@@ -74,6 +75,7 @@ export interface ProjectData {
 
 const _projectsRaw: ProjectData[] = [
   {
+    isNDA: true,
     id: 'leadership-academy',
     title: 'High Performance Teams',
     headerTitle: 'Leadership Academy',
@@ -112,6 +114,7 @@ const _projectsRaw: ProjectData[] = [
     results: ['Successfully deployed across 5 leadership cohorts', 'Increased participant engagement by 40%', 'Became the standard template for all leadership programs'],
   },
   {
+    isNDA: true,
     id: 'investor-deck',
     title: 'Investor deck',
     headerTitle: 'Investor deck',
@@ -126,6 +129,7 @@ const _projectsRaw: ProjectData[] = [
     featured: true,
   },
   {
+    isNDA: true,
     id: 'summit',
     title: 'Summit',
     headerTitle: 'Summit',
@@ -141,6 +145,7 @@ const _projectsRaw: ProjectData[] = [
     featured: true,
   },
   {
+    isNDA: false,
     id: 'template-library',
     title: 'Template library',
     headerTitle: 'Template library',
@@ -155,6 +160,7 @@ const _projectsRaw: ProjectData[] = [
     featured: true,
   },
   {
+    isNDA: false,
     id: 'design-masterclasses',
     title: 'Design masterclasses',
     headerTitle: 'Design masterclasses',
@@ -169,6 +175,7 @@ const _projectsRaw: ProjectData[] = [
     featured: true,
   },
   {
+    isNDA: true,
     id: 'institutional-deck',
     title: 'Institutional deck',
     headerTitle: 'Institutional deck',
@@ -182,6 +189,7 @@ const _projectsRaw: ProjectData[] = [
     client: 'QuintoAndar',
   },
   {
+    isNDA: false,
     id: 'tech-talks',
     title: 'Tech talks',
     headerTitle: 'Tech talks',
@@ -195,6 +203,7 @@ const _projectsRaw: ProjectData[] = [
     client: 'QuintoAndar',
   },
   {
+    isNDA: false,
     id: 'newsletter',
     title: 'Newsletter',
     headerTitle: 'Newsletter',
@@ -207,32 +216,7 @@ const _projectsRaw: ProjectData[] = [
     client: 'QuintoAndar',
   },
   {
-    id: 'all-hands',
-    title: 'All Hands',
-    headerTitle: 'All Hands',
-    meaningfulTitle: 'Aligning company-wide updates with clear, executive-ready storytelling.',
-    description: 'Engaging company-wide all-hands presentations that align teams and communicate strategic vision.',
-    category: 'executive-decks',
-    company: 'QuintoAndar',
-    cardCategory: 'Executive Decks',
-    images: projectImages['all-hands'].images,
-    year: '2026',
-    client: 'QuintoAndar',
-  },
-  {
-    id: 'brilliant-youth',
-    title: 'Brilliant Youth',
-    headerTitle: 'Brilliant Youth',
-    cardDescription: 'Engaging onboarding experience for young talent',
-    description: 'Engaging onboarding program creating an impactful first impression and accelerating productivity.',
-    category: 'hr-initiatives',
-    company: 'QuintoAndar',
-    cardCategory: 'HR Initiatives',
-    images: projectImages['brilliant-youth'].images,
-    year: '2025',
-    client: 'QuintoAndar',
-  },
-  {
+    isNDA: false,
     id: 'tech-conferences',
     title: 'Tech conferences',
     headerTitle: 'Tech conferences',
@@ -245,6 +229,7 @@ const _projectsRaw: ProjectData[] = [
     client: 'QuintoAndar',
   },
   {
+    isNDA: false,
     id: 'ny-trip-itinerary',
     title: 'NY trip itinerary',
     headerTitle: 'NY trip itinerary',
@@ -257,6 +242,7 @@ const _projectsRaw: ProjectData[] = [
     client: 'Personal project',
   },
   {
+    isNDA: false,
     id: 'booklet',
     title: 'Booklet',
     headerTitle: 'Booklet',
@@ -267,31 +253,6 @@ const _projectsRaw: ProjectData[] = [
     images: projectImages['booklet'].images,
     year: '2024',
     client: 'UCLA',
-  },
-  {
-    id: 'aldi-case-study',
-    title: 'ALDI case study',
-    headerTitle: 'ALDI case study',
-    cardDescription: 'Strategic analysis for retail optimization and market positioning',
-    description: 'Strategic analysis and presentation case study for retail optimization and market positioning.',
-    category: 'side-projects',
-    company: 'ALDI',
-    cardCategory: 'Side Projects',
-    images: projectImages['aldi-case-study'].images,
-    year: '2023',
-    client: 'ALDI',
-  },
-  {
-    id: 'uberall-dashboard',
-    title: 'Uberall Dashboard',
-    headerTitle: 'Uberall Dashboard',
-    description: 'Dashboard design and data visualization project for location marketing analytics platform.',
-    category: 'side-projects',
-    company: 'Uberall',
-    cardCategory: 'Side Projects',
-    images: projectImages['uberall-dashboard'].images,
-    year: '2023',
-    client: 'Uberall',
   },
 ];
 
@@ -325,6 +286,20 @@ const makeProcessTiles = (p: ProjectData): ProcessImage[] => {
   return source;
 };
 
+const PROJECT_ORDER = [
+  'leadership-academy',
+  'summit',
+  'investor-deck',
+  'institutional-deck',
+  'template-library',
+  'design-masterclasses',
+  'tech-talks',
+  'tech-conferences',
+  'ny-trip-itinerary',
+  'booklet',
+  'newsletter',
+];
+
 const normalizedProjects: ProjectData[] = _projectsRaw.map((p) => {
   const galleryLabel = p.galleryLabel ?? p.headerTitle ?? p.title;
 
@@ -351,7 +326,7 @@ const normalizedProjects: ProjectData[] = _projectsRaw.map((p) => {
       }))
       : [{ id: `${p.id}-gallery`, label: galleryLabel, images: makeProcessTiles(p) }],
   };
-});
+}).sort((a, b) => PROJECT_ORDER.indexOf(a.id) - PROJECT_ORDER.indexOf(b.id));
 
 export const projects: ProjectData[] = normalizedProjects;
 
@@ -367,8 +342,13 @@ export const getRelatedProjects = (projectId: string, limit: number = 3): Projec
     .filter(p => p.category === currentProject.category && p.id !== projectId)
     .filter(p => Boolean(p.headerTitle && p.meaningfulTitle && p.tldr));
 
-  return sameCategory
-    .slice(0, limit);
+  if (sameCategory.length >= limit) return sameCategory.slice(0, limit);
+
+  const fillers = normalizedProjects.filter(
+    (p) => p.id !== projectId && !sameCategory.some((s) => s.id === p.id),
+  );
+
+  return [...sameCategory, ...fillers].slice(0, limit);
 };
 
 export const getFeaturedProjects = (limit: number = 6): ProjectData[] => {

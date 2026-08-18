@@ -1071,6 +1071,10 @@ const ProjectDetailPage = () => {
           <>
             {bentoBlock}
             {narrativeBlock}
+            {/* Divider standing in for the bento grid's original position */}
+            <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-10 md:pt-12">
+              <hr className="border-t border-foreground/10" />
+            </section>
           </>
         )}
 
@@ -1096,7 +1100,7 @@ const ProjectDetailPage = () => {
             <HeroCarousel images={derived.liveImages} title={project.title} />
           </section>
         ) : (
-          <section className="content-shell pt-14 md:pt-16">
+          <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
             <hr className="border-t border-foreground/10" />
           </section>
         )}
@@ -1128,6 +1132,7 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 8b. NDA / CONTACT BLOCK                                        */}
         {/* ============================================================= */}
+        {project.isNDA === true && (
         <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-16 md:pt-20">
           <div className="relative w-full rounded-md overflow-hidden isolate" style={{ background: "#f5f5f5" }}>
             <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 md:px-12 py-7 md:py-9">
@@ -1157,6 +1162,7 @@ const ProjectDetailPage = () => {
             </div>
           </div>
         </section>
+        )}
 
         {/* ============================================================= */}
         {/* 9. RELATED WORK                                                */}

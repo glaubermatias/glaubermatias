@@ -80,13 +80,13 @@ const Navigation = () => {
               href="/"
               onClick={(e) => handleLinkClick(e, '/')}
               aria-label="Home — Glauber Matias"
-              className="nav-glass flex h-16 w-16 items-center justify-center rounded-full font-display text-base font-medium text-black"
+              className="nav-glass flex h-14 w-14 items-center justify-center rounded-full font-display text-base font-medium text-black"
             >
               GM
             </a>
 
             {/* Desktop items pill */}
-            <div className="nav-glass hidden md:flex h-16 items-center gap-1 rounded-full p-1">
+            <div className="nav-glass hidden md:flex h-14 items-center gap-1 rounded-full px-1.5 py-1.5">
               {NAV_ITEMS.map((item) => {
                 const active = isActive(item.href);
                 return (
@@ -95,7 +95,7 @@ const Navigation = () => {
                     href={item.href}
                     onClick={(e) => handleLinkClick(e, item.href)}
                     aria-current={active ? 'page' : undefined}
-                    className={`rounded-full px-4 py-1.5 text-sm text-black transition-colors duration-200 ${
+                    className={`my-1 flex items-center rounded-full px-4 py-1.5 text-base text-black transition-colors duration-200 ${
                       active ? 'bg-black/10' : 'hover:bg-black/5'
                     }`}
                   >
@@ -114,7 +114,7 @@ const Navigation = () => {
               aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isMobileMenuOpen}
               aria-controls="floating-nav-menu"
-              className="nav-glass flex h-16 w-16 items-center justify-center rounded-full text-black"
+              className="nav-glass flex h-14 w-14 items-center justify-center rounded-full text-black"
             >
               {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
