@@ -217,34 +217,6 @@ const _projectsRaw: ProjectData[] = [
   },
   {
     isNDA: false,
-    id: 'all-hands',
-    title: 'All Hands',
-    headerTitle: 'All Hands',
-    meaningfulTitle: 'Aligning company-wide updates with clear, executive-ready storytelling.',
-    description: 'Engaging company-wide all-hands presentations that align teams and communicate strategic vision.',
-    category: 'executive-decks',
-    company: 'QuintoAndar',
-    cardCategory: 'Executive Decks',
-    images: projectImages['all-hands'].images,
-    year: '2026',
-    client: 'QuintoAndar',
-  },
-  {
-    isNDA: false,
-    id: 'brilliant-youth',
-    title: 'Brilliant Youth',
-    headerTitle: 'Brilliant Youth',
-    cardDescription: 'Engaging onboarding experience for young talent',
-    description: 'Engaging onboarding program creating an impactful first impression and accelerating productivity.',
-    category: 'hr-initiatives',
-    company: 'QuintoAndar',
-    cardCategory: 'HR Initiatives',
-    images: projectImages['brilliant-youth'].images,
-    year: '2025',
-    client: 'QuintoAndar',
-  },
-  {
-    isNDA: false,
     id: 'tech-conferences',
     title: 'Tech conferences',
     headerTitle: 'Tech conferences',
@@ -314,6 +286,20 @@ const makeProcessTiles = (p: ProjectData): ProcessImage[] => {
   return source;
 };
 
+const PROJECT_ORDER = [
+  'leadership-academy',
+  'summit',
+  'investor-deck',
+  'institutional-deck',
+  'template-library',
+  'design-masterclasses',
+  'tech-talks',
+  'tech-conferences',
+  'ny-trip-itinerary',
+  'booklet',
+  'newsletter',
+];
+
 const normalizedProjects: ProjectData[] = _projectsRaw.map((p) => {
   const galleryLabel = p.galleryLabel ?? p.headerTitle ?? p.title;
 
@@ -340,7 +326,7 @@ const normalizedProjects: ProjectData[] = _projectsRaw.map((p) => {
       }))
       : [{ id: `${p.id}-gallery`, label: galleryLabel, images: makeProcessTiles(p) }],
   };
-});
+}).sort((a, b) => PROJECT_ORDER.indexOf(a.id) - PROJECT_ORDER.indexOf(b.id));
 
 export const projects: ProjectData[] = normalizedProjects;
 
@@ -356,8 +342,13 @@ export const getRelatedProjects = (projectId: string, limit: number = 3): Projec
     .filter(p => p.category === currentProject.category && p.id !== projectId)
     .filter(p => Boolean(p.headerTitle && p.meaningfulTitle && p.tldr));
 
-  return sameCategory
-    .slice(0, limit);
+  if (sameCategory.length >= limit) return sameCategory.slice(0, limit);
+
+  const fillers = normalizedProjects.filter(
+    (p) => p.id !== projectId && !sameCategory.some((s) => s.id === p.id),
+  );
+
+  return [...sameCategory, ...fillers].slice(0, limit);
 };
 
 export const getFeaturedProjects = (limit: number = 6): ProjectData[] => {
