@@ -21,7 +21,7 @@ const PageHeader = ({ children, rightSlot, flushRight = false }: PageHeaderProps
               {rightSlot}
             </div>
           )}
-          <div className="relative z-10 px-6 md:px-14">
+          <div className="relative z-10 px-6 md:px-[4.25rem]">
             <div
               className={`grid grid-cols-1 ${rightSlot ? 'md:grid-cols-12' : ''} gap-10 md:gap-12 items-stretch min-h-[300px] md:min-h-[340px]`}
             >
