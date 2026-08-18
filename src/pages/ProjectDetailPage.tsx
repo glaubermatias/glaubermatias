@@ -1096,7 +1096,7 @@ const ProjectDetailPage = () => {
             <HeroCarousel images={derived.liveImages} title={project.title} />
           </section>
         ) : (
-          <section className="content-shell pt-14 md:pt-16">
+          <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
             <hr className="border-t border-foreground/10" />
           </section>
         )}
