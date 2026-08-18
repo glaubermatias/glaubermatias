@@ -1071,6 +1071,10 @@ const ProjectDetailPage = () => {
           <>
             {bentoBlock}
             {narrativeBlock}
+            {/* Divider standing in for the bento grid's original position */}
+            <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-10 md:pt-12">
+              <hr className="border-t border-foreground/10" />
+            </section>
           </>
         )}
 
