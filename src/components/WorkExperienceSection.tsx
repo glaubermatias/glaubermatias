@@ -53,7 +53,7 @@ const WorkExperienceSection = () => {
     setExpandedId(expandedId === id ? null : id);
   };
   return <section id="experience" className="lg:py-[20px] py-0">
-      <div className="max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
+      <div className="content-shell">
         <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold mb-8">
           CV
         </h2>
@@ -134,7 +134,7 @@ const WorkExperienceSection = () => {
                   ease: 'easeInOut'
                 }} className="overflow-hidden">
                         <ul className="mt-4 space-y-2.5">
-                          {exp.expandedDetails.map((detail, idx) => <li key={idx} className="flex gap-3 text-muted-foreground text-sm leading-relaxed">
+                          {exp.expandedDetails.map((detail, idx) => <li key={idx} className="flex gap-3 text-foreground text-sm leading-relaxed">
                               <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                               <span>{detail}</span>
                             </li>)}

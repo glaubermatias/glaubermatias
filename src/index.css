@@ -203,15 +203,15 @@
 
 @media (min-width: 768px) {
   .content-shell {
-    padding-left: calc(2rem + 3.75rem);
-    padding-right: calc(2rem + 3.75rem);
+    padding-left: calc(2rem + 4.25rem);
+    padding-right: calc(2rem + 4.25rem);
   }
 }
 
 @media (min-width: 1280px) {
   .content-shell {
-    padding-left: calc(2.5rem + 3.75rem);
-    padding-right: calc(2.5rem + 3.75rem);
+    padding-left: calc(2.5rem + 4.25rem);
+    padding-right: calc(2.5rem + 4.25rem);
   }
 }
 
