@@ -269,7 +269,7 @@ const BentoGrid = ({
           key={i}
           type="button"
           onClick={() => onOpen(i)}
-          className="group relative overflow-hidden rounded-md bg-muted"
+          className={tileClass}
         >
           <SmartImage
             src={img.src}
