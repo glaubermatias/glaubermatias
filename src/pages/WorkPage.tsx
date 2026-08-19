@@ -5,11 +5,13 @@ import PageLayout from '@/components/PageLayout';
 import PageHeader from '@/components/PageHeader';
 import ProjectGridCard from '@/components/ProjectGridCard';
 
-import { projects, ProjectCategory } from '@/data/projects';
+import { projects, getActiveCategories, ProjectCategory } from '@/data/projects';
 
 const WorkPage = () => {
   const { t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>('all');
+
+  const activeCategories = useMemo(() => new Set(getActiveCategories()), []);
 
   const categories: { key: ProjectCategory; label: string }[] = [
     { key: 'all', label: t.work.categories.all },
@@ -18,7 +20,7 @@ const WorkPage = () => {
     { key: 'templates', label: t.work.categories.templates },
     { key: 'hr-initiatives', label: t.work.categories.hrInitiatives },
     { key: 'side-projects', label: t.work.categories.sideProjects },
-  ];
+  ].filter((cat) => cat.key === 'all' || activeCategories.has(cat.key as ProjectCategory));
 
   const filteredProjects = useMemo(
     () =>
