@@ -41,6 +41,8 @@ export interface ProjectData {
   duration?: string;
   featured?: boolean;
   isNDA?: boolean;
+  /** Hidden projects stay in the registry but never surface in the UI. */
+  hidden?: boolean;
   bigNumbers?: BigNumber[];
   overview?: string;
   challenge?: string;
@@ -449,7 +451,9 @@ const normalizedProjects: ProjectData[] = _projectsRaw.map((p) => {
       }))
       : [{ id: `${p.id}-gallery`, label: galleryLabel, images: makeProcessTiles(p) }],
   };
-}).sort((a, b) => PROJECT_ORDER.indexOf(a.id) - PROJECT_ORDER.indexOf(b.id));
+})
+  .filter((p) => p.hidden !== true)
+  .sort((a, b) => PROJECT_ORDER.indexOf(a.id) - PROJECT_ORDER.indexOf(b.id));
 
 export const projects: ProjectData[] = normalizedProjects;
 
@@ -473,6 +477,10 @@ export const getRelatedProjects = (projectId: string, limit: number = 3): Projec
 
   return [...sameCategory, ...fillers].slice(0, limit);
 };
+
+/** Categories that currently have at least one visible project. */
+export const getActiveCategories = (): ProjectCategory[] =>
+  Array.from(new Set(normalizedProjects.map((p) => p.category)));
 
 export const getFeaturedProjects = (limit: number = 6): ProjectData[] => {
   return normalizedProjects.filter(p => p.featured).slice(0, limit);
