@@ -34,6 +34,14 @@ const PROJECT_FILES = import.meta.glob("/src/assets/images/projects/**/*.{webp,j
   import: "default",
 }) as Record<string, string>;
 
+// CDN-hosted media (large files externalized via lovable-assets). Each pointer
+// lives exactly where the binary would have been, e.g.
+//   projects/<id>/carousel/booklet-video.mp4.asset.json
+const PROJECT_ASSET_POINTERS = import.meta.glob("/src/assets/images/projects/**/*.asset.json", {
+  eager: true,
+  import: "default",
+}) as Record<string, { url: string }>;
+
 const CARD_FILES = import.meta.glob("/src/assets/images/project-cards/**/*.{webp,jpg,jpeg,png,JPG,JPEG,PNG,WEBP}", {
   eager: true,
   query: "?url",
@@ -140,7 +148,12 @@ const tmp: Record<
 
 const ensureTmp = (id: string) => (tmp[id] ||= { header: [], carousel: [], beforeAfter: [], bento: {}, card: [], tools: [] });
 
-for (const [key, url] of Object.entries(PROJECT_FILES)) {
+const PROJECT_MEDIA: Record<string, string> = { ...PROJECT_FILES };
+for (const [key, pointer] of Object.entries(PROJECT_ASSET_POINTERS)) {
+  if (pointer?.url) PROJECT_MEDIA[key.replace(/\.asset\.json$/, "")] = pointer.url;
+}
+
+for (const [key, url] of Object.entries(PROJECT_MEDIA)) {
   // Radar inteligente: acha onde a palavra '/projects/' começa, ignorando o tamanho do caminho
   const projectsIndex = key.indexOf("/projects/");
   if (projectsIndex === -1) continue;
