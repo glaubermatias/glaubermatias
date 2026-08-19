@@ -664,7 +664,19 @@ const CenterStageCarousel = ({ images }: { images: string[] }) => {
 /* ------------------------------------------------------------------ */
 /* Hero carousel (initial visual delivery)                             */
 /* ------------------------------------------------------------------ */
-const HeroCarousel = ({ images, title }: { images: string[]; title: string }) => {
+const isVideo = (src: string) => /\.(mp4|webm|mov)(\?|$)/i.test(src);
+
+const HeroCarousel = ({
+  images,
+  title,
+  aspectClass = "aspect-[16/9]",
+  widthClass = "w-full",
+}: {
+  images: string[];
+  title: string;
+  aspectClass?: string;
+  widthClass?: string;
+}) => {
   const [idx, setIdx] = useState(0);
   const total = images.length;
   const prev = () => setIdx((i) => (i - 1 + total) % total);
@@ -680,29 +692,47 @@ const HeroCarousel = ({ images, title }: { images: string[]; title: string }) =>
     if (Math.abs(dx) > 40) (dx < 0 ? next : prev)();
   };
 
+  const current = images[idx];
+
   return (
-    <div className="relative w-full">
+    <div className={`relative mx-auto ${widthClass}`}>
       <div
-        className="relative aspect-[16/9] w-full overflow-hidden rounded-md bg-muted"
+        className={`relative ${aspectClass} w-full overflow-hidden rounded-md bg-muted`}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
         <div className="absolute inset-0 animate-pulse bg-muted" aria-hidden />
         <AnimatePresence mode="wait">
-          <motion.img
-            key={idx}
-            src={images[idx]}
-            alt={`${title} – ${idx + 1}`}
-            loading="lazy"
-            decoding="async"
-            draggable={false}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="absolute inset-0 h-full w-full object-cover pointer-events-none select-none"
-          />
+          {isVideo(current) ? (
+            <motion.video
+              key={idx}
+              src={current}
+              controls
+              playsInline
+              preload="metadata"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="absolute inset-0 h-full w-full object-contain bg-black"
+            />
+          ) : (
+            <motion.img
+              key={idx}
+              src={current}
+              alt={`${title} – ${idx + 1}`}
+              loading="lazy"
+              decoding="async"
+              draggable={false}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="absolute inset-0 h-full w-full object-cover pointer-events-none select-none"
+            />
+          )}
         </AnimatePresence>
+
 
         {total > 1 && (
           <>
