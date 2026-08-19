@@ -1238,9 +1238,9 @@ const ProjectDetailPage = () => {
                 className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
               >
                 <ArrowLeft className="w-4 h-4" />
-                Back to all projects
+                Back to Work
               </Link>
-              <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground mb-10">Related work</h3>
+              <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground mb-10">Related projects</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
                 {relatedProjects.slice(0, 3).map((p, i) => (
                   <ProjectGridCard key={p.id} project={p} index={i} radiusClass="rounded-lg" />
