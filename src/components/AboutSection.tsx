@@ -11,7 +11,7 @@ const AboutSection = () => {
     { number: 7, suffix: '+', label: 'Years of experience' },
     { number: 300, suffix: '+', label: 'Presentations designed' },
     { number: 50, suffix: '+', label: 'Global events' },
-    { number: 10, suffix: 'K+', label: 'Audience reached' },
+    { number: 10000, suffix: '+', label: 'Audience reached' },
   ];
 
   return (
