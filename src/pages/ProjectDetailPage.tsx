@@ -242,11 +242,28 @@ const getBentoLayout = (count: number): BentoLayout => {
   return { cols: "md:grid-cols-4", tiles };
 };
 
-const BentoGrid = ({ images, onOpen }: { images: ProcessImage[]; onOpen: (i: number) => void }) => {
-  // Uniform 4-column × 2-row grid. Row height matches the previous featured
-  // tile height (2 × 200px + gap) so the overall block stays the same size.
+const BentoGrid = ({
+  images,
+  onOpen,
+  variant = "default",
+}: {
+  images: ProcessImage[];
+  onOpen: (i: number) => void;
+  variant?: "default" | "portrait";
+}) => {
+  // "portrait" is used by projects whose assets are vertical (e.g. 1282×1770):
+  // more columns, and each tile keeps the native aspect ratio instead of a
+  // fixed row height.
+  const gridClass =
+    variant === "portrait"
+      ? "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4"
+      : "grid grid-cols-2 md:grid-cols-4 auto-rows-[minmax(180px,1fr)] md:auto-rows-[minmax(200px,1fr)] gap-3 md:gap-4";
+  const tileClass =
+    variant === "portrait"
+      ? "group relative overflow-hidden rounded-md bg-muted aspect-[1282/1770]"
+      : "group relative overflow-hidden rounded-md bg-muted";
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[minmax(180px,1fr)] md:auto-rows-[minmax(200px,1fr)] gap-3 md:gap-4">
+    <div className={gridClass}>
       {images.map((img, i) => (
         <button
           key={i}
