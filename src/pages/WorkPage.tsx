@@ -13,14 +13,16 @@ const WorkPage = () => {
 
   const activeCategories = useMemo(() => new Set(getActiveCategories()), []);
 
-  const categories: { key: ProjectCategory; label: string }[] = [
+  const categories = ([
     { key: 'all', label: t.work.categories.all },
     { key: 'executive-decks', label: t.work.categories.executiveDecks },
     { key: 'tech-events', label: t.work.categories.techEvents },
     { key: 'templates', label: t.work.categories.templates },
     { key: 'hr-initiatives', label: t.work.categories.hrInitiatives },
     { key: 'side-projects', label: t.work.categories.sideProjects },
-  ].filter((cat) => cat.key === 'all' || activeCategories.has(cat.key as ProjectCategory));
+  ] as { key: ProjectCategory; label: string }[]).filter(
+    (cat) => cat.key === 'all' || activeCategories.has(cat.key),
+  );
 
   const filteredProjects = useMemo(
     () =>
