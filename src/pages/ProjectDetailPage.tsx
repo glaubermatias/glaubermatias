@@ -1110,7 +1110,10 @@ const ProjectDetailPage = () => {
         )}
 
         {/* Layout engine: without a Before/After block the bento grid leads,
-            otherwise the narrative comes first. */}
+            otherwise the narrative comes first. When the bento moves up, the
+            Trade-offs block simply inherits the narrative hairline + rhythm
+            (py-8 / md:py-10 on both sides of the rule), so the spacing matches
+            Context → Problem → Strategy exactly. */}
         {derived.beforeAfter ? (
           <>
             {narrativeBlock}
@@ -1120,18 +1123,18 @@ const ProjectDetailPage = () => {
           <>
             {bentoBlock}
             {narrativeBlock}
-            {/* Divider standing in for the bento grid's original position */}
-            <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-8 md:pt-10">
-              <hr className="border-t border-foreground/10" />
-            </section>
           </>
         )}
 
         {/* ============================================================= */}
         {/* 6. TRADE-OFFS & CONSTRAINTS - always rendered                  */}
         {/* ============================================================= */}
-        <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-10 md:pt-12">
-          <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-6 md:py-8">
+        <section className={`max-w-[845px] mx-auto px-6 md:px-8 ${derived.beforeAfter ? "pt-14 md:pt-16" : ""}`}>
+          <div
+            className={`grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 ${
+              derived.beforeAfter ? "" : "border-t border-foreground/10"
+            }`}
+          >
             <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
               Trade-offs &amp; Constraints
             </h3>
@@ -1146,13 +1149,20 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {derived.liveImages.length > 0 ? (
           <section className="content-shell pt-14 md:pt-16">
-            <HeroCarousel images={derived.liveImages} title={project.title} />
+            <HeroCarousel
+              images={derived.liveImages}
+              title={project.title}
+              aspectClass={project.id === "ny-trip-itinerary" ? "aspect-[1282/1770]" : "aspect-[16/9]"}
+              widthClass={project.id === "ny-trip-itinerary" ? "w-full md:w-[41%]" : "w-full"}
+            />
           </section>
         ) : (
-          <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-8 md:pt-10">
+          /* Divider keeps the same 2.5rem rhythm used between narrative blocks */
+          <section className="max-w-[845px] mx-auto px-6 md:px-8">
             <hr className="border-t border-foreground/10" />
           </section>
         )}
+
 
         {/* ============================================================= */}
         {/* 8. CLOSING - IMPACT                                            */}
