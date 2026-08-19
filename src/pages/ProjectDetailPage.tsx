@@ -978,8 +978,10 @@ const ProjectDetailPage = () => {
                 <BentoGrid
                   key={active.id}
                   images={active.images}
+                  variant={project.id === "ny-trip-itinerary" ? "portrait" : "default"}
                   onOpen={(i) => setLightbox({ images: active.images, title: active.label, index: i })}
                 />
+
               </section>
             );
           })()}
