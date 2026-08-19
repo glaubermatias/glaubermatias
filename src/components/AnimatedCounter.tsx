@@ -42,6 +42,8 @@ const AnimatedCounter = ({ target, suffix = '', duration = 1.5 }: AnimatedCounte
     return () => cancelAnimationFrame(animationFrame);
   }, [isInView, target, duration]);
 
+  const format = (n: number) => n.toLocaleString('en-US');
+
   return (
     <motion.span
       ref={ref}
@@ -49,7 +51,7 @@ const AnimatedCounter = ({ target, suffix = '', duration = 1.5 }: AnimatedCounte
       animate={isInView ? { opacity: 1 } : {}}
       transition={{ duration: 0.3 }}
     >
-      {done ? target : count}{suffix}
+      {format(done ? target : count)}{suffix}
     </motion.span>
   );
 };

@@ -10,7 +10,9 @@ import WorkExperienceSection from '@/components/WorkExperienceSection';
  */
 const ResumeCTA = () => (
   <a
-    href="#experience"
+    href="https://drive.google.com/file/d/1N4HYbHVRc6Vo1nvOQrLT_CVrnbCbYLVX/view?usp=share_link"
+    target="_blank"
+    rel="noopener noreferrer"
     className="group relative inline-flex items-center isolate h-14 md:h-16"
     aria-label="Read my CV"
   >

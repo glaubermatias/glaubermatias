@@ -1,4 +1,4 @@
-// Cache flush: 2026-08-17T02:00:00Z — strict card/header/carousel sourcing + tool logos.
+// Cache flush: 2026-08-19T03:30:00Z — strict card/header/carousel sourcing + tool logos.
 /**
  * Centralized image catalog — AUTO-DISCOVERED from src/assets/images/.
  *
@@ -18,7 +18,7 @@
  */
 
 import glauberPortrait from "@/assets/glauber-portrait.png";
-import glauberPhoto from "@/assets/glauber-photo.jpg";
+import glauberAboutPhoto from "@/assets/glauber-about-photo.webp.asset.json";
 import glauberHero from "@/assets/glauber-hero.jpg";
 import glauberAboutHeader from "@/assets/glauber-about-header.jpg";
 import smileIcon from "@/assets/smile-icon.png";
@@ -28,11 +28,19 @@ import smileIcon from "@/assets/smile-icon.png";
 // ────────────────────────────────────────────────────────────────────────────
 // Eager + ?url means each file is registered as a module, hashed by Rollup,
 // and the value Vite hands back is the final deploy-safe URL.
-const PROJECT_FILES = import.meta.glob("/src/assets/images/projects/**/*.{webp,jpg,jpeg,png,JPG,JPEG,PNG,WEBP}", {
+const PROJECT_FILES = import.meta.glob("/src/assets/images/projects/**/*.{webp,jpg,jpeg,png,mp4,webm,JPG,JPEG,PNG,WEBP,MP4}", {
   eager: true,
   query: "?url",
   import: "default",
 }) as Record<string, string>;
+
+// CDN-hosted media (large files externalized via lovable-assets). Each pointer
+// lives exactly where the binary would have been, e.g.
+//   projects/<id>/carousel/booklet-video.mp4.asset.json
+const PROJECT_ASSET_POINTERS = import.meta.glob("/src/assets/images/projects/**/*.asset.json", {
+  eager: true,
+  import: "default",
+}) as Record<string, { url: string }>;
 
 const CARD_FILES = import.meta.glob("/src/assets/images/project-cards/**/*.{webp,jpg,jpeg,png,JPG,JPEG,PNG,WEBP}", {
   eager: true,
@@ -77,7 +85,7 @@ const funFactUrl = (file: string): string => {
 // ────────────────────────────────────────────────────────────────────────────
 export const siteImages = {
   hero: { portrait: glauberPortrait, photo: glauberHero },
-  about: { header: glauberAboutHeader, sectionPhoto: glauberPhoto, smileIcon },
+  about: { header: glauberAboutHeader, sectionPhoto: glauberAboutPhoto.url, smileIcon },
   homepage: {},
 } as const;
 
@@ -140,7 +148,12 @@ const tmp: Record<
 
 const ensureTmp = (id: string) => (tmp[id] ||= { header: [], carousel: [], beforeAfter: [], bento: {}, card: [], tools: [] });
 
-for (const [key, url] of Object.entries(PROJECT_FILES)) {
+const PROJECT_MEDIA: Record<string, string> = { ...PROJECT_FILES };
+for (const [key, pointer] of Object.entries(PROJECT_ASSET_POINTERS)) {
+  if (pointer?.url) PROJECT_MEDIA[key.replace(/\.asset\.json$/, "")] = pointer.url;
+}
+
+for (const [key, url] of Object.entries(PROJECT_MEDIA)) {
   // Radar inteligente: acha onde a palavra '/projects/' começa, ignorando o tamanho do caminho
   const projectsIndex = key.indexOf("/projects/");
   if (projectsIndex === -1) continue;
@@ -265,6 +278,11 @@ const BENTO_META: Record<string, Array<{ id: string; label: string }>> = {
     { id: "equity", label: "Equity" },
     { id: "hiring", label: "Hiring" },
   ],
+  "tech-talks": [
+    { id: "conversational-platform", label: "Conversational platform" },
+    { id: "design-system", label: "Design System" },
+    { id: "gen-ai", label: "Gen AI" },
+  ],
   "design-masterclasses": [
     { id: "impactful-presentations", label: "Impactful presentations" },
     { id: "data-visualization", label: "Data visualization" },
@@ -289,13 +307,9 @@ const STOCK_FALLBACK: Record<string, string[]> = {
   "institutional-deck": [STOCK.exec1, STOCK.exec3, STOCK.template1],
   "tech-talks": [STOCK.summit2, STOCK.summit3, STOCK.summit1],
   newsletter: [STOCK.news1, STOCK.interns1, STOCK.exec3],
-  "all-hands": [STOCK.exec3, STOCK.meeting1, STOCK.exec1],
-  "brilliant-youth": [STOCK.meeting1, STOCK.interns1, STOCK.exec2],
   "tech-conferences": [STOCK.summit3, STOCK.summit1, STOCK.summit2],
   "ny-trip-itinerary": [STOCK.aldi3, STOCK.aldi1, STOCK.aldi2],
   booklet: [STOCK.aldi2, STOCK.aldi1, STOCK.aldi3],
-  "aldi-case-study": [STOCK.aldi1, STOCK.aldi2, STOCK.aldi3],
-  "uberall-dashboard": [STOCK.dash1, STOCK.exec2, STOCK.aldi2],
   "leadership-academy": [STOCK.exec1, STOCK.exec2, STOCK.exec3, STOCK.meeting1],
 };
 

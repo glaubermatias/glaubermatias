@@ -242,17 +242,34 @@ const getBentoLayout = (count: number): BentoLayout => {
   return { cols: "md:grid-cols-4", tiles };
 };
 
-const BentoGrid = ({ images, onOpen }: { images: ProcessImage[]; onOpen: (i: number) => void }) => {
-  // Uniform 4-column × 2-row grid. Row height matches the previous featured
-  // tile height (2 × 200px + gap) so the overall block stays the same size.
+const BentoGrid = ({
+  images,
+  onOpen,
+  variant = "default",
+}: {
+  images: ProcessImage[];
+  onOpen: (i: number) => void;
+  variant?: "default" | "portrait";
+}) => {
+  // "portrait" is used by projects whose assets are vertical (e.g. 1282×1770):
+  // more columns, and each tile keeps the native aspect ratio instead of a
+  // fixed row height.
+  const gridClass =
+    variant === "portrait"
+      ? "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4"
+      : "grid grid-cols-2 md:grid-cols-4 auto-rows-[minmax(180px,1fr)] md:auto-rows-[minmax(200px,1fr)] gap-3 md:gap-4";
+  const tileClass =
+    variant === "portrait"
+      ? "group relative overflow-hidden rounded-md bg-muted aspect-[1282/1770]"
+      : "group relative overflow-hidden rounded-md bg-muted";
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[minmax(180px,1fr)] md:auto-rows-[minmax(200px,1fr)] gap-3 md:gap-4">
+    <div className={gridClass}>
       {images.map((img, i) => (
         <button
           key={i}
           type="button"
           onClick={() => onOpen(i)}
-          className="group relative overflow-hidden rounded-md bg-muted"
+          className={tileClass}
         >
           <SmartImage
             src={img.src}
@@ -647,7 +664,19 @@ const CenterStageCarousel = ({ images }: { images: string[] }) => {
 /* ------------------------------------------------------------------ */
 /* Hero carousel (initial visual delivery)                             */
 /* ------------------------------------------------------------------ */
-const HeroCarousel = ({ images, title }: { images: string[]; title: string }) => {
+const isVideo = (src: string) => /\.(mp4|webm|mov)(\?|$)/i.test(src);
+
+const HeroCarousel = ({
+  images,
+  title,
+  aspectClass = "aspect-[16/9]",
+  widthClass = "w-full",
+}: {
+  images: string[];
+  title: string;
+  aspectClass?: string;
+  widthClass?: string;
+}) => {
   const [idx, setIdx] = useState(0);
   const total = images.length;
   const prev = () => setIdx((i) => (i - 1 + total) % total);
@@ -663,29 +692,47 @@ const HeroCarousel = ({ images, title }: { images: string[]; title: string }) =>
     if (Math.abs(dx) > 40) (dx < 0 ? next : prev)();
   };
 
+  const current = images[idx];
+
   return (
-    <div className="relative w-full">
+    <div className={`relative mx-auto ${widthClass}`}>
       <div
-        className="relative aspect-[16/9] w-full overflow-hidden rounded-md bg-muted"
+        className={`relative ${aspectClass} w-full overflow-hidden rounded-md bg-muted`}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
         <div className="absolute inset-0 animate-pulse bg-muted" aria-hidden />
         <AnimatePresence mode="wait">
-          <motion.img
-            key={idx}
-            src={images[idx]}
-            alt={`${title} – ${idx + 1}`}
-            loading="lazy"
-            decoding="async"
-            draggable={false}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="absolute inset-0 h-full w-full object-cover pointer-events-none select-none"
-          />
+          {isVideo(current) ? (
+            <motion.video
+              key={idx}
+              src={current}
+              controls
+              playsInline
+              preload="metadata"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="absolute inset-0 h-full w-full object-contain bg-black"
+            />
+          ) : (
+            <motion.img
+              key={idx}
+              src={current}
+              alt={`${title} – ${idx + 1}`}
+              loading="lazy"
+              decoding="async"
+              draggable={false}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="absolute inset-0 h-full w-full object-cover pointer-events-none select-none"
+            />
+          )}
         </AnimatePresence>
+
 
         {total > 1 && (
           <>
@@ -931,8 +978,10 @@ const ProjectDetailPage = () => {
                 <BentoGrid
                   key={active.id}
                   images={active.images}
+                  variant={project.id === "ny-trip-itinerary" ? "portrait" : "default"}
                   onOpen={(i) => setLightbox({ images: active.images, title: active.label, index: i })}
                 />
+
               </section>
             );
           })()}
@@ -1061,7 +1110,10 @@ const ProjectDetailPage = () => {
         )}
 
         {/* Layout engine: without a Before/After block the bento grid leads,
-            otherwise the narrative comes first. */}
+            otherwise the narrative comes first. When the bento moves up, the
+            Trade-offs block simply inherits the narrative hairline + rhythm
+            (py-8 / md:py-10 on both sides of the rule), so the spacing matches
+            Context → Problem → Strategy exactly. */}
         {derived.beforeAfter ? (
           <>
             {narrativeBlock}
@@ -1071,18 +1123,18 @@ const ProjectDetailPage = () => {
           <>
             {bentoBlock}
             {narrativeBlock}
-            {/* Divider standing in for the bento grid's original position */}
-            <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-8 md:pt-10">
-              <hr className="border-t border-foreground/10" />
-            </section>
           </>
         )}
 
         {/* ============================================================= */}
         {/* 6. TRADE-OFFS & CONSTRAINTS - always rendered                  */}
         {/* ============================================================= */}
-        <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-10 md:pt-12">
-          <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-6 md:py-8">
+        <section className={`max-w-[845px] mx-auto px-6 md:px-8 ${derived.beforeAfter ? "pt-14 md:pt-16" : ""}`}>
+          <div
+            className={`grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 ${
+              derived.beforeAfter ? "" : "border-t border-foreground/10"
+            }`}
+          >
             <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">
               Trade-offs &amp; Constraints
             </h3>
@@ -1097,18 +1149,29 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {derived.liveImages.length > 0 ? (
           <section className="content-shell pt-14 md:pt-16">
-            <HeroCarousel images={derived.liveImages} title={project.title} />
+            <HeroCarousel
+              images={derived.liveImages}
+              title={project.title}
+              aspectClass={project.id === "ny-trip-itinerary" ? "aspect-[1282/1770]" : "aspect-[16/9]"}
+              widthClass={project.id === "ny-trip-itinerary" ? "w-full md:w-[41%]" : "w-full"}
+            />
           </section>
         ) : (
-          <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-8 md:pt-10">
+          /* Divider keeps the same 2.5rem rhythm used between narrative blocks */
+          <section className="max-w-[845px] mx-auto px-6 md:px-8">
             <hr className="border-t border-foreground/10" />
           </section>
         )}
 
+
         {/* ============================================================= */}
         {/* 8. CLOSING - IMPACT                                            */}
         {/* ============================================================= */}
-        <section className="max-w-[1100px] mx-auto px-8 md:px-16 pt-12 md:pt-16 text-center">
+        <section
+          className={`max-w-[1100px] mx-auto px-8 md:px-16 text-center ${
+            derived.liveImages.length > 0 ? "pt-12 md:pt-16" : "pt-8 md:pt-10"
+          }`}
+        >
           {project.quote && (
             <figure className="my-16 max-w-3xl mx-auto">
               <span className="font-display text-7xl text-primary leading-none block mb-2">"</span>
@@ -1175,9 +1238,9 @@ const ProjectDetailPage = () => {
                 className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
               >
                 <ArrowLeft className="w-4 h-4" />
-                Back to all projects
+                Back to Work
               </Link>
-              <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground mb-10">Related work</h3>
+              <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground mb-10">Related projects</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
                 {relatedProjects.slice(0, 3).map((p, i) => (
                   <ProjectGridCard key={p.id} project={p} index={i} radiusClass="rounded-lg" />
