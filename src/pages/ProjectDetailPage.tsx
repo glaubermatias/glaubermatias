@@ -1167,7 +1167,11 @@ const ProjectDetailPage = () => {
         {/* ============================================================= */}
         {/* 8. CLOSING - IMPACT                                            */}
         {/* ============================================================= */}
-        <section className="max-w-[1100px] mx-auto px-8 md:px-16 pt-12 md:pt-16 text-center">
+        <section
+          className={`max-w-[1100px] mx-auto px-8 md:px-16 text-center ${
+            derived.liveImages.length > 0 ? "pt-12 md:pt-16" : "pt-8 md:pt-10"
+          }`}
+        >
           {project.quote && (
             <figure className="my-16 max-w-3xl mx-auto">
               <span className="font-display text-7xl text-primary leading-none block mb-2">"</span>
