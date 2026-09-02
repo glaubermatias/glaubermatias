@@ -17,7 +17,7 @@ const testimonials = [
   },
   {
     quote:
-      'He possesses proven, high-level skills in presentation design, making our communications professional, clear, and easy to digest. His relationship with deadlines is exemplary: he always delivers with consistency, even under immense pressure. He absorbs complex feedback from the executive team and translates it into clear, objective, and actionable outcomes.',
+      'He possesses proven, high-level skills in presentation design, making our communications professional, clear, and easy to digest. His commitment to meeting deadlines is exemplary: he always delivers with consistency, even under immense pressure. He absorbs complex feedback from the executive team and translates it into clear, objective, and actionable outcomes.',
     author: 'Learning & Development Leader',
     role: 'QuintoAndar',
   },
