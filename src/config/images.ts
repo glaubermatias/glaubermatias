@@ -85,7 +85,7 @@ const funFactUrl = (file: string): string => {
 // ────────────────────────────────────────────────────────────────────────────
 export const siteImages = {
   hero: { portrait: glauberPortrait, photo: glauberHero },
-  about: { header: glauberAboutHeader, sectionPhoto: glauberAboutPhoto.url, smileIcon },
+  about: { header: glauberAboutHeader, sectionPhoto: glauberAboutPhoto, smileIcon },
   homepage: {},
 } as const;
 
