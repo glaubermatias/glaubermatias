@@ -133,7 +133,7 @@ const _projectsRaw: ProjectData[] = [
     tradeoffs:  "With only one week to pull this off, the biggest constraint was time. I worked closely with the Finance directors, jumping on quick calls to refine the content and approve layouts on the fly. The main trade-off was deciding when to use bold visuals and when to let the numbers speak for themselves. I had to ensure that every creative choice respected both the analytical rigor and the brand's identity without missing a beat.",
     bigNumbers: [
       { value: '', label: '', description: '' },
-      { value: '25', label: 'SCALE', description: 'Slides built to support the main narrative.' },
+      { value: '25', label: 'OUTPUT', description: 'Slides built to support the main narrative.' },
     ],
     closingParagraph:  "Finding the sweet spot between a highly analytical report and an energetic pitch was the highlight of this project. The fact that investors ultimately praised the narrative as powerful and easy to follow proved that our collaborative approach paid off. It is a solid reminder that good design does not compete with the data. In fact, it makes the message land exactly where it needs to.",
     role: 'Presentation Designer',
