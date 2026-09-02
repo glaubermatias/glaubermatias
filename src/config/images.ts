@@ -18,7 +18,7 @@
  */
 
 import glauberPortrait from "@/assets/glauber-portrait.png";
-import glauberAboutPhoto from "@/assets/glauber-about-photo.webp.asset.json";
+import glauberAboutPhoto from "@/assets/glauber-about-photo.webp";
 import glauberHero from "@/assets/glauber-hero.jpg";
 import glauberAboutHeader from "@/assets/glauber-about-header.jpg";
 import smileIcon from "@/assets/smile-icon.png";
