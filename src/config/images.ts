@@ -18,7 +18,7 @@
  */
 
 import glauberPortrait from "@/assets/glauber-portrait.png";
-import glauberAboutPhoto from "@/assets/glauber-about-photo.webp.asset.json";
+import glauberAboutPhoto from "@/assets/glauber-about-photo.webp";
 import glauberHero from "@/assets/glauber-hero.jpg";
 import glauberAboutHeader from "@/assets/glauber-about-header.jpg";
 import smileIcon from "@/assets/smile-icon.png";
@@ -85,7 +85,7 @@ const funFactUrl = (file: string): string => {
 // ────────────────────────────────────────────────────────────────────────────
 export const siteImages = {
   hero: { portrait: glauberPortrait, photo: glauberHero },
-  about: { header: glauberAboutHeader, sectionPhoto: glauberAboutPhoto.url, smileIcon },
+  about: { header: glauberAboutHeader, sectionPhoto: glauberAboutPhoto, smileIcon },
   homepage: {},
 } as const;
 
