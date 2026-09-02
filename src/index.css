@@ -443,3 +443,17 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--navy-dark));
 }
+
+/* Global media fallback: grey skeleton instead of broken-image icons */
+.media-fallback-skeleton {
+  position: absolute;
+  inset: 0;
+  background: hsl(var(--muted));
+  border-radius: inherit;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+img[data-media-failed],
+video[data-media-failed] {
+  visibility: hidden;
+}
