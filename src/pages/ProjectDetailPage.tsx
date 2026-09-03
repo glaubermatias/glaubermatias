@@ -912,7 +912,7 @@ const ProjectDetailPage = () => {
         <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
           <div className="space-y-0">
             <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10">
-              <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">{project.id === "ny-trip-itinerary" ? "Designing for the Street" : "Context"}</h3>
+              <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">{project.id === "ny-trip-itinerary" ? "Designing for the Street" : project.id === "booklet" ? "Building the show" : "Context"}</h3>
               <p className="md:col-span-7 font-sans text-sm md:text-base text-muted-foreground leading-relaxed">
                 {derived.context}
               </p>
