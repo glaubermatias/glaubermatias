@@ -1079,13 +1079,17 @@ const ProjectDetailPage = () => {
                 </div>
               </dl>
 
-              {/* Big numbers — two slots, 25% each. */}
-              {bigNumbers.length > 0 &&
-                bigNumbers.slice(0, 2).map((n, i) => (
+              {/* Big numbers — up to two slots, 25% each. Skip empty placeholders. */}
+              {bigNumbers
+                .filter((n) => (n.value && n.value.trim()) || (n.label && n.label.trim()) || (n.description && n.description.trim()))
+                .slice(0, 2)
+                .map((n, i) => (
                   <div key={i} className="md:col-span-1">
-                    <p className="text-xs md:text-[13px] tracking-[0.22em] uppercase text-muted-foreground mb-4">
-                      {n.label}
-                    </p>
+                    {n.label && n.label.trim() && (
+                      <p className="text-xs md:text-[13px] tracking-[0.22em] uppercase text-muted-foreground mb-4">
+                        {n.label}
+                      </p>
+                    )}
                     <p className="font-display text-6xl md:text-7xl font-semibold text-foreground leading-[0.95] tracking-tight">
                       {n.value}
                     </p>
