@@ -195,7 +195,7 @@ const _projectsRaw: ProjectData[] = [
       { value: "19", label: "CATEGORIES", description: "Slide types mapped from user research." },
       { value: "300+", label: " LAYOUTS", description: "Plug-and-play templates aligned with brand guidelines." },
     ],
-    closingParagraph: "Honestly, the biggest win here was watching the team gain the confidence to build their own materials without second-guessing every layout choice. The system gave them a clear starting point without getting in the way, so they could spend less time worrying about design and more time focusing on what actually mattered.",
+    closingParagraph: "Honestly, the biggest win here was watching the team gain the confidence to build their own materials without second-guessing every layout choice. The system gave them a clear starting point without getting in the way, so they could spend less time worrying about design and more time focusing on their content.",
     role: "Presentation Designer",
     duration: "1 month",
     stakeholders: "People team",
