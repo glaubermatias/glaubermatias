@@ -37,6 +37,46 @@
 
   <body>
     <div id="root"></div>
+    <script>
+      // Stale-deploy guard: if the app's main module fails to load (an old
+      // cached index.html pointing at a hashed file that no longer exists),
+      // reload once, bypassing the cache, so the fresh index.html is fetched.
+      (function () {
+        var KEY = "lov:boot-reload";
+        window.addEventListener(
+          "error",
+          function (e) {
+            var el = e && e.target;
+            if (!el || el === window) return;
+            var isScript = el.tagName === "SCRIPT" && el.src;
+            var isCss = el.tagName === "LINK" && el.rel === "stylesheet";
+            if (!isScript && !isCss) return;
+            try {
+              if (sessionStorage.getItem(KEY)) return;
+              sessionStorage.setItem(KEY, "1");
+            } catch (err) {}
+            window.location.replace(
+              window.location.pathname +
+                (window.location.search ? window.location.search + "&" : "?") +
+                "v=" +
+                Date.now() +
+                window.location.hash
+            );
+          },
+          true
+        );
+        window.addEventListener("load", function () {
+          setTimeout(function () {
+            try {
+              if (document.getElementById("root") && document.getElementById("root").childElementCount > 0) {
+                sessionStorage.removeItem(KEY);
+              }
+            } catch (err) {}
+          }, 2000);
+        });
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
+
