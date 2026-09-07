@@ -108,19 +108,34 @@ const Lightbox = ({
       </div>
 
       <div
-        className="w-[92vw] max-w-[1240px] px-5 md:px-12 lg:px-16 pt-40 md:pt-52 pb-28 md:pb-40 flex flex-col items-center gap-4"
+        className={`w-[92vw] max-w-[1240px] px-5 md:px-12 lg:px-16 flex flex-col items-center gap-4 ${
+          fit === "contain"
+            ? "pt-24 md:pt-28 pb-20 md:pb-24"
+            : "pt-40 md:pt-52 pb-28 md:pb-40"
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="relative w-full aspect-[16/9]">
-          <div className="absolute inset-0 bg-black/40 rounded-md overflow-hidden flex items-center justify-center">
+        <div className={`relative ${fit === "contain" ? "flex justify-center w-full" : "w-full aspect-[16/9]"}`}>
+          {fit === "contain" ? (
             <img
               src={current.src}
               alt={current.caption || ""}
               decoding="async"
               draggable={false}
-              className="w-full h-full object-cover pointer-events-none select-none"
+              className="max-h-[68vh] w-auto max-w-full object-contain rounded-md pointer-events-none select-none"
             />
-          </div>
+          ) : (
+            <div className="absolute inset-0 bg-black/40 rounded-md overflow-hidden flex items-center justify-center">
+              <img
+                src={current.src}
+                alt={current.caption || ""}
+                decoding="async"
+                draggable={false}
+                className="w-full h-full object-cover pointer-events-none select-none"
+              />
+            </div>
+          )}
+
           <button
             onClick={(e) => {
               e.stopPropagation();
