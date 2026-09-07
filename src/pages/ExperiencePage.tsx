@@ -10,7 +10,7 @@ import WorkExperienceSection from '@/components/WorkExperienceSection';
  */
 const ResumeCTA = () => (
   <a
-    href="https://drive.google.com/file/d/1N4HYbHVRc6Vo1nvOQrLT_CVrnbCbYLVX/view?usp=share_link"
+    href="https://drive.google.com/drive/folders/1eQ1P98zh72XVMH_1bTKFvG63a3HVoM_t?usp=sharing"
     target="_blank"
     rel="noopener noreferrer"
     className="group relative inline-flex items-center isolate h-14 md:h-16"
