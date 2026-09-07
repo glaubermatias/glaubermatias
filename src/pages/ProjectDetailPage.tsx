@@ -41,6 +41,7 @@ const Lightbox = ({
   images,
   index,
   title,
+  fit = "cover",
   onClose,
   onPrev,
   onNext,
@@ -48,10 +49,13 @@ const Lightbox = ({
   images: ProcessImage[];
   index: number;
   title?: string;
+  /** "contain" keeps the whole photo visible (used by vertical galleries). */
+  fit?: "cover" | "contain";
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
 }) => {
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
