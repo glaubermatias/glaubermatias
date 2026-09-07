@@ -921,37 +921,51 @@ const ProjectDetailPage = () => {
 
   const bigNumbers = project.bigNumbers || [];
 
+  // Projects whose story lives in a single narrative block. For these, the
+  // Context block carries its own title and Problem / Strategy / Trade-offs
+  // are not rendered at all.
+  const SINGLE_NARRATIVE: Record<string, string> = {
+    "ny-trip-itinerary": "Designing for the Street",
+    "event-branding": "Building the show",
+  };
+  const singleNarrativeTitle = SINGLE_NARRATIVE[project.id];
+
   const narrativeBlock = (
     <>
         {/* ============================================================= */}
         {/* 4. NARRATIVE (Context, Problem, Strategy) - 30/70 asymmetric  */}
-        {/* Always render all three blocks. Each block reads only its own */}
-        {/* dedicated field, so editing one never affects another.        */}
+        {/* Each block reads only its own dedicated field, so editing one  */}
+        {/* never affects another.                                         */}
         {/* ============================================================= */}
         <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
           <div className="space-y-0">
             <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10">
-              <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">{project.id === "ny-trip-itinerary" ? "Designing for the Street" : project.id === "booklet" ? "Building the show" : "Context"}</h3>
+              <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">{singleNarrativeTitle ?? "Context"}</h3>
               <p className="md:col-span-7 font-sans text-sm md:text-base text-muted-foreground leading-relaxed">
                 {derived.context}
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 border-t border-foreground/10">
-              <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">Problem</h3>
-              <p className="md:col-span-7 font-sans text-sm md:text-base text-muted-foreground leading-relaxed">
-                {derived.problem}
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 border-t border-foreground/10">
-              <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">Strategy</h3>
-              <p className="md:col-span-7 font-sans text-sm md:text-base text-muted-foreground leading-relaxed">
-                {derived.strategy}
-              </p>
-            </div>
+            {!singleNarrativeTitle && (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 border-t border-foreground/10">
+                  <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">Problem</h3>
+                  <p className="md:col-span-7 font-sans text-sm md:text-base text-muted-foreground leading-relaxed">
+                    {derived.problem}
+                  </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 border-t border-foreground/10">
+                  <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">Strategy</h3>
+                  <p className="md:col-span-7 font-sans text-sm md:text-base text-muted-foreground leading-relaxed">
+                    {derived.strategy}
+                  </p>
+                </div>
+              </>
+            )}
           </div>
         </section>
     </>
   );
+
 
   const bentoBlock = (
     <>
