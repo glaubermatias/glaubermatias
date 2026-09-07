@@ -15,33 +15,37 @@ const experiences: Experience[] = [{
   id: 'exp-1',
   company: 'QuintoAndar',
   role: 'Presentation Specialist',
-  period: 'Mar 2022 — Present',
-  description: 'Leading end-to-end presentation design for executive communications, investor relations, and strategic initiatives.',
-  highlights: ['C-Suite Presentations', 'Investor Relations', 'Brand Strategy'],
+  period: "Mar 2022 — Jul 2026",
+  description: "Led presentation design for executive communications, strategic initiatives, and company-wide events.",
+  highlights: ["Executive Presentations", "Strategic Communication", "Data Storytelling"],
+
   expandedDetails: ["Crafted the company's pitch deck for the CEO, showcasing key performance metrics and future growth potential through high-quality data visualizations and compelling storytelling;", 'Led the presentation design for consecutive global end-of-year events, collaborating with cross-functional teams to ensure a seamless experience for 3,500+ employees with on-site support for 10 executive speakers;', 'Designed the keynote for four editions of the Leadership Academy, driving alignment and engagement for 300+ senior leaders through compelling visuals, with input from 30+ global stakeholders (NPS 4.6/5);', 'Managed all annual strategic presentation decks in partnership with C-suite executives, transforming complex information into compelling visual communications and achieving a 4.7/5 satisfaction rating in 2025;', "Designed and implemented the company's internal newsletter, along with visual assets and infographics to enhance content retention, driving a 39% increase in click-through rates via A/B testing;", 'Produced a comprehensive library of 350+ presentation design assets and PowerPoint templates, adhering to brand guidelines and strengthening brand consistency across internal communications.']
 }, {
   id: 'exp-2',
   company: 'Itaú Unibanco',
   role: 'Business Presentation Designer',
   period: 'Aug 2020 — Mar 2022',
-  description: 'Designed executive presentations and internal communications for Latin America\'s largest bank.',
-  highlights: ['Executive Communications', 'Financial Services', 'Data Visualization'],
+  description: "Designed executive presentations that turned complex financial information into clear business stories.",
+  highlights: ["Executive Communications", "Data Visualization", "Financial Services"],
+
   expandedDetails: ['Designed high-impact presentation decks for the VP and senior leaders, securing Board approval for new client acquisition strategies that boosted conversion rates compared with previous quarters;', 'Led the visual strategy for monthly reports across all 16 business units, standardizing templates to enhance readability, improve clarity, and enable quick, data-driven assessments by stakeholders;', "Developed and implemented the Digital Acquisition team\u2019s visual identity, creating branded templates for presentations, reports, and internal communications to ensure consistency and broad adoption within the team;", 'Transformed complex datasets into compelling, easy-to-digest visuals, utilizing data visualization techniques to enhance clarity, storytelling, and decision-making for executive and financial presentations.']
 }, {
   id: 'exp-3',
   company: 'Itaú Unibanco',
   role: 'Presentation Designer',
   period: 'Feb 2019 — Aug 2020',
-  description: 'Crafted visual storytelling for executive and internal communications.',
-  highlights: ['Visual Identity', 'Template Systems', 'Internal Comms'],
+  description: "Created presentations and visual systems for high-impact internal communications.",
+  highlights: ["Presentation Design", "Visual Systems", "Internal Communications"],
+
   expandedDetails: ['Boosted signed contracts by 300% through visually striking communication campaigns for the sales team;', 'Designed and published over 170 communications, prioritizing clear messaging and engaging visuals;', "Developed the communication strategy for Itaú's new digital wallet, producing creative deliverables from newsletters to educational videos, reaching and engaging over 6,000 employees in the sales force;", 'Enhanced existing slide decks and created branded templates for emails, presentations, and general messages, ensuring consistency across internal communications.']
 }, {
   id: 'exp-4',
   company: 'Bayer',
   role: 'Project Designer Intern',
   period: 'May 2016 — Apr 2018',
-  description: 'Provided design services for corporate communications and strategic projects.',
-  highlights: ['Corporate Design', 'Project Management', 'Healthcare'],
+  description: "Improved technical design and project workflows for pharmaceutical facilities.",
+  highlights: ["Technical Design", "Process Improvement", "Project Management"],
+
   expandedDetails: ["Designed and managed the site's technical drawings to obtain and maintain operating licenses in the pharmaceuticals division;", 'Implemented a master-plan update system that eliminated manual updates across technical site drawings, reducing maintenance effort and turnaround time;', 'Acted as the local focal point for directors and technical teams, translating operational requirements into approved technical layouts;', 'Documented processes and created technical guides to support layout maintenance and knowledge transfer.']
 }];
 const WorkExperienceSection = () => {

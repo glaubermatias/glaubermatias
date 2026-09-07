@@ -40,10 +40,11 @@ const Footer = () => {
   }, []);
 
   const quickLinks = [
-    { href: '#work', label: 'Work' },
+    { href: '/work', label: 'Work' },
     { href: '/cv', label: 'CV' },
     { href: '/about', label: 'About' },
   ];
+
 
   return (
     <footer

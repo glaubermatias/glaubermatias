@@ -309,7 +309,7 @@ const STOCK_FALLBACK: Record<string, string[]> = {
   newsletter: [STOCK.news1, STOCK.interns1, STOCK.exec3],
   "tech-conferences": [STOCK.summit3, STOCK.summit1, STOCK.summit2],
   "ny-trip-itinerary": [STOCK.aldi3, STOCK.aldi1, STOCK.aldi2],
-  booklet: [STOCK.aldi2, STOCK.aldi1, STOCK.aldi3],
+  "event-branding": [STOCK.aldi2, STOCK.aldi1, STOCK.aldi3],
   "leadership-academy": [STOCK.exec1, STOCK.exec2, STOCK.exec3, STOCK.meeting1],
 };
 

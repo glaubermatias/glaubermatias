@@ -41,6 +41,7 @@ const Lightbox = ({
   images,
   index,
   title,
+  fit = "cover",
   onClose,
   onPrev,
   onNext,
@@ -48,10 +49,13 @@ const Lightbox = ({
   images: ProcessImage[];
   index: number;
   title?: string;
+  /** "contain" keeps the whole photo visible (used by vertical galleries). */
+  fit?: "cover" | "contain";
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
 }) => {
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -104,19 +108,34 @@ const Lightbox = ({
       </div>
 
       <div
-        className="w-[92vw] max-w-[1240px] px-5 md:px-12 lg:px-16 pt-40 md:pt-52 pb-28 md:pb-40 flex flex-col items-center gap-4"
+        className={`w-[92vw] max-w-[1240px] px-5 md:px-12 lg:px-16 flex flex-col items-center gap-4 ${
+          fit === "contain"
+            ? "pt-24 md:pt-28 pb-20 md:pb-24"
+            : "pt-40 md:pt-52 pb-28 md:pb-40"
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="relative w-full aspect-[16/9]">
-          <div className="absolute inset-0 bg-black/40 rounded-md overflow-hidden flex items-center justify-center">
+        <div className={`relative ${fit === "contain" ? "flex justify-center w-full" : "w-full aspect-[16/9]"}`}>
+          {fit === "contain" ? (
             <img
               src={current.src}
               alt={current.caption || ""}
               decoding="async"
               draggable={false}
-              className="w-full h-full object-cover pointer-events-none select-none"
+              className="max-h-[68vh] w-auto max-w-full object-contain rounded-md pointer-events-none select-none"
             />
-          </div>
+          ) : (
+            <div className="absolute inset-0 bg-black/40 rounded-md overflow-hidden flex items-center justify-center">
+              <img
+                src={current.src}
+                alt={current.caption || ""}
+                decoding="async"
+                draggable={false}
+                className="w-full h-full object-cover pointer-events-none select-none"
+              />
+            </div>
+          )}
+
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -902,37 +921,51 @@ const ProjectDetailPage = () => {
 
   const bigNumbers = project.bigNumbers || [];
 
+  // Projects whose story lives in a single narrative block. For these, the
+  // Context block carries its own title and Problem / Strategy / Trade-offs
+  // are not rendered at all.
+  const SINGLE_NARRATIVE: Record<string, string> = {
+    "ny-trip-itinerary": "Designing for the Street",
+    "event-branding": "Building the show",
+  };
+  const singleNarrativeTitle = SINGLE_NARRATIVE[project.id];
+
   const narrativeBlock = (
     <>
         {/* ============================================================= */}
         {/* 4. NARRATIVE (Context, Problem, Strategy) - 30/70 asymmetric  */}
-        {/* Always render all three blocks. Each block reads only its own */}
-        {/* dedicated field, so editing one never affects another.        */}
+        {/* Each block reads only its own dedicated field, so editing one  */}
+        {/* never affects another.                                         */}
         {/* ============================================================= */}
         <section className="max-w-[845px] mx-auto px-6 md:px-8 pt-14 md:pt-16">
           <div className="space-y-0">
             <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10">
-              <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">{project.id === "ny-trip-itinerary" ? "Designing for the Street" : project.id === "booklet" ? "Building the show" : "Context"}</h3>
+              <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">{singleNarrativeTitle ?? "Context"}</h3>
               <p className="md:col-span-7 font-sans text-sm md:text-base text-muted-foreground leading-relaxed">
                 {derived.context}
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 border-t border-foreground/10">
-              <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">Problem</h3>
-              <p className="md:col-span-7 font-sans text-sm md:text-base text-muted-foreground leading-relaxed">
-                {derived.problem}
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 border-t border-foreground/10">
-              <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">Strategy</h3>
-              <p className="md:col-span-7 font-sans text-sm md:text-base text-muted-foreground leading-relaxed">
-                {derived.strategy}
-              </p>
-            </div>
+            {!singleNarrativeTitle && (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 border-t border-foreground/10">
+                  <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">Problem</h3>
+                  <p className="md:col-span-7 font-sans text-sm md:text-base text-muted-foreground leading-relaxed">
+                    {derived.problem}
+                  </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 border-t border-foreground/10">
+                  <h3 className="md:col-span-3 font-display text-lg md:text-xl font-semibold text-foreground">Strategy</h3>
+                  <p className="md:col-span-7 font-sans text-sm md:text-base text-muted-foreground leading-relaxed">
+                    {derived.strategy}
+                  </p>
+                </div>
+              </>
+            )}
           </div>
         </section>
     </>
   );
+
 
   const bentoBlock = (
     <>
@@ -979,7 +1012,16 @@ const ProjectDetailPage = () => {
                   key={active.id}
                   images={active.images}
                   variant={project.id === "ny-trip-itinerary" ? "portrait" : "default"}
-                  onOpen={(i) => setLightbox({ images: active.images, title: active.label, index: i })}
+                  onOpen={(i) =>
+                    setLightbox({
+                      images: active.images,
+                      // With a single gallery there are no category pills, so the
+                      // lightbox shows the project name instead of the label.
+                      title: galleries.length > 1 ? active.label : derived.headerTitle,
+                      index: i,
+                    })
+                  }
+
                 />
 
               </section>
@@ -1131,8 +1173,9 @@ const ProjectDetailPage = () => {
         )}
 
         {/* ============================================================= */}
-        {/* 6. TRADE-OFFS & CONSTRAINTS - always rendered                  */}
+        {/* 6. TRADE-OFFS & CONSTRAINTS                                    */}
         {/* ============================================================= */}
+        {!singleNarrativeTitle && (
         <section className={`max-w-[845px] mx-auto px-6 md:px-8 ${derived.beforeAfter ? "pt-14 md:pt-16" : ""}`}>
           <div
             className={`grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 ${
@@ -1147,6 +1190,8 @@ const ProjectDetailPage = () => {
             </p>
           </div>
         </section>
+        )}
+
 
         {/* ============================================================= */}
         {/* 7. SECOND CAROUSEL (same layout as the first)                  */}
@@ -1261,6 +1306,8 @@ const ProjectDetailPage = () => {
           images={lightbox.images}
           index={lightbox.index}
           title={lightbox.title}
+          fit={project.id === "ny-trip-itinerary" ? "contain" : "cover"}
+
           onClose={() => setLightbox(null)}
           onPrev={() =>
             setLightbox((l) => (l ? { ...l, index: (l.index - 1 + l.images.length) % l.images.length } : l))

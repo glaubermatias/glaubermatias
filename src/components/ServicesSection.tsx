@@ -18,11 +18,12 @@ const services: Service[] = [{
 }, {
   id: 'data-viz',
   title: 'Data Visualization',
-  description: 'Transform complex datasets into clear, executive-ready charts, dashboards and infographics that reveal insights and drive decisions.'
+  description: "Clear, executive-ready charts, dashboards and infographics that turn complex datasets into insights leaders can act on."
 }, {
   id: 'visual-storytelling',
   title: 'Visual Storytelling',
-  description: 'Narrative structure, slide sequencing and visual metaphors that turn complex ideas into persuasive, memorable stories.'
+  description: "Narrative structure, slide sequencing and visual frameworks that turn dense strategy documents, financial results and technical content into stories executives can follow, remember and cascade to their teams."
+
 }, {
   id: 'templates',
   title: 'Template Libraries',
@@ -38,7 +39,7 @@ const services: Service[] = [{
 }, {
   id: 'graphic-design',
   title: 'Graphic Design',
-  description: 'Icons, illustrations, layouts and motion elements to elevate presentations and digital communication (PowerPoint, Google slides, Figma, Adobe CC).'
+  description: "Icons, illustrations and layouts to elevate presentations and digital communication (PowerPoint, Google slides, Figma, Adobe CC)."
 }];
 const ServicesSection = () => {
   const {
@@ -49,10 +50,9 @@ const ServicesSection = () => {
     setActiveService(activeService === id ? null : id);
   };
 
-  // Split services into two columns
-  // Split services into three columns
-  const columns: Service[][] = [[], [], []];
-  services.forEach((s, i) => columns[i % 3].push(s));
+  // Items flow into a responsive grid (1 / 2 / 3 columns) so every card keeps
+  // the same width and the rows stay balanced at any screen width.
+
   const renderServiceItem = (service: Service, index: number) => <motion.div key={service.id} className="bg-background rounded-[2rem] overflow-hidden" initial={{
     opacity: 0,
     y: 20
@@ -124,14 +124,11 @@ const ServicesSection = () => {
             </p>
           </motion.div>
 
-          {/* Three Column Grid */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {columns.map((column, colIndex) => (
-              <div key={colIndex} className="space-y-4">
-                {column.map((service, index) => renderServiceItem(service, colIndex + index * 3))}
-              </div>
-            ))}
+          {/* Responsive, evenly distributed grid */}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 items-start auto-rows-min">
+            {services.map((service, index) => renderServiceItem(service, index))}
           </div>
+
         </div>
       </div>
     </section>;

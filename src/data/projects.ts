@@ -352,8 +352,9 @@ const _projectsRaw: ProjectData[] = [
   },
   {
     isNDA: false,
-    id: 'booklet',
-    title: 'Booklet',
+    id: 'event-branding',
+    title: 'Event branding',
+
     headerTitle: "Event branding",
     cardDescription: 'A printed booklet exploring layout, grid, and typography end to end',
     description: 'Print and digital booklet design showcasing creative layout techniques and typography exploration.',
@@ -375,7 +376,7 @@ const _projectsRaw: ProjectData[] = [
     duration: "12 weeks",
     stakeholders: 'UCLA Extension course',
     tools: "Illustrator, Photoshop, InDesign",
-    images: projectImages['booklet'].images,
+    images: projectImages['event-branding'].images,
     year: '2024',
     client: 'UCLA',
   },
@@ -421,9 +422,17 @@ const PROJECT_ORDER = [
   'tech-talks',
   'tech-conferences',
   'ny-trip-itinerary',
-  'booklet',
+  'event-branding',
   'newsletter',
 ];
+
+/**
+ * A project only shows up across the site once it has at least one cover image
+ * inside `src/assets/images/project-cards/<project-id>/`. Drop a photo in that
+ * folder and the project comes back automatically — no code change needed.
+ */
+const hasCardImages = (id: string) => (projectImages[id]?.cardImages?.length ?? 0) > 0;
+
 
 const normalizedProjects: ProjectData[] = _projectsRaw.map((p) => {
   const galleryLabel = p.galleryLabel ?? p.headerTitle ?? p.title;
@@ -452,8 +461,9 @@ const normalizedProjects: ProjectData[] = _projectsRaw.map((p) => {
       : [{ id: `${p.id}-gallery`, label: galleryLabel, images: makeProcessTiles(p) }],
   };
 })
-  .filter((p) => p.hidden !== true)
+  .filter((p) => p.hidden !== true && hasCardImages(p.id))
   .sort((a, b) => PROJECT_ORDER.indexOf(a.id) - PROJECT_ORDER.indexOf(b.id));
+
 
 export const projects: ProjectData[] = normalizedProjects;
 
