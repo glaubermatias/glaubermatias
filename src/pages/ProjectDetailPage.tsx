@@ -1306,6 +1306,8 @@ const ProjectDetailPage = () => {
           images={lightbox.images}
           index={lightbox.index}
           title={lightbox.title}
+          fit={project.id === "ny-trip-itinerary" ? "contain" : "cover"}
+
           onClose={() => setLightbox(null)}
           onPrev={() =>
             setLightbox((l) => (l ? { ...l, index: (l.index - 1 + l.images.length) % l.images.length } : l))
