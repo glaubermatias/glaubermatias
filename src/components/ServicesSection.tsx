@@ -124,14 +124,11 @@ const ServicesSection = () => {
             </p>
           </motion.div>
 
-          {/* Three Column Grid */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {columns.map((column, colIndex) => (
-              <div key={colIndex} className="space-y-4">
-                {column.map((service, index) => renderServiceItem(service, colIndex + index * 3))}
-              </div>
-            ))}
+          {/* Responsive, evenly distributed grid */}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 items-start auto-rows-min">
+            {services.map((service, index) => renderServiceItem(service, index))}
           </div>
+
         </div>
       </div>
     </section>;
