@@ -104,7 +104,7 @@ const translations: Record<Language, Translations> = {
       subtitle: 'A journey through my professional career',
     },
     testimonials: {
-      title: 'What people have to say about me',
+      title: "What people have to say",
       subtitle: 'Words from those who trusted me with their stories',
     },
     contact: {

@@ -43,7 +43,7 @@ const TestimonialsSection = () => {
           transition={{ duration: 0.8 }}
         >
           <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-semibold">
-            What people have to say about me
+            What people have to say
           </h2>
         </motion.div>
 

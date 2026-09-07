@@ -33,7 +33,7 @@ const ProjectGridCard = ({ project, index = 0, radiusClass = 'rounded-xl' }: Pro
       transition={{ duration: 0.5, delay: (index % 2) * 0.08 }}
       className="group"
     >
-      <Link to={`/${project.id}`} className="block">
+      <Link to={`/work/${project.id}`} className="block">
         <div className={`relative w-full aspect-video overflow-hidden bg-muted ${radiusClass}`}>
           {image && (
             <img
