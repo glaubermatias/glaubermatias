@@ -1012,7 +1012,16 @@ const ProjectDetailPage = () => {
                   key={active.id}
                   images={active.images}
                   variant={project.id === "ny-trip-itinerary" ? "portrait" : "default"}
-                  onOpen={(i) => setLightbox({ images: active.images, title: active.label, index: i })}
+                  onOpen={(i) =>
+                    setLightbox({
+                      images: active.images,
+                      // With a single gallery there are no category pills, so the
+                      // lightbox shows the project name instead of the label.
+                      title: galleries.length > 1 ? active.label : derived.headerTitle,
+                      index: i,
+                    })
+                  }
+
                 />
 
               </section>
@@ -1164,8 +1173,9 @@ const ProjectDetailPage = () => {
         )}
 
         {/* ============================================================= */}
-        {/* 6. TRADE-OFFS & CONSTRAINTS - always rendered                  */}
+        {/* 6. TRADE-OFFS & CONSTRAINTS                                    */}
         {/* ============================================================= */}
+        {!singleNarrativeTitle && (
         <section className={`max-w-[845px] mx-auto px-6 md:px-8 ${derived.beforeAfter ? "pt-14 md:pt-16" : ""}`}>
           <div
             className={`grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-10 py-8 md:py-10 ${
@@ -1180,6 +1190,8 @@ const ProjectDetailPage = () => {
             </p>
           </div>
         </section>
+        )}
+
 
         {/* ============================================================= */}
         {/* 7. SECOND CAROUSEL (same layout as the first)                  */}
