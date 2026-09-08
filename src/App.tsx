@@ -37,6 +37,12 @@ const NotFound = lazyWithReload(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
+// Forward old flat project URLs (/project-name) to the new /work/ space.
+const LegacyProjectRedirect = () => {
+  const { projectId } = useParams();
+  return <Navigate to={`/work/${projectId}`} replace />;
+};
+
 const RouteFallback = () => (
   <div
     className="min-h-screen w-full bg-background"
@@ -62,6 +68,10 @@ const App = () => (
               <Route path="/work/:projectId" element={<ProjectDetailPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/cv" element={<ExperiencePage />} />
+              {/* Legacy redirects for previously shared/bookmarked URLs */}
+              <Route path="/about-me" element={<Navigate to="/about" replace />} />
+              <Route path="/experience" element={<Navigate to="/cv" replace />} />
+              <Route path="/:projectId" element={<LegacyProjectRedirect />} />
               <Route path="*" element={<NotFound />} />
 
             </Routes>
