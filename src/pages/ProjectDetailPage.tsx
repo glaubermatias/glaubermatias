@@ -233,22 +233,29 @@ const Lightbox = ({
         {current.caption && (
           <p className="text-white/80 text-sm md:text-base text-center max-w-2xl">{current.caption}</p>
         )}
-        <div
-          className="flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-2 py-2"
-          style={{ backdropFilter: "blur(14px) saturate(160%)", WebkitBackdropFilter: "blur(14px) saturate(160%)" }}
-        >
+        <div className="flex items-center gap-3">
+          {/* Primary navigation — always the most visible controls */}
           <button onClick={onPrev} className={ctrlBtn} aria-label="Previous">
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <button onClick={() => zoomAtCenter(1 / 1.4)} className={ctrlBtn} aria-label="Zoom out" disabled={zoom <= MIN_ZOOM}>
-            <Minus className="w-5 h-5" />
-          </button>
-          <span className="min-w-[3.25rem] text-center text-xs tabular-nums text-white/70">
-            {Math.round(zoom * 100)}%
-          </span>
-          <button onClick={() => zoomAtCenter(1.4)} className={ctrlBtn} aria-label="Zoom in" disabled={zoom >= MAX_ZOOM}>
-            <Plus className="w-5 h-5" />
-          </button>
+
+          {/* Discrete zoom cluster — muted pill that never competes with the arrows */}
+          <div
+            className="flex items-center gap-0.5 rounded-full border border-white/10 bg-white/5 px-1.5 py-1"
+            style={{ backdropFilter: "blur(10px) saturate(140%)", WebkitBackdropFilter: "blur(10px) saturate(140%)" }}
+          >
+            <button onClick={() => zoomAtCenter(1 / 1.4)} className={zoomBtn} aria-label="Zoom out" disabled={zoom <= MIN_ZOOM}>
+              <Minus className="w-3.5 h-3.5" />
+            </button>
+            <span className="min-w-[2.75rem] text-center text-[11px] tabular-nums text-white/40">
+              {Math.round(zoom * 100)}%
+            </span>
+            <button onClick={() => zoomAtCenter(1.4)} className={zoomBtn} aria-label="Zoom in" disabled={zoom >= MAX_ZOOM}>
+              <Plus className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          {/* Primary navigation — always the most visible controls */}
           <button onClick={onNext} className={ctrlBtn} aria-label="Next">
             <ChevronRight className="w-5 h-5" />
           </button>
