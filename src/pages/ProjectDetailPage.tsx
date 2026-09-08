@@ -364,7 +364,7 @@ const BentoGrid = ({
   // fixed row height.
   const gridClass =
     variant === "portrait"
-      ? "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4"
+      ? "grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4"
       : "grid grid-cols-2 md:grid-cols-4 auto-rows-[minmax(180px,1fr)] md:auto-rows-[minmax(200px,1fr)] gap-3 md:gap-4";
   const tileClass =
     variant === "portrait"
