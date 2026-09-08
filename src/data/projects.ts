@@ -139,7 +139,7 @@ const _projectsRaw: ProjectData[] = [
     role: 'Presentation Designer',
     duration: '1 week',
     stakeholders: 'CEO, CFO, Finance Directors, Investors',
-    tools: "Google Slides",
+    tools: "Google Slides, PowerPoint",
     images: projectImages['investor-deck'].images,
     year: '2026',
     client: 'QuintoAndar',
