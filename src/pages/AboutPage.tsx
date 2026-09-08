@@ -237,22 +237,26 @@ const AboutPage = () => {
                   className="space-y-6 text-lg text-foreground/80 leading-relaxed max-w-3xl"
                 >
                   <p>
-                    I'm Glauber, a presentation designer who spent the last seven
-                    years turning dense, complicated ideas into visual stories
-                    people actually want to listen to. From C-suite boardrooms to
-                    investor pitches, I help leaders communicate with the kind of
-                    clarity that drives decisions.
+                    I'm Glauber, a presentation designer with over seven years of
+                    experience turning complex ideas into clear, engaging visual
+                    stories. I've worked on everything from C-suite presentations
+                    to investor pitches, always looking for the most compelling way
+                    to communicate a message.
                   </p>
                   <p>
-                    My path into design wasn't linear — and I think that's exactly
-                    what makes my work different. I obsess over narrative structure
-                    as much as typography, and I treat every slide as a chance to
-                    earn (and keep) the audience's attention.
+                    My path into design wasn't exactly linear. I have a degree in
+                    engineering, but found my real passion in design and visual
+                    communication. These two backgrounds ended up working really
+                    well together. Engineering taught me to think through structure
+                    and logic, while design taught me how to turn that thinking into
+                    something people can actually understand and connect with.
                   </p>
                   <p>
-                    Outside of decks and frameworks, I'm a lifelong learner: a
-                    curious traveler, a stubborn home cook, and someone who believes
-                    that the best ideas often come from the most unexpected places.
+                    Outside of work, I'm naturally curious and pretty optimistic. I
+                    enjoy exploring new places and cultures, reading, trying new
+                    things, and staying active. That curiosity keeps me looking
+                    outside of design, which is where I often find new ideas,
+                    references, and ways of seeing things.
                   </p>
                 </motion.div>
               </section>
