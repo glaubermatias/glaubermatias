@@ -153,6 +153,9 @@ const Lightbox = ({
 
   const ctrlBtn =
     "w-11 h-11 rounded-full flex items-center justify-center border border-white/20 bg-white/10 text-white/90 hover:text-white hover:bg-white/20 transition-colors disabled:opacity-40 disabled:hover:bg-white/10";
+  // Discrete zoom cluster — smaller, lower contrast, so it never competes with the prev/next arrows.
+  const zoomBtn =
+    "w-8 h-8 rounded-full flex items-center justify-center text-white/45 hover:text-white/80 transition-colors disabled:opacity-30 disabled:hover:text-white/45";
 
   return (
     <div
