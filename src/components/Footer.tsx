@@ -69,7 +69,7 @@ const Footer = () => {
                 </h2>
                 <div className="space-y-3 text-white/90 text-lg">
                   <div>
-                    <RollingLink href="mailto:glauber.matias.ismart@gmail.com" label="glauber.matias.ismart@gmail.com" />
+                    <RollingLink href="mailto:glaubermatias.br@gmail.com" label="glaubermatias.br@gmail.com" />
                   </div>
                   <div>
                     <RollingLink href="https://linkedin.com/in/glauber-matias" label="LinkedIn" external />
