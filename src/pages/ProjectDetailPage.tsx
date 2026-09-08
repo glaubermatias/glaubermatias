@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ChevronLeft, ChevronRight, X, Copy, Check } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, X, Copy, Check, Plus, Minus } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import PageLayout from "@/components/PageLayout";
 import { getProjectById, getRelatedProjects, ProjectData, ProcessImage } from "@/data/projects";
@@ -37,6 +37,10 @@ const makeEightTiles = (images: ProcessImage[]) => images;
 /* ------------------------------------------------------------------ */
 /* Lightbox modal (used by Bento gallery)                              */
 /* ------------------------------------------------------------------ */
+const MIN_ZOOM = 1;
+const MAX_ZOOM = 5;
+const clampZoom = (z: number) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, z));
+
 const Lightbox = ({
   images,
   index,
@@ -55,12 +59,66 @@ const Lightbox = ({
   onPrev: () => void;
   onNext: () => void;
 }) => {
+  const [zoom, setZoom] = useState(1);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const viewportRef = useRef<HTMLDivElement | null>(null);
+  const stateRef = useRef({ zoom: 1, offset: { x: 0, y: 0 } });
+  stateRef.current = { zoom, offset };
+  const dragRef = useRef<{ x: number; y: number; ox: number; oy: number } | null>(null);
+
+  const reset = () => {
+    setZoom(1);
+    setOffset({ x: 0, y: 0 });
+  };
+
+  // Reset the zoom whenever the photo changes
+  useEffect(() => {
+    reset();
+  }, [index]);
+
+  const zoomAt = (nextZoomRaw: number, px: number, py: number) => {
+    const { zoom: z, offset: o } = stateRef.current;
+    const next = clampZoom(nextZoomRaw);
+    const k = next / z;
+    const nx = px - (px - o.x) * k;
+    const ny = py - (py - o.y) * k;
+    setZoom(next);
+    setOffset(next === 1 ? { x: 0, y: 0 } : { x: nx, y: ny });
+  };
+
+  const zoomAtCenter = (factor: number) => {
+    const rect = viewportRef.current?.getBoundingClientRect();
+    zoomAt(stateRef.current.zoom * factor, (rect?.width ?? 0) / 2, (rect?.height ?? 0) / 2);
+  };
+
+  const handleWheelRef = useRef<(e: WheelEvent) => void>(() => {});
+  handleWheelRef.current = (e: WheelEvent) => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const dy = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 100 : 1);
+    zoomAt(stateRef.current.zoom * Math.exp(-dy * 0.0018), e.clientX - rect.left, e.clientY - rect.top);
+  };
+
+  useEffect(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      handleWheelRef.current(e);
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
       if (e.key === "ArrowLeft") onPrev();
       if (e.key === "ArrowRight") onNext();
+      if (e.key === "+" || e.key === "=") zoomAtCenter(1.3);
+      if (e.key === "-" || e.key === "_") zoomAtCenter(1 / 1.3);
+      if (e.key === "0") reset();
     };
     window.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
@@ -76,14 +134,33 @@ const Lightbox = ({
   }, [onClose, onPrev, onNext]);
 
   const current = images[index];
+  const zoomed = zoom > 1;
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (!zoomed) return;
+    e.stopPropagation();
+    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+    dragRef.current = { x: e.clientX, y: e.clientY, ox: offset.x, oy: offset.y };
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    const d = dragRef.current;
+    if (!d) return;
+    setOffset({ x: d.ox + (e.clientX - d.x), y: d.oy + (e.clientY - d.y) });
+  };
+  const endDrag = () => {
+    dragRef.current = null;
+  };
+
+  const ctrlBtn =
+    "w-11 h-11 rounded-full flex items-center justify-center border border-white/20 bg-white/10 text-white/90 hover:text-white hover:bg-white/20 transition-colors disabled:opacity-40 disabled:hover:bg-white/10";
 
   return (
     <div
-      className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center"
+      className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex flex-col"
       onClick={onClose}
     >
       {/* Top bar — title + counter (left) and close (right) */}
-      <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between gap-4 px-6 md:px-10 pt-6 pb-4 pointer-events-none">
+      <div className="relative z-10 flex items-center justify-between gap-4 px-6 md:px-10 pt-6 pb-3 pointer-events-none">
         <div
           className="min-w-0 flex items-center gap-3 text-white/80 pointer-events-auto"
           onClick={(e) => e.stopPropagation()}
@@ -107,65 +184,77 @@ const Lightbox = ({
         </button>
       </div>
 
+      {/* Photo area — no controls sit on top of it */}
       <div
-        className={`w-[92vw] max-w-[1240px] px-5 md:px-12 lg:px-16 flex flex-col items-center gap-4 ${
-          fit === "contain"
-            ? "pt-24 md:pt-28 pb-20 md:pb-24"
-            : "pt-40 md:pt-52 pb-28 md:pb-40"
-        }`}
+        ref={viewportRef}
+        className="relative flex-1 min-h-0 w-full overflow-hidden flex items-center justify-center px-4 md:px-10"
+        style={{ touchAction: "none", cursor: zoomed ? (dragRef.current ? "grabbing" : "grab") : "zoom-in" }}
         onClick={(e) => e.stopPropagation()}
+        onDoubleClick={(e) => {
+          e.stopPropagation();
+          const rect = viewportRef.current?.getBoundingClientRect();
+          if (zoomed) reset();
+          else zoomAt(2.5, e.clientX - (rect?.left ?? 0), e.clientY - (rect?.top ?? 0));
+        }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
       >
-        <div className={`relative ${fit === "contain" ? "flex justify-center w-full" : "w-full aspect-[16/9]"}`}>
-          {fit === "contain" ? (
-            <img
-              src={current.src}
-              alt={current.caption || ""}
-              decoding="async"
-              draggable={false}
-              className="max-h-[68vh] w-auto max-w-full object-contain rounded-md pointer-events-none select-none"
-            />
-          ) : (
-            <div className="absolute inset-0 bg-black/40 rounded-md overflow-hidden flex items-center justify-center">
-              <img
-                src={current.src}
-                alt={current.caption || ""}
-                decoding="async"
-                draggable={false}
-                className="w-full h-full object-cover pointer-events-none select-none"
-              />
-            </div>
-          )}
+        <div
+          className="will-change-transform"
+          style={{
+            transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
+            transformOrigin: "0 0",
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <img
+            src={current.src}
+            alt={current.caption || ""}
+            decoding="async"
+            draggable={false}
+            className={`max-h-full max-w-full rounded-md select-none pointer-events-none ${
+              fit === "contain" ? "object-contain" : "object-contain"
+            }`}
+          />
+        </div>
+      </div>
 
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onPrev();
-            }}
-            className="absolute left-2 md:-left-14 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full flex items-center justify-center border border-white/20 bg-white/10 text-white/90 hover:text-white hover:bg-white/20 transition-colors"
-            style={{ backdropFilter: "blur(14px) saturate(160%)", WebkitBackdropFilter: "blur(14px) saturate(160%)" }}
-            aria-label="Previous"
-          >
+      {/* Caption + controls — always below the photo */}
+      <div className="relative z-10 px-4 md:px-10 pb-6 pt-3 flex flex-col items-center gap-3" onClick={(e) => e.stopPropagation()}>
+        {current.caption && (
+          <p className="text-white/80 text-sm md:text-base text-center max-w-2xl">{current.caption}</p>
+        )}
+        <div
+          className="flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-2 py-2"
+          style={{ backdropFilter: "blur(14px) saturate(160%)", WebkitBackdropFilter: "blur(14px) saturate(160%)" }}
+        >
+          <button onClick={onPrev} className={ctrlBtn} aria-label="Previous">
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onNext();
-            }}
-            className="absolute right-2 md:-right-14 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full flex items-center justify-center border border-white/20 bg-white/10 text-white/90 hover:text-white hover:bg-white/20 transition-colors"
-            style={{ backdropFilter: "blur(14px) saturate(160%)", WebkitBackdropFilter: "blur(14px) saturate(160%)" }}
-            aria-label="Next"
-          >
+          <button onClick={() => zoomAtCenter(1 / 1.4)} className={ctrlBtn} aria-label="Zoom out" disabled={zoom <= MIN_ZOOM}>
+            <Minus className="w-5 h-5" />
+          </button>
+          <span className="min-w-[3.25rem] text-center text-xs tabular-nums text-white/70">
+            {Math.round(zoom * 100)}%
+          </span>
+          <button onClick={() => zoomAtCenter(1.4)} className={ctrlBtn} aria-label="Zoom in" disabled={zoom >= MAX_ZOOM}>
+            <Plus className="w-5 h-5" />
+          </button>
+          <button onClick={onNext} className={ctrlBtn} aria-label="Next">
             <ChevronRight className="w-5 h-5" />
           </button>
         </div>
-        {current.caption && (
-          <p className="text-white/80 text-sm md:text-base text-center max-w-2xl px-4">{current.caption}</p>
-        )}
       </div>
     </div>
   );
 };
+
 
 /* ------------------------------------------------------------------ */
 /* Bento grid (process)                                                */
@@ -275,7 +364,7 @@ const BentoGrid = ({
   // fixed row height.
   const gridClass =
     variant === "portrait"
-      ? "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4"
+      ? "grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4"
       : "grid grid-cols-2 md:grid-cols-4 auto-rows-[minmax(180px,1fr)] md:auto-rows-[minmax(200px,1fr)] gap-3 md:gap-4";
   const tileClass =
     variant === "portrait"
