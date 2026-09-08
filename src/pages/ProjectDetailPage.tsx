@@ -153,6 +153,9 @@ const Lightbox = ({
 
   const ctrlBtn =
     "w-11 h-11 rounded-full flex items-center justify-center border border-white/20 bg-white/10 text-white/90 hover:text-white hover:bg-white/20 transition-colors disabled:opacity-40 disabled:hover:bg-white/10";
+  // Discrete zoom cluster — smaller, lower contrast, so it never competes with the prev/next arrows.
+  const zoomBtn =
+    "w-8 h-8 rounded-full flex items-center justify-center text-white/45 hover:text-white/80 transition-colors disabled:opacity-30 disabled:hover:text-white/45";
 
   return (
     <div
@@ -230,22 +233,29 @@ const Lightbox = ({
         {current.caption && (
           <p className="text-white/80 text-sm md:text-base text-center max-w-2xl">{current.caption}</p>
         )}
-        <div
-          className="flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-2 py-2"
-          style={{ backdropFilter: "blur(14px) saturate(160%)", WebkitBackdropFilter: "blur(14px) saturate(160%)" }}
-        >
+        <div className="flex items-center gap-3">
+          {/* Primary navigation — always the most visible controls */}
           <button onClick={onPrev} className={ctrlBtn} aria-label="Previous">
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <button onClick={() => zoomAtCenter(1 / 1.4)} className={ctrlBtn} aria-label="Zoom out" disabled={zoom <= MIN_ZOOM}>
-            <Minus className="w-5 h-5" />
-          </button>
-          <span className="min-w-[3.25rem] text-center text-xs tabular-nums text-white/70">
-            {Math.round(zoom * 100)}%
-          </span>
-          <button onClick={() => zoomAtCenter(1.4)} className={ctrlBtn} aria-label="Zoom in" disabled={zoom >= MAX_ZOOM}>
-            <Plus className="w-5 h-5" />
-          </button>
+
+          {/* Discrete zoom cluster — muted pill that never competes with the arrows */}
+          <div
+            className="flex items-center gap-0.5 rounded-full border border-white/10 bg-white/5 px-1.5 py-1"
+            style={{ backdropFilter: "blur(10px) saturate(140%)", WebkitBackdropFilter: "blur(10px) saturate(140%)" }}
+          >
+            <button onClick={() => zoomAtCenter(1 / 1.4)} className={zoomBtn} aria-label="Zoom out" disabled={zoom <= MIN_ZOOM}>
+              <Minus className="w-3.5 h-3.5" />
+            </button>
+            <span className="min-w-[2.75rem] text-center text-[11px] tabular-nums text-white/40">
+              {Math.round(zoom * 100)}%
+            </span>
+            <button onClick={() => zoomAtCenter(1.4)} className={zoomBtn} aria-label="Zoom in" disabled={zoom >= MAX_ZOOM}>
+              <Plus className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          {/* Primary navigation — always the most visible controls */}
           <button onClick={onNext} className={ctrlBtn} aria-label="Next">
             <ChevronRight className="w-5 h-5" />
           </button>
