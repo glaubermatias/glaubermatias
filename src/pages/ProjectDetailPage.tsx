@@ -925,7 +925,7 @@ const ProjectDetailPage = () => {
   // Context block carries its own title and Problem / Strategy / Trade-offs
   // are not rendered at all.
   const SINGLE_NARRATIVE: Record<string, string> = {
-    "ny-trip-itinerary": "Designing for the Street",
+    "ny-trip-itinerary": "Designing for the street",
     "event-branding": "Building the show",
   };
   const singleNarrativeTitle = SINGLE_NARRATIVE[project.id];
