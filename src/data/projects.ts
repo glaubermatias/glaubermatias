@@ -345,7 +345,7 @@ const _projectsRaw: ProjectData[] = [
     role: "Graphic designer",
     duration: "3 weeks",
     stakeholders: 'Personal project',
-    tools: "Illustrator, Photoshop, InDesign",
+    tools: "Photoshop, InDesign",
     images: projectImages['ny-trip-itinerary'].images,
     year: '2024',
     client: 'Personal project',
